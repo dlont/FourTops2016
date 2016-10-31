@@ -1,0 +1,17 @@
+__init__.py
+*.pyc
+*.o
+*.so
+*.root
+*.dylib
+*.dll
+*.pdf
+*.png
+*.tex
+*.swp
+*DS_Store
+nbproject
+Terminal*
+build
+glog
+googletest
