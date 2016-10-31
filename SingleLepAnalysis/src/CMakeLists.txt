@@ -10,19 +10,19 @@ message( "CMAKE_LD_FLAGS: ${CMAKE_LD_FLAGS}" )
 
 # include TopBrussels header search path
 include_directories(${TopBrussels_SOURCE_DIR})
-include_directories(${TopBrussels_SOURCE_DIR}/BSMFourTops)
+include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016)
 
-# add TopTreeAna76 TopTreeAnaContent76 lib search path
+# add TopTreeAna80 TopTreeAnaContent80 lib search path
 link_directories(~/lib)
 
 # include TopBrussels header search path
-#include_directories(${BSMFourTops_SOURCE_DIR}/SingleLepAnalysis/interface)
-#message(STATUS "lib SingleLepton dir: ${BSMFourTops_SOURCE_DIR}")
+include_directories(${FourTops2016_SOURCE_DIR}/SingleLepAnalysis/interface)
+#message(STATUS "lib SingleLepton dir: ${FourTops_SOURCE_DIR}")
 
 # define output target
-add_library(FourTopSingleLep SHARED CutsTable.cc EventBDT.cc HadronicTopReco.cc Trigger.cc Zpeak.cc)
+add_library(FourTopSingleLep SHARED CutsTable.cc EventBDT.cc HadronicTopReco.cc Trigger.cc Zpeak.cc MultiTopEvent.cpp)
 
-# link against root and TopTreeAna76 TopTreeAnaContent76
-target_link_libraries(FourTopSingleLep PUBLIC TopTreeAna76 TopTreeAnaContent76 PRIVATE ${CMAKE_LD_FLAGS})
+# link against root and TopTreeAna80 TopTreeAnaContent80
+target_link_libraries(FourTopSingleLep PUBLIC TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
 install(TARGETS FourTopSingleLep DESTINATION ~/lib)
 

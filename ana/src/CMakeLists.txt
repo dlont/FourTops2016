@@ -7,18 +7,19 @@ set(CMAKE_CXX_COMPILER "g++")
 
 # include TopBrussels SingleLep header search path
 include_directories(${TopBrussels_SOURCE_DIR})				# TopAnalysisBase/interface TopTreeProducer/interface
-include_directories(${TopBrussels_SOURCE_DIR}/BSMFourTops)		# SingleLep/interface/
-include_directories(${TopBrussels_SOURCE_DIR}/BSMFourTops/ana/inc)
+include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/interface)		# SingleLep/interface/
+include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/ana/inc)
 
 # add FourTopSingleLep lib search path
-link_directories(${TopBrussels_SOURCE_DIR}/BSMFourTops/SingleLepAnalysis/src)
+link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/src)
 
-# add TopTreeAna76 TopTreeAnaContent76 lib search path
+# add TopTreeAna80 TopTreeAnaContent80 lib search path
 link_directories(~/lib)
 
 # define output target
-add_executable(SLMACROLocal FourTop_EventSelection_SingleLepton_Run2_Local.cc)
+#add_executable(FourTops FourTops.cc)
+add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc)
 
-# link against root and FourTopSingleLep TopTreeAna76 TopTreeAnaContent76
-target_link_libraries(SLMACROLocal PUBLIC FourTopSingleLep TopTreeAna76 TopTreeAnaContent76 PRIVATE ${CMAKE_LD_FLAGS})
-install(TARGETS SLMACROLocal DESTINATION ~/CMSSW_7_6_3/src/TopBrussels/BSMFourTops/)
+# link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
+target_link_libraries(FourTops PUBLIC FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
+install(TARGETS FourTops DESTINATION ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/)

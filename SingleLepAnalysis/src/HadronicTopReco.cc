@@ -28,7 +28,7 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	selectedJets3rdPass(), //remaining jets after removing highest & second highest ranked tri jet
 	MVASelJets1(), //the selected jets from the highest ranked tri jet
 	MVASelJets2(), //the selected jets from the second highest ranked tri jet
-	jetCombiner(new JetCombiner(TrainMVA, Lumi, datasets, MVAmethodIn, false)),
+	jetCombiner(new JetCombiner(TrainMVA, Lumi, datasets, MVAmethodIn, false, "","" )), //_13TeV in last arg for 13tev training
 	bestTopMass1(0),
 	bestTopMass2(0),
 	bestTopMass2ndPass(0), 
@@ -46,7 +46,8 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	sumpy_X(0),
 	sumpz_X(0),
 	sume_X(0),
-	sumjet_X(TLorentzVector(0,0,0,0))
+	sumjet_X(TLorentzVector(0,0,0,0)),
+	angleT1AllJets(0)
 	{
 	if (isMuon){
 		leptonChoice = "Muon";
@@ -170,7 +171,9 @@ void HadronicTopReco::FillDiagnosticPlots(TFile *fout, unsigned int d, vector<TR
     //check data-mc agreement of kin. reco. variables.
     float mindeltaR =100.;
     float mindeltaR_temp =100.;
- 	wj1 = 0, wj2 = 0, bj1 = 0, wj1_2ndpass = 0, wj2_2ndpass = 0, bj1_2ndpass = 0;  //wjet1, wjet2, bjet
+    float tempJetSum = 0;
+    float angleT1TempJetSum = 0;
+ 	wj1 = 0, wj2 = 0, bj1 = 0, wj1_2ndpass = 0, wj2_2ndpass = 0, bj1_2ndpass = 0, angleT1AllJets=0;  //wjet1, wjet2, bjet
 
     //define the jets from W as the jet pair with smallest deltaR
     for (unsigned int m=0; m<MVASelJets1.size(); m++) {
@@ -206,7 +209,7 @@ void HadronicTopReco::FillDiagnosticPlots(TFile *fout, unsigned int d, vector<TR
     float AngleThWh1 = fabs(Th1.DeltaPhi(Wh1)); //angle between top and dijet
     float AngleThBh1 = fabs(Th1.DeltaPhi(Bh1)); //angle between top and remaining jet
 
-    float btag = MVASelJets1[bj1]->btag_combinedSecondaryVertexBJetTags();  //CSV discriminator value of "other jet"
+    float btag = MVASelJets1[bj1]->btag_combinedInclusiveSecondaryVertexV2BJetTags();  //CSV discriminator value of "other jet"
 
     double PtRat = ( ( *MVASelJets1[0] + *MVASelJets1[1] + *MVASelJets1[2] ).Pt() ) / ( MVASelJets1[0]->Pt() + MVASelJets1[1]->Pt() + MVASelJets1[2]->Pt());  //ratio of vectorial pT over scalar pT (should be larger for tops)
 
@@ -247,8 +250,14 @@ void HadronicTopReco::FillDiagnosticPlots(TFile *fout, unsigned int d, vector<TR
     TLorentzVector Bh2ndpass = *MVASelJets1[bj1_2ndpass]; //lorentz vector of b
     TLorentzVector Th2ndpass = Wh2ndpass+Bh2ndpass; //lorentz vector of top
 
-
-
+    for(unsigned int MVAsel2ndpas=0; MVAsel2ndpas<selectedJets2ndPass.size();MVAsel2ndpas++){ //calculating the sum(|pTop.pOtherJets|)/ sum(|pOtherJets|)
+    	TLorentzVector tempjet = *selectedJets2ndPass[MVAsel2ndpas];
+    	float angleBestTopTempJet = fabs( (Th1.DeltaPhi(tempjet))/(Th1.M()));
+    	float magOfTempJet = fabs(tempjet.M());
+    	tempJetSum += magOfTempJet;
+    	angleT1TempJetSum += angleBestTopTempJet;
+    }
+	angleT1AllJets = angleT1TempJetSum/tempJetSum;
     //DeltaR
     // float AngleThWh2ndpass = fabs(Th2ndpass.DeltaPhi(Wh2ndpass)); //angle between top and dijet
     // float AngleThBh2ndpass = fabs(Th2ndpass.DeltaPhi(Bh2ndpass)); //angle between top and remaining jet
@@ -268,6 +277,9 @@ void HadronicTopReco::FillDiagnosticPlots(TFile *fout, unsigned int d, vector<TR
     MSPlot["MVA_AnTop1Lep"]->Fill(AngleT1Lep, datasets[d], true, Luminosity*scaleFactor);
     if (debug)  cout <<"MVA Mass 1 = "<< bestTopMass1 << " MVA Mass 2 = "<< bestTopMass2 << endl;
 }
+float HadronicTopReco::ReturnAnglet1Jet(){
+	return angleT1AllJets;
+}
 
 float HadronicTopReco::ReturnSumJetMassX(){
     return SumJetMassX;
@@ -283,6 +295,10 @@ float HadronicTopReco::ReturnAnglet1t2(){
 
 float HadronicTopReco::ReturnAngletoplep(){
 	return AngleT1Lep;
+}
+
+float HadronicTopReco::ReturnBestTopPt(){
+	return bestTopPt;
 }
 void HadronicTopReco::ComputeMVASuccesses(){
     if(   ( hadronicBJet_.first == MVAvals1.second[0] || hadronicBJet_.first == MVAvals1.second[1] || hadronicBJet_.first == MVAvals1.second[2]   )  && ( hadronicWJet1_.first == MVAvals1.second[0] || hadronicWJet1_.first == MVAvals1.second[1] || hadronicWJet1_.first == MVAvals1.second[2]   )    && ( hadronicWJet2_.first == MVAvals1.second[0] || hadronicWJet2_.first == MVAvals1.second[1] || hadronicWJet2_.first == MVAvals1.second[2]   )      ){

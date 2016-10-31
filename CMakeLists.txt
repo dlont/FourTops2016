@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
-project(BSMFourTop)
+project(FourTops2016)
 subdirs(SingleLepAnalysis ana)
-#subdirs(SingleLepAnalysis)
 
 IF(IS_DIRECTORY ${TopBrussels_SOURCE_DIR})
 	MESSAGE(STATUS "TopBrussels was set to: ${TopBrussels_SOURCE_DIR}")
