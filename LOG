@@ -1,8 +1,17 @@
 Son 06 Nov 2016 16:13:34 CET
 
+```
+cd build
+cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-g2" ..
+```
+
 *List/count batch jobs without header*
 
 ```
 qstat -u dlontkov| tail -n+6
 qstat -u dlontkov| tail -n+6|wc -l
+```
+*Remove batch output files in the test folder"
+```
+rm *.e* *.o*
 ```
