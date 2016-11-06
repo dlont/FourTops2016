@@ -24,11 +24,13 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
+channels = ["Mu2016","El2016"] 
 # channels = ["Mu","El"] 
 # channels = ["Mu"] 
 # channels = ["El"] 
 # channels = ["Dilep"]
-channels = ["El2016"]
+# channels = ["El2016"]
+# channels = ["Mu2016"]
 #channels=["test"]
 
 
@@ -36,14 +38,16 @@ channels = ["El2016"]
 for chan in channels:
     print "\nSearching list of sample used for ", chan, " channel!"
     # getting the appropriate xml file
-    if "Mu" in chan:
+    #if "Mu" in chan:
         #tree = ET.ElementTree(file='config/output_FullMuonTopTrees80.xml')
         #tree = ET.ElementTree(file='config/FullMuonTopTrees80.xml')
-        tree = ET.ElementTree(file='config/output_FullMuonTopTrees76_v3_Denys.xml')
+        #tree = ET.ElementTree(file='config/output_FullMuonTopTrees76_v3_Denys.xml')
     #elif "El" in chan:
     #    tree = ET.ElementTree(file='config/output_FullElectronTopTrees80.xml')
+    if "Mu2016" in chan:
+        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.xml')
     elif "El2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_2016.xml')
+        tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.xml')
     elif "Dilep" in chan:
         tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
     elif "test" in chan:
@@ -94,6 +98,8 @@ for chan in channels:
                 commandString = "./FourTops "+str(d.attrib['name'])+" "+str(d.attrib['title'])+" "+str(d.attrib['add'])+" "+str(d.attrib['color'])+" "+str(d.attrib['ls'])+" "+str(d.attrib['lw'])+" "+str(d.attrib['normf'])+" "+str(d.attrib['EqLumi'])+" "+str(d.attrib['xsection'])+" "+str(d.attrib['PreselEff'])
             topTrees = glob.glob(d.attrib['filenames'])
 
+	    #print topTrees
+
             # setting the number of file per job depending whether it is data sample or not
             # this ca be tweaked
             if "Data" in str(d.attrib['name']):
@@ -111,7 +117,7 @@ for chan in channels:
             # append to the file the actual command 
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
-                print >> outfileTest, commandString, topTrees[0], " ", chan , " " , 1 , " 0" , " 10000"
+                print >> outfileTest, commandString, "dcap://maite.iihe.ac.be"+topTrees[0], " ", chan , " " , 1 , " 0" , " 10000"
                 
             N_job = 0
             N_file = 1

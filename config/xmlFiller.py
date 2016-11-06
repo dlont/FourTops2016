@@ -23,8 +23,8 @@ for d in datasets:
     files = glob.glob(d.attrib['filenames'])
     print files
     root_files = []
-    for f in files:
-        root_files.append('dcap://maite.iihe.ac.be'+f)
+    #for f in files:
+        #root_files.append('dcap://maite.iihe.ac.be'+f)
     chain = TChain('eventTree')
     for rf in root_files:
         chain.Add(rf)
