@@ -1,0 +1,8 @@
+Son 06 Nov 2016 16:13:34 CET
+
+*List/count batch jobs without header*
+
+```
+qstat -u dlontkov| tail -n+6
+qstat -u dlontkov| tail -n+6|wc -l
+```
