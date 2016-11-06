@@ -9,6 +9,10 @@ set(CMAKE_CXX_COMPILER "g++")
 include_directories(${TopBrussels_SOURCE_DIR})				# TopAnalysisBase/interface TopTreeProducer/interface
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/interface)		# SingleLep/interface/
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/ana/inc)
+include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/glog/include)
+
+# add FourTopSingleLep lib search path
+link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/glog/lib)
 
 # add FourTopSingleLep lib search path
 link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/src)
@@ -21,5 +25,5 @@ link_directories(~/lib)
 add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc)
 
 # link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
-target_link_libraries(FourTops PUBLIC FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
+target_link_libraries(FourTops PUBLIC glog FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
 install(TARGETS FourTops DESTINATION ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/)
