@@ -117,7 +117,7 @@ for chan in channels:
             # append to the file the actual command 
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
-                print >> outfileTest, commandString, "dcap://maite.iihe.ac.be"+topTrees[0], " ", chan , " " , 1 , " 0" , " 10000"
+                print >> outfileTest, commandString, "dcap://maite.iihe.ac.be"+topTrees[0], " ", chan 
                 
             N_job = 0
             N_file = 1
