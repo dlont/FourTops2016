@@ -72,6 +72,8 @@
 #include "TopTreeAnalysisBase/../FourTops/SingleLepAnalysis/interface/Zpeak.h"
 #include "TopTreeAnalysisBase/../FourTops/SingleLepAnalysis/interface/Trigger.h"
 
+#include "MakeDirectory.h"
+
 using namespace std;
 using namespace TopTree;
 using namespace reweight;
@@ -169,8 +171,8 @@ int main (int argc, char *argv[])
     for(int vecfiles=0; vecfiles<vecfileNames.size(); vecfiles++){
         cout<<"vecfile names: "<<vecfiles<<" : "<<vecfileNames[vecfiles]<<endl;
     }
-    ofstream eventlist;
-    eventlist.open ("interesting_events_mu2.txt");
+//    ofstream eventlist;
+//    eventlist.open ("interesting_events_mu2.txt");
 
     int passed = 0;
     int preTrig = 0;
@@ -344,15 +346,15 @@ int main (int argc, char *argv[])
     if(bLeptonSF){
         if(Muon){ 
             // muonSFWeight = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Muon_SF_TopEA.root","SF_totErr",false,false);  OLD SF WEIGHT
-            muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonID_Z_RunCD_Reco76X_Feb15.root", "MC_NUM_TightIDandIPCut_DEN_genTracks_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);
-            muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonIso_Z_RunCD_Reco76X_Feb15.root", "MC_NUM_TightRelIso_DEN_TightID_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightTrigC_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/SingleMuonTrigger_Z_RunCD_Reco76X_Feb15.root", "runC_IsoMu20_OR_IsoTkMu20_PtEtaBins/abseta_pt_ratio", true, false, false);
-            muonSFWeightTrigD1_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/SingleMuonTrigger_Z_RunCD_Reco76X_Feb15.root", "runD_IsoMu20_OR_IsoTkMu20_HLTv4p2_PtEtaBins/abseta_pt_ratio", true, false, false);
-            muonSFWeightTrigD2_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/SingleMuonTrigger_Z_RunCD_Reco76X_Feb15.root", "runD_IsoMu20_OR_IsoTkMu20_HLTv4p3_PtEtaBins/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_Z_RunBCD_prompt80X_7p65.root", "MC_NUM_TightIDandIPCut_DEN_genTracks_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);
+            muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_Z_RunBCD_prompt80X_7p65.root", "MC_NUM_TightRelIso_DEN_TightID_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightTrigC_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
+            muonSFWeightTrigD1_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
+            muonSFWeightTrigD2_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
             // cout<<"ID: "<<muonSFWeightID_TT<<" Iso: "<<muonSFWeightIso_TT<<"  TrigC: "<<muonSFWeightTrigC_TT<<" TrigD1: "<< muonSFWeightTrigD1_TT<<" TrigD2: "<< muonSFWeightTrigD2_TT<<endl;
         }
         else if(Electron){
-            electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Elec_SF_TopEA.root","GlobalSF",false,false);    
+            electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","GlobalSF",false,false);    
         }
     }
     /////////////////////////////////////////////////
@@ -385,9 +387,17 @@ int main (int argc, char *argv[])
     cout << "Rescaling to an integrated luminosity of "<< Luminosity <<" pb^-1" << endl;
 
     /////////////////////////////////////////////////
+    //                  Plots path                 //
+    /////////////////////////////////////////////////
+    string pathPNG = "output/FourTop"+postfix+channelpostfix+"_MSPlots/";
+    mkdir_p(pathPNG.c_str());    cout <<"Making directory :"<< pathPNG  <<endl;
+    
+    /////////////////////////////////////////////////
     //               Output ROOT file              //
     /////////////////////////////////////////////////
-    string rootFileName ("FourTop"+postfix+"_"+dName+channelpostfix+".root"); //eg. FourTop_Run2_TopTree_Study_Data_Mu.root
+    
+    
+    string rootFileName ("output/FourTop"+postfix+"_"+dName+channelpostfix+".root"); //eg. FourTop_Run2_TopTree_Study_Data_Mu.root
     TFile *fout = new TFile (rootFileName.c_str(), "RECREATE");
 
 
@@ -446,18 +456,13 @@ int main (int argc, char *argv[])
     MSPlot["MVA2TriJetMass"]        = new MultiSamplePlot(datasets, "MVA2TriJetMass", 75, 0, 500, "m_{bjj}");
     MSPlot["MVA1TriJetMassMatched"] = new MultiSamplePlot(datasets, "MVA1TriJetMassMatched", 75, 0, 500, "m_{bjj}");
 
-    /////////////////////////////////////////////////
-    //                  Plots path                 //
-    /////////////////////////////////////////////////
-    string pathPNG = "FourTop"+postfix+channelpostfix+"_MSPlots/";
-    mkdir(pathPNG.c_str(),0777);    cout <<"Making directory :"<< pathPNG  <<endl;
 
     /////////////////////////////////////////////////
     //                 Cuts table                  //
     /////////////////////////////////////////////////
-    CutsTable *cutsTable = new CutsTable(Muon, Electron);
-    cutsTable->AddSelections();
-    cutsTable->CreateTable(datasets, Luminosity);
+//    CutsTable *cutsTable = new CutsTable(Muon, Electron);
+//    cutsTable->AddSelections();
+//    cutsTable->CreateTable(datasets, Luminosity);
 
     /////////////////////////////////////////////////
     //                Z peak maker                 //
@@ -473,38 +478,38 @@ int main (int argc, char *argv[])
     LumiReWeighting LumiWeights_up;
     LumiReWeighting LumiWeights_down;
 
-    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIIFall15DR76-Asympt25ns.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2015Data76X_25ns-Run246908-260627Cert_Silver.root", "pileup", "pileup");    
-    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIIFall15DR76-Asympt25ns.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2015Data76X_25ns-Run246908-260627Cert_Silver_up.root", "pileup", "pileup");    
-    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIIFall15DR76-Asympt25ns.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2015Data76X_25ns-Run246908-260627Cert_Silver_down.root", "pileup", "pileup");    
+    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
+    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
+    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
 
     ///////////////////////////////////////////
     ///  Initialise Jet Energy Corrections  ///
     ///////////////////////////////////////////
     
     vector<JetCorrectorParameters> vCorrParam;
-    string pathCalJEC = "../TopTreeAnalysisBase/Calibrations/JECFiles/";
+    string pathCalJEC = "../TopTreeAnalysisBase/Calibrations/JECFiles/Spring16_25nsV6/";
 
     if(isData)
     {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_DATA_L2Relative_AK4PFchs.txt");
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L2Relative_AK4PFchs.txt");
         vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_DATA_L3Absolute_AK4PFchs.txt");
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_DATA_L2L3Residual_AK4PFchs.txt");
+        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L2L3Residual_AK4PFchs.txt");
         vCorrParam.push_back(*L2L3ResJetCorPar);
     }
     else
     {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_MC_L1FastJet_AK4PFchs.txt");
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_MC_L2Relative_AK4PFchs.txt");
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L2Relative_AK4PFchs.txt");
         vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Fall15_25nsV2_MC_L3Absolute_AK4PFchs.txt");
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
     }
-    JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty(pathCalJEC+"Fall15_25nsV2_MC_Uncertainty_AK4PFchs.txt");
+    JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty(pathCalJEC+"Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt");
 
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
 
@@ -544,8 +549,8 @@ int main (int argc, char *argv[])
             JESUp=true;
         }    
 
-        ofstream MLoutput;
-        MLoutput.open(("MLvariables"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+".csv").c_str());
+//        ofstream MLoutput;
+//        MLoutput.open(("MLvariables"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+".csv").c_str());
 
         if(dataSetName.find("bx50") != std::string::npos) bx25 = false;
         else bx25 = true;
@@ -568,14 +573,14 @@ int main (int argc, char *argv[])
         /////////////////////////////////////////////////
         //               Craneen setup                 //
         /////////////////////////////////////////////////
-        string channel_dir = "Craneens"+channelpostfix;
+        string channel_dir = "output/Craneens"+channelpostfix;
         string date_dir = channel_dir+"/Craneens" + date_str +"/";
-        int mkdirstatus = mkdir(channel_dir.c_str(),0777);
-        mkdirstatus = mkdir(date_dir.c_str(),0777);
+        int mkdirstatus = mkdir_p(channel_dir.c_str());
+        mkdirstatus = mkdir_p(date_dir.c_str());
         if(debug)cout<<"created dirs"<<endl;
         string Ntuptitle   = "Craneen_" + channelpostfix;
         
-        string Ntupname    = "Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
+        string Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
         TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
         TNtuple * tup      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:HTX:SumJetMassX:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFbtagUp:SFbtagDown:SFPU:SFPU_up:SFPU_down:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso:5thjetpt:6thjetpt:jet5and6pt:csvJetcsv1:csvJetcsv2:csvJetcsv3:csvJetcsv4:csvJetpt1:csvJetpt2:csvJetpt3:csvJetpt4");
        
@@ -584,22 +589,22 @@ int main (int argc, char *argv[])
         // TNtuple * tup4j0b      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFPU:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso");
         
 
-        string Ntupjetname = "Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenJets_" + dataSetName + postfix + ".root";
+        string Ntupjetname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenJets_" + dataSetName + postfix + ".root";
         TFile * tupjetfile = new TFile(Ntupjetname.c_str(),"RECREATE");
         TNtuple * tupjet   = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "jetpT:csvDisc:jeteta:jetphi:jetLeptDR:ScaleFactor:NormFactor:Luminosity:SFlepton:SFbtag:SFPU:GenWeight");
         
-        string NtupZname   = "Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenZ_" + dataSetName + postfix + ".root";
+        string NtupZname   = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenZ_" + dataSetName + postfix + ".root";
         TFile * tupZfile   = new TFile(NtupZname.c_str(),"RECREATE");
         TNtuple * tupZ     = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "invMassll:ScaleFactor:NormFactor:Luminosity");
         if(debug)cout<<"created craneens"<<endl;
 
-        string NtupCutsname = "Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenCuts_" + dataSetName + postfix + ".root";
+        string NtupCutsname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenCuts_" + dataSetName + postfix + ".root";
         TFile * tupCutfile   = new TFile(NtupCutsname.c_str(),"RECREATE");
 
         // string elTuptitle = "Craneen_" + channelpostfix + "_ElecID";
         // string muTuptitle = "Craneen_" + channelpostfix + "_MuonID";
         // string jetTuptitle = "Craneen_" + channelpostfix + "_JetID";
-        string cutTuptitle = "Craneen_" + channelpostfix + "_CutFlow";
+        string cutTuptitle = "output/Craneen_" + channelpostfix + "_CutFlow";
         // TNtuple * eltup = new TNtuple(elTuptitle.c_str(),elTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:ElSuperclusterEta:Elfull5x5:EldEdatIn:EldPhiIn:ElhOverE:ElRelIso:ElEmP:Eld0:Eldz:ElMissingHits:ElE:ElP");
         // TNtuple * mutup = new TNtuple(muTuptitle.c_str(),muTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:MuPt:MuEta:MuRelIso");
         // TNtuple * jettup = new TNtuple(jetTuptitle.c_str(),jetTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:NHF:NEMF:nConstituents:CHF:CMultiplicity:CEMF");
@@ -762,9 +767,9 @@ int main (int argc, char *argv[])
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); if (debug)cout<<"Getting Loose Muons"<<endl;
                 nMu = selectedMuons.size(); //Number of Muons in Event
                                                                                                                                             
-                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(30, 2.1, "Tight", "Spring15_25ns", true); if (debug)cout<<"Getting Tight Electrons"<<endl; // VBTF ID       
+                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(30, 2.1, "Tight", "Spring16_80X", true); if (debug)cout<<"Getting Tight Electrons"<<endl; // VBTF ID       
                                                                                                                                             
-                selectedOrigExtraElectrons                              = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring15_25ns", true); if (debug)cout<<"Getting Loose Electrons"<<endl;
+                selectedOrigExtraElectrons                              = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true); if (debug)cout<<"Getting Loose Electrons"<<endl;
 
             }
             else if(Muon){
@@ -774,7 +779,7 @@ int main (int argc, char *argv[])
                 selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Tight", "Spring15"); if (debug)cout<<"Getting Tight Muons"<<endl;
                 nMu = selectedMuons.size(); //Number of Muons in Event
                                                                                                                                             
-                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring15_25ns", true); if (debug)cout<<"Getting Loose Electrons"<<endl; // VBTF ID    
+                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true); if (debug)cout<<"Getting Loose Electrons"<<endl; // VBTF ID    
                                                                                                                                             
                 selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); if (debug)cout<<"Getting Loose Muons"<<endl;
                 nLooseMu = selectedExtraMuons.size();   //Number of loose muons      
@@ -1365,11 +1370,11 @@ int main (int argc, char *argv[])
             if(nJets > 7 && (dataSetName.find("Data") || dataSetName.find("data") || dataSetName.find("DATA")) ){
                 //cout<<event->runId()  << " " << event->lumiBlockId() <<" " <<event->eventId() << "  jets "  << nJets <<"  nmtags "<<nMtags<<" muon pt "<<selectedMuons[0]->Pt()<<" 1stjetpt "<<selectedJets[0]->Pt()<<"  2ndjet pt "<<selectedJets[1]->Pt()<<endl;        
 
-                eventlist <<event->runId()  << " " << event->lumiBlockId() <<" " <<event->eventId() << "  jets "  << nJets <<" nmtags "<<nMtags<<" muon pt "<<selectedLeptonPt<<" 1stjetpt "<<selectedJets[0]->Pt()<<"  2ndjet pt "<<selectedJets[1]->Pt()<<endl;        
-                for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
-                {
-                    eventlist<<"  jet pt  "<<selectedJets[seljet1]->Pt()<<"   btag csv "<<selectedJets[seljet1]->btag_combinedInclusiveSecondaryVertexV2BJetTags()<<endl;
-                }
+//                eventlist <<event->runId()  << " " << event->lumiBlockId() <<" " <<event->eventId() << "  jets "  << nJets <<" nmtags "<<nMtags<<" muon pt "<<selectedLeptonPt<<" 1stjetpt "<<selectedJets[0]->Pt()<<"  2ndjet pt "<<selectedJets[1]->Pt()<<endl;        
+//                for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
+//                {
+//                    eventlist<<"  jet pt  "<<selectedJets[seljet1]->Pt()<<"   btag csv "<<selectedJets[seljet1]->btag_combinedInclusiveSecondaryVertexV2BJetTags()<<endl;
+//                }
             }
 
             ////////////////////////////////////////////
@@ -1421,15 +1426,15 @@ int main (int argc, char *argv[])
             }
 
 
-            if(dataSetName.find("TTJets")!=string::npos ||dataSetName.find("tttt")!=string::npos  ){
-                MLoutput<<diTopness<<","<<selectedLeptonPt<<","<<leptoneta<<","<<HTH<<","<<HTRat<<","<<HTb<<","<<nLtags<<","<<nMtags<<","<<nTtags<<","<<nJets<<","<<jet5Pt<<","<<jet6Pt<<",";
-            }
-            if (dataSetName.find("TTJets")!=string::npos ){
-                MLoutput<<"0"<<endl;
-            }
-            else if (dataSetName.find("tttt")!=string::npos ){
-                MLoutput<<"1"<<endl;
-            }            
+//            if(dataSetName.find("TTJets")!=string::npos ||dataSetName.find("tttt")!=string::npos  ){
+//                MLoutput<<diTopness<<","<<selectedLeptonPt<<","<<leptoneta<<","<<HTH<<","<<HTRat<<","<<HTb<<","<<nLtags<<","<<nMtags<<","<<nTtags<<","<<nJets<<","<<jet5Pt<<","<<jet6Pt<<",";
+//            }
+//            if (dataSetName.find("TTJets")!=string::npos ){
+//                MLoutput<<"0"<<endl;
+//            }
+//            else if (dataSetName.find("tttt")!=string::npos ){
+//                MLoutput<<"1"<<endl;
+//            }            
 
 
             BDTScore = 0 ;
@@ -1487,11 +1492,11 @@ int main (int argc, char *argv[])
         cout << "Weight Count: " << weightCount << endl;
         //important: free memory
         treeLoader.UnLoadDataset();
-            MLoutput.close();
+//            MLoutput.close();
 
     } //End Loop on Datasets
 
-    eventlist.close();
+//    eventlist.close();
     /////////////
     // Writing //
     /////////////
@@ -1505,8 +1510,8 @@ int main (int argc, char *argv[])
     zPeakMaker->writeErase(fout, pathPNG);
     delete zPeakMaker;
 
-    cutsTable->Calc_Write(postfix, dName, channelpostfix);
-    delete cutsTable;
+//    cutsTable->Calc_Write(postfix, dName, channelpostfix);
+//    delete cutsTable;
 
     if(fillingbTagHistos && bTagReweight && dataSetName.find("Data")==string::npos){
         delete btwt;
@@ -1525,11 +1530,11 @@ int main (int argc, char *argv[])
     delete trigger;
 
     fout->cd();
-    TFile *foutmva = new TFile ("foutMVA.root","RECREATE");
-    cout <<" after cd .."<<endl;
+//    TFile *foutmva = new TFile ("foutMVA.root","RECREATE");
+//    cout <<" after cd .."<<endl;
 
     string pathPNGJetCombi = pathPNG + "JetCombination/";
-    mkdir(pathPNGJetCombi.c_str(),0777);
+    mkdir_p(pathPNGJetCombi.c_str());
     if (HadTopOn){
         //if(TrainMVA)jetCombiner->Write(foutmva, true, pathPNGJetCombi.c_str());
         hadronicTopReco->WriteDiagnosticPlots(fout, pathPNG);
