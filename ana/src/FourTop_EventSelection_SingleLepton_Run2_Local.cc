@@ -199,8 +199,8 @@ int main (int argc, char *argv[])
     ///////////////////////////////////////
 
     bool SingleLepton      = true;
-    bool Muon              = true;
-    bool Electron          = false;
+    bool Muon              = false;
+    bool Electron          = true;
     bool HadTopOn          = true;
     bool EventBDTOn        = true;
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
@@ -354,7 +354,7 @@ int main (int argc, char *argv[])
             // cout<<"ID: "<<muonSFWeightID_TT<<" Iso: "<<muonSFWeightIso_TT<<"  TrigC: "<<muonSFWeightTrigC_TT<<" TrigD1: "<< muonSFWeightTrigD1_TT<<" TrigD2: "<< muonSFWeightTrigD2_TT<<endl;
         }
         else if(Electron){
-            electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","GlobalSF",false,false);    
+            electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","EGamma_SF2D",false,false);    
         }
     }
     /////////////////////////////////////////////////
