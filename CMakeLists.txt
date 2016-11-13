@@ -8,4 +8,4 @@ ELSE()
 	MESSAGE(FATAL_ERROR "TopBrussels was not found in: ${TopBrussels_SOURCE_DIR}")
 ENDIF()
 
-SET(CMAKE_CXX_FLAGS_DEBUG   "-g3 -ggdb -O0" CACHE STRING "Debug options." FORCE   )
+SET(CMAKE_CXX_FLAGS_DEBUG   "-ggdb3 -gdwarf-3 -O0 -fno-inline" CACHE STRING "Debug options." FORCE   )
