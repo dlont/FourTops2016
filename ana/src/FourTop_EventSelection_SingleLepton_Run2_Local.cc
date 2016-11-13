@@ -29,6 +29,8 @@
 #include <map>
 #include <cstdlib>
 
+#include <glog/logging.h>
+
 //user code
 #include "TopTreeProducer/interface/TRootRun.h"
 #include "TopTreeProducer/interface/TRootEvent.h"
@@ -93,19 +95,22 @@ struct HighestCVSBtag
 
 int main (int argc, char *argv[])
 {
+    
+    google::InitGoogleLogging(argv[0]);
+    
     //Placing arguments in properly typed variables for Dataset creation
     const string dName              = argv[1];
     const string dTitle             = argv[2];
-    const int color                 = strtol(argv[4], NULL, 10);
-    const int ls                    = strtol(argv[5], NULL, 10);
-    const int lw                    = strtol(argv[6], NULL, 10);
-    const float normf               = strtod(argv[7], NULL);
-    const float EqLumi              = strtod(argv[8], NULL);
-    const float xSect               = strtod(argv[9], NULL);
-    const float PreselEff           = strtod(argv[10], NULL);
+    const int color                 = strtol(argv[4], nullptr, 10);
+    const int ls                    = strtol(argv[5], nullptr, 10);
+    const int lw                    = strtol(argv[6], nullptr, 10);
+    const float normf               = strtod(argv[7], nullptr);
+    const float EqLumi              = strtod(argv[8], nullptr);
+    const float xSect               = strtod(argv[9], nullptr);
+    const float PreselEff           = strtod(argv[10], nullptr);
     string fileName                 = argv[11];    
-    const int startEvent            = batch ? 0 : strtol(argv[argc-2], NULL, 10);
-    const int endEvent              = batch ? -1 : strtol(argv[argc-1], NULL, 10);
+    const int startEvent            = batch ? 0 : strtol(argv[argc-2], nullptr, 10);
+    const int endEvent              = batch ? -1 : strtol(argv[argc-1], nullptr, 10);
     string inputChannel;
 
     int lenOfFileName = fileName.length();
@@ -200,16 +205,16 @@ int main (int argc, char *argv[])
 
     bool SingleLepton      = true;
     bool Muon              = false;
-    bool Electron          = true;
+    bool Electron          = false;
     bool HadTopOn          = true;
     bool EventBDTOn        = true;
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
     bool bx25              = true;
-    bool bTagReweight      = true;
+    bool bTagReweight      = false;
     bool bTagCSVReweight   = false;
-    bool bLeptonSF         = true;
+    bool bLeptonSF         = false;
     bool debug             = false;
-    bool applyJER          = true;
+    bool applyJER          = false;
     bool applyJEC          = false;
     bool JERNom            = false;
     bool JERUp             = false;
@@ -221,11 +226,11 @@ int main (int argc, char *argv[])
     float Luminosity       = 2628.0 ; //pb^-1 shown is C+D, D only is 2094.08809124; silverJson
     //bool split_ttbar     = false;
 
-    if (batch && inputChannel=="Mu"){
+    if (batch && inputChannel.find("Mu")!=string::npos){
         Muon = true;
         Electron = false;
     }
-    if (batch && inputChannel=="El"){
+    if (batch && inputChannel.find("El")!=string::npos){
         Muon = false;
         Electron = true;
     }
@@ -259,7 +264,7 @@ int main (int argc, char *argv[])
     // anaEnv.GenEventCollection = "GenEvent";
     anaEnv.NPGenEventCollection = "NPGenEvent";
     anaEnv.MCParticlesCollection = "MCParticles";
-    anaEnv.loadFatJetCollection = true;
+    anaEnv.loadFatJetCollection = false;
     anaEnv.loadGenJetCollection = true;
     // anaEnv.loadGenEventCollection = false;
     anaEnv.loadNPGenEventCollection = false;
@@ -387,26 +392,11 @@ int main (int argc, char *argv[])
     cout << "Rescaling to an integrated luminosity of "<< Luminosity <<" pb^-1" << endl;
 
     /////////////////////////////////////////////////
-    //                  Plots path                 //
-    /////////////////////////////////////////////////
-    string pathPNG = "output/FourTop"+postfix+channelpostfix+"_MSPlots/";
-    mkdir_p(pathPNG.c_str());    cout <<"Making directory :"<< pathPNG  <<endl;
-    
-    /////////////////////////////////////////////////
-    //               Output ROOT file              //
-    /////////////////////////////////////////////////
-    
-    
-    string rootFileName ("output/FourTop"+postfix+"_"+dName+channelpostfix+".root"); //eg. FourTop_Run2_TopTree_Study_Data_Mu.root
-    TFile *fout = new TFile (rootFileName.c_str(), "RECREATE");
-
-
-    /////////////////////////////////////////////////
     //                Top Reco MVA                 //
     /////////////////////////////////////////////////
     HadronicTopReco *hadronicTopReco;
     if(HadTopOn){
-        hadronicTopReco = new HadronicTopReco(fout, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, Luminosity);
+        hadronicTopReco = new HadronicTopReco(nullptr, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, Luminosity);
     }
     /////////////////////////////////////////////////
     //            vectors of objects               //
@@ -463,12 +453,6 @@ int main (int argc, char *argv[])
 //    CutsTable *cutsTable = new CutsTable(Muon, Electron);
 //    cutsTable->AddSelections();
 //    cutsTable->CreateTable(datasets, Luminosity);
-
-    /////////////////////////////////////////////////
-    //                Z peak maker                 //
-    /////////////////////////////////////////////////
-    Zpeak *zPeakMaker;
-    zPeakMaker = new Zpeak(datasets);
 
     /////////////////////////////////////////////////
     //               Pu reweighting                //
@@ -583,7 +567,7 @@ int main (int argc, char *argv[])
         string Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
         TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
         TNtuple * tup      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:HTX:SumJetMassX:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFbtagUp:SFbtagDown:SFPU:SFPU_up:SFPU_down:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso:5thjetpt:6thjetpt:jet5and6pt:csvJetcsv1:csvJetcsv2:csvJetcsv3:csvJetcsv4:csvJetpt1:csvJetpt2:csvJetpt3:csvJetpt4");
-       
+        LOG(INFO) << "Output Craneens File: " << Ntupname ;
         // string Ntup4j0bname    = "Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_4j0b_" + dataSetName + postfix + ".root";     
         // TFile * tup4j0bfile    = new TFile(Ntupname.c_str(),"RECREATE");
         // TNtuple * tup4j0b      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFPU:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso");
@@ -593,22 +577,22 @@ int main (int argc, char *argv[])
         TFile * tupjetfile = new TFile(Ntupjetname.c_str(),"RECREATE");
         TNtuple * tupjet   = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "jetpT:csvDisc:jeteta:jetphi:jetLeptDR:ScaleFactor:NormFactor:Luminosity:SFlepton:SFbtag:SFPU:GenWeight");
         
-        string NtupZname   = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenZ_" + dataSetName + postfix + ".root";
-        TFile * tupZfile   = new TFile(NtupZname.c_str(),"RECREATE");
-        TNtuple * tupZ     = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "invMassll:ScaleFactor:NormFactor:Luminosity");
-        if(debug)cout<<"created craneens"<<endl;
+//        string NtupZname   = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenZ_" + dataSetName + postfix + ".root";
+//        TFile * tupZfile   = new TFile(NtupZname.c_str(),"RECREATE");
+//        TNtuple * tupZ     = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "invMassll:ScaleFactor:NormFactor:Luminosity");
+//        if(debug)cout<<"created craneens"<<endl;
 
-        string NtupCutsname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenCuts_" + dataSetName + postfix + ".root";
-        TFile * tupCutfile   = new TFile(NtupCutsname.c_str(),"RECREATE");
+//        string NtupCutsname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenCuts_" + dataSetName + postfix + ".root";
+//        TFile * tupCutfile   = new TFile(NtupCutsname.c_str(),"RECREATE");
 
         // string elTuptitle = "Craneen_" + channelpostfix + "_ElecID";
         // string muTuptitle = "Craneen_" + channelpostfix + "_MuonID";
         // string jetTuptitle = "Craneen_" + channelpostfix + "_JetID";
-        string cutTuptitle = "output/Craneen_" + channelpostfix + "_CutFlow";
+//        string cutTuptitle = "output/Craneen_" + channelpostfix + "_CutFlow";
         // TNtuple * eltup = new TNtuple(elTuptitle.c_str(),elTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:ElSuperclusterEta:Elfull5x5:EldEdatIn:EldPhiIn:ElhOverE:ElRelIso:ElEmP:Eld0:Eldz:ElMissingHits:ElE:ElP");
         // TNtuple * mutup = new TNtuple(muTuptitle.c_str(),muTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:MuPt:MuEta:MuRelIso");
         // TNtuple * jettup = new TNtuple(jetTuptitle.c_str(),jetTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:NHF:NEMF:nConstituents:CHF:CMultiplicity:CEMF");
-        TNtuple * cuttup = new TNtuple(cutTuptitle.c_str(),cutTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:trigger:isGoodPV:Lep1:Lep2:nJets:nTags:HT");
+//        TNtuple * cuttup = new TNtuple(cutTuptitle.c_str(),cutTuptitle.c_str(),"ScaleFactor:NormFactor:Luminosity:trigger:isGoodPV:Lep1:Lep2:nJets:nTags:HT");
 
 
         ////////////////////////////////////////////////////////////
@@ -650,23 +634,14 @@ int main (int argc, char *argv[])
         ///////////////////////////////////////////////////////////
 
         // int start = 0;
-        unsigned int ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
+        unsigned long long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
         int event_start = startEvent; //set start of for loop to input startEvent
         double end_d = ending; //initialise end of for loop to end of dataset
 
         if(endEvent <ending && endEvent>0 ) end_d = endEvent; // if the input endEvent is less than total events in dataset (and greater than 0), set max of for loop to endEvent
-
-        // if(dataSetName.find("Data")!=string::npos || dataSetName.find("data")!=string::npos  || dataSetName.find("DATA")!=string::npos ){
-        //     // end_d=ending;
-        //     if(endEvent > ending)            end_d = ending;
-        //     else            end_d = endEvent;  
-        // }
-        // else{  //this only works if using parallel launcher to split into jobs
-        //     if(endEvent > ending)            end_d = ending;
-        //     else            end_d = endEvent;            
-        // }
-
-        cout <<"Will run over "<<  end_d<< " events..."<<endl;    cout <<"Starting event = = = = "<< event_start  << endl;
+        
+        cout <<"Will run over "<<  end_d<< " events..."<<endl;    
+        cout <<"Starting event = = = = "<< event_start  << endl;
 
         ////////////////////////////////////////////////////////////////////////////////
         //                                 Loop on events                             //
@@ -806,12 +781,6 @@ int main (int argc, char *argv[])
              // cout<<"nel: "<<nEl<<"  nLooseEl: "<<nLooseEl<<"  origel: "<<selectedOrigElectrons.size()<<"  origextra el: "<<selectedOrigExtraElectrons.size()<<endl;
             }
 
-            ////////////////////////////////////////////////////////////
-            //   Z peak before nMu==1 or nEl==1 for jetlep cleaning   //
-            ////////////////////////////////////////////////////////////
-            zPeakMaker->invariantMass(r2selection);
-            float invMassll = zPeakMaker->returnInvMass();
-
             /////////////////////////////////////////////////
             //            Jet lepton cleaning              //
             /////////////////////////////////////////////////
@@ -910,7 +879,7 @@ int main (int argc, char *argv[])
 
             trigged = trigger->checkIfFired(currentRun, datasets, d);
             // trigged=true;
-            tupCutfile->cd();
+//            tupCutfile->cd();
             //cutsTable->FillTable(d, normfactor, Luminosity, isGoodPV, trigged, scaleFactor, nMu, nLooseMu, nEl, nLooseEl, nJets, nLtags, nMtags, nTtags, cuttup);   if(debug) cout<<"cuts table filled"<<endl;
  
             /////////////////////////////////
@@ -1122,24 +1091,6 @@ int main (int argc, char *argv[])
                 negWeights++;
             }
 
-            /////////////////////////////////////
-            //    Fill cuts table + z peak     //
-            /////////////////////////////////////
-            zPeakMaker->fillPlot(datasets, d, Luminosity, scaleFactor);
-
-            /////////////////////////////////////////////////
-            //                Z peak maker                 //
-            /////////////////////////////////////////////////
-
-            float vals2[4] = {invMassll,scaleFactor,normfactor,Luminosity};
-            bool isTwoLeptons=zPeakMaker->requireTwoLeptons();     if(debug) cout<<"isTwoLeptons  "<<isTwoLeptons<<endl;
-
-            if (isTwoLeptons){
-                tupZfile->cd();        
-                tupZ->Fill(vals2);
-            }
-            if(debug) cout<<"Z peak filled"<<endl;
-
             //Apply the lepton, jet, btag and HT & MET selections
 
             if (debug)  cout<<"Number of Muons = "<< nMu <<"    electrons =  "  <<nEl<<"     Jets = "<< selectedJets.size()   <<" loose BJets = "<<  nLtags   <<
@@ -1215,13 +1166,6 @@ int main (int argc, char *argv[])
                 ttbar_flav = 0;
             }
 
-            //temporary to calculate heavy flav 
-
-            // float vals[63] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-            // tupfile->cd();
-            // tup->Fill(vals);
-
-            // continue;
 
             //////////////////////////////////////////
             //     TMVA for mass Reconstruction     //
@@ -1251,7 +1195,7 @@ int main (int argc, char *argv[])
                     SumJetMassX = hadronicTopReco->ReturnSumJetMassX();
                     HTX = hadronicTopReco->ReturnHTX();// cout<<"HTX: "<<HTX<<endl;
                 }
-                hadronicTopReco->FillDiagnosticPlots(fout, d, selectedJets, datasets);
+//                hadronicTopReco->FillDiagnosticPlots(fout, d, selectedJets, datasets);
             }
 
             //cout<<"SumJetMassX: "<<SumJetMassX<<endl;
@@ -1363,19 +1307,7 @@ int main (int argc, char *argv[])
                 leptoneta = selectedElectrons[0]->Eta();
                 leptonphi = selectedElectrons[0]->Phi();
             }
-            ////////////////////////////////////////////
-            //    Output special events to .txt       //
-            ////////////////////////////////////////////
-            if(debug) cout<<"special event output"<<endl;
-            if(nJets > 7 && (dataSetName.find("Data") || dataSetName.find("data") || dataSetName.find("DATA")) ){
-                //cout<<event->runId()  << " " << event->lumiBlockId() <<" " <<event->eventId() << "  jets "  << nJets <<"  nmtags "<<nMtags<<" muon pt "<<selectedMuons[0]->Pt()<<" 1stjetpt "<<selectedJets[0]->Pt()<<"  2ndjet pt "<<selectedJets[1]->Pt()<<endl;        
 
-//                eventlist <<event->runId()  << " " << event->lumiBlockId() <<" " <<event->eventId() << "  jets "  << nJets <<" nmtags "<<nMtags<<" muon pt "<<selectedLeptonPt<<" 1stjetpt "<<selectedJets[0]->Pt()<<"  2ndjet pt "<<selectedJets[1]->Pt()<<endl;        
-//                for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
-//                {
-//                    eventlist<<"  jet pt  "<<selectedJets[seljet1]->Pt()<<"   btag csv "<<selectedJets[seljet1]->btag_combinedInclusiveSecondaryVertexV2BJetTags()<<endl;
-//                }
-            }
 
             ////////////////////////////////////////////
             //    Jet variables + jet craneen         //
@@ -1398,17 +1330,6 @@ int main (int argc, char *argv[])
                 tupjet->Fill(jetvals);
             }
 
-            // if(Muon){
-            //     // muonpt  = selectedMuons[0]->Pt();
-            //     // muoneta = selectedMuons[0]->Eta();
-            //     leptonphi = selectedMuons[0]->Phi();
-            // }
-            // else if(Electron){
-            //     // muonpt  = selectedElectrons[0]->Pt();
-            //     // muoneta = selectedElectrons[0]->Eta();
-            //     leptonphi = selectedElectrons[0]->Phi();
-
-            // }
 
             ////////////////////////////////////////////
             //       Fill BDT & compute score         //
@@ -1423,18 +1344,7 @@ int main (int argc, char *argv[])
                     //cout<<"5thjetpt "<<jet5Pt<<"  jet6pt: "<<jet6Pt<<endl;
                 }
                 eventBDT->fillVariables(diTopness, selectedLeptonPt, leptoneta, HTH, HTRat, HTb, nLtags, nMtags, nTtags, nJets, jet5Pt, jet6Pt);
-            }
-
-
-//            if(dataSetName.find("TTJets")!=string::npos ||dataSetName.find("tttt")!=string::npos  ){
-//                MLoutput<<diTopness<<","<<selectedLeptonPt<<","<<leptoneta<<","<<HTH<<","<<HTRat<<","<<HTb<<","<<nLtags<<","<<nMtags<<","<<nTtags<<","<<nJets<<","<<jet5Pt<<","<<jet6Pt<<",";
-//            }
-//            if (dataSetName.find("TTJets")!=string::npos ){
-//                MLoutput<<"0"<<endl;
-//            }
-//            else if (dataSetName.find("tttt")!=string::npos ){
-//                MLoutput<<"1"<<endl;
-//            }            
+            }           
 
 
             BDTScore = 0 ;
@@ -1472,20 +1382,20 @@ int main (int argc, char *argv[])
         tup->Write();
         tupfile->Close();
 
-        tupCutfile->cd();
-        cuttup->Write();
+//        tupCutfile->cd();
+//        cuttup->Write();
         // eltup->Write();
         // mutup->Write();
         // jettup->Write();
-        tupCutfile->Close();
+//        tupCutfile->Close();
 
         tupjetfile->cd();
         tupjet->Write();
         tupjetfile->Close();
 
-        tupZfile->cd();
-        tupZ->Write();
-        tupZfile->Close();
+//        tupZfile->cd();
+//        tupZ->Write();
+//        tupZfile->Close();
         cout <<"n events passed  =  "<<passed <<endl;
         cout <<"n events with negative weights = "<<negWeights << endl;
         cout << "Event Count: " << eventCount << endl;
@@ -1496,22 +1406,11 @@ int main (int argc, char *argv[])
 
     } //End Loop on Datasets
 
-//    eventlist.close();
     /////////////
     // Writing //
     /////////////
 
     cout << " - Writing outputs to the files ..." << endl;
-
-    //////////////////////
-    // Selection tables //
-    //////////////////////
-
-    zPeakMaker->writeErase(fout, pathPNG);
-    delete zPeakMaker;
-
-//    cutsTable->Calc_Write(postfix, dName, channelpostfix);
-//    delete cutsTable;
 
     if(fillingbTagHistos && bTagReweight && dataSetName.find("Data")==string::npos){
         delete btwt;
@@ -1529,15 +1428,9 @@ int main (int argc, char *argv[])
 
     delete trigger;
 
-    fout->cd();
-//    TFile *foutmva = new TFile ("foutMVA.root","RECREATE");
-//    cout <<" after cd .."<<endl;
-
-    string pathPNGJetCombi = pathPNG + "JetCombination/";
-    mkdir_p(pathPNGJetCombi.c_str());
     if (HadTopOn){
         //if(TrainMVA)jetCombiner->Write(foutmva, true, pathPNGJetCombi.c_str());
-        hadronicTopReco->WriteDiagnosticPlots(fout, pathPNG);
+//        hadronicTopReco->WriteDiagnosticPlots(fout, pathPNG);
         delete hadronicTopReco;        
     }
     if(EventBDTOn){
@@ -1546,16 +1439,6 @@ int main (int argc, char *argv[])
 
     if(jetTools) delete jetTools;
 
-
-    //Output ROOT file
-    for(map<string,MultiSamplePlot*>::const_iterator it = MSPlot.begin(); it != MSPlot.end(); it++)
-    {
-        string name = it->first;
-        MultiSamplePlot *temp = it->second;
-        temp->Write(fout, name, true, pathPNG, "pdf");
-    }
-    delete fout;
-
     cout << "It took us " << ((double)clock() - start) / CLOCKS_PER_SEC << " to run the program" << endl;
     cout << "********************************************" << endl;
     cout << "           End of the program !!            " << endl;
@@ -1563,24 +1446,3 @@ int main (int argc, char *argv[])
     
     return 0;
 }
-
-
-            // sort(selectedJets.begin(),selectedJets.end(),HighestCVSBtag());
-
-            // vector<double> ptList;
-            // double jetptTemp;
-            // for(Int_t csvJets = 2; csvJets<selectedJets.size(); csvJets++){
-            //     jetptTemp = (double)selectedJets[csvJets]->Pt();
-            //     ptList.push_back(jetptTemp);
-            //     //cout<<csvJets<<"   ptlist "<<ptList[csvJets-2]<<endl;
-            //     //selectedJets2.push_back(selectedJets[csvJets]);  //created array of selected jets without 2 highest CSVL btags
-            //     //cout<<csvJets<<" jet pt "<<selectedJets2[csvJets-2]->Pt()<<"   "<<selectedJets[csvJets]->Pt()<<endl;
-            // }
-
-            // sort(selectedJets2.begin(),selectedJets2.end(),HighestPt()); //order Jets wrt Pt for tuple output
-
-            // HT2L2J = HT - selectedJets[0]->Pt() - selectedJets[1]->Pt() - ptList[0] - ptList[1];    
-            //cout<<"HT:  "<<HT<<"  "<<selectedJets[0]->Pt()<<"  "<<selectedJets[1]->Pt()<<"  "<<ptList[0]<<"  "<<ptList[1]<<"  HT2l2J"<<HT2L2J<<endl;    
-
-            //HT - (2 highest CSVL btags) and (2 highest pt jets from remaining jets)
-
