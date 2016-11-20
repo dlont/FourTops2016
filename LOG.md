@@ -1,33 +1,33 @@
-Son 06 Nov 2016 16:13:34 CET
+# Son 06 Nov 2016 16:13:34 CET
 
 ```
 cd build
 cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-g2" ..
 ```
 
-*List/count batch jobs without header*
+**List/count batch jobs without header**
 
 ```
 qstat -u dlontkov| tail -n+6
 qstat -u dlontkov| tail -n+6|wc -l
 ```
-*Remove batch output files in the test folder"
+**Remove batch output files in the test folder**
 ```
 rm *.e* *.o*
 ```
 
 
-Mon 07 Nov 2016 01:13:05 CET
-*Environment to XML parsing*
+# Mon 07 Nov 2016 01:13:05 CET
+**Environment to XML parsing**
 ```
 export|awk '{print $3}'|awk -F'=' '{printf "<variable name=\"%s\" value=%s/>\n", $1,$2}'
 ```
 
 
 
-Son 13 Nov 2016 21:15:32 CET
+# Son 13 Nov 2016 21:15:32 CET
 
-Plotting with rootplot
+## Plotting with rootplot
 
 tree2hist template
 ```
@@ -40,7 +40,7 @@ for i in *.py;do  tree2hists $i;done
 rootplot -f --data=1 --ratio-split=2 --overflow  -n Hists_data.root Hists_TT.root Hists_TTTT.root
 ```
 
-Data sample lumi
+## Data sample lumi
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/CMSTopBrussels13TeVSamplesBookkeeping
 
 /pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T/TTP-CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T--GT-80X_dataRun2_ICHEP16_repro_v0/*/*/*/*/TOPTREE_*.root
@@ -53,7 +53,7 @@ repro_v0
 SingleMuon      5208746535.071  2448756618.041  4201921158.859  4049732039.245  3147822524.876  7554453625.468  5476961519.179 32088394020.739
 
 
-Equivalent lumi for different samples
+## Equivalent lumi for different samples
 TTTT (0.0092 pb)
 /pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v1/TTP-CMSSW_80X_v1--GT-80X_mcRun2_asymptotic_2016_miniAODv2_v1/TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/*/*/*/TOPTREE_*.root
 
@@ -69,7 +69,7 @@ TT scale (831.76 pb)
 ['TTScaleup_powheg', 9933327L, 11942.5399153602]
 
 
-Normalisation factors
+## Normalisation factors
 repro_v3
 TT (35044350020.364/330572000000.9128594787=0.01525945942)
 repro_0
@@ -81,7 +81,7 @@ Control plots with correct normalisation and labels (except for TTTT)
 rootplot -f --data=3 --logy --overflow --scale=0.09706930417775973,0.0002984891433389437,1 --legend-entries='t#bar{t},t#bar{t}t#bar{t},CMS (33/fb)' Hists_TT.root Hists_TTTT.root Hists_data.root
 ```
 
-Mon 14 Nov 2016 01:23:56 CET
+# Mon 14 Nov 2016 01:23:56 CET
 ```
 for i in *_t2h.py;do  tree2hists $i;done
 ```
@@ -92,7 +92,7 @@ make plots
 ```
 
 
-Son 20 Nov 2016 19:41:16 CET
+# Son 20 Nov 2016 19:41:16 CET
 Run with updated Muon trigger (80X) (tag v0.0.1) 
 
 
