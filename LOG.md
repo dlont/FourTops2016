@@ -107,8 +107,11 @@ Below is proper calculation
 
 **Data lumi**
 SingleMuon B+C+D+E+F+G+H
+
 35044350020.364 (mb-1)
+
 SingleElectron B+C+D+E+F+G+H
+
 34045653292.636 (mb-1)
 
 **Normalisation factors MC**
