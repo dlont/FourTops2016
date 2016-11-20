@@ -573,9 +573,9 @@ int main (int argc, char *argv[])
         // TNtuple * tup4j0b      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFPU:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso");
         
 
-        string Ntupjetname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenJets_" + dataSetName + postfix + ".root";
-        TFile * tupjetfile = new TFile(Ntupjetname.c_str(),"RECREATE");
-        TNtuple * tupjet   = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "jetpT:csvDisc:jeteta:jetphi:jetLeptDR:ScaleFactor:NormFactor:Luminosity:SFlepton:SFbtag:SFPU:GenWeight");
+//        string Ntupjetname = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenJets_" + dataSetName + postfix + ".root";
+//        TFile * tupjetfile = new TFile(Ntupjetname.c_str(),"RECREATE");
+//        TNtuple * tupjet   = new TNtuple(Ntuptitle.c_str(),Ntuptitle.c_str(), "jetpT:csvDisc:jeteta:jetphi:jetLeptDR:ScaleFactor:NormFactor:Luminosity:SFlepton:SFbtag:SFPU:GenWeight");
         
 //        string NtupZname   = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/CraneenZ_" + dataSetName + postfix + ".root";
 //        TFile * tupZfile   = new TFile(NtupZname.c_str(),"RECREATE");
@@ -913,9 +913,12 @@ int main (int argc, char *argv[])
             }
             else{
                 // lumiWeight = LumiWeights.ITweight( vertex.size() ); 
-                lumiWeight = LumiWeights.ITweight( (int)event->nTruePU());
-                lumiWeight_up = LumiWeights_up.ITweight( (int)event->nTruePU()); 
-                lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
+//                lumiWeight = LumiWeights.ITweight( (int)event->nTruePU());
+//                lumiWeight_up = LumiWeights_up.ITweight( (int)event->nTruePU()); 
+//                lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
+                lumiWeight = 1.;
+                lumiWeight_up = 1.; 
+                lumiWeight_down = 1.; 
  
                 
             }
@@ -1312,23 +1315,23 @@ int main (int argc, char *argv[])
             ////////////////////////////////////////////
             //    Jet variables + jet craneen         //
             ////////////////////////////////////////////
-            tupjetfile->cd();
-            for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
-            {
-                float jeteta = selectedJets[seljet1]->Eta();
-                float jetphi = selectedJets[seljet1]->Phi();
-                float csvDisc = selectedJets[seljet1]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
-                float jetpT = selectedJets[seljet1]->Pt();
-                float jetLepDR = 0;
-                if (Muon){
-                    jetLepDR = selectedJets[seljet1]->DeltaR(*selectedMuons[0]);
-                }
-                else if (Electron){
-                    jetLepDR = selectedJets[seljet1]->DeltaR(*selectedElectrons[0]);
-                }
-                float jetvals[12] = {jetpT,csvDisc,jeteta,jetphi,jetLepDR,scaleFactor,normfactor,Luminosity, fleptonSF, btagWeight, lumiWeight, weight_0};//SFlepton:SFbtag:SFPU:GenWeight
-                tupjet->Fill(jetvals);
-            }
+//            tupjetfile->cd();
+//            for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
+//            {
+//                float jeteta = selectedJets[seljet1]->Eta();
+//                float jetphi = selectedJets[seljet1]->Phi();
+//                float csvDisc = selectedJets[seljet1]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+//                float jetpT = selectedJets[seljet1]->Pt();
+//                float jetLepDR = 0;
+//                if (Muon){
+//                    jetLepDR = selectedJets[seljet1]->DeltaR(*selectedMuons[0]);
+//                }
+//                else if (Electron){
+//                    jetLepDR = selectedJets[seljet1]->DeltaR(*selectedElectrons[0]);
+//                }
+//                float jetvals[12] = {jetpT,csvDisc,jeteta,jetphi,jetLepDR,scaleFactor,normfactor,Luminosity, fleptonSF, btagWeight, lumiWeight, weight_0};//SFlepton:SFbtag:SFPU:GenWeight
+//                tupjet->Fill(jetvals);
+//            }
 
 
             ////////////////////////////////////////////
@@ -1389,9 +1392,9 @@ int main (int argc, char *argv[])
         // jettup->Write();
 //        tupCutfile->Close();
 
-        tupjetfile->cd();
-        tupjet->Write();
-        tupjetfile->Close();
+//        tupjetfile->cd();
+//        tupjet->Write();
+//        tupjetfile->Close();
 
 //        tupZfile->cd();
 //        tupZ->Write();
