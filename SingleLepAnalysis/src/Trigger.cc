@@ -20,15 +20,18 @@ Trigger::~Trigger(){
 }
 
 void Trigger::bookTriggers(){
-	if(muon){
-	    triggerListData.push_back("HLT_Iso(Tk)Mu24_v*");
-
-	    triggerListMC.push_back("HLT_Iso(Tk)Mu24_v2");
-	}
+    if(muon){
+        
+//        triggerListData.push_back("HLT_IsoMu24_v*");
+//        triggerListMC.push_back("HLT_IsoMu24_v2");
+        triggerListData.push_back("HLT_IsoTkMu24_v*");
+        triggerListMC.push_back("HLT_IsoTkMu24_v2");
+//        triggerListData.push_back("HLT_Iso(Tk)Mu22_v*");
+//        triggerListMC.push_back("HLT_Iso(Tk)Mu22_v3");
+    }
 
     if (electron){
 	    triggerListData.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v*");    	
-
 	    triggerListMC.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v3");
     }
 
@@ -36,7 +39,7 @@ void Trigger::bookTriggers(){
         triggermapMC[triggerListMC[itrig]]=std::pair<int,bool>(-999,false);
     }
 
-        for(UInt_t itrig=0; itrig<triggerListData.size(); itrig++){
+    for(UInt_t itrig=0; itrig<triggerListData.size(); itrig++){
         triggermapData[triggerListData[itrig]]=std::pair<int,bool>(-999,false);
     }
  
