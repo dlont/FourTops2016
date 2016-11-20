@@ -8,6 +8,8 @@ set(CMAKE_CXX_COMPILER "g++")
 message( "CMAKE_C_FLAGS: ${CMAKE_CXX_FLAGS}" )
 message( "CMAKE_LD_FLAGS: ${CMAKE_LD_FLAGS}" )
 
+add_definitions(-DNOTRIGMC)
+
 # include TopBrussels header search path
 include_directories(${TopBrussels_SOURCE_DIR})
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016)

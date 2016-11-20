@@ -1,8 +1,8 @@
 #include "../interface/Trigger.h"
 
 Trigger::Trigger(bool isMuon, bool isElectron):
-muon(false), electron(false), trigged(false), redotrigmap(false), triggerListDataC(), triggerListDataD(), triggerListMC(), triggerList(), currentRun(0), previousRun(-1), currentFilename(""),
- previousFilename(""), iFile(-1), triggermapDataC(), triggermapDataD(), triggermapMC(), triggermap(), runInfos2(new TRootRun()), previousDatasetName("")
+muon(false), electron(false), trigged(false), redotrigmap(false), triggerListData(), triggerListMC(), triggerList(), currentRun(0), previousRun(-1), currentFilename(""),
+ previousFilename(""), iFile(-1), triggermapData(), triggermapMC(), triggermap(), runInfos2(new TRootRun()), previousDatasetName("")
 {
 	if(isMuon){
 		muon = true;
@@ -21,31 +21,23 @@ Trigger::~Trigger(){
 
 void Trigger::bookTriggers(){
 	if(muon){
-	    triggerListDataC.push_back("HLT_IsoTkMu20_v*");
-   	    triggerListDataD.push_back("HLT_IsoMu20_v*");
+	    triggerListData.push_back("HLT_Iso(Tk)Mu24_v*");
 
-	    triggerListMC.push_back("HLT_IsoTkMu20_v*");
-   	    triggerListMC.push_back("HLT_IsoMu20_v*");
+	    triggerListMC.push_back("HLT_Iso(Tk)Mu24_v2");
 	}
 
     if (electron){
-	    triggerListDataC.push_back("HLT_Ele23_WPLoose_Gsf_v*");    	
+	    triggerListData.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v*");    	
 
-	    triggerListDataD.push_back("HLT_Ele23_WPLoose_Gsf_v*"); 
-
-	    triggerListMC.push_back("HLT_Ele27_eta2p1_WP75_Gsf_v*");
+	    triggerListMC.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v3");
     }
 
     for(UInt_t itrig=0; itrig<triggerListMC.size(); itrig++){
         triggermapMC[triggerListMC[itrig]]=std::pair<int,bool>(-999,false);
     }
 
-        for(UInt_t itrig=0; itrig<triggerListDataC.size(); itrig++){
-        triggermapDataC[triggerListDataC[itrig]]=std::pair<int,bool>(-999,false);
-    }
-
-    for(UInt_t itrig=0; itrig<triggerListDataD.size(); itrig++){
-        triggermapDataD[triggerListDataD[itrig]]=std::pair<int,bool>(-999,false);
+        for(UInt_t itrig=0; itrig<triggerListData.size(); itrig++){
+        triggermapData[triggerListData[itrig]]=std::pair<int,bool>(-999,false);
     }
  
 }
@@ -69,7 +61,7 @@ void Trigger::checkAvail(int currentRun, vector < Dataset* > datasets, unsigned 
 
 	// get trigger info:
 	string datasetName = datasets[d]->Name();
-	if(datasetName.find("Data")==string::npos){
+	if(datasetName.find("Data")==string::npos){ // if MC
 	
 		for(std::map<std::string,std::pair<int,bool> >::iterator iter = triggermapMC.begin(); iter != triggermapMC.end(); iter++){
 		    if(redotrigmap){
@@ -83,10 +75,15 @@ void Trigger::checkAvail(int currentRun, vector < Dataset* > datasets, unsigned 
 		        iter->second.second=event->trigHLT(iter->second.first);
 		    else
 		        iter->second.second=false;
+#ifdef NOTRIGMC
+#warning "WARNING: Code for MC without triggers switched on!!!"
+                    if (iter->second.first >= 0 && iter->second.first == 9999) // For MC samples without triggers
+                         iter->second.second = true;                            // Force trigger to be fired 
+#endif
 		}  
 	}
-	else if(currentRun>253658 && currentRun<256465){
-		for(std::map<std::string,std::pair<int,bool> >::iterator iter = triggermapDataC.begin(); iter != triggermapDataC.end(); iter++){
+	else { // if DATA
+		for(std::map<std::string,std::pair<int,bool> >::iterator iter = triggermapData.begin(); iter != triggermapData.end(); iter++){
 		    if(redotrigmap){
 		        Int_t loc = treeLoader->iTrigger(iter->first, currentRun, iFile);
 		        string trigname = iter->first;
@@ -98,22 +95,12 @@ void Trigger::checkAvail(int currentRun, vector < Dataset* > datasets, unsigned 
 		        iter->second.second=event->trigHLT(iter->second.first);
 		    else
 		        iter->second.second=false;
+#ifdef NOTRIGMC
+#warning "WARNING: Code for MC without triggers switched on!!!"
+                    if (iter->second.first >= 0 && iter->second.first == 9999) // For MC samples without triggers
+                         iter->second.second = true;                            // Force trigger to be fired 
+#endif
 		}  		
-	}
-	else if(currentRun>256629){
-		for(std::map<std::string,std::pair<int,bool> >::iterator iter = triggermapDataD.begin(); iter != triggermapDataD.end(); iter++){
-		    if(redotrigmap){
-		        Int_t loc = treeLoader->iTrigger(iter->first, currentRun, iFile);
-		        string trigname = iter->first;
-		        cout<<"trigname: "<<trigname<<"  location: "<<loc<<endl;
-		        iter->second.first=loc;
-		    }
-		    // and check if it exists and if it fired:
-		    if(iter->second.first>=0 && iter->second.first!=9999) // trigger exists
-		        iter->second.second=event->trigHLT(iter->second.first);
-		    else
-		        iter->second.second=false;
-		}  	
 	}
 
 }
@@ -124,27 +111,19 @@ int Trigger::checkIfFired(int currentRun, vector < Dataset* > datasets, unsigned
 	trigged =0;
 	string datasetName = datasets[d]->Name();
 
-	if(datasetName.find("Data")==string::npos){
+	if(datasetName.find("Data")==string::npos){ // if MC
 		for(UInt_t itrig=0; itrig<triggerListMC.size() && trigged==0; itrig++){
 			// cout<<"fired: "<<triggermapMC[triggerListMC[itrig]].second<<endl;
 		    if(triggermapMC[triggerListMC[itrig]].second)   trigged=1;
 		}
 	}
-	else if(currentRun>253658 && currentRun<256465){
-		for(UInt_t itrig=0; itrig<triggerListDataC.size() && trigged==0; itrig++){
+	else { // if DATA
+		for(UInt_t itrig=0; itrig<triggerListData.size() && trigged==0; itrig++){
 			// cout<<"fired: "<<triggermapDataC[triggerListDataC[itrig]].second<<endl;
-		    if(triggermapDataC[triggerListDataC[itrig]].second)   trigged=1;
+		    if(triggermapData[triggerListData[itrig]].second)   trigged=1;
 		}		
 	}
-	else if(currentRun>256629){
-		for(UInt_t itrig=0; itrig<triggerListDataD.size() && trigged==0; itrig++){
-			// cout<<"fired: "<<triggermapDataD[triggerListDataD[itrig]].second<<endl;
-		    if(triggermapDataD[triggerListDataD[itrig]].second)   trigged=1;
-		}		
-	}
-	else{
-		cout<<"currentRun::: "<<currentRun<<endl;
-	}
+
 	return trigged;
 }
 

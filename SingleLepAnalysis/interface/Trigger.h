@@ -40,8 +40,7 @@ class Trigger{
 		bool electron;
 		bool trigged;
 		bool redotrigmap;
-	    std::vector<std::string> triggerListDataC;
-	    std::vector<std::string> triggerListDataD;
+	    std::vector<std::string> triggerListData;
 	    std::vector<std::string> triggerListMC;
 	    std::vector<std::string> triggerList; //for all data MC
 
@@ -50,8 +49,7 @@ class Trigger{
 		string currentFilename;
 		string previousFilename;
 		int iFile;
-	    std::map<std::string,std::pair<int,bool> > triggermapDataC;
-	    std::map<std::string,std::pair<int,bool> > triggermapDataD;
+	    std::map<std::string,std::pair<int,bool> > triggermapData;
 	    std::map<std::string,std::pair<int,bool> > triggermapMC;
 	    std::map<std::string,std::pair<int,bool> > triggermap; //for all data MC
  
