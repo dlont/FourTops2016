@@ -1051,8 +1051,8 @@ int main (int argc, char *argv[])
             //        Gen weights          //
             /////////////////////////////////
 
-            float weight_0 = 1; //nominal
-            float weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
+            double weight_0 = 1; //nominal
+            double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
 
             if(dataSetName.find("Data")==string::npos){
                 if(event->getWeight(1)!= -9999){
