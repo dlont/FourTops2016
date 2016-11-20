@@ -95,7 +95,7 @@ make plots
 # Son 20 Nov 2016 19:41:16 CET
 Run with updated Muon trigger (80X) (tag v0.0.1) 
 
-Merge output
+## Merge output
 
 ```
 source ../../tools/mergeCran4comparison.sh ../Craneens_Mu/Craneens20_11_2016/ ../../tools/listCran
@@ -105,15 +105,15 @@ Normalisation factors calculated above were incorect because decimal point was i
 330572000000.9128594787 should be  330572912859.4787
 Below is proper calculation
 
-Data lumi
+**Data lumi**
 SingleMuon B+C+D+E+F+G+H
 35044350020.364 (mb-1)
 SingleElectron B+C+D+E+F+G+H
 34045653292.636 (mb-1)
 
-Normalisation factors
+**Normalisation factors MC**
 
-repro_v3
+__repro_v3__
 TT (35044350020.364/330572912859.4787=0.10601095448876295)
 TTTT (35044350020.364/107502717391304.34=0.00032598571339182407)
 
