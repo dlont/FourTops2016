@@ -70,10 +70,14 @@ TT scale (831.76 pb)
 
 
 ## Normalisation factors
-repro_v3
+___repro_v3___
+
 TT (35044350020.364/330572000000.9128594787=0.01525945942)
-repro_0
+
+___repro_0___
+
 TT (32088394020.739/330572000000.9128594787=0.09706930417775973)
+
 TTTT (32088394020.739/107502717391304.34=0.0002984891433389437)
 
 Control plots with correct normalisation and labels (except for TTTT)
@@ -117,7 +121,13 @@ SingleElectron B+C+D+E+F+G+H
 **Normalisation factors MC**
 
 __repro_v3__
+
 TT (35044350020.364/330572912859.4787=0.10601095448876295)
+
 TTTT (35044350020.364/107502717391304.34=0.00032598571339182407)
 
+## Summing numbers in column using AWK
 
+```
+grep preTrig submit_TTJets_powheg_*.o*|awk '{print $2}'|awk '{sum += $1} END {print sum}'
+```
