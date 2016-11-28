@@ -131,3 +131,19 @@ TTTT (35044350020.364/107502717391304.34=0.00032598571339182407)
 ```
 grep preTrig submit_TTJets_powheg_*.o*|awk '{print $2}'|awk '{sum += $1} END {print sum}'
 ```
+
+
+Mon 28 Nov 2016 19:35:39 CET
+
+For debugging with valgrind
+
+```
+GLOG_log_dir="." valgrind --tool=memcheck --show-possibly-lost=no --suppressions=$ROOTSYS/etc/valgrind-root.supp --leak-check=full --log-file=log ./FourTops  TTJets_powheg t\bar{t}+jets_powheg 1 633 0 2 1 330572.9128594787 831.76 0.0 -input_files="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v1/TTP-CMSSW_80X_v1--GT-80X_mcRun2_asymptotic_2016_miniAODv2_v1/TT_TuneCUETP8M1_13TeV-powheg-pythia8/crab_8M113TeVpowhegpythia8RunIISpring16MiniAODv2PUSpring1680XmcRun2asymptotic2016miniAODv2v0ext4v1crab28/161028_095239/0001/TOPTREE_1000.root"   -fourtops_channel="Mu2016"
+```
+
+commit: d80cbac5bc4af23af616667e5c4866a848ae137a
+This fixes should remove stale file problem when mutliple files produce same output Craneens
+
+
+Mon 28 Nov 2016 21:27:18 CET
+Launching with tag v0.0.2
