@@ -127,7 +127,6 @@ for chan in channels:
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
                 print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan) 
-                
             N_job = 0
             N_file = 1
             remainder= len(topTrees)%FilePerJob
@@ -181,7 +180,8 @@ for chan in channels:
 
                     # run on the files
                     print >> outfile, "# now run on the file copied under /$TMPDIR/ "
-                    print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan)
+                    print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan), \
+		    				     '--jobid="{}"'.format('$PBS_JOBID')
                     # , " " , str(N_job+1) , " 0" , " 2000000" 
 
                     # cleaning
