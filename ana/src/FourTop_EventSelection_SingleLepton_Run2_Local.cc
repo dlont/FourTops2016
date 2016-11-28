@@ -106,35 +106,28 @@ int main (int argc, char *argv[])
     
     
     //Placing arguments in properly typed variables for Dataset creation
-    const string dName              = FLAGS_dataset_name;
-    const string dTitle             = FLAGS_dataset_title;
-    const int color                 = FLAGS_dataset_color;
-    const int ls                    = FLAGS_dataset_linestyle;
-    const int lw                    = FLAGS_dataset_linewidth;
-    const double normf              = FLAGS_dataset_norm_factor;
-    const double EqLumi             = FLAGS_dataset_eq_lumi;
-    const double xSect              = FLAGS_dataset_cross_section;
-    const double PreselEff          = FLAGS_dataset_preselection_eff;
-    const string inputChannel       = FLAGS_fourtops_channel;
-    const int startEvent            = batch ? 0 : 0;
-    const int endEvent              = batch ? -1 : -1;
+    const std::string jobid             = FLAGS_jobid;
+    const std::string dName             = FLAGS_dataset_name;
+    const std::string dTitle            = FLAGS_dataset_title;
+    const int color                     = FLAGS_dataset_color;
+    const int ls                        = FLAGS_dataset_linestyle;
+    const int lw                        = FLAGS_dataset_linewidth;
+    const double normf                  = FLAGS_dataset_norm_factor;
+    const double EqLumi                 = FLAGS_dataset_eq_lumi;
+    const double xSect                  = FLAGS_dataset_cross_section;
+    const double PreselEff              = FLAGS_dataset_preselection_eff;
+    const std::string inputChannel      = FLAGS_fourtops_channel;
+    const int startEvent                = batch ? 0 : 0;
+    const int endEvent                  = batch ? -1 : -1;
 
-    vector<string> vecfileNames;
+    std::vector<std::string> vecfileNames;
     boost::char_separator<char> sep(",");
     boost::tokenizer<boost::char_separator<char>> tokens(FLAGS_input_files, sep);
     for (const auto& t : tokens) {
         vecfileNames.push_back(t);
     }
     
-//    int lenOfFileName = fileName.length();
-//    char numberOfRootFile = fileName.at(lenOfFileName-6); //to find number of root file before .root
-//    char numberOfRootFile1 = fileName.at(lenOfFileName-7); //to find number of root file before .root
-//    char numberOfRootFile2 = fileName.at(lenOfFileName-8); //to find number of root file before .root
-    char numberOfRootFile = 'X'; //to find number of root file before .root
-    char numberOfRootFile1 = 'Y'; //to find number of root file before .root
-    char numberOfRootFile2 = 'Z'; //to find number of root file before .root
-
-    cout<<"!! number of root file"<<numberOfRootFile<<endl;
+    cout<<"!! number of root file: "<<jobid<<endl;
 
 
     cout<<"argc: "<<argc<<endl;
@@ -174,7 +167,7 @@ int main (int argc, char *argv[])
     string channelpostfix = "";
     string postfix = "_Run2_TopTree_Study"; // to relabel the names of the output file
     
-    postfix = postfix + "_" + numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile;
+    postfix = postfix + "_" + jobid;
     clock_t start = clock();
 
     cout << "*************************************************************" << endl;
@@ -294,14 +287,14 @@ int main (int argc, char *argv[])
 
         if(fillingbTagHistos) {
             if (Muon) {
-                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_Mu.root",false,30,500,2.4);
-                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_Mu_Up.root",false,30,500,2.4);
-                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_Mu_Down.root",false,30,500,2.4);
+                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ jobid+"_Mu.root",false,30,500,2.4);
+                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ jobid+"_Mu_Up.root",false,30,500,2.4);
+                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ jobid+"_Mu_Down.root",false,30,500,2.4);
             }
             else if (Electron) {
-                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_El.root",false,30,500,2.4);
-                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_El_Up.root",false,30,500,2.4);
-                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+"_El_Down.root",false,30,500,2.4);
+                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ jobid+"_El.root",false,30,500,2.4);
+                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ jobid+"_El_Up.root",false,30,500,2.4);
+                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ jobid+"_El_Down.root",false,30,500,2.4);
             }
         }    
         else {
@@ -517,7 +510,7 @@ int main (int argc, char *argv[])
         }    
 
 //        ofstream MLoutput;
-//        MLoutput.open(("MLvariables"+dataSetName+ numberOfRootFile2 + numberOfRootFile1 + numberOfRootFile+".csv").c_str());
+//        MLoutput.open(("MLvariables"+dataSetName+ jobid+".csv").c_str());
 
         if(dataSetName.find("bx50") != std::string::npos) bx25 = false;
         else bx25 = true;
@@ -617,9 +610,9 @@ int main (int argc, char *argv[])
         ///////////////////////////////////////////////////////////
 
         // int start = 0;
-        unsigned long long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
-        unsigned long long event_start = startEvent; //set start of for loop to input startEvent
-        unsigned long long end_d = ending; //initialise end of for loop to end of dataset
+        unsigned long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
+        unsigned long event_start = startEvent; //set start of for loop to input startEvent
+        unsigned long end_d = ending; //initialise end of for loop to end of dataset
 
         if(endEvent <ending && endEvent>0 ) end_d = endEvent; // if the input endEvent is less than total events in dataset (and greater than 0), set max of for loop to endEvent
         
@@ -630,7 +623,7 @@ int main (int argc, char *argv[])
         //                                 Loop on events                             //
         ////////////////////////////////////////////////////////////////////////////////
 
-        for (unsigned long long ievt = event_start; ievt < end_d; ievt++)
+        for (unsigned long ievt = event_start; ievt < end_d; ievt++)
         {
             if(debug) cout<<"START OF EVENT LOOP"<<endl;
             BDTScore= -99999.0, MHT = 0., MHTSig = 0.,leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
@@ -638,7 +631,7 @@ int main (int argc, char *argv[])
             HTH=0.,HTXHX=0., sumpx_X = 0., sumpy_X= 0., sumpz_X =0., sume_X= 0. , sumpx =0., sumpy=0., sumpz=0., sume=0., jetpt =0.;
             PTBalTopEventX = 0., PTBalTopSumJetX =0.;
 
-            unsigned long long ievt_d = ievt;
+            unsigned long ievt_d = ievt;
 
             if(ievt%1000 == 0)
             {
