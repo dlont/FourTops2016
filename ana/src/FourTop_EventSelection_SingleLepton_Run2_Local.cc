@@ -107,18 +107,17 @@ int main (int argc, char *argv[])
     
     //Placing arguments in properly typed variables for Dataset creation
     const string dName              = FLAGS_dataset_name;
-    const string dTitle             = argv[2];
-    const int color                 = strtol(argv[4], nullptr, 10);
-    const int ls                    = strtol(argv[5], nullptr, 10);
-    const int lw                    = strtol(argv[6], nullptr, 10);
-    const float normf               = strtod(argv[7], nullptr);
-    const float EqLumi              = strtod(argv[8], nullptr);
-    const float xSect               = strtod(argv[9], nullptr);
-    const float PreselEff           = strtod(argv[10], nullptr);
-//    string fileName                 = argv[11];    
-    const int startEvent            = batch ? 0 : strtol(argv[argc-2], nullptr, 10);
-    const int endEvent              = batch ? -1 : strtol(argv[argc-1], nullptr, 10);
-    string inputChannel;
+    const string dTitle             = FLAGS_dataset_title;
+    const int color                 = FLAGS_dataset_color;
+    const int ls                    = FLAGS_dataset_linestyle;
+    const int lw                    = FLAGS_dataset_linewidth;
+    const double normf              = FLAGS_dataset_norm_factor;
+    const double EqLumi             = FLAGS_dataset_eq_lumi;
+    const double xSect              = FLAGS_dataset_cross_section;
+    const double PreselEff          = FLAGS_dataset_preselection_eff;
+    const string inputChannel       = FLAGS_fourtops_channel;
+    const int startEvent            = batch ? 0 : 0;
+    const int endEvent              = batch ? -1 : -1;
 
     vector<string> vecfileNames;
     boost::char_separator<char> sep(",");
@@ -143,28 +142,6 @@ int main (int argc, char *argv[])
         {
             cout<<args<<"  : "<<argv[args]<<endl;
         }
-
-    if (batch){
-        //Checking Passed Arguments to ensure proper execution of MACRO
-        inputChannel       = argv[argc-1];
-        cout<<"Input channel: "<<inputChannel<<endl;
-
-
-        if(argc < 12)
-        {
-            std::cerr << "INVALID INPUT FROM XMLFILE.  CHECK XML IMPUT FROM SCRIPT.  " << argc << " ARGUMENTS HAVE BEEN PASSED." << std::endl;
-            return 1;
-        }  
-    }
-    else{  //ie. running locally 
-
-        //Checking Passed Arguments to ensure proper execution of MACRO
-        if(argc < 14)
-        {
-            std::cerr << "INVALID INPUT FROM XMLFILE.  CHECK XML IMPUT FROM SCRIPT.  " << argc << " ARGUMENTS HAVE BEEN PASSED." << std::endl;
-            return 1;
-        }
-    }
 
     cout << "---Dataset accepted from command line---" << endl;
     cout << "Dataset Name: " << dName << endl;

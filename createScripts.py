@@ -82,7 +82,7 @@ for chan in channels:
     listOfTmpDirFiles = []
     CopyCmdlistOfFiles = []
     files_str=""
-    scractFiles_str=""
+    scractFiles_str=''
     tmpdirFiles_str=""
     FilePerJob=0 # add dccap...
     addPrefix=True
@@ -95,7 +95,16 @@ for chan in channels:
             if "Dilep" in chan:
                 commandString = "./MACRO "+str(d.attrib['name'])+" "+str(d.attrib['title'])+" "+str(d.attrib['add'])+" "+str(d.attrib['color'])+" "+str(d.attrib['ls'])+" "+str(d.attrib['lw'])+" "+str(d.attrib['normf'])+" "+str(d.attrib['EqLumi'])+" "+str(d.attrib['xsection'])+" "+str(d.attrib['PreselEff'])
             else:
-                commandString = "./FourTops "+str(d.attrib['name'])+" "+str(d.attrib['title'])+" "+str(d.attrib['add'])+" "+str(d.attrib['color'])+" "+str(d.attrib['ls'])+" "+str(d.attrib['lw'])+" "+str(d.attrib['normf'])+" "+str(d.attrib['EqLumi'])+" "+str(d.attrib['xsection'])+" "+str(d.attrib['PreselEff'])
+                commandString = './FourTops'\
+		+' --dataset_name="{}"'.format(str(d.attrib['name'])) \
+		+' --dataset_title="{}"'.format(str(d.attrib['title']))\
+		+' --dataset_color={}'.format(str(d.attrib['color']))\
+		+' --dataset_linestyle={}'.format(str(d.attrib['ls']))\
+		+' --dataset_linewidth={}'.format(str(d.attrib['lw']))\
+		+' --dataset_norm_factor={}'.format(str(d.attrib['normf']))\
+		+' --dataset_eq_lumi={}'.format(str(d.attrib['EqLumi']))\
+		+' --dataset_cross_section={}'.format(str(d.attrib['xsection']))\
+		+' --dataset_preselection_eff={}'.format(str(d.attrib['PreselEff']))
             topTrees = glob.glob(d.attrib['filenames'])
 
 	    #print topTrees
@@ -103,7 +112,7 @@ for chan in channels:
             # setting the number of file per job depending whether it is data sample or not
             # this ca be tweaked
             if "Data" in str(d.attrib['name']):
-                FilePerJob=40
+                FilePerJob=5
             elif "tttt" in str(d.attrib['name']):
                 FilePerJob=1
             else:
@@ -117,7 +126,7 @@ for chan in channels:
             # append to the file the actual command 
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
-                print >> outfileTest, commandString, "dcap://maite.iihe.ac.be"+topTrees[0], " ", chan 
+                print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan) 
                 
             N_job = 0
             N_file = 1
@@ -158,9 +167,9 @@ for chan in channels:
                         if (addPrefix == True):
                             listOfFiles[fpj]="dcap://maite.iihe.ac.be"+listOfFiles[fpj]
                         # string contain the list of files separated by a space
-                        files_str=files_str+ " " + listOfFiles[fpj]
-                        scractFiles_str=scractFiles_str+ " " + listOfScratchFiles[fpj]
-                        tmpdirFiles_str=tmpdirFiles_str+ " " + listOfTmpDirFiles [fpj]
+                        files_str=files_str+ "," + listOfFiles[fpj]
+                        scractFiles_str=scractFiles_str+ "," + listOfScratchFiles[fpj]
+                        tmpdirFiles_str=tmpdirFiles_str+ "," + listOfTmpDirFiles [fpj]
                         N_processed=N_processed+1
                         # copy all the file
                         print >> outfile , CopyCmdlistOfFiles[fpj]
@@ -172,7 +181,7 @@ for chan in channels:
 
                     # run on the files
                     print >> outfile, "# now run on the file copied under /$TMPDIR/ "
-                    print >> outfile, commandString, scractFiles_str , " ", chan
+                    print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan)
                     # , " " , str(N_job+1) , " 0" , " 2000000" 
 
                     # cleaning
