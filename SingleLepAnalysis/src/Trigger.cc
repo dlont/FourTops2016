@@ -24,10 +24,12 @@ void Trigger::bookTriggers(){
         
 //        triggerListData.push_back("HLT_IsoMu24_v*");
 //        triggerListMC.push_back("HLT_IsoMu24_v2");
-        triggerListData.push_back("HLT_IsoTkMu24_v*");
-        triggerListMC.push_back("HLT_IsoTkMu24_v2");
+//        triggerListData.push_back("HLT_IsoTkMu24_v*");
+//        triggerListMC.push_back("HLT_IsoTkMu24_v2");
 //        triggerListData.push_back("HLT_Iso(Tk)Mu22_v*");
 //        triggerListMC.push_back("HLT_Iso(Tk)Mu22_v3");
+        triggerListData.push_back("HLT_IsoTkMu22_v*");
+        triggerListMC.push_back("HLT_IsoTkMu22_v2");
     }
 
     if (electron){
@@ -121,7 +123,7 @@ int Trigger::checkIfFired(int currentRun, vector < Dataset* > datasets, unsigned
 		}
 	}
 	else { // if DATA
-		for(UInt_t itrig=0; itrig<triggerListData.size() && trigged==0; itrig++){
+		for(UInt_t itrig=0; itrig<triggerListData.size() && trigged==false; itrig++){
 			// cout<<"fired: "<<triggermapDataC[triggerListDataC[itrig]].second<<endl;
 		    if(triggermapData[triggerListData[itrig]].second)   trigged=1;
 		}		
