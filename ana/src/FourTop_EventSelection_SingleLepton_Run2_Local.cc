@@ -74,6 +74,8 @@
 #include "TopTreeAnalysisBase/../FourTops/SingleLepAnalysis/interface/Zpeak.h"
 #include "TopTreeAnalysisBase/../FourTops/SingleLepAnalysis/interface/Trigger.h"
 
+#include <boost/tokenizer.hpp>
+
 #include "MakeDirectory.h"
 #include "FourTopFlags.h"
 
@@ -99,12 +101,12 @@ struct HighestCVSBtag
 int main (int argc, char *argv[])
 {
     
+    gflags::ParseCommandLineFlags(&argc, &argv, false);
     google::InitGoogleLogging(argv[0]);
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
     
     
     //Placing arguments in properly typed variables for Dataset creation
-    const string dName              = argv[1];
+    const string dName              = FLAGS_dataset_name;
     const string dTitle             = argv[2];
     const int color                 = strtol(argv[4], nullptr, 10);
     const int ls                    = strtol(argv[5], nullptr, 10);
@@ -113,20 +115,29 @@ int main (int argc, char *argv[])
     const float EqLumi              = strtod(argv[8], nullptr);
     const float xSect               = strtod(argv[9], nullptr);
     const float PreselEff           = strtod(argv[10], nullptr);
-    string fileName                 = argv[11];    
+//    string fileName                 = argv[11];    
     const int startEvent            = batch ? 0 : strtol(argv[argc-2], nullptr, 10);
     const int endEvent              = batch ? -1 : strtol(argv[argc-1], nullptr, 10);
     string inputChannel;
 
-    int lenOfFileName = fileName.length();
-    char numberOfRootFile = fileName.at(lenOfFileName-6); //to find number of root file before .root
-    char numberOfRootFile1 = fileName.at(lenOfFileName-7); //to find number of root file before .root
-    char numberOfRootFile2 = fileName.at(lenOfFileName-8); //to find number of root file before .root
+    vector<string> vecfileNames;
+    boost::char_separator<char> sep(",");
+    boost::tokenizer<boost::char_separator<char>> tokens(FLAGS_input_files, sep);
+    for (const auto& t : tokens) {
+        vecfileNames.push_back(t);
+    }
+    
+//    int lenOfFileName = fileName.length();
+//    char numberOfRootFile = fileName.at(lenOfFileName-6); //to find number of root file before .root
+//    char numberOfRootFile1 = fileName.at(lenOfFileName-7); //to find number of root file before .root
+//    char numberOfRootFile2 = fileName.at(lenOfFileName-8); //to find number of root file before .root
+    char numberOfRootFile = 'X'; //to find number of root file before .root
+    char numberOfRootFile1 = 'Y'; //to find number of root file before .root
+    char numberOfRootFile2 = 'Z'; //to find number of root file before .root
 
     cout<<"!! number of root file"<<numberOfRootFile<<endl;
 
 
-    vector<string> vecfileNames;
     cout<<"argc: "<<argc<<endl;
         for(int args = 0; args < argc; args++)
         {
@@ -143,12 +154,7 @@ int main (int argc, char *argv[])
         {
             std::cerr << "INVALID INPUT FROM XMLFILE.  CHECK XML IMPUT FROM SCRIPT.  " << argc << " ARGUMENTS HAVE BEEN PASSED." << std::endl;
             return 1;
-        }
-
-        for(int args = 11; args < argc-1; args++) 
-        {
-            vecfileNames.push_back(argv[args]);
-        }        
+        }  
     }
     else{  //ie. running locally 
 
@@ -157,11 +163,6 @@ int main (int argc, char *argv[])
         {
             std::cerr << "INVALID INPUT FROM XMLFILE.  CHECK XML IMPUT FROM SCRIPT.  " << argc << " ARGUMENTS HAVE BEEN PASSED." << std::endl;
             return 1;
-        }
-
-        for(int args = 11; args < argc-2; args++)
-        {
-            vecfileNames.push_back(argv[args]);
         }
     }
 
