@@ -14,5 +14,5 @@ DEFINE_double(dataset_cross_section,1.,"Dataset cross section");              //
 DEFINE_double(dataset_preselection_eff,1.,"Dataset preselection efficiency");   //Default 1.
 DEFINE_string(fourtops_channel, "NONE", "Decay channel identifier");            
 DEFINE_string(input_files, "", "List of input ROOT files to run over");            
-
+DEFINE_string(jobid,"XYZ","Job id signature");                                  //Default "XYZ"
 #endif //FOURTOPFLAGS_H
