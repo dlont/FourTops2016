@@ -75,6 +75,9 @@
 #include "TopTreeAnalysisBase/../FourTops/SingleLepAnalysis/interface/Trigger.h"
 
 #include "MakeDirectory.h"
+#include "FourTopFlags.h"
+
+#include <gflags/gflags.h>
 
 using namespace std;
 using namespace TopTree;
@@ -97,6 +100,8 @@ int main (int argc, char *argv[])
 {
     
     google::InitGoogleLogging(argv[0]);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    
     
     //Placing arguments in properly typed variables for Dataset creation
     const string dName              = argv[1];
@@ -635,8 +640,8 @@ int main (int argc, char *argv[])
 
         // int start = 0;
         unsigned long long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
-        int event_start = startEvent; //set start of for loop to input startEvent
-        double end_d = ending; //initialise end of for loop to end of dataset
+        unsigned long long event_start = startEvent; //set start of for loop to input startEvent
+        unsigned long long end_d = ending; //initialise end of for loop to end of dataset
 
         if(endEvent <ending && endEvent>0 ) end_d = endEvent; // if the input endEvent is less than total events in dataset (and greater than 0), set max of for loop to endEvent
         
@@ -647,7 +652,7 @@ int main (int argc, char *argv[])
         //                                 Loop on events                             //
         ////////////////////////////////////////////////////////////////////////////////
 
-        for (unsigned int ievt = event_start; ievt < end_d; ievt++)
+        for (unsigned long long ievt = event_start; ievt < end_d; ievt++)
         {
             if(debug) cout<<"START OF EVENT LOOP"<<endl;
             BDTScore= -99999.0, MHT = 0., MHTSig = 0.,leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
@@ -655,7 +660,7 @@ int main (int argc, char *argv[])
             HTH=0.,HTXHX=0., sumpx_X = 0., sumpy_X= 0., sumpz_X =0., sume_X= 0. , sumpx =0., sumpy=0., sumpz=0., sume=0., jetpt =0.;
             PTBalTopEventX = 0., PTBalTopSumJetX =0.;
 
-            double ievt_d = ievt;
+            unsigned long long ievt_d = ievt;
 
             if(ievt%1000 == 0)
             {
@@ -872,7 +877,7 @@ int main (int argc, char *argv[])
             //        Trigger              //
             /////////////////////////////////
             float normfactor = datasets[d]->NormFactor();
-
+//            treeLoader.ListTriggers(currentRun,0);
             // cout<<"!!CHECK AVAIL!!"<<endl;
             trigger->checkAvail(currentRun, datasets, d, &treeLoader, event, treenumber);
             // cout<<"!!CHECK FIRED!!"<<endl;
