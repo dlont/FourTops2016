@@ -8,7 +8,7 @@ then
 	for f in ./submit_$2*.sh
 	do
 	    qsub $f
-	    sleep 0.1
+	    sleep 0.5
 	done
 	cd -
     else
@@ -16,7 +16,7 @@ then
         for f in ../submit_$1*.sh
         do
             qsub $f
-	    sleep 0.1
+	    sleep 0.5
         done
         cd -
     fi
@@ -26,7 +26,7 @@ else
     for f in ../submit*.sh
     do
 	qsub $f
-	sleep 0.1
+	sleep 0.5
     done
     cd -
 
