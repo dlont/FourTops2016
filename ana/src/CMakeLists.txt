@@ -5,6 +5,13 @@ string(STRIP ${CMAKE_LD_FLAGS_TEMP} CMAKE_LD_FLAGS)
 
 set(CMAKE_CXX_COMPILER "g++")
 
+# get git meta information
+configure_file(
+git_meta_info.cmake.in
+git_meta_info.cmake
+)
+
+
 # include TopBrussels SingleLep header search path
 include_directories(${TopBrussels_SOURCE_DIR})				# TopAnalysisBase/interface TopTreeProducer/interface
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/interface)		# SingleLep/interface/
@@ -29,3 +36,4 @@ add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc)
 # link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
 target_link_libraries(FourTops PUBLIC glog gflags FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
 install(TARGETS FourTops DESTINATION ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/)
+add_custom_command(TARGET FourTops PRE_BUILD COMMAND cmake -P git_meta_info.cmake)
