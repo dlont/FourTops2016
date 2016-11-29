@@ -147,3 +147,13 @@ This fixes should remove stale file problem when mutliple files produce same out
 
 Mon 28 Nov 2016 21:27:18 CET
 Launching with tag v0.0.2
+
+It was found that several jobs crashed. These jobs corresponded to leftovers from naive arg parsing times. Crashes should be fix after cleaning submit folder.
+
+Die 29 Nov 2016 01:34:46 CET
+Updated build command
+```
+cd build
+cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug ..
+```
+
