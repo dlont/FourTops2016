@@ -79,6 +79,8 @@
 #include "MakeDirectory.h"
 #include "FourTopFlags.h"
 
+#include "Version.h"
+
 #include <gflags/gflags.h>
 
 using namespace std;
@@ -101,6 +103,7 @@ struct HighestCVSBtag
 int main (int argc, char *argv[])
 {
     
+    gflags::SetVersionString(META_INFO);
     gflags::ParseCommandLineFlags(&argc, &argv, false);
     google::InitGoogleLogging(argv[0]);
     
