@@ -2,7 +2,6 @@
 #define FOURTOPFLAGS_H
 #include <gflags/gflags.h>
 
-//DEFINE_int32(, true, "Include 'advanced' options in the menu listing");
 DEFINE_string(dataset_name, "", "Dataset name");
 DEFINE_string(dataset_title, "", "Dataset title");
 DEFINE_int32(dataset_color,1,"Dataset color code");                             // Default: black
