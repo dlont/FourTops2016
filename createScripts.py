@@ -126,6 +126,7 @@ for chan in channels:
             # append to the file the actual command 
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
+		print >> outfileTest, './FourTops --version '
                 print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan) 
             N_job = 0
             N_file = 1
@@ -180,6 +181,7 @@ for chan in channels:
 
                     # run on the files
                     print >> outfile, "# now run on the file copied under /$TMPDIR/ "
+		    print >> outfile, './FourTops --version '
                     print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan), \
 		    				     '--jobid="{}"'.format('$PBS_JOBID')
                     # , " " , str(N_job+1) , " 0" , " 2000000" 
