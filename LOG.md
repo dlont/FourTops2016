@@ -168,3 +168,6 @@ Updated event numbers for samples from commit 59bfb68
 ['Tbar_tW', 985000L, 27668.539325842696]
 ['WJets', 99514498L, 1617.4381237200532]
 
+The content of output/Craneen*/Craneens30_11_2016 contains the first set of *reference* ntuples produced using 
+FourTops version master - v0.0.3 - 1bacbc7 - 2016-11-29 12:14:24 +0100 - RELEASE
+
