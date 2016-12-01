@@ -133,33 +133,33 @@ grep preTrig submit_TTJets_powheg_*.o*|awk '{print $2}'|awk '{sum += $1} END {pr
 ```
 
 
-Mon 28 Nov 2016 19:35:39 CET
+# Mon 28 Nov 2016 19:35:39 CET
 
-For debugging with valgrind
+**For debugging with valgrind**
 
 ```
 GLOG_log_dir="." valgrind --tool=memcheck --show-possibly-lost=no --suppressions=$ROOTSYS/etc/valgrind-root.supp --leak-check=full --log-file=log ./FourTops  TTJets_powheg t\bar{t}+jets_powheg 1 633 0 2 1 330572.9128594787 831.76 0.0 -input_files="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v1/TTP-CMSSW_80X_v1--GT-80X_mcRun2_asymptotic_2016_miniAODv2_v1/TT_TuneCUETP8M1_13TeV-powheg-pythia8/crab_8M113TeVpowhegpythia8RunIISpring16MiniAODv2PUSpring1680XmcRun2asymptotic2016miniAODv2v0ext4v1crab28/161028_095239/0001/TOPTREE_1000.root"   -fourtops_channel="Mu2016"
 ```
 
 commit: d80cbac5bc4af23af616667e5c4866a848ae137a
-This fixes should remove stale file problem when mutliple files produce same output Craneens
+These fixes should remove stale file problem when mutliple files produce same output Craneens
 
 
-Mon 28 Nov 2016 21:27:18 CET
-Launching with tag v0.0.2
+# Mon 28 Nov 2016 21:27:18 CET
+**Launching with tag v0.0.2**
 
 It was found that several jobs crashed. These jobs corresponded to leftovers from naive arg parsing times. Crashes should be fix after cleaning submit folder.
 
-Die 29 Nov 2016 01:34:46 CET
-Updated build command
+# Die 29 Nov 2016 01:34:46 CET
+**Updated build command**
 ```
 cd build
 cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug ..
 ```
 
 
-Mit 30 Nov 2016 02:07:56 CET
-Updated event numbers for samples from commit 59bfb68
+# Mit 30 Nov 2016 02:07:56 CET
+**Updated event numbers for samples from commit 59bfb68**
 ['ttttNLO', 989025L, 107502717.39130434]
 ['TTJets_powheg_central', 92925926L, 111722.04241608156]
 ['TTScaledown_powheg', 9942427L, 11953.48057131865]
