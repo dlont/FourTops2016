@@ -160,6 +160,9 @@ cd build
 cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug ..
 ```
 
+**Merge root output ntuples**
+`source ../../../tools/mergeCran4comparison.sh . ../../../tools/listCran`
+
 ---
 # Mit 30 Nov 2016 02:07:56 CET
 **Updated event numbers for samples from commit 59bfb68** <br>
@@ -175,7 +178,7 @@ cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMA
 
 The content of **output/Craneen*/Craneens30_11_2016** contains the first set of **reference** ntuples produced using 
 
-**Single muon**
+**Single muon (Craneens_Mu)**
 ```bash
 -rw-r--r-- 1 dlontkov localusers 28864030  1. Dez  02:08 Craneen_Data_Run2_TopTree_Study.root
 -rw-r--r-- 1 dlontkov localusers 16839543  1. Dez  02:08 Craneen_ttttNLO_Run2_TopTree_Study.root
@@ -185,4 +188,15 @@ The content of **output/Craneen*/Craneens30_11_2016** contains the first set of 
 -rw-r--r-- 1 dlontkov localusers   304522  1. Dez  02:08 Craneen_T_tW_Run2_TopTree_Study.root
 -rw-r--r-- 1 dlontkov localusers   317211  1. Dez  02:08 Craneen_Tbar_tW_Run2_TopTree_Study.root
 -rw-r--r-- 1 dlontkov localusers   798772  1. Dez  02:08 Craneen_WJets_Run2_TopTree_Study.root
+```
+**Single electron (Craneens_El)**
+```bash
+-rw-r--r-- 1 dlontkov localusers 17429999  1. Dez  02:16 Craneen_Data_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers 11404748  1. Dez  02:16 Craneen_ttttNLO_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers 51660245  1. Dez  02:16 Craneen_TTJets_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers  6039905  1. Dez  02:16 Craneen_TTScaleup_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers  6087078  1. Dez  02:16 Craneen_TTScaledown_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   221246  1. Dez  02:16 Craneen_T_tW_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   236494  1. Dez  02:16 Craneen_Tbar_tW_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   741107  1. Dez  02:16 Craneen_WJets_Run2_TopTree_Study.root
 ```
