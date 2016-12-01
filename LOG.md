@@ -175,4 +175,14 @@ cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMA
 
 The content of **output/Craneen*/Craneens30_11_2016** contains the first set of **reference** ntuples produced using 
 
-
+**Single muon**
+```bash
+-rw-r--r-- 1 dlontkov localusers 28864030  1. Dez  02:08 Craneen_Data_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers 16839543  1. Dez  02:08 Craneen_ttttNLO_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers 77923989  1. Dez  02:08 Craneen_TTJets_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers  9060477  1. Dez  02:08 Craneen_TTScaleup_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers  9280267  1. Dez  02:08 Craneen_TTScaledown_powheg_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   304522  1. Dez  02:08 Craneen_T_tW_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   317211  1. Dez  02:08 Craneen_Tbar_tW_Run2_TopTree_Study.root
+-rw-r--r-- 1 dlontkov localusers   798772  1. Dez  02:08 Craneen_WJets_Run2_TopTree_Study.root
+```
