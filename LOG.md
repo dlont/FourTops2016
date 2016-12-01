@@ -160,14 +160,14 @@ cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMA
 
 # Mit 30 Nov 2016 02:07:56 CET
 **Updated event numbers for samples from commit 59bfb68**
-['ttttNLO', 989025L, 107502717.39130434]
-['TTJets_powheg_central', 92925926L, 111722.04241608156]
-['TTScaledown_powheg', 9942427L, 11953.48057131865]
-['TTScaleup_powheg', 9933327L, 11942.5399153602]
-['T_tW', 998400L, 28044.94382022472]
-['Tbar_tW', 985000L, 27668.539325842696]
-['WJets', 99514498L, 1617.4381237200532]
+['ttttNLO', 989025L, 107502717.39130434] <br>
+['TTJets_powheg_central', 92925926L, 111722.04241608156] <br>
+['TTScaledown_powheg', 9942427L, 11953.48057131865] <br>
+['TTScaleup_powheg', 9933327L, 11942.5399153602] <br>
+['T_tW', 998400L, 28044.94382022472] <br>
+['Tbar_tW', 985000L, 27668.539325842696] <br>
+['WJets', 99514498L, 1617.4381237200532] <br>
 
-The content of output/Craneen*/Craneens30_11_2016 contains the first set of *reference* ntuples produced using 
-FourTops version master - v0.0.3 - 1bacbc7 - 2016-11-29 12:14:24 +0100 - RELEASE
+The content of ***output/Craneen*/Craneens30_11_2016*** contains the first set of ***reference*** ntuples produced using 
+***FourTops version master - v0.0.3 - 1bacbc7 - 2016-11-29 12:14:24 +0100 - RELEASE***
 
