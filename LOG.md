@@ -202,3 +202,8 @@ The content of **output/Craneen*/Craneens30_11_2016** contains the first set of 
 -rw-r--r-- 1 dlontkov localusers   236494  1. Dez  02:16 Craneen_Tbar_tW_Run2_TopTree_Study.root
 -rw-r--r-- 1 dlontkov localusers   741107  1. Dez  02:16 Craneen_WJets_Run2_TopTree_Study.root
 ```
+---
+## Reference ROOT ntuples (tag v0.0.3)
+**commit**: `2e6330b34256091af5c3e69e03f1fdd39ca24ff4`
+**path**: `test/data/backward/Craneens_*`
+---
