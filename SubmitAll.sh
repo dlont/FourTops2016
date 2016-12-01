@@ -7,7 +7,7 @@ then
 	cd test
 	for f in ./submit_$2*.sh
 	do
-	    qsub $f
+	    qsub $f || echo "$f" >> qsub.log.`date +%m_%d_%Y`
 	    sleep 0.5
 	done
 	cd -
@@ -15,7 +15,7 @@ then
 	cd output
         for f in ../submit_$1*.sh
         do
-            qsub $f
+            qsub $f || echo "$f" >> qsub.log.`date +%m_%d_%Y`
 	    sleep 0.5
         done
         cd -
@@ -25,7 +25,7 @@ else
     cd output
     for f in ../submit*.sh
     do
-	qsub $f
+	qsub $f || echo "$f" >> qsub.log.`date +%m_%d_%Y`
 	sleep 0.5
     done
     cd -
