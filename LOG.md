@@ -46,11 +46,14 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/CMSTopBrussels13TeVSamplesBookkeepi
 /pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T/TTP-CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T--GT-80X_dataRun2_ICHEP16_repro_v0/*/*/*/*/TOPTREE_*.root
 
 Freya's lumi values for repro_v3 (I use repro_v0 so far, that has to be changed)
-Sample          2016B           2016C           2016D           2016E           2016F           2016G           2016H           SUM (mb^-1)
-repro_v3
-SingleMuon      5840063059.395  2523447696.817  4275320129.305  3839184008.312  2898669614.585  7383952466.412  8283713045.538 35044350020.364
-repro_v0
-SingleMuon      5208746535.071  2448756618.041  4201921158.859  4049732039.245  3147822524.876  7554453625.468  5476961519.179 32088394020.739
+
+
+|Sample|          2016B|           2016C|           2016D|           2016E|           2016F|           2016G|           2016H|           SUM (mb^-1)|
+|------|---------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------------|
+|**repro_v3**|
+|SingleMuon|      5840063059.395|  2523447696.817|  4275320129.305|  3839184008.312|  2898669614.585|  7383952466.412|  8283713045.538| 35044350020.364|
+|**repro_v0**|
+|SingleMuon|      5208746535.071|  2448756618.041|  4201921158.859|  4049732039.245|  3147822524.876|  7554453625.468|  5476961519.179| 32088394020.739|
 
 
 ## Equivalent lumi for different samples
@@ -157,9 +160,9 @@ cd build
 cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMAKE_BUILD_TYPE=Debug ..
 ```
 
-
+---
 # Mit 30 Nov 2016 02:07:56 CET
-**Updated event numbers for samples from commit 59bfb68**
+**Updated event numbers for samples from commit 59bfb68** <br>
 ['ttttNLO', 989025L, 107502717.39130434] <br>
 ['TTJets_powheg_central', 92925926L, 111722.04241608156] <br>
 ['TTScaledown_powheg', 9942427L, 11953.48057131865] <br>
@@ -168,6 +171,8 @@ cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMA
 ['Tbar_tW', 985000L, 27668.539325842696] <br>
 ['WJets', 99514498L, 1617.4381237200532] <br>
 
-The content of ***output/Craneen*/Craneens30_11_2016*** contains the first set of ***reference*** ntuples produced using 
-***FourTops version master - v0.0.3 - 1bacbc7 - 2016-11-29 12:14:24 +0100 - RELEASE***
+**FourTops version master - v0.0.3 - 1bacbc7 - 2016-11-29 12:14:24 +0100 - RELEASE**
+
+The content of **output/Craneen*/Craneens30_11_2016** contains the first set of **reference** ntuples produced using 
+
 
