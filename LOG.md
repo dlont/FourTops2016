@@ -161,7 +161,9 @@ cmake -DTopBrussels_SOURCE_DIR=/user/dlontkov/CMSSW_8_0_21/src/TopBrussels -DCMA
 ```
 
 **Merge root output ntuples**
-`source ../../../tools/mergeCran4comparison.sh . ../../../tools/listCran`
+```bash
+source ../../../tools/mergeCran4comparison.sh . ../../../tools/listCran
+```
 
 ---
 # Mit 30 Nov 2016 02:07:56 CET
