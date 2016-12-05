@@ -547,6 +547,12 @@ int main (int argc, char *argv[])
         TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
         TNtuple * tup      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:HTX:SumJetMassX:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFbtagUp:SFbtagDown:SFPU:SFPU_up:SFPU_down:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso:5thjetpt:6thjetpt:jet5and6pt:csvJetcsv1:csvJetcsv2:csvJetcsv3:csvJetcsv4:csvJetpt1:csvJetpt2:csvJetpt3:csvJetpt4");
         LOG(INFO) << "Output Craneens File: " << Ntupname ;
+
+	TTree * booktup      = new TTree("bookkeeping", "bookkeeping");
+	long long runId = 0;			booktup -> Branch("Runnr",&runId,"Runnr/I");
+	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
+	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumblk/I");
+	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
         // string Ntup4j0bname    = "Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_4j0b_" + dataSetName + postfix + ".root";     
         // TFile * tup4j0bfile    = new TFile(Ntupname.c_str(),"RECREATE");
         // TNtuple * tup4j0b      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFPU:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso");
@@ -613,9 +619,9 @@ int main (int argc, char *argv[])
         ///////////////////////////////////////////////////////////
 
         // int start = 0;
-        unsigned long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
-        unsigned long event_start = startEvent; //set start of for loop to input startEvent
-        unsigned long end_d = ending; //initialise end of for loop to end of dataset
+        long long ending = datasets[d]->NofEvtsToRunOver();    cout <<"Number of events in full dataset = "<<  ending  <<endl;
+        long long event_start = startEvent; //set start of for loop to input startEvent
+        long long end_d = ending; //initialise end of for loop to end of dataset
 
         if(endEvent <ending && endEvent>0 ) end_d = endEvent; // if the input endEvent is less than total events in dataset (and greater than 0), set max of for loop to endEvent
         
@@ -626,7 +632,7 @@ int main (int argc, char *argv[])
         //                                 Loop on events                             //
         ////////////////////////////////////////////////////////////////////////////////
 
-        for (unsigned long ievt = event_start; ievt < end_d; ievt++)
+        for (long long ievt = event_start; ievt < end_d; ievt++)
         {
             if(debug) cout<<"START OF EVENT LOOP"<<endl;
             BDTScore= -99999.0, MHT = 0., MHTSig = 0.,leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
@@ -659,7 +665,13 @@ int main (int argc, char *argv[])
             //      Set up for miniAOD weights       //
             ///////////////////////////////////////////
 
-            currentRun = event->runId(); if(debug) cout<<"got run ID"<<endl;
+            currentRun  = event->runId(); if(debug) cout<<"got run ID"<<endl;
+
+            runId    = event->runId(); 
+	    evId     = event->eventId();
+	    lumBlkId = event->lumiBlockId();
+	    booktup -> Fill();
+   
             datasets[d]->eventTree()->LoadTree(ievt); if(debug) cout<<"load tree"<<endl;
             int treenumber = datasets[d]->eventTree()->GetTreeNumber(); 
             // cout<<"treenumber: "<< treenumber<<endl;
@@ -1362,7 +1374,10 @@ int main (int argc, char *argv[])
         cout<<"Write files"<<endl;
         tupfile->cd();
         tup->Write();
+	booktup->Write();
         tupfile->Close();
+
+
 
 //        tupCutfile->cd();
 //        cuttup->Write();
