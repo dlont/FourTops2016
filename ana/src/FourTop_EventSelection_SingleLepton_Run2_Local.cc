@@ -193,9 +193,9 @@ int main (int argc, char *argv[])
     bool bTagCSVReweight   = false;
     bool bLeptonSF         = false;
     bool debug             = false;
-    bool applyJER          = false;
-    bool applyJEC          = false;
-    bool JERNom            = false;
+    bool applyJER          = true;
+    bool applyJEC          = true;
+    bool JERNom            = true;
     bool JERUp             = false;
     bool JERDown           = false;
     bool JESUp             = false;
@@ -283,7 +283,7 @@ int main (int argc, char *argv[])
 
     if(bTagReweight && dataSetName.find("Data")==string::npos){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
-        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_76X_combToMujets.csv");
+        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
         bTagReader = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","central"); //mujets
         bTagReaderUp = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","up"); //mujets
         bTagReaderDown = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","down"); //mujets
@@ -309,7 +309,7 @@ int main (int argc, char *argv[])
 
     if(bTagCSVReweight && !isData){
         // BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/ttH_BTV_CSVv2_13TeV_2015D_20151120.csv");
-        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_76X_combToMujets.csv");
+        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
         reader_csvv2 = new BTagCalibrationReader(&calib_csvv2, // calibration instance
               BTagEntry::OP_RESHAPING, // operating point
               "iterativefit", // measurement type
