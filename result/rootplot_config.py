@@ -131,11 +131,11 @@ options_by_histname = [
                        ]
 
 #### Legend
-legend_width = 0.38        # Fraction of canvas width
+legend_width = 0.25        # Fraction of canvas width
 legend_entry_height = 0.05 # Fraction of canvas height
 max_legend_height = 0.1    # Fraction of canvas height
 legend_left_bound = 0.20   # For left justification
-legend_right_bound = 0.95  # For right justification
+legend_right_bound = 0.85  # For right justification
 legend_upper_bound = 0.91  # For top justification
 legend_lower_bound = 0.15  # For bottom justification
 legend_codes = { 1 : 'upper right',

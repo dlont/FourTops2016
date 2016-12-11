@@ -16,6 +16,10 @@ SIZE="1000x1000"
 LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t}"
 #SCALE=${WJETSNORM},${TTNORM},${TTTTNORM},1
 
+.PHONY: mergetrees
+mergetrees: tools/mergeCran4comparison.sh tools/listCran
+	@tools/mergeCran4comparison.sh ${INPUTLOCATION} tools/listCran
+
 .PHONY: plots_mu 
 #Order of arguments matters
 plots_mu: plots_mu/Hists_data.root plots_mu/Hists_WJets.root plots_mu/Hists_T.root plots_mu/Hists_TT.root plots_mu/Hists_TTTT.root
