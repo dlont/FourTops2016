@@ -20,4 +20,5 @@ gtest-install
 gflags-2.2.0-install
 gflags
 SubmitScripts
+StatTest-master
 ana/inc/Version.h
