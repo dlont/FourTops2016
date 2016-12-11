@@ -35,13 +35,22 @@ TObjArray* commonSubset(  TObjArray* arr1,  TObjArray* arr2 ) {
 
 
 //________________________________________________________________________________
-void plotComparison( TString fileName, TString fileNameRef, TString treeName )
+void plotComparison( TString fileName, TString fileNameRef, TString treeName, TString outputfolder = "test/" )
 {
 	gROOT->Reset();
 	gROOT->SetStyle("Plain");
 	gStyle->SetOptStat(0);
 	gStyle->SetOptTitle(0);
 	TH1::SetDefaultSumw2();
+
+	// Test output folder exists
+	//struct stat info;
+	//if( stat( outputfolder.Data(), &info ) != 0 )
+    	//	printf( "cannot access %s\n", outputfolder.Data() );
+	//else if( info.st_mode & S_IFDIR )  // S_ISDIR() doesn't exist on my windows 
+    	//	printf( "%s is a directory\n", outputfolder.Data() );
+	//else
+    	//	printf( "%s is no directory\n", outputfolder.Data() );
 
 	// Number of subpads on canvas
 	const int nPlotsX = 3;
@@ -66,8 +75,8 @@ void plotComparison( TString fileName, TString fileNameRef, TString treeName )
 	prefix.ReplaceAll(".root", "_");
 
 	// Legend captions
-	const char* histLegend = "new";
-	const char* histRefLegend = "old";
+	const char* histLegend = "target";
+	const char* histRefLegend = "reference";
 
 	// Read files
 	TFile *_file0 = TFile::Open( fileName.Data() );
@@ -110,8 +119,8 @@ void plotComparison( TString fileName, TString fileNameRef, TString treeName )
 
 	// Superimpose histograms from different files
 	// Loop over branches names
-	for(int i = 0; i < 6; ++i) { 	// testing
-	//for(int i = 0; i < mycopy->GetEntries(); ++i) { //full set of histograms
+	//for(int i = 0; i < 6; ++i) { 	// testing
+	for(int i = 0; i < mycopy->GetEntries(); ++i) { //full set of histograms
 
 		// Create new canvas
 		if ( i%nPlotsPerCanvas == 0 ) {
@@ -185,11 +194,12 @@ void plotComparison( TString fileName, TString fileNameRef, TString treeName )
 			label = histRefLegend + TString::Format("(%5.1f entries)",hRef->GetEntries());
 			leg->AddEntry(hRef, label );
 			leg->Draw();
-			TString outputCanvasName(prefix);
+			//TString outputCanvasName(prefix);
+			TString outputCanvasName("comparison_");
 			if ( isLogY ) outputCanvasName += "log_";
 			outputCanvasName += i/nPlotsPerCanvas;
 			outputCanvasName += fmt;
-			c->Print( outputCanvasName );
+			c->Print( outputfolder + outputCanvasName );
 			//delete c;
 		}
 	} // for(int i = 0; i < mycopy->GetEntries(); ++i)
