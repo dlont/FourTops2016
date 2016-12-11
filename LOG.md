@@ -219,3 +219,11 @@ Mon 05 Dez 2016 03:37:54 CET
 Add bookkeeping tree
 
 tag v0.0.4
+
+
+Fre 09 Dez 2016 04:17:59 CET
+plotting
+make plots_el INPUTLOCATION=../test/data/backward/Craneens_El/  TREENAME=Craneen__El DATALABEL=Single\ e
+make plots_mu INPUTLOCATION=../test/data/backward/Craneens_Mu/  TREENAME=Craneen__Mu DATALABEL=Single\ \#mu
+
+
