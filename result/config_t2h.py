@@ -14,11 +14,12 @@ import sys
 inputfile=str(sys.argv[2])
 output_filename=str(sys.argv[3])
 tree_name=str(sys.argv[4])
+scalefactor=float(sys.argv[5])
 
 print 'Using input file: ' + inputfile
 print 'Output file: ' + inputfile
 
-list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=1.0, cuts="")]
+list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 
 cut_for_all_files = ""
 

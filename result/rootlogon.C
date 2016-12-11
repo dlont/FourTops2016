@@ -78,7 +78,7 @@
   tdrStyle->SetPadTopMargin(0.05);
   tdrStyle->SetPadBottomMargin(0.13);
   tdrStyle->SetPadLeftMargin(0.26);
-  tdrStyle->SetPadRightMargin(0.02);
+  tdrStyle->SetPadRightMargin(0.05);
 
 // For the Global title:
 

@@ -8,35 +8,38 @@ TREENAME:=Craneen__Mu
 
 VPATH:=$(shell readlink -f ${INPUTLOCATION})
 
-include Makefile_norm.mk
+#include Makefile_norm.mk
 include Makefile_hist.mk
 	
-.PHONY: plots_mu plots_el
 
-SIZE="500x500"
-LEGEND:="t\#bar{t},t\#bar{t}t\#bar{t},EW,${DATALABEL}"
-SCALE=${TTNORM},${TTTTNORM},${WJETSNORM},1
+SIZE="1000x1000"
+LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t}"
+#SCALE=${WJETSNORM},${TTNORM},${TTTTNORM},1
 
+.PHONY: plots_mu 
 #Order of arguments matters
-plots_mu: plots_mu/Hists_TT.root plots_mu/Hists_TTTT.root plots_mu/Hists_WJets.root plots_mu/Hists_data.root 
+plots_mu: plots_mu/Hists_data.root plots_mu/Hists_WJets.root plots_mu/Hists_T.root plots_mu/Hists_TT.root plots_mu/Hists_TTTT.root
 	@echo "make muon plots"
 	@if [ -d "$@" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=4 --logy --overflow --scale=${SCALE} --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
+	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
 	@if [ -d "$@/log" ]; then echo "$@/log dir exists" && rm -rf $@/log ; fi 
 	@mv log $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=4 --overflow --scale=${SCALE} --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
+	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
 	@if [ -d "$@/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
 
-plots_el: plots_el/Hists_TT.root plots_el/Hists_TTTT.root plots_el/Hists_WJets.root plots_el/Hists_data.root 
-	@echo "make electron plots"
-	@if [ -d "$@" ]; then echo "Electron dir exists" ; else mkdir $@ ; fi
+
+.PHONY: plots_el 
+#Order of arguments matters
+plots_el: plots_el/Hists_data.root plots_el/Hists_WJets.root plots_el/Hists_T.root plots_el/Hists_TT.root plots_el/Hists_TTTT.root
+	@echo "make elon plots"
+	@if [ -d "$@" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=4 --logy --overflow --scale=${SCALE} --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
+	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
 	@if [ -d "$@/log" ]; then echo "$@/log dir exists" && rm -rf $@/log ; fi 
 	@mv log $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=4 --overflow --scale=${SCALE} --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
+	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
 	@if [ -d "$@/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
 
