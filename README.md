@@ -2,4 +2,4 @@
 2016 data analysis repository
 
 ## Installation
-+ Download [[https://github.com/andreadotti/StatTest][StatTest]]
+1. Download [StatTest](https://github.com/andreadotti/StatTest)
