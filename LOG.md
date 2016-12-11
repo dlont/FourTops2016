@@ -227,3 +227,9 @@ make plots_el INPUTLOCATION=../test/data/backward/Craneens_El/  TREENAME=Craneen
 make plots_mu INPUTLOCATION=../test/data/backward/Craneens_Mu/  TREENAME=Craneen__Mu DATALABEL=Single\ \#mu
 
 
+
+Son 11 Dez 2016 03:02:26 CET
+# Testing script
+```
+root -b test/plotComparison.C\(\"output/Craneens_Mu/Craneens30_11_2016/Craneen_TTJets_powheg_Run2_TopTree_Study.root\"\,\"test/data/backward/Craneens_Mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root\"\,\"Craneen__Mu\"\)
+```
