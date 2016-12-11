@@ -50,10 +50,10 @@ import ROOT         # allows access to ROOT colors (e.g. ROOT.kRed)
 line_colors = []                # normally filled by options.colors
 fill_colors = []                # normally filled by options.colors
 marker_colors = []              # normally filled by options.colors
-marker_sizes = []         # in pixels
+marker_sizes = [1.1,1.1,1.1,1.1,1.1]         # in pixels
 line_styles = []          # 1 (solid), 2 (dashed), 4 (dashdot), 3 (dotted), ...
-fill_styles = []          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
-draw_commands = []        # a TH1::Draw option, include 'stack' to make stacked
+fill_styles = [0,1001,1001,1001,0]          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
+draw_commands = ['pe', 'HIST stack',' HIST stack',' HIST stack','HIST']        # a TH1::Draw option, include 'stack' to make stacked
 
 ##############################################################################
 ######## Global Style Options ################################################
@@ -73,15 +73,25 @@ colors = [
 
 ## Used when --marker_styles is specified; more info available at:
 ## http://root.cern.ch/root/html/TAttMarker.html
+##marker_styles = [
+##     4, # circle
+##    25, # square
+##    26, # triangle
+##     5, # x
+##    30, # five-pointed star
+##    27, # diamond
+##    28, # cross
+##     3, # asterisk
+##    ]
 marker_styles = [
-     4, # circle
-    25, # square
-    26, # triangle
-     5, # x
-    30, # five-pointed star
-    27, # diamond
-    28, # cross
-     3, # asterisk
+    1, # circle
+    1, # square
+    1, # triangle
+    1, # x
+    1, # five-pointed star
+    1, # diamond
+    1, # cross
+    1, # asterisk
     ]
 
 #### Styles for --data
