@@ -80,6 +80,7 @@
 #include "FourTopFlags.h"
 
 #include "Version.h"
+#include "Event.h"
 
 #include <gflags/gflags.h>
 
@@ -545,13 +546,17 @@ int main (int argc, char *argv[])
         
         string Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
         TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
-        TNtuple * tup      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:HTX:SumJetMassX:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFbtagUp:SFbtagDown:SFPU:SFPU_up:SFPU_down:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso:5thjetpt:6thjetpt:jet5and6pt:csvJetcsv1:csvJetcsv2:csvJetcsv3:csvJetcsv4:csvJetpt1:csvJetpt2:csvJetpt3:csvJetpt4");
+        TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());
+        Event myEvent;
+        myEvent.makeBranches(tup);
+        
+//        TNtuple * tup      = new TNtuple(Ntuptitle.c_str(), Ntuptitle.c_str(), "BDT:nJets:NOrigJets:nLtags:nMtags:nTtags:HT:LeptonPt:LeptonEta:LeadingBJetPt:HT2M:HTb:HTH:HTRat:HTX:SumJetMassX:multitopness:nbb:ncc:nll:ttbar_flav:ScaleFactor:SFlepton:SFbtag:SFbtagUp:SFbtagDown:SFPU:SFPU_up:SFPU_down:PU:NormFactor:Luminosity:GenWeight:weight1:weight2:weight3:weight4:weight5:weight6:weight7:weight8:met:angletop1top2:angletoplep:1stjetpt:2ndjetpt:leptonIso:leptonphi:chargedHIso:neutralHIso:photonIso:PUIso:5thjetpt:6thjetpt:jet5and6pt:csvJetcsv1:csvJetcsv2:csvJetcsv3:csvJetcsv4:csvJetpt1:csvJetpt2:csvJetpt3:csvJetpt4");
         LOG(INFO) << "Output Craneens File: " << Ntupname ;
 
 	TTree * booktup      = new TTree("bookkeeping", "bookkeeping");
 	long long runId = 0;			booktup -> Branch("Runnr",&runId,"Runnr/I");
 	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
-	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumblk/I");
+	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
 	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
         // string Ntup4j0bname    = "Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_4j0b_" + dataSetName + postfix + ".root";     
         // TFile * tup4j0bfile    = new TFile(Ntupname.c_str(),"RECREATE");
@@ -1364,9 +1369,10 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            float vals[63] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,Luminosity,weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, csvJetcsv1, csvJetcsv2, csvJetcsv3, csvJetcsv4, csvJetpt1, csvJetpt2, csvJetpt3, csvJetpt4};
+            double vals[63] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,Luminosity,weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, csvJetcsv1, csvJetcsv2, csvJetcsv3, csvJetcsv4, csvJetpt1, csvJetpt2, csvJetpt3, csvJetpt4};
+            myEvent.fill(vals);
             tupfile->cd();
-            tup->Fill(vals);
+            tup->Fill();
             // tupCutfile->cd();
             // if(Electron) eltup->Fill(scaleFactor,normfactor,Luminosity,selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->sigmaIEtaIEta_full5x5(),fabs(selectedElectrons[0]->deltaEtaIn()),fabs(selectedElectrons[0]->deltaPhiIn()),selectedElectrons[0]->hadronicOverEm(),selectedElectrons[0]->relPfIso(3, 0.5),selectedElectrons[0]->ioEmIoP(),fabs(selectedElectrons[0]->d0()),fabs(selectedElectrons[0]->dz()),selectedElectrons[0]->missingHits(),selectedElectrons[0]->E(),selectedElectrons[0]->P());
             // if(Muon) mutup->Fill(scaleFactor,normfactor,Luminosity,leptonpt,leptoneta,selectedMuons[0]->relPfIso(4, 0.5));
