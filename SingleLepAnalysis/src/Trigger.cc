@@ -25,7 +25,7 @@ void Trigger::bookTriggers(){
 //        triggerListData.push_back("HLT_IsoMu24_v*");
 //        triggerListMC.push_back("HLT_IsoMu24_v2");
         triggerListData.push_back("HLT_IsoTkMu24_v*");
-        triggerListMC.push_back("HLT_IsoTkMu24_v2");
+        triggerListMC.push_back("HLT_IsoTkMu24_v4");
 //        triggerListData.push_back("HLT_Iso(Tk)Mu22_v*");
 //        triggerListMC.push_back("HLT_Iso(Tk)Mu22_v3");
 //        triggerListData.push_back("HLT_IsoTkMu22_v*");
@@ -34,7 +34,7 @@ void Trigger::bookTriggers(){
 
     if (electron){
 	    triggerListData.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v*");    	
-	    triggerListMC.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v3");
+	    triggerListMC.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v8");
     }
 
     for(UInt_t itrig=0; itrig<triggerListMC.size(); itrig++){
