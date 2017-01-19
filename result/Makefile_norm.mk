@@ -1,18 +1,17 @@
 export TREENAME
 ifeq (${TREENAME},Craneen__Mu)
-DATALUMI=35.0443500204
+DATALUMI=36.7684
 endif
 ifeq (${TREENAME},Craneen__El)
-DATALUMI=34.0456532926
+DATALUMI=36.7720
 endif
 DATANORM=1.
 #SingleMuon reprov3
-TTNORM=$(shell echo "${DATALUMI}/111.72204241608156"|bc -l)
-#TTTT x100
-TTTTNORM=0.032598571339182407
-#TTTT correct
-#TTTTNORM=0.00032598571339182407
-WJETSNORM:=$(shell echo "${DATALUMI}/1.6174381237200532"|bc -l)
-TNORM:=$(shell echo "${DATALUMI}/28.04494382022472"|bc -l)
-TBARNORM:=$(shell echo "${DATALUMI}/27.668539325842696"|bc -l)
+TTNORM:=$(shell echo "${DATALUMI}/92.9806638934"|bc -l)
+TTSCUPNORM:=$(shell echo "${DATALUMI}/1."|bc -l)
+TTSCDWNORM:=$(shell echo "${DATALUMI}/1."|bc -l)
+TTTTNORM:=$(shell echo "${DATALUMI}/266949.673913"|bc -l)
+WJETSNORM:=$(shell echo "${DATALUMI}/0.472120891981"|bc -l)
+TNORM:=$(shell echo "${DATALUMI}/195.122162921"|bc -l)
+TBARNORM:=$(shell echo "${DATALUMI}/191.754634831"|bc -l)
 

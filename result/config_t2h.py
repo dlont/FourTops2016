@@ -27,6 +27,17 @@ cut_for_all_files = ""
 # A "cut set" is 3 things: folder name to store hists in, string to add to hist titles, and cuts for these hists.
 # Let cut_sets = [] to make all plots.
 cut_sets = [
+    ("allSF", "", "ScaleFactor"),
+    ("PU", "", "ScaleFactor/SFbtag"),
+    ("btagSF", "", "SFbtag"),
+    ("leptonSF", "", "SFlepton"),
+    ("noSF", "", ""),
+    ("weight1", "", "weight1"),
+    ("weight2", "", "weight2"),
+    ("weight3", "", "weight3"),
+    ("weight4", "", "weight4"),
+    ("weight5", "", "weight5"),
+    ("weight7", "", "weight7")
 #    ("barrel15to20", "(|#eta|<1.45, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
