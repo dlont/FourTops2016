@@ -98,7 +98,7 @@ int main (int argc, char *argv[])
     const double PreselEff              = FLAGS_dataset_preselection_eff;
     const std::string inputChannel      = FLAGS_fourtops_channel;
     const int startEvent                = batch ? 0 : 0;
-    const int endEvent                  = batch ? -1 : -1;
+    const int endEvent                  = FLAGS_nevents;
 
     std::vector<std::string> vecfileNames;
     boost::char_separator<char> sep(",");
@@ -166,9 +166,9 @@ int main (int argc, char *argv[])
     bool EventBDTOn        = true;
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
     bool bx25              = true;
-    bool bTagReweight      = true;
+    bool bTagReweight      = false;
     bool bTagCSVReweight   = false;
-    bool bLeptonSF         = false;
+    bool bLeptonSF         = true; //! apply lepton SFs
     bool debug             = false;
     bool applyJER          = true;
     bool applyJEC          = true;
@@ -179,7 +179,7 @@ int main (int argc, char *argv[])
     bool JESDown           = false;
     bool fillingbTagHistos = false;
     std::string MVAmethod       = "BDT";
-    float Luminosity       = 2628.0 ; //pb^-1 shown is C+D, D only is 2094.08809124; silverJson
+
     if (batch && inputChannel.find("Mu")!=string::npos){
         Muon = true;
         Electron = false;
@@ -212,18 +212,14 @@ int main (int argc, char *argv[])
     anaEnv.FatJetCollection = "FatJets_slimmedJetsAK8";
     anaEnv.METCollection = "PFMET_slimmedMETs";
     anaEnv.MuonCollection = "Muons_slimmedMuons";
-    anaEnv.ElectronCollection = "Electrons_slimmedElectrons";
+    anaEnv.ElectronCollection = "Electrons_calibratedPatElectrons";
     anaEnv.GenJetCollection   = "GenJets_slimmedGenJets";
-    // anaEnv.TrackMETCollection = "";
-    // anaEnv.GenEventCollection = "GenEvent";
     anaEnv.NPGenEventCollection = "NPGenEvent";
     anaEnv.MCParticlesCollection = "MCParticles";
     anaEnv.loadFatJetCollection = false;
     anaEnv.loadGenJetCollection = true;
-    // anaEnv.loadGenEventCollection = false;
     anaEnv.loadNPGenEventCollection = false;
     anaEnv.loadMCParticles = true;
-    // anaEnv.loadTrackMETCollection = false;
     anaEnv.JetType = 2;
     anaEnv.METType = 2;
 
@@ -256,6 +252,21 @@ int main (int argc, char *argv[])
         isData = true;
     }
 
+    
+    ///////////////////////////////////////////////////////
+    //      Setup Date string and nTuple for output      //
+    ///////////////////////////////////////////////////////
+
+    SourceDate *strdate = new SourceDate();
+    string date_str = strdate->ReturnDateStr();
+    
+    std::string channel_dirhist = "output/histo"+channelpostfix;
+    std::string date_dirhist = channel_dirhist+"/histo" + date_str +"/";
+    int mkdirstatushist = mkdir_p(date_dirhist.c_str());
+
+    TFile* btagEffHistFile_central = nullptr;
+    TFile* btagEffHistFile_up = nullptr;
+    TFile* btagEffHistFile_down = nullptr;
     if(bTagReweight && dataSetName.find("Data")==string::npos){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
         bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
@@ -263,25 +274,36 @@ int main (int argc, char *argv[])
         bTagReaderUp = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","up"); //mujets
         bTagReaderDown = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","down"); //mujets
 
-//        TFile fBtagEffHist_central("histos/Histo_powheg_76X.root");
-//        TFile fBtagEffHist_down("histos/Histo_powheg_76X_Down.root");
-//        TFile fBtagEffHist_up("histos/Histo_powheg_76X_Up.root");
         if(fillingbTagHistos) {
             if (Muon) {
-                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ jobid+"_Mu.root",false,30,500,2.4);
-                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ jobid+"_Mu_Up.root",false,30,500,2.4);
-                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ jobid+"_Mu_Down.root",false,30,500,2.4);
+                std::string filename = date_dirhist+"HistosPtEta_"+dataSetName+ jobid+"_Mu.root";
+                btagEffHistFile_central  = TFile::Open(filename.c_str(),"UPDATE");
+//                filename = "HistosPtEta_"+dataSetName+ jobid+"_Mu_Up.root";
+//                btagEffHistFile_up  = TFile::Open(filename.c_str(),"UPDATE");
+//                filename = "HistosPtEta_"+dataSetName+ jobid+"_Mu_Down.root";
+//                btagEffHistFile_down = TFile::Open(filename.c_str(),"UPDATE");
             }
             else if (Electron) {
-                btwt = new BTagWeightTools(bTagReader,"HistosPtEta_"+dataSetName+ jobid+"_El.root",false,30,500,2.4);
-                btwtUp = new BTagWeightTools(bTagReaderUp,"HistosPtEta_"+dataSetName+ jobid+"_El_Up.root",false,30,500,2.4);
-                btwtDown = new BTagWeightTools(bTagReaderDown,"HistosPtEta_"+dataSetName+ jobid+"_El_Down.root",false,30,500,2.4);
+                std::string filename = date_dirhist+"HistosPtEta_"+dataSetName+ jobid+"_El.root";
+                btagEffHistFile_central  = TFile::Open(filename.c_str(),"UPDATE");
+//                filename = "HistosPtEta_"+dataSetName+ jobid+"_El_Up.root";
+//                btagEffHistFile_up  = TFile::Open(filename.c_str(),"UPDATE");
+//                filename = "HistosPtEta_"+dataSetName+ jobid+"_El_Down.root";
+//                btagEffHistFile_down = TFile::Open(filename.c_str(),"UPDATE");
             }
+            btwt = new BTagWeightTools(bTagReader,btagEffHistFile_central,30,500,2.4,false);
+//            btwtUp = new BTagWeightTools(bTagReaderUp,btagEffHistFile_up,30,500,2.4,false);
+//            btwtDown = new BTagWeightTools(bTagReaderDown,btagEffHistFile_down,30,500,2.4,false);
         }    
         else {
-            btwt = new BTagWeightTools(bTagReader,"histos/Histo_powheg_76X.root",false,30,500,2.4); 
-            btwtUp = new BTagWeightTools(bTagReaderUp,"histos/Histo_powheg_76X_Down.root",false,30,500,2.4); 
-            btwtDown = new BTagWeightTools(bTagReaderDown,"histos/Histo_powheg_76X_Up.root",false,30,500,2.4); 
+            btagEffHistFile_central  = TFile::Open("histos/Hist_powheg_80X.root");
+//            btagEffHistFile_central  = TFile::Open("histos/Histo_powheg_76X.root");
+//            btagEffHistFile_up  = TFile::Open("histos/Histo_powheg_76X_Down.root","UPDATE");
+//            btagEffHistFile_down = TFile::Open("histos/Histo_powheg_76X_Up.root","UPDATE");
+
+            btwt = new BTagWeightTools(bTagReader,btagEffHistFile_central,30,500,2.4,false); 
+            btwtUp = new BTagWeightTools(bTagReaderUp,btagEffHistFile_central,30,500,2.4,false); 
+            btwtDown = new BTagWeightTools(bTagReaderDown,btagEffHistFile_central,30,500,2.4,false); 
         }
     }
 
@@ -299,20 +321,16 @@ int main (int argc, char *argv[])
     /////////////////////////////////////////////////
     MuonSFWeight* muonSFWeightID_TT;   
     MuonSFWeight* muonSFWeightIso_TT;
-    MuonSFWeight* muonSFWeightTrigC_TT;
-    MuonSFWeight* muonSFWeightTrigD1_TT;
-    MuonSFWeight* muonSFWeightTrigD2_TT;
+    MuonSFWeight* muonSFWeightTrigBCD_TT;
 
 
     ElectronSFWeight* electronSFWeight; 
     if(bLeptonSF){
         if(Muon){ 
             // muonSFWeight = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Muon_SF_TopEA.root","SF_totErr",false,false);  OLD SF WEIGHT
-            muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_Z_RunBCD_prompt80X_7p65.root", "MC_NUM_TightIDandIPCut_DEN_genTracks_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);
-            muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_Z_RunBCD_prompt80X_7p65.root", "MC_NUM_TightRelIso_DEN_TightID_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightTrigC_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
-            muonSFWeightTrigD1_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
-            muonSFWeightTrigD2_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root", "IsoMu22_OR_IsoTkMu22_PtEtaBins_Run273158_to_274093/efficienciesDATA/abseta_PLOT_pt_bin0_&_Tight2012_pass_&_tag_IsoMu22_pass_DATA", true, false, false);
+            muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightIDandIPCut_DEN_genTracks_PAR_pt_spliteta_bin1/abseta_pt_ratio", true, false, false);
+            muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightTrigBCD_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
         else if(Electron){
             electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","EGamma_SF2D",false,false);    
@@ -337,22 +355,11 @@ int main (int argc, char *argv[])
     trigger->bookTriggers();
 
     /////////////////////////////////////////////////
-    //             Get Luminosity for data         //
-    /////////////////////////////////////////////////
-
-    std::cout <<"found sample with equivalent lumi "<<  theDataset->EquivalentLumi() <<std::endl;
-    if(dataSetName.find("Data") != string::npos || dataSetName.find("data")!=string::npos || dataSetName.find("DATA")!=string::npos)
-    {
-        Luminosity = theDataset->EquivalentLumi();      std::cout <<"found DATA sample with equivalent lumi "<<  theDataset->EquivalentLumi() <<std::endl;
-    }
-    std::cout << "Rescaling to an integrated luminosity of "<< Luminosity <<" pb^-1" << std::endl;
-
-    /////////////////////////////////////////////////
     //                Top Reco MVA                 //
     /////////////////////////////////////////////////
     HadronicTopReco *hadronicTopReco;
     if(HadTopOn){
-        hadronicTopReco = new HadronicTopReco(nullptr, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, Luminosity);
+        hadronicTopReco = new HadronicTopReco(nullptr, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, 1.);
     }
     /////////////////////////////////////////////////
     //            vectors of objects               //
@@ -386,10 +393,13 @@ int main (int argc, char *argv[])
     LumiReWeighting LumiWeights_up;
     LumiReWeighting LumiWeights_down;
 
-    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
-    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
-    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_MC_RunIISpring16MiniAODv2-Asympt.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run273158-276811Cert.root", "pileup", "pileup");    
-
+    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupNom.root", "pileup", "pileupNom");    
+    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupUp.root", "pileup", "pileupUp");    
+    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupDown.root", "pileup", "pileupDown");    
+    
+    //std::cout << "Press any key" << std::endl;
+    //char waitinput;
+    //std::cin >> waitinput;
     ///////////////////////////////////////////
     ///  Initialise Jet Energy Corrections  ///
     ///////////////////////////////////////////
@@ -467,12 +477,6 @@ int main (int argc, char *argv[])
         if(nlo) std::cout << "NLO Dataset!" <<std::endl;
         else std::cout << "LO Dataset!" << std::endl;
 
-        ///////////////////////////////////////////////////////
-        //      Setup Date string and nTuple for output      //
-        ///////////////////////////////////////////////////////
-
-        SourceDate *strdate = new SourceDate();
-        string date_str = strdate->ReturnDateStr();
 
         /////////////////////////////////////////////////
         //               Craneen setup                 //
@@ -492,10 +496,11 @@ int main (int argc, char *argv[])
 
         LOG(INFO) << "Output Craneens File: " << Ntupname ;
 
-	TTree * booktup      = new TTree("bookkeeping", "bookkeeping");
+	TTree * booktup = new TTree("bookkeeping", "bookkeeping");
 	long long runId = 0;			booktup -> Branch("Runnr",&runId,"Runnr/I");
 	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
 	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
+        long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
 	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
   
 
@@ -586,6 +591,7 @@ int main (int argc, char *argv[])
             runId    = event->runId(); 
 	    evId     = event->eventId();
 	    lumBlkId = event->lumiBlockId();
+            nPV      = event->nTruePU();
 	    booktup -> Fill();
    
             datasets[d]->eventTree()->LoadTree(ievt); 
@@ -786,17 +792,14 @@ int main (int argc, char *argv[])
                 lumiWeight_down=1;
             }
             else{
-                // lumiWeight = LumiWeights.ITweight( vertex.size() ); 
-//                lumiWeight = LumiWeights.ITweight( (int)event->nTruePU());
-//                lumiWeight_up = LumiWeights_up.ITweight( (int)event->nTruePU()); 
-//                lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
-                lumiWeight = 1.;
-                lumiWeight_up = 1.; 
-                lumiWeight_down = 1.; 
- 
+                lumiWeight = LumiWeights.ITweight( (int)event->nTruePU());
+                lumiWeight_up = LumiWeights_up.ITweight( (int)event->nTruePU()); 
+                lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
                 
+                LOG(INFO)<<"Lumi weight "<<lumiWeight<<"  Lumi weight Up "<<lumiWeight_up<<"   Lumi weight Down "<<lumiWeight_down;
             }
             scaleFactor = scaleFactor * lumiWeight;
+	
 
 
             /////////////////////////////////////////////////
@@ -832,8 +835,8 @@ int main (int argc, char *argv[])
                         LOG(INFO)<<"btag efficiency = "<<bTagEff;       
                     }      
                     btwt->FillMCEfficiencyHistos(selectedJets); 
-                    btwtUp->FillMCEfficiencyHistos(selectedJets); 
-                    btwtDown->FillMCEfficiencyHistos(selectedJets); 
+//                    btwtUp->FillMCEfficiencyHistos(selectedJets); 
+//                    btwtDown->FillMCEfficiencyHistos(selectedJets); 
 
                 }
             }
@@ -896,16 +899,12 @@ int main (int argc, char *argv[])
                 }
             }
 
-            float trigSFC = 1;
-            float trigSFD1 = 1;
-            float trigSFD2 = 1;
+            float trigSFBCD = 1;
             float trigSFTot = 1;
             if(bLeptonSF){ //lepton SF for trigger
                 if(dataSetName.find("Data")==string::npos && Muon && nMu>0){
-                    trigSFC = muonSFWeightTrigC_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
-                    trigSFD1 = muonSFWeightTrigD1_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
-                    trigSFD2 = muonSFWeightTrigD2_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);       
-                    trigSFTot =( (trigSFC*17.2) + (trigSFD1*947.544) + (trigSFD2*1681.2) )/Luminosity;  
+                    trigSFBCD = muonSFWeightTrigBCD_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);    
+                    trigSFTot = trigSFBCD;  
                 }
                 fleptonSF*=trigSFTot;
             }
@@ -1192,7 +1191,7 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[63] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,Luminosity,weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, csvJetcsv1, csvJetcsv2, csvJetcsv3, csvJetcsv4, csvJetpt1, csvJetpt2, csvJetpt3, csvJetpt4};
+            double vals[62] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, csvJetcsv1, csvJetcsv2, csvJetcsv3, csvJetcsv4, csvJetpt1, csvJetpt2, csvJetpt3, csvJetpt4};
             myEvent.fill(vals);
             tupfile->cd();
             tup->Fill();
@@ -1221,10 +1220,21 @@ int main (int argc, char *argv[])
 
     std::cout << " - Writing outputs to the files ..." << std::endl;
 
-    if(fillingbTagHistos && bTagReweight && dataSetName.find("Data")==string::npos){
+    if(bTagReweight && dataSetName.find("Data")==string::npos){
+
         delete btwt;
-        delete btwtDown;
-        delete btwtUp;
+//        delete btwtDown;
+//        delete btwtUp;
+        
+//        btagEffHistFile_central->Write();
+//        btagEffHistFile_up->Write();
+//        btagEffHistFile_down->Write();
+        btagEffHistFile_central->Close();
+//        btagEffHistFile_up->Close();
+//        btagEffHistFile_down->Close();
+        delete btagEffHistFile_central;
+//        delete btagEffHistFile_up;
+//        delete btagEffHistFile_down;
     }    
 
     std::cout<<"TRIGGGG"<<std::endl;
