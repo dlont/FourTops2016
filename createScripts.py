@@ -24,13 +24,13 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-channels = ["Mu2016","El2016"] 
+# channels = ["Mu2016","El2016"] 
 # channels = ["Mu","El"] 
 # channels = ["Mu"] 
 # channels = ["El"] 
 # channels = ["Dilep"]
 # channels = ["El2016"]
-# channels = ["Mu2016"]
+channels = ["Mu2016"]
 #channels=["test"]
 
 
@@ -45,7 +45,7 @@ for chan in channels:
     #elif "El" in chan:
     #    tree = ET.ElementTree(file='config/output_FullElectronTopTrees80.xml')
     if "Mu2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.xml')
+        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_v1.xml')
     elif "El2016" in chan:
         tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.xml')
     elif "Dilep" in chan:
@@ -112,7 +112,7 @@ for chan in channels:
             # setting the number of file per job depending whether it is data sample or not
             # this ca be tweaked
             if "Data" in str(d.attrib['name']):
-                FilePerJob=5
+                FilePerJob=15
             elif "tttt" in str(d.attrib['name']):
                 FilePerJob=1
             else:
