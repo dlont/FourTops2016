@@ -166,7 +166,7 @@ int main (int argc, char *argv[])
     bool EventBDTOn        = true;
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
     bool bx25              = true;
-    bool bTagReweight      = false;
+    bool bTagReweight      = true;
     bool bTagCSVReweight   = false;
     bool bLeptonSF         = true; //! apply lepton SFs
     bool debug             = false;
@@ -267,7 +267,7 @@ int main (int argc, char *argv[])
     TFile* btagEffHistFile_central = nullptr;
     TFile* btagEffHistFile_up = nullptr;
     TFile* btagEffHistFile_down = nullptr;
-    if(bTagReweight && dataSetName.find("Data")==string::npos){
+    if(bTagReweight && !isData ){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
         bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
         bTagReader = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","central"); //mujets
@@ -314,6 +314,7 @@ int main (int argc, char *argv[])
               BTagEntry::OP_RESHAPING, // operating point
               "iterativefit", // measurement type
               "central"); // systematics type
+        btwt = new BTagWeightTools(reader_csvv2,btagEffHistFile_central,30,500,2.4,false);
     }
 //    std::exit(EXIT_SUCCESS);
     /////////////////////////////////////////////////
@@ -322,9 +323,10 @@ int main (int argc, char *argv[])
     MuonSFWeight* muonSFWeightID_TT;   
     MuonSFWeight* muonSFWeightIso_TT;
     MuonSFWeight* muonSFWeightTrigBCD_TT;
-
-
-    ElectronSFWeight* electronSFWeight; 
+    
+    ElectronSFWeight* electronSFWeightReco; 
+    ElectronSFWeight* electronSFWeightIDISO; 
+    
     if(bLeptonSF){
         if(Muon){ 
             // muonSFWeight = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Muon_SF_TopEA.root","SF_totErr",false,false);  OLD SF WEIGHT
@@ -333,7 +335,8 @@ int main (int argc, char *argv[])
             muonSFWeightTrigBCD_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
         else if(Electron){
-            electronSFWeight = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","EGamma_SF2D",false,false);    
+            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","EGamma_SF2D",false,false);    
+            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_CutBasedTightID.root","EGamma_SF2D",false,false);    
         }
     }
     /////////////////////////////////////////////////
@@ -536,7 +539,7 @@ int main (int argc, char *argv[])
         int iFile2 = -1;
         datasets[d]->runTree()->SetBranchStatus("runInfos*",1);
         datasets[d]->runTree()->SetBranchAddress("runInfos",&runInfos);
-        if (dataSetName.find("Data")!=string::npos || dataSetName.find("data")!=string::npos || dataSetName.find("DATA")!=string::npos) TrainMVA=false;
+        if (isData) TrainMVA=false;
 
         ///////////////////////////////////////////////////////////
         //             Get # of events to run over               //
@@ -577,7 +580,7 @@ int main (int argc, char *argv[])
             bool trigged = false;  // Disabling the HLT requirement
             LOG(INFO) <<"Load Event";
             event = treeLoader.LoadEvent (ievt, vertex, init_muons, init_electrons, init_jets, mets, debug);
-            if (dataSetName.find("Data")==string::npos) {
+            if (!isData) {
                 genjets = treeLoader.LoadGenJet(ievt,false);
             }
 
@@ -641,15 +644,15 @@ int main (int argc, char *argv[])
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
                 nMu = selectedMuons.size();
                 LOG(INFO) <<"Get Tight Electrons";                                                                                          
-                selectedOrigElectrons                               = r2selection.GetSelectedElectrons(30, 2.1, "Tight", "Spring16_80X", true, false); 
+                selectedOrigElectrons                               = r2selection.GetSelectedElectrons(30, 2.1, "Tight", "Spring16_80X", true, true); 
                 LOG(INFO) <<"Get Loose Electrons";
-                selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, false); 
+                selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true); 
             }
             else if(Muon){
                 LOG(INFO) <<"Get Tight Muons";
                 selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Tight", "Spring15"); 
                 nMu = selectedMuons.size(); //Number of Muons in Event
-                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, false);
+                selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true);
                 LOG(INFO) <<"Get Loose Electrons";    
                 selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
                 LOG(INFO) <<"Get Loose Muons";
@@ -784,14 +787,8 @@ int main (int argc, char *argv[])
             //               Pu reweighting                //
             /////////////////////////////////////////////////
 
-            float lumiWeight, lumiWeight_up, lumiWeight_down;
-            if(dataSetName.find("Data") !=string::npos || dataSetName.find("data") != string::npos || dataSetName.find("DATA") != string::npos)
-            {
-                lumiWeight=1;
-                lumiWeight_up=1;
-                lumiWeight_down=1;
-            }
-            else{
+            float lumiWeight = 1., lumiWeight_up = 1., lumiWeight_down = 1.;
+            if (!isData) {
                 lumiWeight = LumiWeights.ITweight( (int)event->nTruePU());
                 lumiWeight_up = LumiWeights_up.ITweight( (int)event->nTruePU()); 
                 lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
@@ -810,7 +807,7 @@ int main (int argc, char *argv[])
             float bTagEffUp(-1);
             float bTagEffDown(-1);
             if(fillingbTagHistos){
-                if(bTagReweight && dataSetName.find("Data")==string::npos){
+                if(bTagReweight && !isData){
                 //get btag weight info
                     for(int jetbtag = 0; jetbtag<selectedJets.size(); jetbtag++){
                         float jetpt = selectedJets[jetbtag]->Pt();
@@ -845,41 +842,23 @@ int main (int argc, char *argv[])
             float btagWeight = 1;
             float btagWeightUp = 1;
             float btagWeightDown = 1;
-            if(bTagReweight && dataSetName.find("Data")==string::npos){
+            if(bTagReweight && !isData){
                 if(!fillingbTagHistos){
                     btagWeight =  btwt->getMCEventWeight(selectedJets, false);
                     btagWeightUp =  btwtUp->getMCEventWeight(selectedJets, false);
                     btagWeightDown =  btwtDown->getMCEventWeight(selectedJets, false);
                 }
                 
-                LOG(INFO)<<"btag weight "<<btagWeight<<"  btag weight Up "<<btagWeightUp<<"   btag weight Down "<<btagWeightDown;
+                DLOG(INFO)<<"btag weight "<<btagWeight<<"  btag weight Up "<<btagWeightUp<<"   btag weight Down "<<btagWeightDown;
             }
             ////csv discriminator reweighting
 
             if(bTagCSVReweight && !isData){
             //get btag weight info
-                for(int jetbtag = 0; jetbtag<selectedJets.size(); jetbtag++){
-                    float jetpt = selectedJets[jetbtag]->Pt();
-                    float jeteta = selectedJets[jetbtag]->Eta();
-                    float jetdisc = selectedJets[jetbtag]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
-                    BTagEntry::JetFlavor jflav;
-                    int jetpartonflav = std::abs(selectedJets[jetbtag]->partonFlavour());
-                    LOG(INFO)<<"parton flavour: "<<jetpartonflav<<"  jet eta: "<<jeteta<<" jet pt: "<<jetpt<<"  jet disc: "<<jetdisc;
-                    if(jetpartonflav == 5){
-                        jflav = BTagEntry::FLAV_B;
-                    }
-                    else if(jetpartonflav == 4){
-                        jflav = BTagEntry::FLAV_C;
-                    }
-                    else{
-                        jflav = BTagEntry::FLAV_UDSG;
-                    }
-                    bTagEff = reader_csvv2->eval(jflav, jeteta, jetpt, jetdisc);   
-                    btagWeight*=bTagEff;
-             
-                    LOG(INFO)<<"btag efficiency = "<<bTagEff;       
+                if(!fillingbTagHistos){
+                    btagWeight =  btwt->getMCEventWeight(selectedJets, false);
                 }      
-
+                DLOG(INFO)<<"CSVRS btag weight = "<<btagWeight;       
 
             }
             scaleFactor*=btagWeight; 
@@ -892,25 +871,34 @@ int main (int argc, char *argv[])
             float fleptonSF = 1;
             if(bLeptonSF){ ///lepton SF for ID and ISO
                 if(Muon && nMu>0){
-                    fleptonSF = muonSFWeightID_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0) * muonSFWeightIso_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    auto muIDSF = muonSFWeightID_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    DLOG(INFO)<<"Muon ID SF:  "<< muIDSF;
+                    auto muISOSF = muonSFWeightIso_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    DLOG(INFO)<<"Muon ISO SF:  "<< muISOSF;
+                    fleptonSF = muIDSF * muISOSF;
                 }
                 else if(Electron && nEl>0){
-                    fleptonSF = electronSFWeight->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
+                    auto eleTrkSF = electronSFWeightReco->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
+                    DLOG(INFO)<<"Electron Tracking SF:  "<< eleTrkSF;
+                    auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
+                    DLOG(INFO)<<"Electron ID ISO SF:  "<< eleIDISOSF;
+                    fleptonSF = eleTrkSF *  eleIDISOSF;
                 }
             }
 
-            float trigSFBCD = 1;
-            float trigSFTot = 1;
+            double trigSFTot = 1.;
             if(bLeptonSF){ //lepton SF for trigger
-                if(dataSetName.find("Data")==string::npos && Muon && nMu>0){
-                    trigSFBCD = muonSFWeightTrigBCD_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);    
-                    trigSFTot = trigSFBCD;  
+                if(!isData && Muon && nMu>0){
+                    auto trigSFBCD = muonSFWeightTrigBCD_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFBCD;
+                    trigSFTot = trigSFBCD;
+                    
                 }
                 fleptonSF*=trigSFTot;
             }
 
             LOG(INFO)<<"lepton SF:  "<<fleptonSF;
-            if(dataSetName.find("Data")==string::npos)   scaleFactor *= fleptonSF;
+            if(!isData)   scaleFactor *= fleptonSF;
 
 
             /////////////////////////////////
@@ -920,7 +908,7 @@ int main (int argc, char *argv[])
             double weight_0 = 1; //nominal
             double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
 
-            if(dataSetName.find("Data")==string::npos){
+            if(!isData){
                 if(event->getWeight(1)!= -9999){
                     weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
                     weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
@@ -1220,7 +1208,7 @@ int main (int argc, char *argv[])
 
     std::cout << " - Writing outputs to the files ..." << std::endl;
 
-    if(bTagReweight && dataSetName.find("Data")==string::npos){
+    if(bTagReweight && !isData){
 
         delete btwt;
 //        delete btwtDown;
