@@ -37,12 +37,12 @@ cut_sets = [
     ("btagSF", "", "SFbtag"),
     ("leptonSF", "", "SFlepton"),
     ("noSF", "", ""),
-    ("weight1", "", "weight1"),
-    ("weight2", "", "weight2"),
-    ("weight3", "", "weight3"),
-    ("weight4", "", "weight4"),
-    ("weight5", "", "weight5"),
-    ("weight7", "", "weight7")
+    ("weight1", "", "weight1*ScaleFactor"),
+    ("weight2", "", "weight2*ScaleFactor"),
+    ("weight3", "", "weight3*ScaleFactor"),
+    ("weight4", "", "weight4*ScaleFactor"),
+    ("weight5", "", "weight5*ScaleFactor"),
+    ("weight7", "", "weight7*ScaleFactor")
 #    ("barrel15to20", "(|#eta|<1.45, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
