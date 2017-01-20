@@ -139,7 +139,7 @@ int main (int argc, char *argv[])
     int preTrig = 0;
     int postTrig = 0;
     int ndefs =0;
-    int negWeights = 0;
+    int negWeights = 0, negWeightsPretrig = 0;
     float weightCount = 0.0;
     int eventCount = 0;
     float scalefactorbtageff, mistagfactor;
@@ -793,6 +793,38 @@ int main (int argc, char *argv[])
 
             //HTRat = HT_leading/HT_lagging;
 
+            
+            /////////////////////////////////
+            //        Gen weights          //
+            /////////////////////////////////
+
+            double weight_0 = 1; //nominal
+            double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
+
+            if(!isData){
+                if(event->getWeight(1)!= -9999){
+                    weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
+                    weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
+                    weight_2 = (event->getWeight(3))/(abs(event->originalXWGTUP()));                
+                    weight_3 = (event->getWeight(4))/(abs(event->originalXWGTUP()));                
+                    weight_4 = (event->getWeight(5))/(abs(event->originalXWGTUP()));                
+                    weight_5 = (event->getWeight(6))/(abs(event->originalXWGTUP()));                
+                    weight_6 = (event->getWeight(7))/(abs(event->originalXWGTUP()));                
+                    weight_7 = (event->getWeight(8))/(abs(event->originalXWGTUP()));                
+                    weight_8 = (event->getWeight(9))/(abs(event->originalXWGTUP()));                    
+            } else if (event->getWeight(1001)!= -9999){
+                    weight_0 = (event->getWeight(1001))/(abs(event->originalXWGTUP()));  
+                    weight_1 = (event->getWeight(1002))/(abs(event->originalXWGTUP()));                
+                    weight_2 = (event->getWeight(1003))/(abs(event->originalXWGTUP()));                
+                    weight_3 = (event->getWeight(1004))/(abs(event->originalXWGTUP()));                
+                    weight_4 = (event->getWeight(1005))/(abs(event->originalXWGTUP()));                
+                    weight_5 = (event->getWeight(1006))/(abs(event->originalXWGTUP()));                
+                    weight_6 = (event->getWeight(1007))/(abs(event->originalXWGTUP()));                
+                    weight_7 = (event->getWeight(1008))/(abs(event->originalXWGTUP()));                
+                    weight_8 = (event->getWeight(1009))/(abs(event->originalXWGTUP()));                    
+                }
+            }
+            
             ///////////////////////////////////////////
             //     Apply primary vertex selection    //
             ///////////////////////////////////////////
@@ -818,8 +850,22 @@ int main (int argc, char *argv[])
             //        Trigger              //
             /////////////////////////////////            
             preTrig++;
+            if(weight_0 < 0.0)
+            {
+                //scaleFactor *= -1.0;  //Taking into account negative weights in NLO Monte Carlo
+                negWeightsPretrig++;
+            }
+            
             if (!trigged)          continue;  //If an HLT condition is not present, skip this event in the loop.       
             postTrig++; 
+            /////////////////////////////////////////////////
+            //            neg weights counter              //
+            /////////////////////////////////////////////////
+            if(weight_0 < 0.0)
+            {
+                //scaleFactor *= -1.0;  //Taking into account negative weights in NLO Monte Carlo
+                negWeights++;
+            }
 
 
             /////////////////////////////////////////////////
@@ -938,49 +984,6 @@ int main (int argc, char *argv[])
 
             LOG(INFO)<<"lepton SF:  "<<fleptonSF;
             if(!isData)   scaleFactor *= fleptonSF;
-
-
-            /////////////////////////////////
-            //        Gen weights          //
-            /////////////////////////////////
-
-            double weight_0 = 1; //nominal
-            double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
-
-            if(!isData){
-                if(event->getWeight(1)!= -9999){
-                    weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
-                    weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
-                    weight_2 = (event->getWeight(3))/(abs(event->originalXWGTUP()));                
-                    weight_3 = (event->getWeight(4))/(abs(event->originalXWGTUP()));                
-                    weight_4 = (event->getWeight(5))/(abs(event->originalXWGTUP()));                
-                    weight_5 = (event->getWeight(6))/(abs(event->originalXWGTUP()));                
-                    weight_6 = (event->getWeight(7))/(abs(event->originalXWGTUP()));                
-                    weight_7 = (event->getWeight(8))/(abs(event->originalXWGTUP()));                
-                    weight_8 = (event->getWeight(9))/(abs(event->originalXWGTUP()));                    
-                }
-                else if (event->getWeight(1001)!= -9999){
-                    weight_0 = (event->getWeight(1001))/(abs(event->originalXWGTUP()));  
-                    weight_1 = (event->getWeight(1002))/(abs(event->originalXWGTUP()));                
-                    weight_2 = (event->getWeight(1003))/(abs(event->originalXWGTUP()));                
-                    weight_3 = (event->getWeight(1004))/(abs(event->originalXWGTUP()));                
-                    weight_4 = (event->getWeight(1005))/(abs(event->originalXWGTUP()));                
-                    weight_5 = (event->getWeight(1006))/(abs(event->originalXWGTUP()));                
-                    weight_6 = (event->getWeight(1007))/(abs(event->originalXWGTUP()));                
-                    weight_7 = (event->getWeight(1008))/(abs(event->originalXWGTUP()));                
-                    weight_8 = (event->getWeight(1009))/(abs(event->originalXWGTUP()));                    
-                }
-            }
-
-            /////////////////////////////////////////////////
-            //            neg weights counter              //
-            /////////////////////////////////////////////////
-
-            if(weight_0 < 0.0)
-            {
-                //scaleFactor *= -1.0;  //Taking into account negative weights in NLO Monte Carlo
-                negWeights++;
-            }
 
             //Apply the lepton, jet, btag and HT & MET selections
 
@@ -1233,6 +1236,7 @@ int main (int argc, char *argv[])
 
         std::cout <<"n events passed  =  "<<passed <<std::endl;
         std::cout <<"n events with negative weights = "<<negWeights << std::endl;
+        std::cout <<"n events with negative weights pretrig= "<<negWeightsPretrig << std::endl;
         std::cout << "Event Count: " << eventCount << std::endl;
         std::cout << "Weight Count: " << weightCount << std::endl;
         //important: free memory
