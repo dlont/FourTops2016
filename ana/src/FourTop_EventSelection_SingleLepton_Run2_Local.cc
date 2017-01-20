@@ -408,31 +408,70 @@ int main (int argc, char *argv[])
     ///////////////////////////////////////////
     
     vector<JetCorrectorParameters> vCorrParam;
-    string pathCalJEC = "../TopTreeAnalysisBase/Calibrations/JECFiles/Spring16_25nsV6/";
+    string pathCalJEC = "../TopTreeAnalysisBase/Calibrations/JECFiles/";
 
-    if(isData)
+    JetCorrectionUncertainty *jecUnc;
+
+    if(dName.find("Data_Run2016B")!=string::npos || dName.find("Data_Run2016C")!=string::npos || dName.find("Data_Run2016D")!=string::npos)
     {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L1FastJet_AK4PFchs.txt");
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L2Relative_AK4PFchs.txt");
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2Relative_AK4PFchs.txt");
         vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L3Absolute_AK4PFchs.txt");
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_DATA_L2L3Residual_AK4PFchs.txt");
+        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2L3Residual_AK4PFchs.txt");
         vCorrParam.push_back(*L2L3ResJetCorPar);
+        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_Uncertainty_AK4PFchs.txt");
+    }
+    else if(dName.find("Data_Run2016E")!=string::npos || dName.find("Data_Run2016F")!=string::npos)
+    {
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L1FastJet_AK4PFchs.txt");
+        vCorrParam.push_back(*L1JetCorPar);
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2Relative_AK4PFchs.txt");
+        vCorrParam.push_back(*L2JetCorPar);
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L3Absolute_AK4PFchs.txt");
+        vCorrParam.push_back(*L3JetCorPar);
+        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2L3Residual_AK4PFchs.txt");
+        vCorrParam.push_back(*L2L3ResJetCorPar);
+        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_Uncertainty_AK4PFchs.txt");
+    }
+    else if(dName.find("Data_Run2016G")!=string::npos)
+    {
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L1FastJet_AK4PFchs.txt");
+        vCorrParam.push_back(*L1JetCorPar);
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2Relative_AK4PFchs.txt");
+        vCorrParam.push_back(*L2JetCorPar);
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L3Absolute_AK4PFchs.txt");
+        vCorrParam.push_back(*L3JetCorPar);
+        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2L3Residual_AK4PFchs.txt");
+        vCorrParam.push_back(*L2L3ResJetCorPar);
+        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_Uncertainty_AK4PFchs.txt");
+    }
+    else if(dName.find("Data_Run2016H")!=string::npos)
+    {
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L1FastJet_AK4PFchs.txt");
+        vCorrParam.push_back(*L1JetCorPar);
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2Relative_AK4PFchs.txt");
+        vCorrParam.push_back(*L2JetCorPar);
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L3Absolute_AK4PFchs.txt");
+        vCorrParam.push_back(*L3JetCorPar);
+        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2L3Residual_AK4PFchs.txt");
+        vCorrParam.push_back(*L2L3ResJetCorPar);
+        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_Uncertainty_AK4PFchs.txt");
     }
     else
     {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L1FastJet_AK4PFchs.txt");
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L2Relative_AK4PFchs.txt");
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L2Relative_AK4PFchs.txt");
         vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"Spring16_25nsV6_MC_L3Absolute_AK4PFchs.txt");
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
+        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_Uncertainty_AK4PFchs.txt");
     }
-    JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty(pathCalJEC+"Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt");
-
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                             //
