@@ -44,7 +44,11 @@ while read filename; do
   #echo $filename
 	eval "filestomergewildcard=\$(echo \$filename | sed -e \"s/Run2_TopTree_Study/\*/g\")"
 	#ls $filename $inputfolder/$filestomergewildcard
+	if ls $inputfolder/$filestomergewildcard 1> /dev/null 2>&1; then
 	echo hadd $filename $inputfolder/$filestomergewildcard
 	hadd $filename $inputfolder/$filestomergewildcard
+	else
+	echo "files $inputfolder/$filestomergewildcard do not exist"
+	fi
 done < $outputsumcraneens
 
