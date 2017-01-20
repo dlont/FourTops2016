@@ -137,9 +137,9 @@ int main (int argc, char *argv[])
 
     int passed = 0;
     int preTrig = 0;
-    int postTrig = 0;
+    double postTrig = 0;
     int ndefs =0;
-    int negWeights = 0, negWeightsPretrig = 0;
+    double negWeights = 0, negWeightsPretrig = 0;
     float weightCount = 0.0;
     int eventCount = 0;
     float scalefactorbtageff, mistagfactor;
@@ -849,22 +849,22 @@ int main (int argc, char *argv[])
             /////////////////////////////////
             //        Trigger              //
             /////////////////////////////////            
-            preTrig++;
+            preTrig+=1.;
             if(weight_0 < 0.0)
             {
                 //scaleFactor *= -1.0;  //Taking into account negative weights in NLO Monte Carlo
-                negWeightsPretrig++;
+                negWeightsPretrig+=1.;
             }
             
             if (!trigged)          continue;  //If an HLT condition is not present, skip this event in the loop.       
-            postTrig++; 
+            postTrig+=1.; 
             /////////////////////////////////////////////////
             //            neg weights counter              //
             /////////////////////////////////////////////////
             if(weight_0 < 0.0)
             {
                 //scaleFactor *= -1.0;  //Taking into account negative weights in NLO Monte Carlo
-                negWeights++;
+                negWeights+=1.;
             }
 
 
@@ -1273,7 +1273,10 @@ int main (int argc, char *argv[])
     std::cout<<"preTrig: "<<preTrig<<"   postTrig: "<<postTrig<<std::endl;
     std::cout<<"********"<<std::endl;
     if(postTrig>0){
-        std::cout<<"negative weight NormFactor: "<< ( (postTrig - (2*negWeights))/postTrig )<<std::endl;
+        std::cout<<"negative weight NormFactor (posttrig): "<< ( (postTrig - (2*negWeights))/postTrig )<<std::endl;
+    }
+    if(preTrig>0){
+        std::cout<<"negative weight NormFactor (pretrig): "<< ( (preTrig - (2*negWeightsPretrig))/preTrig )<<std::endl;
     }
 
     delete trigger;
