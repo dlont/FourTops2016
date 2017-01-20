@@ -315,3 +315,29 @@ Plotting commands
 make -j plots_el INPUTLOCATION=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/output/Craneens_El/Craneens20_1_2017 BUILDDIR=plots_el TREENAME=Craneen__El DATALABEL=Single\ e
 
 make -j  plots_mu INPUTLOCATION=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/output/Craneens_Mu/Craneens19_1_2017 BUILDDIR=plots_mu TREENAME=Craneen__Mu DATALABEL=Single\ \#mu
+
+Electon data events
+['Data_Run2016B-ReReco', 237020067L, 237020067.0]
+['Data_Run2016C-ReReco', 93219591L, 93219591.0]
+['Data_Run2016D-ReReco', 146306673L, 146306673.0]
+['Data_Run2016E-ReReco', 112041101L, 112041101.0]
+['Data_Run2016F-ReReco', 70142300L, 70142300.0]
+['Data_Run2016G-ReReco', 151991012L, 151991012.0]
+['Data_Run2016H-PromptRecoV2', 123214902L, 123214902.0]
+['Data_Run2016H-PromptRecoV3', 3189653L, 3189653.0]
+TOTAL: 937125299
+Muon
+['Data_Run2016B-ReReco', 153007286L, 153007286.0]
+['Data_Run2016C-ReReco', 64528905L, 64528905.0]
+['Data_Run2016D-ReReco', 96017782L, 96017782.0]
+['Data_Run2016E-ReReco', 86679163L, 86679163.0]
+['Data_Run2016F-ReReco', 65033768L, 65033768.0]
+['Data_Run2016G-ReReco', 147871216L, 147871216.0]
+['Data_Run2016H-PromptRecoV2', 166660757L, 166660757.0]
+['Data_Run2016H-PromptRecoV3', 4389808L, 4389808.0]
+TOTAL: 784188685
+
+
+TTTT negative weight fraction
+negative weight NormFactor (posttrig): 0.44206
+negative weight NormFactor (pretrig): 0.449449
