@@ -34,6 +34,8 @@ cut_sets = [
     ("allSF_NJ9", "Njet=9", "(nJets==9)*ScaleFactor"),
     ("allSF_NJ10+", "Njet>9", "(nJets>9)*ScaleFactor"),
     ("PU", "", "SFPU"),
+    ("PUup", "", "SFPU_up"),
+    ("PUdown", "", "SFPU_down"),
     ("btagSF", "", "SFbtag"),
     ("leptonSF", "", "SFlepton"),
     ("noSF", "", ""),
@@ -42,8 +44,13 @@ cut_sets = [
     ("weight3", "", "weight3*ScaleFactor"),
     ("weight4", "", "weight4*ScaleFactor"),
     ("weight5", "", "weight5*ScaleFactor"),
-    ("weight7", "", "weight7*ScaleFactor")
-#    ("barrel15to20", "(|#eta|<1.45, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
+    ("weight7", "", "weight7*ScaleFactor"),
+    ("weight1_NJ6", "Njet=6", "(nJets==6) *weight1*ScaleFactor"),
+    ("weight2_NJ7", "Njet=7", "(nJets==7) *weight2*ScaleFactor"),
+    ("weight3_NJ8", "Njet=8", "(nJets==8) *weight3*ScaleFactor"),
+    ("weight4_NJ9", "Njet=9", "(nJets==9) *weight4*ScaleFactor"),
+    ("weight5_NJ10+", "Njet>9", "(nJets>9)*weight5*ScaleFactor")
+#    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
 #    ("endcap20to30", "(1.7<|#eta|<2.5, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)>1.7&&abs(eta)<2.5")
