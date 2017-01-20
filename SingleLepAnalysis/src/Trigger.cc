@@ -24,7 +24,9 @@ void Trigger::bookTriggers(){
         
 //        triggerListData.push_back("HLT_IsoMu24_v*");
 //        triggerListMC.push_back("HLT_IsoMu24_v2");
+        triggerListData.push_back("HLT_IsoMu24_v*");
         triggerListData.push_back("HLT_IsoTkMu24_v*");
+        triggerListMC.push_back("HLT_IsoMu24_v4");
         triggerListMC.push_back("HLT_IsoTkMu24_v4");
 //        triggerListData.push_back("HLT_Iso(Tk)Mu22_v*");
 //        triggerListMC.push_back("HLT_Iso(Tk)Mu22_v3");
