@@ -31,7 +31,7 @@ lp = [
     Plot("SumJetMassX"            , TH1D("SumJetMassX"     , ";Sum jet M (GeV);entries/bin", 100, 0., 6000.)),
     Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
     Plot("SFlepton"            , TH1D("SFlepton"     , ";Event SF due to leptons;entries/bin", 100, 0., 2.5)),
-    Plot("SFbtag"            , TH1D("SFbtag"     , ";Event SF due to btag;entries/bin", 100, 0., 2.5)),
+    Plot("SFbtag"            , TH1D("SFbtag"     , ";Event SF due to btag;entries/bin", 100, 0., 5.)),
     Plot("SFbtagUp"            , TH1D("SFbtagUp"     , ";Event SF due to btag (up variation);entries/bin", 100, 0., 2.5)),
     Plot("SFbtagDown"            , TH1D("SFbtagDown"     , ";Event SF due to btag (down variation);entries/bin", 100, 0., 2.5)),
     Plot("SFPU"            , TH1D("SFPU"     , ";Event SF due to PU;entries/bin", 100, 0., 5.)),
