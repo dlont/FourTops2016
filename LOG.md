@@ -233,3 +233,79 @@ Son 11 Dez 2016 03:02:26 CET
 ```
 root -b -l test/plotComparison.C\(\"./output/Craneens_Mu/Craneens30_11_2016/Craneen_TTJets_powheg_Run2_TopTree_Study.root\"\,\"test/data/backward/Craneens_Mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root\"\,\"Craneen__Mu\"\)
 ```
+
+
+Mit 14 Dez 2016 00:36:04 CET
+#Pileup reweighting
+
+* Reference page https://twiki.cern.ch/twiki/bin/view/CMSPublic/Step1TagAndProbe
+
+@lxplus
+cmsrel CMSSW_7_4_1_patch4
+cd CMSSW_7_4_1_patch4/src
+cmsenv
+git cms-addpkg RecoLuminosity/LumiDB
+scram b -j
+voms-proxy-init -voms cms
+source producePU.zsh
+
+
+Die 10 Jan 2017 21:23:36 CET
+['ttttNLO', 989025L, 107502717.39130434]
+['TTJets_powheg_central', 92925926L, 111722.04241608156]
+['TTScaledown_powheg', 9942427L, 11675.956219980506]
+['TTScaleup_powheg', 9933327L, 12377.052183014355]
+['T_tW', 998400L, 28044.94382022472]
+['Tbar_tW', 985000L, 27668.539325842696]
+['WJets', 99514498L, 1617.4381237200532]
+
+
+Muon
+['Data_Run2016B-ReReco', 153007286L, 153007286.0]
+['Data_Run2016C-ReReco', 64528905L, 64528905.0]
+['Data_Run2016D-ReReco', 96017782L, 96017782.0]
+['Data_Run2016E-ReReco', 0L, 0.0]
+['Data_Run2016E-ReReco', 86679163L, 86679163.0]
+['Data_Run2016F-ReReco', 65033768L, 65033768.0]
+['Data_Run2016G-ReReco', 0L, 0.0]
+['Data_Run2016G-ReReco', 147871216L, 147871216.0]
+['Data_Run2016H-PromptRecoV2', 4389808L, 4389808.0]
+SUM: 617527928L
+
+
+
+Don 19 Jan 2017 17:02:08 CET
+Summer16 samples
+['ttttNLO', 2455937L, 266949673.91304347]
+['TTJets_powheg_central', 77337597L, 92980.6638934308]
+['TTJets_amcnlo_central', 42593710L, 51209.134846590365]
+['TTFSRScaledown_powheg', 29139830L, 35033.9400788689]
+['TTFSRScaleup_powheg', 26010154L, 31271.224872559393]
+['TTISRScaledown_powheg', 29915304L, 35966.26911609118]
+['TTISRScaleup_powheg', 58682125L, 70551.75170722324]
+['TTUETunedown_powheg', 27737808L, 33348.33124939886]
+['TTUETuneup_powheg', 29194459L, 35099.61888044628]
+['T_tW', 6946349L, 195122.1629213483]
+['Tbar_tW', 6826465L, 191754.63483146066]
+['WJets', 29047710L, 472.1208919806261]
+['DYJets_50MG', 47930047L, 23864.791376219877]
+['TTHbb', 3735442L, -3735442.0]
+['TTZQQ', 749386L, -749386.0]
+['TTZLL', 1992407L, -1992407.0]
+['TTWLN', 2160135L, -2160135.0]
+['TTWQQ', 833282L, -833282.0]
+
+
+Fre 20 Jan 2017 00:09:43 CET
+rootplot installation instructions
+
+see http://pythonhosted.org/rootplot/
+
+```
+$ export PYTHONPATH=$PYTHONPATH:/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/rootplot/lib/python2.7/site-packages/ 
+$ hg clone http://bitbucket.org/klukas/rootplot
+$ cd rootplot
+$ python setup.py develop --prefix=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/rootplot
+$ hg pull http://bitbucket.org/klukas/rootplot
+$ hg update
+```
