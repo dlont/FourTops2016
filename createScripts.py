@@ -24,13 +24,13 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-# channels = ["Mu2016","El2016"] 
+channels = ["Mu2016","El2016"] 
 # channels = ["Mu","El"] 
 # channels = ["Mu"] 
 # channels = ["El"] 
 # channels = ["Dilep"]
 # channels = ["El2016"]
-channels = ["Mu2016"]
+#channels = ["Mu2016"]
 #channels=["test"]
 
 
@@ -45,9 +45,9 @@ for chan in channels:
     #elif "El" in chan:
     #    tree = ET.ElementTree(file='config/output_FullElectronTopTrees80.xml')
     if "Mu2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_v1.xml')
+        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_v0.xml')
     elif "El2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_CMSSW_80X_v1-Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.xml')
+        tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_v1.xml')
     elif "Dilep" in chan:
         tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
     elif "test" in chan:
