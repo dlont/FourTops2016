@@ -309,3 +309,9 @@ $ python setup.py develop --prefix=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_
 $ hg pull http://bitbucket.org/klukas/rootplot
 $ hg update
 ```
+
+
+Plotting commands
+make -j plots_el INPUTLOCATION=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/output/Craneens_El/Craneens20_1_2017 BUILDDIR=plots_el TREENAME=Craneen__El DATALABEL=Single\ e
+
+make -j  plots_mu INPUTLOCATION=/storage_mnt/storage/user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016/output/Craneens_Mu/Craneens19_1_2017 BUILDDIR=plots_mu TREENAME=Craneen__Mu DATALABEL=Single\ \#mu
