@@ -26,9 +26,9 @@ LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t}"
 #	@echo "moving merged files to ${INPUTLOCATION}"
 #	@mv Craneen*.root ${INPUTLOCATION}
 
-.PHONY: plots_mu 
+.PHONY: plots
 #Order of arguments matters
-plots_mu: plots_mu/Hists_data.root plots_mu/Hists_WJets.root plots_mu/Hists_T.root plots_mu/Hists_TT.root plots_mu/Hists_TTTT.root
+plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
 	@echo "make muon plots"
 	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
@@ -42,9 +42,9 @@ plots_mu: plots_mu/Hists_data.root plots_mu/Hists_WJets.root plots_mu/Hists_T.ro
 
 .PHONY: plots_el 
 #Order of arguments matters
-plots_el: plots_el/Hists_data.root plots_el/Hists_WJets.root plots_el/Hists_T.root plots_el/Hists_TT.root plots_el/Hists_TTTT.root
-	@echo "make elon plots"
-	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
+plots_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
+	@echo "make electron plots"
+	@if [ -d "$(dir $@)" ]; then echo "Electron dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
 	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --ymin=0.1 --ratio-split=4 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log --stack ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/log" ]; then echo "$@/log dir exists" && rm -rf $@/log ; fi 
