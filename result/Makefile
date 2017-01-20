@@ -1,8 +1,6 @@
 
 FORMAT=png
-#PLOTS='.*'
-#PLOTS='.*leptonpt.*'
-PLOTS='.*bdt.*'
+PLOTS='.*'
 CUSTOMIZE=
 INPUTLOCATION=./
 DATALABEL:=Single \#mu (BCDEFGH)
@@ -26,8 +24,8 @@ LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t}"
 #	@echo "moving merged files to ${INPUTLOCATION}"
 #	@mv Craneen*.root ${INPUTLOCATION}
 
-.PHONY: plots
-#Order of arguments matters
+.PHONY: plots_mu
+#Order of arguments matters (1 - data, 4 - reference for the ratio when multiple ratios are requested, last - excluded from that ratio stack hist referece)
 plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
 	@echo "make muon plots"
 	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
