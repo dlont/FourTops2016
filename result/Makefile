@@ -1,12 +1,16 @@
 
 FORMAT=png
-PLOTS='.*'
+#PLOTS='.*'
+#PLOTS='.*leptonpt.*'
+PLOTS='.*bdt.*'
 CUSTOMIZE=
 INPUTLOCATION=./
 DATALABEL:=Single \#mu (BCDEFGH)
 TREENAME:=Craneen__Mu
 
 VPATH:=$(shell readlink -f ${INPUTLOCATION})
+
+ROOTPLOT=../rootplot/bin/rootplot
 
 #include Makefile_norm.mk
 include Makefile_hist.mk
@@ -28,10 +32,10 @@ plots_mu: plots_mu/Hists_data.root plots_mu/Hists_WJets.root plots_mu/Hists_T.ro
 	@echo "make muon plots"
 	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
+	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --ymin=0.1 --ratio-split=4 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log --stack ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/log" ]; then echo "$@/log dir exists" && rm -rf $@/log ; fi 
 	@mv log $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
+	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
 
@@ -42,10 +46,10 @@ plots_el: plots_el/Hists_data.root plots_el/Hists_WJets.root plots_el/Hists_T.ro
 	@echo "make elon plots"
 	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log ${CUSTOMIZE}
+	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --logy --ymin=0.1 --ratio-split=4 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=log --stack ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/log" ]; then echo "$@/log dir exists" && rm -rf $@/log ; fi 
 	@mv log $@
-	@rootplot rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
+	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
 

@@ -54,6 +54,7 @@ marker_sizes = [1.1,1.1,1.1,1.1,1.1]         # in pixels
 line_styles = []          # 1 (solid), 2 (dashed), 4 (dashdot), 3 (dotted), ...
 fill_styles = [0,1001,1001,1001,0]          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
 draw_commands = ['pe', 'HIST stack',' HIST stack',' HIST stack','HIST']        # a TH1::Draw option, include 'stack' to make stacked
+#draw_commands = ['pe', 'HIST ',' HIST ',' HIST ','HIST']        # a TH1::Draw option, include 'stack' to make stacked
 
 ##############################################################################
 ######## Global Style Options ################################################
@@ -102,11 +103,12 @@ mc_color = (50, 150, 150) # used when there are exactly 2 targets; set to
 data_marker = 20           # marker style (circle)
 
 #### Settings for --ratio-split or --efficiency-split
-ratio_max  = None
-ratio_min  = None
+ratio_max  = 2.
+ratio_min  = 0.
 ratio_logy = False
-ratio_fraction = 0.3  # Fraction of the canvas that bottom plot occupies
-ratio_label = 'Ratio to %(ratio_file)s' # Label for the bottom plot
+ratio_fraction = 0.4  # Fraction of the canvas that bottom plot occupies
+#ratio_label = 'Ratio to %(ratio_file)s' # Label for the bottom plot
+ratio_label = 'Ratio to MC' # Label for the bottom plot
 efficiency_label = 'Efficiency vs. %(ratio_file)s'
 
 #### Titles produced by --area-normalize and --normalize
@@ -119,7 +121,7 @@ underflow_text = ' Underflow'
 
 #### Define how much headroom to add to the plot
 top_padding_factor = 1.2
-top_padding_factor_log = 5.    # used when --logy is set
+top_padding_factor_log = 10    # used when --logy is set
 
 #### Plotting options based on histogram names
 ## Apply options to histograms whose names match regular expressions
@@ -177,7 +179,7 @@ ROOT.CMS_lumi()
 ######## HTML Output #########################################################
 
 #### Number of columns for images in HTML output
-ncolumns_html = 2
+ncolumns_html = 3
 
 #### Provide a template for the html index files
 html_template=r'''

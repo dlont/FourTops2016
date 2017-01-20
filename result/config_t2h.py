@@ -28,7 +28,12 @@ cut_for_all_files = ""
 # Let cut_sets = [] to make all plots.
 cut_sets = [
     ("allSF", "", "ScaleFactor"),
-    ("PU", "", "ScaleFactor/SFbtag"),
+    ("allSF_NJ6", "Njet=6", "(nJets==6)*ScaleFactor"),
+    ("allSF_NJ7", "Njet=7", "(nJets==7)*ScaleFactor"),
+    ("allSF_NJ8", "Njet=8", "(nJets==8)*ScaleFactor"),
+    ("allSF_NJ9", "Njet=9", "(nJets==9)*ScaleFactor"),
+    ("allSF_NJ10+", "Njet>9", "(nJets>9)*ScaleFactor"),
+    ("PU", "", "SFPU"),
     ("btagSF", "", "SFbtag"),
     ("leptonSF", "", "SFlepton"),
     ("noSF", "", ""),
