@@ -1,5 +1,6 @@
 
 FORMAT=png
+#PLOTS='.*pu.*'
 PLOTS='.*'
 CUSTOMIZE=
 INPUTLOCATION=./
@@ -15,7 +16,7 @@ include Makefile_hist.mk
 include Makefile_merge.mk
 
 SIZE="1000x1000"
-LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t}"
+LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t} (\#times 100)"
 #SCALE=${WJETSNORM},${TTNORM},${TTTTNORM},1
 
 #.PHONY: mergetrees
@@ -50,6 +51,11 @@ plots_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/H
 	@${ROOTPLOT} rootplot_config.py $^ --size=${SIZE} -f --data=1 --overflow --legend-entries=${LEGEND} -e ${FORMAT} --path=${PLOTS} --output=lin ${CUSTOMIZE}
 	@if [ -d "$(dir $@)/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
+
+.PHONY: cards
+cards: Hists_data.root Hists_WJets.root Hists_T.root Hists_SYST.root Hists_TTTT.root
+	@echo "make HiggsCombine cards"
+	
 
 .PHONY: clean
 clean:
