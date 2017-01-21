@@ -341,3 +341,19 @@ TOTAL: 784188685
 TTTT negative weight fraction
 negative weight NormFactor (posttrig): 0.44206
 negative weight NormFactor (pretrig): 0.449449
+
+
+
+Sam 21 Jan 2017 00:38:41 CET
+
+tag v0.0.9pudown is a special tag for M17 analysis with the corrections described in 
+https://docs.google.com/presentation/d/1MtTtEbT5QSpP8rcazfXWDO4vHs00xfsAfpryrdcI3Os/edit#slide=id.g191c4d4b66_0_140
+and central pile-up SF replaced by down variation SFPU in the event level SF
+
+
+
+#To make combine cards
+```
+cd result
+make -n cards INPUTLOCATION=plots_mu
+```
