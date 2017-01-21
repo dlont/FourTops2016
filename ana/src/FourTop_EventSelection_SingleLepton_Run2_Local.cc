@@ -880,7 +880,7 @@ int main (int argc, char *argv[])
                 
                 LOG(INFO)<<"Lumi weight "<<lumiWeight<<"  Lumi weight Up "<<lumiWeight_up<<"   Lumi weight Down "<<lumiWeight_down;
             }
-#warning "!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!WARNING: Central lumiweight is replaced by down lumiweight SF!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!"
+#warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: Central lumiweight is replaced by down lumiweight SF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             scaleFactor = scaleFactor * lumiWeight_down;
             //scaleFactor = scaleFactor * lumiWeight;
 	
