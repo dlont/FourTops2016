@@ -24,7 +24,8 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-channels = ["Mu2016","El2016"] 
+#channels = ["Mu2016","El2016"] 
+channels = ['Syst2016Mu']
 # channels = ["Mu","El"] 
 # channels = ["Mu"] 
 # channels = ["El"] 
@@ -48,6 +49,8 @@ for chan in channels:
         tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_v0.xml')
     elif "El2016" in chan:
         tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_v1.xml')
+    elif "Syst2016Mu" in chan:
+        tree = ET.ElementTree(file='config/SystMuonTopTrees80_v1.xml')
     elif "Dilep" in chan:
         tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
     elif "test" in chan:
@@ -95,6 +98,19 @@ for chan in channels:
             if "Dilep" in chan:
                 commandString = "./MACRO "+str(d.attrib['name'])+" "+str(d.attrib['title'])+" "+str(d.attrib['add'])+" "+str(d.attrib['color'])+" "+str(d.attrib['ls'])+" "+str(d.attrib['lw'])+" "+str(d.attrib['normf'])+" "+str(d.attrib['EqLumi'])+" "+str(d.attrib['xsection'])+" "+str(d.attrib['PreselEff'])
             else:
+		jes = ''
+		if 'jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=up'
+		elif 'jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=down'
+		
+		jer = ''
+		if 'jerup' in str(d.attrib['name']):
+                        jer = '--fourtops_jer=up'
+                elif 'jerdown' in str(d.attrib['name']):
+                        jer = '--fourtops_jer=down'
+		
+
                 commandString = './FourTops'\
 		+' --dataset_name="{}"'.format(str(d.attrib['name'])) \
 		+' --dataset_title="{}"'.format(str(d.attrib['title']))\
@@ -127,7 +143,7 @@ for chan in channels:
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
 		print >> outfileTest, './FourTops --version '
-                print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan) 
+                print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan), jes, jer 
             N_job = 0
             N_file = 1
             remainder= len(topTrees)%FilePerJob
@@ -183,7 +199,7 @@ for chan in channels:
                     print >> outfile, "# now run on the file copied under /$TMPDIR/ "
 		    print >> outfile, './FourTops --version '
                     print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan), \
-		    				     '--jobid="{}"'.format('$PBS_JOBID')
+						     jes, jer, '--jobid="{}"'.format('$PBS_JOBID')
                     # , " " , str(N_job+1) , " 0" , " 2000000" 
 
                     # cleaning
