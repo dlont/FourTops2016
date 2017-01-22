@@ -25,15 +25,19 @@ from cards_bin_list import binlist
 #Global definitions
 
 
-def getObservation(ch,datafile,observable):
+def getObservation(ch,file,observable):
     '''
     Fill per-bin datacounts list
     '''
+    logging.debug("----getObservation:-----")
     obs = {ch:{}}
     for ibin in binlist[ch]:
-        histname = ibin.replace(ch,'')
+        histname = ibin.replace(ch,'')  #Remove channel prefix e.g. mu6J2M->6J2M
         histname = histname + '/' + observable
-        integral = datafile.Get(histname).Integral()
+        logging.debug("Observations filename: "+file.GetName())
+        logging.debug("Observations histname: "+histname)
+        integral = file.Get(histname).Integral()
+        logging.debug("Integral: "+str(integral))
         obs[ch][ibin]=integral
     return obs
 
@@ -41,8 +45,9 @@ def mcRate(ch,files,observable):
     '''
     Get MC predictions for each process
     '''
-    
+    logging.debug("----mcRate:-----")
     rate = {}
+    logging.debug(files)
     for proc in proc_id.keys():
         rate[proc]=getObservation(ch,files[proc],observable)
     return rate
@@ -50,7 +55,7 @@ def mcRate(ch,files,observable):
 def printCardHeader(arguments):
     print >> arguments.outfile, '#',str(datetime.now()), arguments
     print >> arguments.outfile, '-'*100
-    print >> arguments.outfile, 'imax', 1
+    print >> arguments.outfile, 'imax', len(binlist[arguments.channel])
     print >> arguments.outfile, 'jmax', len(proc_id)-1
     print >> arguments.outfile, 'kmax', '*'
     print >> arguments.outfile, '-'*100
@@ -58,12 +63,16 @@ def printCardHeader(arguments):
 def printShapeFilesBlock(arguments):
     print >> arguments.outfile, '-'*100
     for ibin in binlist[arguments.channel]:
+        histname = ibin.replace(arguments.channel,'')
+        histname = histname + '/' + arguments.observable
+        logging.debug(histname)
+        print >> arguments.outfile, 'shapes', 'data_obs', ibin, arguments.data, histname
         for proc in proc_id.keys():
             filename = arguments.sources[proc]
             logging.debug(filename)
+            systname = ibin.replace(arguments.channel,'')+'_$SYSTEMATIC/'+arguments.observable
             print >> arguments.outfile, 'shapes', proc, ibin, \
-                     filename, arguments.observable,  '$SYSTEMATIC/'+arguments.observable
-        print >> arguments.outfile, 'shapes', 'data_obs', ibin, arguments.data, arguments.observable
+                     filename, histname,  systname
     print >> arguments.outfile, '-'*100
     return
 
@@ -85,9 +94,9 @@ def main(arguments):
         obs = getObservation(arguments.channel, datafile,arguments.observable)
         logging.debug( obs )
         #Printout observation block to file
-        obsline = pd.DataFrame(obs[arguments.channel], columns=binlist[arguments.channel], index=['bin'])
+        obsline = pd.DataFrame(obs[arguments.channel], columns=binlist[arguments.channel], index=['observation'])
         print >> arguments.outfile, '-'*100
-        print >> arguments.outfile, obsline
+        print >> arguments.outfile, 'bin', obsline
         print >> arguments.outfile, '-'*100
         
         
@@ -128,7 +137,7 @@ def main(arguments):
         lam = lambda x: systtypelist[arguments.channel][x] if x in systtypelist[arguments.channel] else ''
         result.insert(0,' ',result.index.map(lam))
         #Printout MC (rate and systematics) block to file
-        print >> arguments.outfile, result
+        print >> arguments.outfile, 'bin', result
 
         return 0
 
@@ -142,7 +151,7 @@ if __name__ == '__main__':
         parser.add_argument("--source", type=json.loads, dest='sources',
                             help='json dictionary with input definition', required=True)
         parser.add_argument('--channel', help="channel",default='mu')
-        parser.add_argument('--observable', help="observable",default='bdt')
+        parser.add_argument('--observable', help="observable",default='allSF/bdt')
         parser.add_argument('-o', '--outfile', help="Output file",
                         default=sys.stdout, type=argparse.FileType('w'))
         parser.add_argument(
