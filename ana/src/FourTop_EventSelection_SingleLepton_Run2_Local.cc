@@ -1220,8 +1220,25 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[62] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, csvJetcsv1, csvJetcsv2, csvJetcsv3, csvJetcsv4, csvJetpt1, csvJetpt2, csvJetpt3, csvJetpt4};
-            myEvent.fill(vals);
+            double vals[62] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
+            SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
+            scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
+            lumiWeight,lumiWeight_up,lumiWeight_down,nvertices,normfactor,
+            weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,
+            met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
+            chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
+            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4};
+            
+            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8};
+            double jetvec[30][5];
+            for (auto jet=0; jet<nJets; ++jet){
+                jetvec[jet][0] = selectedJets[jet]->Pt();
+                jetvec[jet][1] = selectedJets[jet]->Eta();
+                jetvec[jet][2] = selectedJets[jet]->Phi();
+                jetvec[jet][3] = selectedJets[jet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+            }
+            myEvent.fill(vals,jetvec,nJets,w);
             tupfile->cd();
             tup->Fill();
 

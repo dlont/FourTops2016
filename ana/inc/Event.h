@@ -16,11 +16,12 @@
 
 #include "TTree.h"
 #include <cstdlib>
+#include <algorithm>
 
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
-    void fill(double []);
+    void fill(double [], double jets[][5], int njet, double w[]);
     
     double BDT;
     int nJets; 
@@ -84,6 +85,8 @@ struct Event {
     double csvJetpt2; 
     double csvJetpt3; 
     double csvJetpt4;
+    double jetvec[30][5];
+    double weight[9];
 }; //end Event
 
 
@@ -154,6 +157,8 @@ void Event::clear() {
       csvJetpt2 = 0.; 
       csvJetpt3 = 0.; 
       csvJetpt4 = 0.;
+      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec), 0.);
+      std::fill( weight, weight + sizeof(weight), 0.);
 } //End Event::clear()
 
 void Event::makeBranches(TTree* tree) {
@@ -224,9 +229,11 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("csvJetpt2", &csvJetpt2    ,"csvJetpt2/D"); 
       tree -> Branch("csvJetpt3", &csvJetpt3    ,"csvJetpt3/D"); 
       tree -> Branch("csvJetpt4", &csvJetpt4    ,"csvJetpt4/D");
+      tree -> Branch("jetvec", jetvec    ,"jetvec[30][5]/D");
+      tree -> Branch("weight", weight    ,"weight[9]/D");
 } // end Event::makeBranches()
 
-void Event::fill(double vals[]) {
+void Event::fill(double vals[], double jets[][5], int njet, double w[]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -289,7 +296,12 @@ void Event::fill(double vals[]) {
     csvJetpt1 = vals[58]; 
     csvJetpt2 = vals[59]; 
     csvJetpt3 = vals[60]; 
-    csvJetpt4 = vals[61];    
+    csvJetpt4 = vals[61];
+    
+    for (auto i = 0; i < njet; ++i) {
+        for (auto par = 0; par < 5; ++par) jetvec[i][par]=jets[i][par];
+    }
+    for (auto par = 0; par < 9; ++par) weight[par]=w[par];
 } // end Event::fill()
 
 #endif /* EVENT_H */
