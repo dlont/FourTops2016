@@ -107,7 +107,7 @@ int main (int argc, char *argv[])
         vecfileNames.push_back(t);
     }
     
-    std::cout<<"!! number of root file: "<<jobid<<std::endl;
+    std::cout<<"OUTPUT root file suffix: "<<jobid<<std::endl;
 
 
     std::cout<<"argc: "<<argc<<std::endl;
@@ -126,6 +126,7 @@ int main (int argc, char *argv[])
     std::cout << "Dataset EqLumi: " << EqLumi << std::endl;
     std::cout << "Dataset xSect: " << xSect << std::endl;
     std::cout << "Dataset File Name: " << vecfileNames[0] << std::endl;
+    std::cout << "JET corrections JEC/JER: " << FLAGS_fourtops_jes <<'/'<< FLAGS_fourtops_jer << std::endl;
     std::cout << "Beginning Event: " << startEvent << std::endl;
     std::cout << "Ending Event: " << endEvent << std::endl;
     std::cout << "----------------------------------------" << std::endl;
@@ -172,11 +173,10 @@ int main (int argc, char *argv[])
     bool debug             = false;
     bool applyJER          = true;
     bool applyJEC          = true;
-    bool JERNom            = true;
-    bool JERUp             = false;
-    bool JERDown           = false;
-    bool JESUp             = false;
-    bool JESDown           = false;
+    bool JERUp             = isJERUp();
+    bool JERDown           = isJERDown();
+    bool JESUp             = isJESUp();
+    bool JESDown           = isJESDown();
     bool fillingbTagHistos = false;
     std::string MVAmethod       = "BDT";
 
@@ -498,9 +498,6 @@ int main (int argc, char *argv[])
         else if(dataSetName.find("JERUp")!=string::npos){
             JERUp=true;
         }
-        else{
-            JERNom=true;
-        }
 
         if(dataSetName.find("JESDown")!=string::npos){
             JESDown=true;
@@ -653,9 +650,9 @@ int main (int argc, char *argv[])
 
             if (applyJER && !isData)
             {
-                if(JERNom) jetTools->correctJetJER(init_jets, genjets, mets[0], "nominal", false);
-                else if(JERDown) jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
-                else if (JERUp) jetTools->correctJetJER(init_jets, genjets, mets[0], "plus", false);
+                if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
+                else if(JERUp)   jetTools->correctJetJER(init_jets, genjets, mets[0], "plus", false);
+                else jetTools->correctJetJER(init_jets, genjets, mets[0], "nominal", false);
                 /// Example how to apply JES systematics
             }
 
