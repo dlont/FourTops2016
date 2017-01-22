@@ -7,6 +7,10 @@ $(BUILDDIR)/Hists_data.root: config_t2h.py $(BUILDDIR)/Craneen_Data_Run2_TopTree
 	@echo "Convert tree to hist $@" 
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTTT_SCALED.root: config_t2h.py $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORMSCALED} ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TTTT.root: config_t2h.py $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} ${SUPPRESSOUT}

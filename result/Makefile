@@ -1,7 +1,7 @@
 
 FORMAT=png
-#PLOTS='.*pu.*'
-PLOTS='.*'
+PLOTS='.*bdt.*'
+#PLOTS='.*'
 CUSTOMIZE=
 INPUTLOCATION=./
 DATALABEL:=Single \#mu (BCDEFGH)
@@ -27,7 +27,7 @@ LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t} (\#times 100)"
 
 .PHONY: plots_mu
 #Order of arguments matters (1 - data, 4 - reference for the ratio when multiple ratios are requested, last - excluded from that ratio stack hist referece)
-plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
+plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT_SCALED.root
 	@echo "make muon plots"
 	@if [ -d "$(dir $@)" ]; then echo "Muon dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
@@ -41,7 +41,7 @@ plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/H
 
 .PHONY: plots_el 
 #Order of arguments matters
-plots_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
+plots_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT_SCALED.root
 	@echo "make electron plots"
 	@if [ -d "$(dir $@)" ]; then echo "Electron dir exists" ; else mkdir $@ ; fi
 	@mkdir -p $@
@@ -52,9 +52,11 @@ plots_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/H
 	@if [ -d "$(dir $@)/lin" ]; then echo "$@/lin dir exists" && rm -rf $@/lin ; fi 
 	@mv lin $@
 
-.PHONY: cards
-cards: Hists_data.root Hists_WJets.root Hists_T.root Hists_SYST.root Hists_TTTT.root
+.PHONY: cards_mu
+cards_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT.root
 	@echo "make HiggsCombine cards"
+	@if [ -d "cards_mu" ]; then echo "cards_mu dir exists" ; else mkdir cards_mu ; fi
+	@python tools/cards.py -o cards_mu/card.txt --channel=mu --data $(BUILDDIR)/Hists_data.root --signal $(BUILDDIR)/Hists_TTTT.root --tt $(BUILDDIR)/Hists_SYST.root --st $(BUILDDIR)/Hists_T.root --ew $(BUILDDIR)/Hists_WJets.root
 	
 
 .PHONY: clean
