@@ -1,9 +1,9 @@
 export TREENAME
 ifeq (${TREENAME},Craneen__Mu)
-DATALUMI=36.7684
+DATALUMI=36.811
 endif
 ifeq (${TREENAME},Craneen__El)
-DATALUMI=36.7720
+DATALUMI=36.615
 endif
 DATANORM=1.
 #SingleMuon reprov3
