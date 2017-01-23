@@ -4,7 +4,7 @@ $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cr
 	@echo merging $@
 	@hadd $@ $^ 
 
-$(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO*.root)
+$(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_Run2*.root)
 	@echo merging $@
 	@hadd $@ $^ ${SUPPRESSOUT}
 	
@@ -24,7 +24,7 @@ $(BUILDDIR)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTL
 	@echo merging $@
 	@hadd $@ $^ ${SUPPRESSOUT}
 
-$(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg*.root)
+$(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_central*.root)
 	@echo merging $@
 	@hadd $@ $^ ${SUPPRESSOUT}
 
