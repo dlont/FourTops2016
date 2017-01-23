@@ -56,34 +56,92 @@ syst_norm_size_list = {
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'LUMI'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
+},
+'el':{ 'TTTT' : {
+            'TTJets_norm'       :[na         ]*len(binlist['mu']),
+            'TTTT_norm'         :['0.94/1.05']*len(binlist['mu']),
+            'ST_tW_norm'        :[na         ]*len(binlist['mu']),
+            'EW_norm'           :[na         ]*len(binlist['mu']),
+            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
+       'TT' : {
+            'TTJets_norm'       :['0.95/1.05']*len(binlist['mu']),
+            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'ST_tW_norm'        :[na         ]*len(binlist['mu']),
+            'EW_norm'           :[na         ]*len(binlist['mu']),
+            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
+       'EW' : {
+            'TTJets_norm'       :[na         ]*len(binlist['mu']),
+            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'ST_tW_norm'        :[na         ]*len(binlist['mu']),
+            'EW_norm'           :[1.04       ]*len(binlist['mu']),
+            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
+       'ST' : {
+            'TTJets_norm'       :[na         ]*len(binlist['mu']),
+            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'ST_tW_norm'        :[1.04       ]*len(binlist['mu']),
+            'EW_norm'           :[na         ]*len(binlist['mu']),
+            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
 }}
 syst_shape_size_list = {
-'mu':{ 'TTTT' : {
-            'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
-            'PU'                :[1.         ]*len(binlist['mu']),
-            'JES'               :[1.         ]*len(binlist['mu']),
-            'JER'               :[1.         ]*len(binlist['mu'])
+'el':{ 'TTTT' : {
+            'TTTT_MEScale'      :[1.         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[1.         ]*len(binlist['el']),
+            'JES'               :[1.         ]*len(binlist['el']),
+            'JER'               :[1.         ]*len(binlist['el'])
             },
       'TT' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[1.         ]*len(binlist['mu']),
-            'PU'                :[1.         ]*len(binlist['mu']),
-            'JES'               :[1.         ]*len(binlist['mu']),
-            'JER'               :[1.         ]*len(binlist['mu'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[1.         ]*len(binlist['el']),
+            'PU'                :[1.         ]*len(binlist['el']),
+            'JES'               :[1.         ]*len(binlist['el']),
+            'JER'               :[1.         ]*len(binlist['el'])
             },
       'EW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
-            'PU'                :[na         ]*len(binlist['mu']),
-            'JES'               :[na         ]*len(binlist['mu']),
-            'JER'               :[na         ]*len(binlist['mu'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[na         ]*len(binlist['el']),
+            'JES'               :[na         ]*len(binlist['el']),
+            'JER'               :[na         ]*len(binlist['el'])
             },
       'ST' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
-            'PU'                :[na         ]*len(binlist['mu']),
-            'JES'               :[na         ]*len(binlist['mu']),
-            'JER'               :[na         ]*len(binlist['mu'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[na         ]*len(binlist['el']),
+            'JES'               :[na         ]*len(binlist['el']),
+            'JER'               :[na         ]*len(binlist['el'])
+            },
+},
+'el':{ 'TTTT' : {
+            'TTTT_MEScale'      :[1.         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[1.         ]*len(binlist['el']),
+            'JES'               :[1.         ]*len(binlist['el']),
+            'JER'               :[1.         ]*len(binlist['el'])
+            },
+      'TT' : {
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[1.         ]*len(binlist['el']),
+            'PU'                :[1.         ]*len(binlist['el']),
+            'JES'               :[1.         ]*len(binlist['el']),
+            'JER'               :[1.         ]*len(binlist['el'])
+            },
+      'EW' : {
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[na         ]*len(binlist['el']),
+            'JES'               :[na         ]*len(binlist['el']),
+            'JER'               :[na         ]*len(binlist['el'])
+            },
+      'ST' : {
+            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'PU'                :[na         ]*len(binlist['el']),
+            'JES'               :[na         ]*len(binlist['el']),
+            'JER'               :[na         ]*len(binlist['el'])
             },
 }}
