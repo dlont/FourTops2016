@@ -56,7 +56,7 @@ $(BUILDDIR)/Hists_TT_JESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_jes
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESUP ${SUPPRESSOUT}
 	
-$(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_jerdown_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESDOWN ${SUPPRESSOUT}
 
@@ -68,14 +68,16 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	@hadd $@ $^ ${SUPPRESSOUT}
 
 
-.PHONY: cards_mu
-cards_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
+card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
 	@echo "make HiggsCombine cards"
 	@if [ -d "cards_mu" ]; then echo "cards_mu dir exists" ; else mkdir cards_mu ; fi
 	@python tools/cards.py -o cards_mu/card.txt --channel=mu --data $(BUILDDIR)/Hists_data.root  --source '{"TTTT":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "TT":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_WJets.root", "ST":"$(BUILDDIR)/Hists_T.root"}' --observable=bdt
 	
-.PHONY: cards_el
-cards_el: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
+card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
 	@echo "make HiggsCombine cards"
 	@if [ -d "cards_el" ]; then echo "cards_el dir exists" ; else mkdir cards_el ; fi
-	@python tools/cards.py -o cards_el/card.txt --channel=el --data $(BUILDDIR)/Hists_data.root  --source '{"TTTT":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "TT":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_WJets.root", "ST":"$(BUILDDIR)/Hists_T.root"}' --observable=bdt
+	@python tools/cards.py -o card_el.txt --channel=el --data $(BUILDDIR)/Hists_data.root  --source '{"TTTT":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "TT":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_WJets.root", "ST":"$(BUILDDIR)/Hists_T.root"}' --observable=bdt
+
+datacard_elmu.txt:	card_el.txt card_mu.txt
+	@echo "Combining datacards $^"
+	@combineCards.py EL=cards_el.txt MU=cards_mu.txt > $@
