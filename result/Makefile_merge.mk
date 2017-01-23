@@ -7,6 +7,22 @@ $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cr
 $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO*.root)
 	@echo merging $@
 	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_ttttNLO_jerup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_jerup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_ttttNLO_jerdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_jerdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_ttttNLO_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg*.root)
 	@echo merging $@
@@ -33,6 +49,22 @@ $(BUILDDIR)/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root: $(wildcard $(IN
 	@hadd $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTUETuneup_powheg*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_jerup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_jerup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_jerdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_jerdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@hadd $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_jesdown_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@hadd $@ $^ ${SUPPRESSOUT}
 

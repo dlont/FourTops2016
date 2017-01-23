@@ -3,9 +3,9 @@ from cards_bin_list import binlist
 systtypelist = {
 'mu':{
 'TTJets_norm':'lnN',
-#'TTJets_MEScale':'shape',
+'TTJets_MEScale':'shape',
 'TTTT_norm':'lnN',
-#'TTTT_MEScale':'shape',
+'TTTT_MEScale':'shape',
 'ST_tW_norm':'lnN',
 'EW_norm':'lnN',
 'LUMI':'lnN',
@@ -59,31 +59,31 @@ syst_norm_size_list = {
 }}
 syst_shape_size_list = {
 'mu':{ 'TTTT' : {
-#            'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
-#            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
             'PU'                :[1.         ]*len(binlist['mu']),
-#            'JES'               :[1.         ]*len(binlist['mu']),
-#            'JER'               :[1.         ]*len(binlist['mu'])
+            'JES'               :[1.         ]*len(binlist['mu']),
+            'JER'               :[1.         ]*len(binlist['mu'])
             },
       'TT' : {
-#            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-#            'TTJets_MEScale'    :[1.         ]*len(binlist['mu']),
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[1.         ]*len(binlist['mu']),
             'PU'                :[1.         ]*len(binlist['mu']),
-#            'JES'               :[1.         ]*len(binlist['mu']),
-#            'JER'               :[1.         ]*len(binlist['mu'])
+            'JES'               :[1.         ]*len(binlist['mu']),
+            'JER'               :[1.         ]*len(binlist['mu'])
             },
       'EW' : {
-#            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-#            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
-            'PU'                :[1.         ]*len(binlist['mu']),
-#            'JES'               :[1.         ]*len(binlist['mu']),
-#            'JER'               :[1.         ]*len(binlist['mu'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'PU'                :[na         ]*len(binlist['mu']),
+            'JES'               :[na         ]*len(binlist['mu']),
+            'JER'               :[na         ]*len(binlist['mu'])
             },
       'ST' : {
-#            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-#            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
-            'PU'                :[1.         ]*len(binlist['mu']),
-#            'JES'               :[1.         ]*len(binlist['mu']),
-#            'JER'               :[1.         ]*len(binlist['mu'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'PU'                :[na         ]*len(binlist['mu']),
+            'JES'               :[na         ]*len(binlist['mu']),
+            'JER'               :[na         ]*len(binlist['mu'])
             },
 }}

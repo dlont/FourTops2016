@@ -1,7 +1,7 @@
 #Order of arguments matters (first config.py, second input_tree.root, third scale)
 include Makefile_norm.mk
 
-CONFIG=config_t2h.py
+CONFIG:=config_t2h.py
 SUPPRESSOUT=>/dev/null
 
 $(BUILDDIR)/Hists_data.root: ${CONFIG} $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root

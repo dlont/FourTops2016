@@ -122,11 +122,11 @@ def main(arguments):
             s.update(df_update)
             #Add process labels and id (first and second line, respectively)
             processline = pd.DataFrame(proc, columns=binlist[arguments.channel], index=['process'])
-            s = pd.concat([s.ix[:0], processline, s.ix[1:]])
+            s = pd.concat([s.ix[:0], processline, s.ix[0:]])
             processline = pd.DataFrame(proc_id[proc], columns=binlist[arguments.channel], index=['process '])
-            s = pd.concat([s.ix[:1], processline, s.ix[2:]])
+            s = pd.concat([s.ix[:1], processline, s.ix[1:]])
             rateline = pd.DataFrame(rate[proc][arguments.channel], columns=binlist[arguments.channel], index=['rate'])
-            s = pd.concat([s.ix[:2], rateline, s.ix[3:]])
+            s = pd.concat([s.ix[:2], rateline, s.ix[2:]])
             
             print arguments.channel, proc
             logging.debug(s)
