@@ -23,7 +23,33 @@ systtypelist = {
 #{'btagWeightCSVLFStats2',
 #{'btagWeightCSVCFErr1',
 #{'btagWeightCSVCFErr2'
+},
+'el':{
+'TTJets_norm':'lnN',
+'TTJets_MEScale':'shape',
+'TTTT_norm':'lnN',
+'TTTT_MEScale':'shape',
+'ST_tW_norm':'lnN',
+'EW_norm':'lnN',
+'LUMI':'lnN',
+'PU':'shape',
+'JES':'shape',
+'JER':'shape',
+'leptonSFMu':'lnN'
+#{'ScaleH',
+#{'heavyFlav',
+#{'btagWeightCSVHF',
+#{'btagWeightCSVLF',
+#{'btagWeightCSVHFStats1',
+#{'btagWeightCSVHFStats2',
+#{'btagWeightCSVLFStats1',
+#{'btagWeightCSVLFStats2',
+#{'btagWeightCSVCFErr1',
+#{'btagWeightCSVCFErr2'
 }}
+
+
+
 na = '-'
 lumiunc = 1.062
 leptonsf = 1.02
