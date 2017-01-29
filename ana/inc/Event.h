@@ -21,7 +21,7 @@
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
-    void fill(double [], double jets[][5], int njet, double w[]);
+    void fill(double [], double [][5], int , double [], double []);
     
     double BDT;
     int nJets; 
@@ -85,8 +85,9 @@ struct Event {
     double csvJetpt2; 
     double csvJetpt3; 
     double csvJetpt4;
-    double jetvec[30][5];
-    double weight[9];
+    double jetvec[30][5];   //jet properties (pT,eta,phi,csv)
+    double weight[9];       //ME scale variation weights
+    double csvrsw[20];      //CSVRS systematic weights
 }; //end Event
 
 
@@ -159,6 +160,7 @@ void Event::clear() {
       csvJetpt4 = 0.;
       std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec), 0.);
       std::fill( weight, weight + sizeof(weight), 0.);
+      std::fill( csvrsw, csvrsw + sizeof(csvrsw), 0.);
 } //End Event::clear()
 
 void Event::makeBranches(TTree* tree) {
@@ -229,11 +231,12 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("csvJetpt2", &csvJetpt2    ,"csvJetpt2/D"); 
       tree -> Branch("csvJetpt3", &csvJetpt3    ,"csvJetpt3/D"); 
       tree -> Branch("csvJetpt4", &csvJetpt4    ,"csvJetpt4/D");
-      tree -> Branch("jetvec", jetvec    ,"jetvec[30][5]/D");
-      tree -> Branch("weight", weight    ,"weight[9]/D");
+      tree -> Branch("jetvec", jetvec    ,"jetvec[nJets][5]/D");
+      tree -> Branch("weight", weight    ,"weight[8]/D");
+      tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
 } // end Event::makeBranches()
 
-void Event::fill(double vals[], double jets[][5], int njet, double w[]) {
+void Event::fill(double vals[], double jets[][5], int njet, double w[], double csvrs[]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -301,7 +304,8 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[]) {
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) jetvec[i][par]=jets[i][par];
     }
-    for (auto par = 0; par < 9; ++par) weight[par]=w[par];
+    for (auto par = 0; par < 8; ++par) weight[par]=w[par];
+    for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
 } // end Event::fill()
 
 #endif /* EVENT_H */
