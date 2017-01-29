@@ -17,6 +17,8 @@ DEFINE_double(dataset_preselection_eff,1.,"Dataset preselection efficiency");   
 DEFINE_string(fourtops_channel, "NONE", "Decay channel identifier");
 DEFINE_string(fourtops_jes, "central", "Jet energy scale variation");           //Default central
 DEFINE_string(fourtops_jer, "central", "Jet energy resolution variation");      //Default central
+DEFINE_bool(fourtops_btagregular,true,"Regular btagging SF");
+DEFINE_bool(fourtops_btagcsvrs,true,"CSV reshaping btagging SF");
 DEFINE_string(input_files, "", "List of input ROOT files to run over");
 DEFINE_string(jobid, "XYZ", "Job id signature");                                //Default "XYZ"
 DEFINE_int32(nevents, -1, "Number of events to run over");                      // Default: all
