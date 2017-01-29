@@ -9,7 +9,7 @@ from math import pi
 from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
 lp = [
-    Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 100, -0.6, 1.)),
+    Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
     Plot("HT"           , TH1D("ht"    , ";HT (GeV);entries/bin", 90, 150., 2000.)),
     Plot("PU"           , TH1D("pu"    , ";Number of prim. v.;entries/bin", 55, -0.5, 54.5)),
     Plot("1stjetpt"           , TH1D("1stjetpt"    , ";1st jet p_{T} (GeV);entries/bin", 50, 0., 1500.)),
