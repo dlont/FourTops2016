@@ -41,6 +41,7 @@
 #include "TopTreeAnalysisBase/Tools/interface/SourceDate.h"
 #include "TopTreeAnalysisBase/Tools/interface/BTagWeightTools.h"
 #include "TopTreeAnalysisBase/Tools/interface/BTagCalibrationStandalone.h"
+#include "TopTreeAnalysisBase/Tools/interface/BTagSF.h"
 #include "TopTreeAnalysisBase/Tools/interface/JetCombiner.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVATrainer.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVAComputer.h"
@@ -160,15 +161,11 @@ int main (int argc, char *argv[])
     //      Configuration                //
     ///////////////////////////////////////
 
-    bool SingleLepton      = true;
-    bool Muon              = false;
-    bool Electron          = false;
     bool HadTopOn          = true;
     bool EventBDTOn        = true;
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
-    bool bx25              = true;
-    bool bTagReweight      = true;
-    bool bTagCSVReweight   = false;
+    bool bTagReweight      = FLAGS_fourtops_btagregular;
+    bool bTagCSVReweight   = FLAGS_fourtops_btagcsvrs;
     bool bLeptonSF         = true; //! apply lepton SFs
     bool debug             = false;
     bool applyJER          = true;
@@ -180,6 +177,13 @@ int main (int argc, char *argv[])
     bool fillingbTagHistos = false;
     std::string MVAmethod       = "BDT";
 
+    bool isData = false;
+    if(dataSetName.find("Data")!=string::npos){
+        isData = true;
+    }
+    bool SingleLepton      = true;
+    bool Muon              = false;
+    bool Electron          = false;
     if (batch && inputChannel.find("Mu")!=string::npos){
         Muon = true;
         Electron = false;
@@ -242,15 +246,12 @@ int main (int argc, char *argv[])
     BTagCalibrationReader * bTagReader;
     BTagCalibrationReader * bTagReaderUp;
     BTagCalibrationReader * bTagReaderDown;
-    BTagCalibrationReader * reader_csvv2; //for csv reshaping 
 
     BTagWeightTools *btwt;
     BTagWeightTools *btwtUp;
     BTagWeightTools *btwtDown;
-    bool isData = false;
-    if(dataSetName.find("Data")!=string::npos){
-        isData = true;
-    }
+    
+    BTagSF* csvrsw;
 
     
     ///////////////////////////////////////////////////////
@@ -269,7 +270,7 @@ int main (int argc, char *argv[])
     TFile* btagEffHistFile_down = nullptr;
     if(bTagReweight && !isData ){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
-        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
+        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
         bTagReader = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","central"); //mujets
         bTagReaderUp = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","up"); //mujets
         bTagReaderDown = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","down"); //mujets
@@ -309,12 +310,9 @@ int main (int argc, char *argv[])
 
     if(bTagCSVReweight && !isData){
         // BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/ttH_BTV_CSVv2_13TeV_2015D_20151120.csv");
-        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
-        reader_csvv2 = new BTagCalibrationReader(&calib_csvv2, // calibration instance
-              BTagEntry::OP_RESHAPING, // operating point
-              "iterativefit", // measurement type
-              "central"); // systematics type
-        btwt = new BTagWeightTools(reader_csvv2,btagEffHistFile_central,30,500,2.4,false);
+//        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
+        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
+        csvrsw = new BTagSF(&calib_csvv2);
     }
 //    std::exit(EXIT_SUCCESS);
     /////////////////////////////////////////////////
@@ -328,7 +326,8 @@ int main (int argc, char *argv[])
     ElectronSFWeight* electronSFWeightIDISO; 
     
     if(bLeptonSF){
-        if(Muon){ 
+        if(Muon){
+            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE MUON SF FOR H RUNS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             // muonSFWeight = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Muon_SF_TopEA.root","SF_totErr",false,false);  OLD SF WEIGHT
             muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
             muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
@@ -400,9 +399,6 @@ int main (int argc, char *argv[])
     LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupUp.root", "pileup", "pileupUp");    
     LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupDown.root", "pileup", "pileupDown");    
     
-    //std::cout << "Press any key" << std::endl;
-    //char waitinput;
-    //std::cin >> waitinput;
     ///////////////////////////////////////////
     ///  Initialise Jet Energy Corrections  ///
     ///////////////////////////////////////////
@@ -506,10 +502,6 @@ int main (int argc, char *argv[])
             JESUp=true;
         }    
 
-        if(dataSetName.find("bx50") != std::string::npos) bx25 = false;
-        else bx25 = true;
-        if(bx25) std::cout << "Dataset with 25ns Bunch Spacing!" <<std::endl;
-        else std::cout << "Dataset with 50ns Bunch Spacing!" <<std::endl;
 
         if(dataSetName.find("NLO") != std::string::npos || dataSetName.find("nlo") !=std::string::npos) nlo = true;
         else nlo = false;
@@ -612,7 +604,7 @@ int main (int argc, char *argv[])
                 << " ("<<100*(ievt-0)/(ending-0)<<"%)"<<flush<<"\r"<<std::endl;
             }
 
-            float scaleFactor = 1.;  // scale factor for the event
+            double scaleFactor = 1.;  // scale factor for the event
             bool trigged = false;  // Disabling the HLT requirement
             LOG(INFO) <<"Load Event";
             event = treeLoader.LoadEvent (ievt, vertex, init_muons, init_electrons, init_jets, mets, debug);
@@ -647,7 +639,7 @@ int main (int argc, char *argv[])
             //////////////////////////////////////
             ///  Jet Energy Scale Corrections  ///
             //////////////////////////////////////
-
+            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE JEC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             if (applyJER && !isData)
             {
                 if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
@@ -669,6 +661,7 @@ int main (int argc, char *argv[])
             ///////////////////////////////////////////////////////////
             //           Object definitions for selection            //
             ///////////////////////////////////////////////////////////
+            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE LEPTON SELECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             Run2Selection r2selection(init_jets, init_muons, init_electrons, mets);
 
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
@@ -749,14 +742,14 @@ int main (int argc, char *argv[])
             float HTb = 0.;  //calculate assigning loose, medium and tight tags
             for (Int_t seljet =0; seljet < selectedJets.size(); seljet++ )
             {
-                if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() > 0.46   ) //0.605
+                if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() >  0.5426    ) //0.605
                 {
                     selectedLBJets.push_back(selectedJets[seljet]);
-                    if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() > 0.80) //0.890
+                    if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() > 0.8484 ) //0.890
                     {
                         HTb += selectedJets[seljet]->Pt();
                         selectedMBJets.push_back(selectedJets[seljet]);
-                        if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() > 0.935) //0.970
+                        if (selectedJets[seljet]->btag_combinedInclusiveSecondaryVertexV2BJetTags() > 0.9535 ) //0.970
                         {
                             selectedTBJets.push_back(selectedJets[seljet]);
                         }
@@ -877,9 +870,9 @@ int main (int argc, char *argv[])
                 
                 LOG(INFO)<<"Lumi weight "<<lumiWeight<<"  Lumi weight Up "<<lumiWeight_up<<"   Lumi weight Down "<<lumiWeight_down;
             }
-#warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: Central lumiweight is replaced by down lumiweight SF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            scaleFactor = scaleFactor * lumiWeight_down;
-            //scaleFactor = scaleFactor * lumiWeight;
+//            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: Central lumiweight is replaced by down lumiweight SF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+//            scaleFactor = scaleFactor * lumiWeight_down;
+            scaleFactor = scaleFactor * lumiWeight;
 	
 
 
@@ -936,16 +929,19 @@ int main (int argc, char *argv[])
                 DLOG(INFO)<<"btag weight "<<btagWeight<<"  btag weight Up "<<btagWeightUp<<"   btag weight Down "<<btagWeightDown;
             }
             ////csv discriminator reweighting
-
-            if(bTagCSVReweight && !isData){
+            
+            std::map<string,double> csvrsweights;
+            if(bTagCSVReweight && !isData) {
             //get btag weight info
                 if(!fillingbTagHistos){
-                    btagWeight =  btwt->getMCEventWeight(selectedJets, false);
+                    csvrsweights = csvrsw->getSFs(selectedJets);
+                    for(auto el: csvrsweights) DLOG(INFO) << "CSVRS:" << std::setw(10) << el.first << std::setw(10) << el.second ;
                 }      
-                DLOG(INFO)<<"CSVRS btag weight = "<<btagWeight;       
+//                DLOG(INFO)<<"CSVRS btag weight = "<<btagWeight;       
 
             }
-            scaleFactor*=btagWeight; 
+            if( FLAGS_fourtops_btagregular && FLAGS_fourtops_btagcsvrs ) scaleFactor*=btagWeight; 
+            else scaleFactor*=csvrsweights.find("nominal")->second;
 
 
             /////////////////////////////////////////////////
@@ -1230,7 +1226,19 @@ int main (int argc, char *argv[])
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4};
             
-            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8};
+            double csvrs[] = {
+                    csvrsweights.find("nominal")->second,
+                    csvrsweights.find("JESUp")->second,          csvrsweights.find("JESDown")->second,
+                    csvrsweights.find("LFUp")->second,           csvrsweights.find("LFDown")->second,
+                    csvrsweights.find("HFUp")->second,           csvrsweights.find("HFDown")->second,
+                    csvrsweights.find("CSVHFStats1Up")->second,  csvrsweights.find("CSVHFStats1Down")->second,
+                    csvrsweights.find("CSVHFStats2Up")->second,  csvrsweights.find("CSVHFStats2Down")->second,
+                    csvrsweights.find("CSVLFStats1Up")->second,  csvrsweights.find("CSVLFStats1Down")->second,
+                    csvrsweights.find("CSVLFStats2Up")->second,  csvrsweights.find("CSVLFStats2Down")->second,
+                    csvrsweights.find("CSVCFErr1Up")->second,    csvrsweights.find("CSVCFErr1Down")->second,
+                    csvrsweights.find("CSVCFErr2Up")->second,    csvrsweights.find("CSVCFErr2Down")->second
+            };
+            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_5,weight_7,weight_7};    //replace extream variations by good
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
                 jetvec[jet][0] = selectedJets[jet]->Pt();
@@ -1238,7 +1246,7 @@ int main (int argc, char *argv[])
                 jetvec[jet][2] = selectedJets[jet]->Phi();
                 jetvec[jet][3] = selectedJets[jet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
             }
-            myEvent.fill(vals,jetvec,nJets,w);
+            myEvent.fill(vals,jetvec,nJets,w,csvrs);
             tupfile->cd();
             tup->Fill();
 
