@@ -27,11 +27,16 @@ $(BUILDDIR)/Hists_TTTT_JESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jesup_R
 $(BUILDDIR)/Hists_TTTT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} JESDOWN ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} BTAG ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_JERUP.root $(BUILDDIR)/Hists_TTTT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_JESUP.root $(BUILDDIR)/Hists_TTTT_JESDOWN.root \
-	$(BUILDDIR)/Hists_TTTT_MEScale.root $(BUILDDIR)/Hists_TTTT_PU.root
+	$(BUILDDIR)/Hists_TTTT_MEScale.root $(BUILDDIR)/Hists_TTTT_PU.root \
+	$(BUILDDIR)/Hists_TTTT_BTAG.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
 	@hadd $@ $^ ${SUPPRESSOUT}
 
@@ -59,11 +64,16 @@ $(BUILDDIR)/Hists_TT_JESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_jes
 $(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESDOWN ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} BTAG ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_JERUP.root $(BUILDDIR)/Hists_TT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
-	$(BUILDDIR)/Hists_TT_MEScale.root $(BUILDDIR)/Hists_TT_PU.root 
+	$(BUILDDIR)/Hists_TT_MEScale.root $(BUILDDIR)/Hists_TT_PU.root \
+	$(BUILDDIR)/Hists_TT_BTAG.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
 	@hadd $@ $^ ${SUPPRESSOUT}
 

@@ -33,6 +33,9 @@ cut_sets = []
 if systematic == 'PU':
     from cards_syst_PU import cut_PU
     cut_sets = cut_PU
+elif 'BTAG' in systematic:
+    from cards_syst_BTAG import cut_BTAG
+    cut_sets = cut_BTAG
 elif 'JE' in systematic:
     from cards_syst_JEC import getJECCutSets
     cut_sets = getJECCutSets(systematic)
@@ -47,5 +50,5 @@ elif 'MEScale' in systematic:
 
 # Define histograms to plot
 bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
-from listofplots import lp
+from listofplots_cards import lp
 list_of_plots = lp

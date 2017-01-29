@@ -12,17 +12,17 @@ systtypelist = {
 'PU':'shape',
 'JES':'shape',
 'JER':'shape',
-'leptonSFMu':'lnN'
+'leptonSFMu':'lnN',
 #{'ScaleH',
 #{'heavyFlav',
-#{'btagWeightCSVHF',
-#{'btagWeightCSVLF',
-#{'btagWeightCSVHFStats1',
-#{'btagWeightCSVHFStats2',
-#{'btagWeightCSVLFStats1',
-#{'btagWeightCSVLFStats2',
-#{'btagWeightCSVCFErr1',
-#{'btagWeightCSVCFErr2'
+'btagWeightCSVHF':'shape',
+'btagWeightCSVLF':'shape',
+'btagWeightCSVHFStats1':'shape',
+'btagWeightCSVHFStats2':'shape',
+'btagWeightCSVLFStats1':'shape',
+'btagWeightCSVLFStats2':'shape',
+'btagWeightCSVCFErr1':'shape',
+'btagWeightCSVCFErr2':'shape'
 },
 'el':{
 'TTJets_norm':'lnN',
@@ -35,17 +35,17 @@ systtypelist = {
 'PU':'shape',
 'JES':'shape',
 'JER':'shape',
-'leptonSFMu':'lnN'
+'leptonSFMu':'lnN',
 #{'ScaleH',
 #{'heavyFlav',
-#{'btagWeightCSVHF',
-#{'btagWeightCSVLF',
-#{'btagWeightCSVHFStats1',
-#{'btagWeightCSVHFStats2',
-#{'btagWeightCSVLFStats1',
-#{'btagWeightCSVLFStats2',
-#{'btagWeightCSVCFErr1',
-#{'btagWeightCSVCFErr2'
+'btagWeightCSVHF':'shape',
+'btagWeightCSVLF':'shape',
+'btagWeightCSVHFStats1':'shape',
+'btagWeightCSVHFStats2':'shape',
+'btagWeightCSVLFStats1':'shape',
+'btagWeightCSVLFStats2':'shape',
+'btagWeightCSVCFErr1':'shape',
+'btagWeightCSVCFErr2':'shape'
 }}
 
 
@@ -113,33 +113,65 @@ syst_norm_size_list = {
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
 }}
 syst_shape_size_list = {
-'el':{ 'TTTT' : {
-            'TTTT_MEScale'      :[1.         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
-            'PU'                :[1.         ]*len(binlist['el']),
-            'JES'               :[1.         ]*len(binlist['el']),
-            'JER'               :[1.         ]*len(binlist['el'])
+'mu':{ 'TTTT' : {
+            'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'PU'                :[1.         ]*len(binlist['mu']),
+            'JES'               :[1.         ]*len(binlist['mu']),
+            'JER'               :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHF'   :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLF'   :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats2':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats2':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr2':[1.         ]*len(binlist['mu'])
             },
       'TT' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[1.         ]*len(binlist['el']),
-            'PU'                :[1.         ]*len(binlist['el']),
-            'JES'               :[1.         ]*len(binlist['el']),
-            'JER'               :[1.         ]*len(binlist['el'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[1.         ]*len(binlist['mu']),
+            'PU'                :[1.         ]*len(binlist['mu']),
+            'JES'               :[1.         ]*len(binlist['mu']),
+            'JER'               :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHF'   :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLF'   :[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats2':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats2':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr1':[1.         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr2':[1.         ]*len(binlist['mu'])
             },
       'EW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
-            'PU'                :[na         ]*len(binlist['el']),
-            'JES'               :[na         ]*len(binlist['el']),
-            'JER'               :[na         ]*len(binlist['el'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'PU'                :[na         ]*len(binlist['mu']),
+            'JES'               :[na         ]*len(binlist['mu']),
+            'JER'               :[na         ]*len(binlist['mu']),
+            'btagWeightCSVHF'   :[na         ]*len(binlist['mu']),
+            'btagWeightCSVLF'   :[na         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats1':[na         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats2':[na         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats1':[na         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats2':[na         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr1':[na        ]*len(binlist['mu']),
+            'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
       'ST' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
-            'PU'                :[na         ]*len(binlist['el']),
-            'JES'               :[na         ]*len(binlist['el']),
-            'JER'               :[na         ]*len(binlist['el'])
+            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'PU'                :[na         ]*len(binlist['mu']),
+            'JES'               :[na         ]*len(binlist['mu']),
+            'JER'               :[na         ]*len(binlist['mu']),
+            'btagWeightCSVHF'   :[na         ]*len(binlist['mu']),
+            'btagWeightCSVLF'   :[na         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats1':[na         ]*len(binlist['mu']),
+            'btagWeightCSVHFStats2':[na         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats1':[na         ]*len(binlist['mu']),
+            'btagWeightCSVLFStats2':[na         ]*len(binlist['mu']),
+            'btagWeightCSVCFErr1':[na        ]*len(binlist['mu']),
+            'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
 },
 'el':{ 'TTTT' : {
@@ -147,27 +179,59 @@ syst_shape_size_list = {
             'TTJets_MEScale'    :[na         ]*len(binlist['el']),
             'PU'                :[1.         ]*len(binlist['el']),
             'JES'               :[1.         ]*len(binlist['el']),
-            'JER'               :[1.         ]*len(binlist['el'])
+            'JER'               :[1.         ]*len(binlist['el']),
+            'btagWeightCSVHF'   :[1.         ]*len(binlist['el']),
+            'btagWeightCSVLF'   :[1.         ]*len(binlist['el']),
+            'btagWeightCSVHFStats1':[1.         ]*len(binlist['el']),
+            'btagWeightCSVHFStats2':[1.         ]*len(binlist['el']),
+            'btagWeightCSVLFStats1':[1.         ]*len(binlist['el']),
+            'btagWeightCSVLFStats2':[1.         ]*len(binlist['el']),
+            'btagWeightCSVCFErr1':[1.        ]*len(binlist['el']),
+            'btagWeightCSVCFErr2':[1.         ]*len(binlist['el'])
             },
       'TT' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
             'TTJets_MEScale'    :[1.         ]*len(binlist['el']),
             'PU'                :[1.         ]*len(binlist['el']),
             'JES'               :[1.         ]*len(binlist['el']),
-            'JER'               :[1.         ]*len(binlist['el'])
+            'JER'               :[1.         ]*len(binlist['el']),
+            'btagWeightCSVHF'   :[1.         ]*len(binlist['el']),
+            'btagWeightCSVLF'   :[1.         ]*len(binlist['el']),
+            'btagWeightCSVHFStats1':[1.         ]*len(binlist['el']),
+            'btagWeightCSVHFStats2':[1.         ]*len(binlist['el']),
+            'btagWeightCSVLFStats1':[1.         ]*len(binlist['el']),
+            'btagWeightCSVLFStats2':[1.         ]*len(binlist['el']),
+            'btagWeightCSVCFErr1':[1.        ]*len(binlist['el']),
+            'btagWeightCSVCFErr2':[1.         ]*len(binlist['el'])
             },
       'EW' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
             'TTJets_MEScale'    :[na         ]*len(binlist['el']),
             'PU'                :[na         ]*len(binlist['el']),
             'JES'               :[na         ]*len(binlist['el']),
-            'JER'               :[na         ]*len(binlist['el'])
+            'JER'               :[na         ]*len(binlist['el']),
+            'btagWeightCSVHF'   :[na         ]*len(binlist['el']),
+            'btagWeightCSVLF'   :[na         ]*len(binlist['el']),
+            'btagWeightCSVHFStats1':[na         ]*len(binlist['el']),
+            'btagWeightCSVHFStats2':[na         ]*len(binlist['el']),
+            'btagWeightCSVLFStats1':[na         ]*len(binlist['el']),
+            'btagWeightCSVLFStats2':[na         ]*len(binlist['el']),
+            'btagWeightCSVCFErr1':[na        ]*len(binlist['el']),
+            'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
       'ST' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
             'TTJets_MEScale'    :[na         ]*len(binlist['el']),
             'PU'                :[na         ]*len(binlist['el']),
             'JES'               :[na         ]*len(binlist['el']),
-            'JER'               :[na         ]*len(binlist['el'])
+            'JER'               :[na         ]*len(binlist['el']),
+            'btagWeightCSVHF'   :[na         ]*len(binlist['el']),
+            'btagWeightCSVLF'   :[na         ]*len(binlist['el']),
+            'btagWeightCSVHFStats1':[na         ]*len(binlist['el']),
+            'btagWeightCSVHFStats2':[na         ]*len(binlist['el']),
+            'btagWeightCSVLFStats1':[na         ]*len(binlist['el']),
+            'btagWeightCSVLFStats2':[na         ]*len(binlist['el']),
+            'btagWeightCSVCFErr1':[na        ]*len(binlist['el']),
+            'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
 }}
