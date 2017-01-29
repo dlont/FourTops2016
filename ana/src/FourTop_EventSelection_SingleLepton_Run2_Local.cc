@@ -145,7 +145,7 @@ int main (int argc, char *argv[])
     float weightCount = 0.0;
     int eventCount = 0;
     float scalefactorbtageff, mistagfactor;
-    string dataSetName = "";
+    string dataSetName = dName;
     string channelpostfix = "";
     string postfix = "_Run2_TopTree_Study"; // to relabel the names of the output file
     
@@ -270,7 +270,8 @@ int main (int argc, char *argv[])
     TFile* btagEffHistFile_down = nullptr;
     if(bTagReweight && !isData ){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
-        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
+        //bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
+        bTagCalib = new BTagCalibration("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
         bTagReader = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","central"); //mujets
         bTagReaderUp = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","up"); //mujets
         bTagReaderDown = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","down"); //mujets
@@ -891,7 +892,7 @@ int main (int argc, char *argv[])
                         float jeteta = selectedJets[jetbtag]->Eta();
                         float jetdisc = selectedJets[jetbtag]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
                         BTagEntry::JetFlavor jflav;
-                        int jetpartonflav = std::abs(selectedJets[jetbtag]->partonFlavour());
+                        int jetpartonflav = std::abs(selectedJets[jetbtag]->hadronFlavour());
                         LOG(INFO)<<"parton flavour: "<<jetpartonflav<<"  jet eta: "<<jeteta<<" jet pt: "<<jetpt<<"  jet disc: "<<jetdisc;
                         if(jetpartonflav == 5){
                             jflav = BTagEntry::FLAV_B;
@@ -937,11 +938,8 @@ int main (int argc, char *argv[])
                     csvrsweights = csvrsw->getSFs(selectedJets);
                     for(auto el: csvrsweights) DLOG(INFO) << "CSVRS:" << std::setw(10) << el.first << std::setw(10) << el.second ;
                 }      
-//                DLOG(INFO)<<"CSVRS btag weight = "<<btagWeight;       
-
             }
-            if( FLAGS_fourtops_btagregular && FLAGS_fourtops_btagcsvrs ) scaleFactor*=btagWeight; 
-            else scaleFactor*=csvrsweights.find("nominal")->second;
+            if( bTagCSVReweight ) scaleFactor*=csvrsweights.find("nominal")->second;
 
 
             /////////////////////////////////////////////////
