@@ -1,15 +1,18 @@
 def getJECCutSets(systematic):
-    if systematic.upper() == 'JESUP':
-        syst, var = 'JES', 'Up'
-    elif systematic.upper() == 'JESDOWN':
-        syst, var = 'JES', 'Down'
-    elif systematic.upper() == 'JERUP':
-        syst, var = 'JER', 'Up'
-    elif systematic.upper() == 'JERDOWN':
-        syst, var = 'JER', 'Down'
-    else: pass
+    syst, var = '',''
+    if 'JES' in systematic.upper():
+        syst = 'JES'
+    elif 'JER' in systematic.upper():
+        syst = 'JER'
+    else:
+        print 'Unrecognised systematic', systematic
+    if 'UP' in systematic.upper():
+        var = 'Up'
+    elif 'DOWN' in systematic.upper():
+        var = 'Down'
+    else: 
+        print 'Unrecognised systematic', systematic
     cut_sets = [
-        #central
         ("6J2M_{0}{1}".format(syst,var), "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2)*ScaleFactor"),
         ("6J3M_{0}{1}".format(syst,var), "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3)*ScaleFactor"),
         ("6J4M_{0}{1}".format(syst,var), "Njet=6, nMtags=4",  "(nJets==6 && nMtags==4)*ScaleFactor"),

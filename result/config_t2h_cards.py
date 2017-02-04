@@ -42,6 +42,15 @@ elif 'JE' in systematic:
 elif 'MEScale' in systematic:
     from cards_syst_ME import getMECutSets
     cut_sets = getMECutSets(systematic)
+elif 'ISR' in systematic:
+    from cards_syst_IFSRUE import getIFSRUECutSets
+    cut_sets = getIFSRUECutSets(systematic)
+elif 'FSR' in systematic:
+    from cards_syst_IFSRUE import getIFSRUECutSets
+    cut_sets = getIFSRUECutSets(systematic)
+elif 'UE' in systematic:
+    from cards_syst_IFSRUE import getIFSRUECutSets
+    cut_sets = getIFSRUECutSets(systematic)
 #    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
