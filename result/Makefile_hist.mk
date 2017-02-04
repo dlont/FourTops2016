@@ -42,26 +42,26 @@ $(BUILDDIR)/Hists_TT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopT
 
 $(BUILDDIR)/Hists_tuneup.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTUEUPNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_tunedown.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTUEDWNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_isrscaleup.root: ${CONFIG} $(BUILDDIR)/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}   ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}   ${TTISRUPNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_isrscaledown.root: ${CONFIG} $(BUILDDIR)/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}   ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}   ${TTISRDWNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_fsrscaleup.root: ${CONFIG} $(BUILDDIR)/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}   ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}   ${TTFSRUPNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_fsrscaledown.root: ${CONFIG} $(BUILDDIR)/Craneen_TTFSRScaledown_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}   ${TTNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}   ${TTFSRDWNORM} ${SUPPRESSOUT}
 
 #@if [ -d "$(dir $@)" ]; then echo "$(BUILDDIR) exists" ; else mkdir $@ ; fi

@@ -20,6 +20,20 @@ include Makefile_merge.mk
 include Makefile_plots.mk
 include Makefile_cards.mk
 
+.PHONY: norm
+norm:
+	@echo 'TT' ${TTNORM}
+	@echo 'TTFSRUP' ${TTFSRUPNORM}
+	@echo 'TTFSRDW' ${TTFSRDWNORM}
+	@echo 'TTISRUP' ${TTISRUPNORM}
+	@echo 'TTISRDW' ${TTISRDWNORM}
+	@echo 'TTUEUPNORM' ${TTUEUPNORM}
+	@echo 'TTUEDWNORM' ${TTUEDWNORM}
+	@echo 'TTTT' ${TTTTNORM}
+	@echo 'WJETS' ${WJETSNORM}
+	@echo 'ST' ${TNORM}
+	@echo 'STBAR' ${TBARNORM}
+
 .PHONY: dirs
 dirs:
 	@echo "Creating folders"
