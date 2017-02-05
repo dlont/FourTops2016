@@ -63,12 +63,40 @@ UnBinned = {
         'Type' : 'DOUBLE',
         'Size' : 1
         },
+
         {
-        'Name' : TreeName+':LeptonEta',
+        'Name' : TreeName+':weight1',
         'Type' : 'DOUBLE',
         'Size' : 1
         },
-        
+
+        {
+        'Name' : TreeName+':weight2',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight3',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight4',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight5',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight7',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
+	        
         
         ] #End of DataSets
     } #End of configuration for UnBinned distributions

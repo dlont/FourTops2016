@@ -1,7 +1,8 @@
 .PHONY: test
 
 STATTEST=~/t2016/StatTest-master/runtests.py --colors
-CONFIG=testconf.qa
+CONFIGDATA=testconf_data.qa
+CONFIGMC=testconf_mc.qa
 
 test: report_data.pdf report_TTJets.pdf report_TTTT.pdf
 	@echo "Make test"
@@ -9,14 +10,14 @@ test: report_data.pdf report_TTJets.pdf report_TTTT.pdf
 
 # Assumes that there is only one file matching the wildcard expression. Should be Craneen_Data_Run2_TopTree_Study.root or Craneen_Data_Run2_TopTree_Study_XYZ.root
 # Order of prerequisites matters! Assumes ${CONFIG} ${TARGET}  ${REFERENCE}
-report_data.pdf: ${CONFIG} $(wildcard ${TARGET}/Craneen_Data_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_Data_Run2_TopTree_Study*.root)
+report_data.pdf: ${CONFIGDATA} $(wildcard ${TARGET}/Craneen_Data_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_Data_Run2_TopTree_Study*.root)
 	@echo "Test data"
 	${STATTEST} -g $@ $^
 
-report_TTJets.pdf: ${CONFIG} $(wildcard ${TARGET}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root)
+report_TTJets.pdf: ${CONFIGMC} $(wildcard ${TARGET}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root)
 	@echo "Test TT MC"
 	${STATTEST} -g $@ $^
 
-report_TTTT.pdf: ${CONFIG} $(wildcard ${TARGET}/Craneen_ttttNLO_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_ttttNLO_Run2_TopTree_Study*.root)
+report_TTTT.pdf: ${CONFIGMC} $(wildcard ${TARGET}/Craneen_ttttNLO_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_ttttNLO_Run2_TopTree_Study*.root)
 	@echo "Test TTTT MC"
 	${STATTEST} -g $@ $^
