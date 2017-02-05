@@ -57,6 +57,8 @@
 #include <gflags/gflags.h>
 #include "FourTopFlags.h"
 
+#include "Constants.h"
+
 #include "MakeDirectory.h"
 
 #include "Version.h"
@@ -166,6 +168,7 @@ int main (int argc, char *argv[])
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
     bool bTagReweight      = FLAGS_fourtops_btagregular;
     bool bTagCSVReweight   = FLAGS_fourtops_btagcsvrs;
+    bool bTopPt            = FLAGS_fourtops_toprew;
     bool bLeptonSF         = true; //! apply lepton SFs
     bool debug             = false;
     bool applyJER          = true;
@@ -270,8 +273,8 @@ int main (int argc, char *argv[])
     TFile* btagEffHistFile_down = nullptr;
     if(bTagReweight && !isData ){
         //Btag documentation : http://mon.iihe.ac.be/~smoortga/TopTrees/BTagSF/BTaggingSF_inTopTrees.pdf //v2 or _v2
-        //bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
-        bTagCalib = new BTagCalibration("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
+        bTagCalib = new BTagCalibration("CSVv2","../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
+//        bTagCalib = new BTagCalibration("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
         bTagReader = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","central"); //mujets
         bTagReaderUp = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","up"); //mujets
         bTagReaderDown = new BTagCalibrationReader(bTagCalib,BTagEntry::OP_MEDIUM,"mujets","down"); //mujets
@@ -319,24 +322,28 @@ int main (int argc, char *argv[])
     /////////////////////////////////////////////////
     //                   Lepton SF                 //
     /////////////////////////////////////////////////
-    MuonSFWeight* muonSFWeightID_TT;   
-    MuonSFWeight* muonSFWeightIso_TT;
-    MuonSFWeight* muonSFWeightTrigBCD_TT;
+    MuonSFWeight* muonSFWeightID_BCDEF;   
+    MuonSFWeight* muonSFWeightID_GH;   
+    MuonSFWeight* muonSFWeightIso_BCDEF;
+    MuonSFWeight* muonSFWeightIso_GH;
+    MuonSFWeight* muonSFWeightTrig_BCDEF;
+    MuonSFWeight* muonSFWeightTrig_GH;
     
     ElectronSFWeight* electronSFWeightReco; 
     ElectronSFWeight* electronSFWeightIDISO; 
     
     if(bLeptonSF){
         if(Muon){
-            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE MUON SF FOR H RUNS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            // muonSFWeight = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/Muon_SF_TopEA.root","SF_totErr",false,false);  OLD SF WEIGHT
-            muonSFWeightID_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            muonSFWeightIso_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightTrigBCD_TT = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightTrig_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
+            muonSFWeightTrig_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsGH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
         else if(Electron){
-            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_GsfTrackingEff.root","EGamma_SF2D",true,false);    
-            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/egammaEffi.txt_SF2D_CutBasedTightID.root","EGamma_SF2D",true,false);    
+            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/egammaEffi.txt_EGM2D_RecoEff.root","EGamma_SF2D",true,false);    
+            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/egammaEffi.txt_EGM2D_CutBasedMediumID.root","EGamma_SF2D",true,false);    
         }
     }
     /////////////////////////////////////////////////
@@ -396,10 +403,10 @@ int main (int argc, char *argv[])
     LumiReWeighting LumiWeights_up;
     LumiReWeighting LumiWeights_down;
 
-    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupNom.root", "pileup", "pileupNom");    
-    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupUp.root", "pileup", "pileupUp");    
-    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "/user/dlontkov/t2016/puReweighting/PileupDown.root", "pileup", "pileupDown");    
-    
+    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "pileup", "pileup");    
+    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysPlus.root", "pileup", "pileup");    
+    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysMinus.root", "pileup", "pileup");    
+     
     ///////////////////////////////////////////
     ///  Initialise Jet Energy Corrections  ///
     ///////////////////////////////////////////
@@ -459,13 +466,13 @@ int main (int argc, char *argv[])
     }
     else
     {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L1FastJet_AK4PFchs.txt");
+        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L2Relative_AK4PFchs.txt");
+        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L2Relative_AK4PFchs.txt");
         vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_L3Absolute_AK4PFchs.txt");
+        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_25nsV10/Spring16_25nsV10_MC_Uncertainty_AK4PFchs.txt");
+        jecUnc = new JetCorrectionUncertainty("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt");
     }
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
 
@@ -791,6 +798,7 @@ int main (int argc, char *argv[])
 
             double weight_0 = 1; //nominal
             double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
+            double weight_hdamp_up = 1., weight_hdamp_dw = 1.;
 
             if(!isData){
                 if(event->getWeight(1)!= -9999){
@@ -814,8 +822,18 @@ int main (int argc, char *argv[])
                     weight_7 = (event->getWeight(1008))/(abs(event->originalXWGTUP()));                
                     weight_8 = (event->getWeight(1009))/(abs(event->originalXWGTUP()));                    
                 }
+
+		DLOG(INFO) << "GEN weights:" << setw(10) << weight_0 << setw(10) << weight_1 << setw(10) << weight_2 << setw(10) << weight_3
+					     << setw(10) << weight_4 << setw(10) << weight_5 << setw(10) << weight_6 << setw(10) << weight_7
+					     << setw(10) << weight_8 << endl;
+		// hdamp variation
+		if (event->getWeight(1001)!= -9999) {
+			weight_hdamp_up = event->getWeight(5019)/fabs(event->originalXWGTUP());
+			weight_hdamp_dw = event->getWeight(5010)/fabs(event->originalXWGTUP());
+			DLOG(INFO) << "hdamp w(up)= " << weight_hdamp_up << "\t" << "hdamp w(down)= " << weight_hdamp_dw;
+		}
             }
-            
+
             ///////////////////////////////////////////
             //     Apply primary vertex selection    //
             ///////////////////////////////////////////
@@ -949,10 +967,16 @@ int main (int argc, char *argv[])
             float fleptonSF = 1;
             if(bLeptonSF){ ///lepton SF for ID and ISO
                 if(Muon && nMu>0){
-                    auto muIDSF = muonSFWeightID_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
-                    DLOG(INFO)<<"Muon ID SF:  "<< muIDSF;
-                    auto muISOSF = muonSFWeightIso_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    auto W_MuonIsoSF_BCDEF = muonSFWeightIso_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
+                    auto W_MuonIsoSF_GH    = muonSFWeightIso_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
+                    auto muISOSF =(W_MuonIsoSF_BCDEF + W_MuonIsoSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Muon ISO SF:  "<< muISOSF;
+                    
+                    auto W_MuonIDSF_BCDEF = muonSFWeightID_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
+                    auto W_MuonIDSF_GH    = muonSFWeightID_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
+                    auto muIDSF =(W_MuonIDSF_BCDEF + W_MuonIDSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
+                    DLOG(INFO)<<"Muon ID SF:  "<< muIDSF;
+                    
                     fleptonSF = muIDSF * muISOSF;
                 }
                 else if(Electron && nEl>0){
@@ -967,7 +991,10 @@ int main (int argc, char *argv[])
             double trigSFTot = 1.;
             if(bLeptonSF){ //lepton SF for trigger
                 if(!isData && Muon && nMu>0){
-                    auto trigSFBCD = muonSFWeightTrigBCD_TT->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0);
+                    auto W_MuonTrigSF_BCDEF =  muonSFWeightTrig_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
+                    auto W_MuonTrigSF_GH    =  muonSFWeightTrig_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
+                    auto trigSFBCD       =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
+
                     DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFBCD;
                     trigSFTot = trigSFBCD;
                     
@@ -1009,12 +1036,32 @@ int main (int argc, char *argv[])
             float numOfcc = 0;
             float numOfll = 0;
             float ttbar_flav = -1;
+            double fTopPtReWeightsf = 1.;
             vector<TRootMCParticle*> mcParticles_flav;
             // TRootGenEvent* genEvt_flav = 0;
             if(dataSetName.find("TTJets")!=string::npos){
                 // genEvt_flav = treeLoader.LoadGenEvent(ievt,false);
                 treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
+                
+                auto fAntitopPtsf = 1., fTopPtsf = 1.;
                 for(unsigned int p=0; p<mcParticles_flav.size(); p++) {
+                    //Calculating event weight according to the TopPtReweighing: https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
+                    if(bTopPt && (dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos))
+                    {
+                        if(mcParticles_flav[p]->type() == 6)
+                        {
+                            if(mcParticles_flav[p]->Pt() < 400) fTopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
+                            else fTopPtsf  = TMath::Exp(0.0615-0.0005*400);
+                        }
+                        else if(mcParticles_flav[p]->type() == -6)
+                        {
+                            if(mcParticles_flav[p]->Pt() < 400) fAntitopPtsf  = TMath::Exp(0.159-0.00141*mcParticles_flav[p]->Pt());
+                            else fAntitopPtsf  = TMath::Exp(0.159-0.00141*400);
+                        }
+                        fTopPtReWeightsf = TMath::Sqrt(fTopPtsf*fAntitopPtsf);
+                        DLOG(INFO) << "Top reweighting (top/anti-top/comb): " << setw(10) << fTopPtsf << setw(10) << fAntitopPtsf << setw(10) << fTopPtReWeightsf;
+                        scaleFactor *= fTopPtReWeightsf;
+                    }
                     //std::cout<<"status: "<<mcParticles_flav[p]->status()<<"  id: "<<mcParticles_flav[p]->type()<<" mother: "<<mcParticles_flav[p]->motherType()<<std::endl;
                     if(mcParticles_flav[p]->status()<30 && mcParticles_flav[p]->status()>20 && abs(mcParticles_flav[p]->motherType())!=6){
 
@@ -1214,7 +1261,7 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[62] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            double vals[63] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
             HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
             SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
             scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
@@ -1222,7 +1269,7 @@ int main (int argc, char *argv[])
             weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
-            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4};
+            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf};
             
             double csvrs[] = {
                     csvrsweights.find("nominal")->second,
@@ -1236,7 +1283,8 @@ int main (int argc, char *argv[])
                     csvrsweights.find("CSVCFErr1Up")->second,    csvrsweights.find("CSVCFErr1Down")->second,
                     csvrsweights.find("CSVCFErr2Up")->second,    csvrsweights.find("CSVCFErr2Down")->second
             };
-            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_5,weight_7,weight_7};    //replace extream variations by good
+            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_6,weight_6,weight_8,weight_8};    //replace extream variations by good
+            double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
                 jetvec[jet][0] = selectedJets[jet]->Pt();
@@ -1244,7 +1292,7 @@ int main (int argc, char *argv[])
                 jetvec[jet][2] = selectedJets[jet]->Phi();
                 jetvec[jet][3] = selectedJets[jet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
             }
-            myEvent.fill(vals,jetvec,nJets,w,csvrs);
+            myEvent.fill(vals,jetvec,nJets,w,csvrs,hdampw);
             tupfile->cd();
             tup->Fill();
 

@@ -21,7 +21,7 @@
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
-    void fill(double [], double [][5], int , double [], double []);
+    void fill(double [], double [][5], int , double [], double [], double []);
     
     double BDT;
     int nJets; 
@@ -88,11 +88,12 @@ struct Event {
     double jetvec[30][5];   //jet properties (pT,eta,phi,csv)
     double weight[9];       //ME scale variation weights
     double csvrsw[20];      //CSVRS systematic weights
+    double hdampw[2];       //POWHEG hdamp weight variation 
+    double toprew;          //TOP pT reweighting factor
 }; //end Event
 
-
 //______________________________________________________________________________
-/*
+/**
  * Flush the content of the structure to be called before filling inside an event
  */
 void Event::clear() {
@@ -158,11 +159,17 @@ void Event::clear() {
       csvJetpt2 = 0.; 
       csvJetpt3 = 0.; 
       csvJetpt4 = 0.;
-      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec), 0.);
+      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec), -1.);
       std::fill( weight, weight + sizeof(weight), 0.);
       std::fill( csvrsw, csvrsw + sizeof(csvrsw), 0.);
+      std::fill( hdampw, hdampw + sizeof(hdampw), 1.);
+      toprew = 0.;
 } //End Event::clear()
 
+/**
+ * Create root TTree with proper branches
+ * @param tree
+ */
 void Event::makeBranches(TTree* tree) {
     if (tree == nullptr) {
         std::cerr << "tree pointer is NULL. Aborting!.." << std::endl;
@@ -234,9 +241,21 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("jetvec", jetvec    ,"jetvec[nJets][5]/D");
       tree -> Branch("weight", weight    ,"weight[8]/D");
       tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
+      tree -> Branch("hdampw", hdampw    ,"hdamp[2]/D");
+      tree -> Branch("toprew", &toprew    ,"toprew/D");
 } // end Event::makeBranches()
 
-void Event::fill(double vals[], double jets[][5], int njet, double w[], double csvrs[]) {
+/**
+ * Fill ROOT ntuple with event variables
+ * @param vals Original Craneen values
+ * @param jets jet properties [njet][5] pT,eta,phi,csv,empty
+ * @param njet number of elements in jets[njet][] vector
+ * @param w ME scale variation weights
+ * @param csvrs CSVRS systematics weights breakdown 
+ * @param hdamp POWHEG hdamp weights
+ * @param topr top reweighting event weight
+ */
+void Event::fill(double vals[], double jets[][5], int njet, double w[], double csvrs[], double hdamp[]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -300,12 +319,13 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[], double c
     csvJetpt2 = vals[59]; 
     csvJetpt3 = vals[60]; 
     csvJetpt4 = vals[61];
-    
+    toprew = vals[62];
     for (auto i = 0; i < njet; ++i) {
-        for (auto par = 0; par < 5; ++par) jetvec[i][par]=jets[i][par];
+        for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
     for (auto par = 0; par < 8; ++par) weight[par]=w[par];
     for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
+    
 } // end Event::fill()
 
 #endif /* EVENT_H */
