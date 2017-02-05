@@ -357,3 +357,65 @@ and central pile-up SF replaced by down variation SFPU in the event level SF
 cd result
 make -n cards INPUTLOCATION=plots_mu
 ```
+
+
+Son 22 Jan 2017 04:49:56 CET
+To create combine cards
+python tools/cards.py -o cards_mu/card.txt --channel=mu --data plots_mu/Hists_data.root --debug --source '{"TTTT":"plots_mu/Hists_TTTT.root", "TT":"plots_mu/Hists_SYST.root", "EW":"plots_mu/Hists_WJets.root", "ST":"plots_mu/Hists_T.root"}' --observable=bdt
+
+or using make
+
+make -n cards_mu BUILDDIR=plots_mu
+
+
+Son 22 Jan 2017 19:22:40 CET
+tag v0.0.10pudown is a start for moving towards more convenient (array-based) data structure for jets, ME weights, etc. Still in this tag central PU weight is replaced by its downward variation
+
+
+
+# Die 24 Jan 2017 20:23:46 CET
+
+## Extapolation of 2015 Single Lepton results (see record # Die 24 Jan 2017 19:28:15 CET in /user/dlontkov/CMSSW_7_4_7/src/combine2016_tttt/LOG)
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 1.4818
+Expected 16.0%: r < 1.9994
+Expected 50.0%: r < 2.8203
+Expected 84.0%: r < 3.9782
+Expected 97.5%: r < 5.3971
+
+This has to be compared to 
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 2.0332
+Expected 16.0%: r < 3.4510
+Expected 50.0%: r < 6.4062
+Expected 84.0%: r < 12.5859
+Expected 97.5%: r < 19.4266
+
+
+# Sam 28 Jan 2017 23:19:44 CET
+CSVRS systematic studies code is at
+/user/dlontkov/TOPCMSSW_7_6_3/src/TopBrussels/FourTops
+
+
+# Son 05 Feb 2017 01:37:45 CET
+Updated Muon (split by period), electron, Lumi and JEC according to Kevin's code
+
+Hacked btagging corrections file to add light flavour to the mujets measurement (copy of incl)
+e.g.
+0, incl, central, 2, 0, 2.4, 20, 1000, 0, 1," ""1.13904+-0.000594946*x+1.97303e-06*x*x+-1.38194e-09*x*x*x"" "
+0, incl, mujets, 2, 0, 2.4, 20, 1000, 0, 1," ""1.13904+-0.000594946*x+1.97303e-06*x*x+-1.38194e-09*x*x*x"" "
+1, incl, central, 2, 0, 2.4, 20, 1000, 0, 1," ""1.0589+0.000382569*x+-2.4252e-07*x*x+2.20966e-10*x*x*x"" "
+1, incl, mujets, 2, 0, 2.4, 20, 1000, 0, 1," ""1.0589+0.000382569*x+-2.4252e-07*x*x+2.20966e-10*x*x*x"" "
+2, incl, central, 2, 0, 2.4, 20, 1000, 0, 1," ""0.971945+163.215/(x*x)+0.000517836*x"" "
+2, incl, mujets, 2, 0, 2.4, 20, 1000, 0, 1," ""0.971945+163.215/(x*x)+0.000517836*x"" "
+
+
+
+# Son 05 Feb 2017 13:21:22 CET
+to make test of histogram compatibility
+
+```
+make -j test TARGET=../result/plots_mu REFERENCE=../result/history/30_01_2017/plots_mu
+```
