@@ -85,11 +85,12 @@ struct Event {
     double csvJetpt2; 
     double csvJetpt3; 
     double csvJetpt4;
-    double jetvec[30][5];   //jet properties (pT,eta,phi,csv)
-    double weight[9];       //ME scale variation weights
-    double csvrsw[20];      //CSVRS systematic weights
-    double hdampw[2];       //POWHEG hdamp weight variation 
-    double toprew;          //TOP pT reweighting factor
+    double jetvec[30][5];   // jet properties (pT,eta,phi,csv)
+    double weight[9];       // ME scale variation weights
+    double csvrsw[20];      // CSVRS systematic weights
+    double hdampw[2];       // POWHEG hdamp weight variation 
+    double toprew;          // TOP pT reweighting factor
+    int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
 }; //end Event
 
 //______________________________________________________________________________
@@ -164,6 +165,7 @@ void Event::clear() {
       std::fill( csvrsw, csvrsw + sizeof(csvrsw), 0.);
       std::fill( hdampw, hdampw + sizeof(hdampw), 1.);
       toprew = 0.;
+      ttxType = -1.;
 } //End Event::clear()
 
 /**
@@ -177,15 +179,26 @@ void Event::makeBranches(TTree* tree) {
     }
     
       tree -> Branch("BDT", &BDT    ,"BDT/D");
-      tree -> Branch("nJets", &nJets    ,"nJets/I"); 
+      
       tree -> Branch("NOrigJets", &NOrigJets    ,"NOrigJets/I"); 
-      tree -> Branch("nLtags", &nLtags    ,"nLtags/I"); 
-      tree -> Branch("nMtags", &nMtags    ,"nMtags/I"); 
-      tree -> Branch("nTtags", &nTtags    ,"nTtags/I"); 
-      tree -> Branch("HT", &HT    ,"HT/D"); 
+      tree -> Branch("nJets", &nJets    ,"nJets/I"); 
+      tree -> Branch("jetvec", jetvec    ,"jetvec[nJets][5]/D");
+      tree -> Branch("1stjetpt", &firstjetpt    ,"1stjetpt/D"); 
+      tree -> Branch("2ndjetpt", &secondjetpt    ,"2ndjetpt/D"); 
+      tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
+      tree -> Branch("6thjetpt", &jet6Pt   ,"6thjetpt/D"); 
+      
       tree -> Branch("LeptonPt", &LeptonPt    ,"LeptonPt/D"); 
       tree -> Branch("LeptonEta", &LeptonEta    ,"LeptonEta/D"); 
-      tree -> Branch("LeadingBJetPt", &LeadingBJetPt    ,"LeadingBJetPt/D"); 
+      tree -> Branch("leptonIso", &leptonIso    ,"leptonIso/D"); 
+      tree -> Branch("leptonphi", &leptonphi    ,"leptonphi/D"); 
+      tree -> Branch("chargedHIso", &chargedHIso    ,"chargedHIso/D"); 
+      tree -> Branch("neutralHIso", &neutralHIso    ,"neutralHIso/D"); 
+      tree -> Branch("photonIso", &photonIso    ,"photonIso/D"); 
+      tree -> Branch("PUIso", &PUIso    ,"PUIso/D");
+      
+      tree -> Branch("PU", &PU    ,"PU/I"); 
+      tree -> Branch("HT", &HT    ,"HT/D"); 
       tree -> Branch("HT2M", &HT2M    ,"HT2M/D");
       tree -> Branch("HTb", &HTb    ,"HTb/D"); 
       tree -> Branch("HTH", &HTH   ,"HTH/D"); 
@@ -193,6 +206,11 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("HTX", &HTX    ,"HTX/D"); 
       tree -> Branch("SumJetMassX", &SumJetMassX    ,"SumJetMassX/D"); 
       tree -> Branch("multitopness", &multitopness    ,"multitopness/D"); 
+      tree -> Branch("met", &met    ,"met/D"); 
+      tree -> Branch("angletop1top2", &angletop1top2    ,"angletop1top2/D"); 
+      tree -> Branch("angletoplep", &angletoplep    ,"angletoplep/D"); 
+      
+      tree -> Branch("ttxType", &ttxType    ,"ttxType/I");
       tree -> Branch("nbb", &nbb    ,"nbb/I"); 
       tree -> Branch("ncc", &ncc    ,"ncc/I"); 
       tree -> Branch("nll", &nll    ,"nll/I"); 
@@ -205,9 +223,12 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("SFPU", &SFPU    ,"SFPU/D"); 
       tree -> Branch("SFPU_up", &SFPU_up    ,"SFPU_up/D"); 
       tree -> Branch("SFPU_down", &SFPU_down    ,"SFPU_down/D"); 
-      tree -> Branch("PU", &PU    ,"PU/I"); 
+      tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
+      tree -> Branch("toprew", &toprew    ,"toprew/D");
       tree -> Branch("NormFactor", &NormFactor    ,"NormFactor/D"); 
       tree -> Branch("GenWeight", &GenWeight    ,"GenWeight/D"); 
+      
+      tree -> Branch("weight", weight    ,"weight[8]/D");
       tree -> Branch("weight1", &weight1   ,"weight1/D"); 
       tree -> Branch("weight2", &weight2    ,"weight2/D"); 
       tree -> Branch("weight3", &weight3    ,"weight3/D"); 
@@ -216,19 +237,12 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("weight6", &weight6    ,"weight6/D"); 
       tree -> Branch("weight7", &weight7    ,"weight7/D"); 
       tree -> Branch("weight8", &weight8    ,"weight8/D"); 
-      tree -> Branch("met", &met    ,"met/D"); 
-      tree -> Branch("angletop1top2", &angletop1top2    ,"angletop1top2/D"); 
-      tree -> Branch("angletoplep", &angletoplep    ,"angletoplep/D"); 
-      tree -> Branch("1stjetpt", &firstjetpt    ,"1stjetpt/D"); 
-      tree -> Branch("2ndjetpt", &secondjetpt    ,"2ndjetpt/D"); 
-      tree -> Branch("leptonIso", &leptonIso    ,"leptonIso/D"); 
-      tree -> Branch("leptonphi", &leptonphi    ,"leptonphi/D"); 
-      tree -> Branch("chargedHIso", &chargedHIso    ,"chargedHIso/D"); 
-      tree -> Branch("neutralHIso", &neutralHIso    ,"neutralHIso/D"); 
-      tree -> Branch("photonIso", &photonIso    ,"photonIso/D"); 
-      tree -> Branch("PUIso", &PUIso    ,"PUIso/D");
-      tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
-      tree -> Branch("6thjetpt", &jet6Pt   ,"6thjetpt/D"); 
+      tree -> Branch("hdampw", hdampw    ,"hdamp[2]/D");
+      
+      tree -> Branch("LeadingBJetPt", &LeadingBJetPt    ,"LeadingBJetPt/D"); 
+      tree -> Branch("nLtags", &nLtags    ,"nLtags/I"); 
+      tree -> Branch("nMtags", &nMtags    ,"nMtags/I"); 
+      tree -> Branch("nTtags", &nTtags    ,"nTtags/I");       
       tree -> Branch("jet5and6pt", &jet5and6pt    ,"jet5and6pt/D"); 
       tree -> Branch("csvJetcsv1", &csvJetcsv1    ,"csvJetcsv1/D");
       tree -> Branch("csvJetcsv2", &csvJetcsv2    ,"csvJetcsv2/D"); 
@@ -238,11 +252,6 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("csvJetpt2", &csvJetpt2    ,"csvJetpt2/D"); 
       tree -> Branch("csvJetpt3", &csvJetpt3    ,"csvJetpt3/D"); 
       tree -> Branch("csvJetpt4", &csvJetpt4    ,"csvJetpt4/D");
-      tree -> Branch("jetvec", jetvec    ,"jetvec[nJets][5]/D");
-      tree -> Branch("weight", weight    ,"weight[8]/D");
-      tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
-      tree -> Branch("hdampw", hdampw    ,"hdamp[2]/D");
-      tree -> Branch("toprew", &toprew    ,"toprew/D");
 } // end Event::makeBranches()
 
 /**
@@ -320,6 +329,7 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[], double c
     csvJetpt3 = vals[60]; 
     csvJetpt4 = vals[61];
     toprew = vals[62];
+    ttxType = vals[63];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }

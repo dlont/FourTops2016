@@ -491,33 +491,6 @@ int main (int argc, char *argv[])
         string currentfilename2 = "";
 
         /////////////////////////////////////////////////
-        //                 nlo or bx25?                //
-        /////////////////////////////////////////////////
-        bool nlo = true;
-        dataSetName = datasets[d]->Name();
-
-        if(dataSetName.find("JERDown")!=string::npos){
-            JERDown=true;
-        }
-        else if(dataSetName.find("JERUp")!=string::npos){
-            JERUp=true;
-        }
-
-        if(dataSetName.find("JESDown")!=string::npos){
-            JESDown=true;
-        }
-        else if(dataSetName.find("JESUp")!=string::npos){
-            JESUp=true;
-        }    
-
-
-        if(dataSetName.find("NLO") != std::string::npos || dataSetName.find("nlo") !=std::string::npos) nlo = true;
-        else nlo = false;
-        if(nlo) std::cout << "NLO Dataset!" <<std::endl;
-        else std::cout << "LO Dataset!" << std::endl;
-
-
-        /////////////////////////////////////////////////
         //               Craneen setup                 //
         /////////////////////////////////////////////////
         string channel_dir = "output/Craneens"+channelpostfix;
@@ -799,8 +772,10 @@ int main (int argc, char *argv[])
             double weight_0 = 1; //nominal
             double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
             double weight_hdamp_up = 1., weight_hdamp_dw = 1.;
+            auto ttXtype =  -1; // ttbb, ttcc, ttx event type
 
             if(!isData){
+                ttXtype = event->getgenTTX_id();
                 if(event->getWeight(1)!= -9999){
                     weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
                     weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
@@ -1261,7 +1236,7 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[63] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            double vals[64] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
             HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
             SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
             scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
@@ -1269,7 +1244,7 @@ int main (int argc, char *argv[])
             weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
-            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf};
+            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype};
             
             double csvrs[] = {
                     csvrsweights.find("nominal")->second,
