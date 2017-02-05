@@ -24,8 +24,8 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-#channels = ["Mu2016","El2016"] 
-channels = ['Syst2016Mu','Syst2016El']
+channels = ["Mu2016","El2016"] 
+#channels = ['Syst2016Mu','Syst2016El']
 # channels = ["Mu","El"] 
 # channels = ["Mu"] 
 # channels = ["El"] 
@@ -46,9 +46,9 @@ for chan in channels:
     #elif "El" in chan:
     #    tree = ET.ElementTree(file='config/output_FullElectronTopTrees80.xml')
     if "Mu2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullMuonTopTrees80_v0.xml')
+        tree = ET.ElementTree(file='config/FullMuonTopTrees80_v2.xml')
     elif "El2016" in chan:
-        tree = ET.ElementTree(file='config/output_FullElectronTopTrees80_v1.xml')
+        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v2.xml')
     elif "Syst2016Mu" in chan:
         tree = ET.ElementTree(file='config/SystMuonTopTrees80_v1.xml')
     elif "Syst2016El" in chan:
