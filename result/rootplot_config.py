@@ -64,13 +64,22 @@ draw_commands = ['pe', 'HIST stack',' HIST stack',' HIST stack','HIST']        #
 
 colors = [
     ## a default set of contrasting colors the author happens to like
-    ( 82, 124, 219), # blue
-    (212,  58, 143), # red
-    (231, 139,  77), # orange
-    (145,  83, 207), # purple
-    (114, 173, 117), # green
-    ( 67,  77,  83), # dark grey
+	0,
+	413,
+	7,
+	633,
+	(114, 173, 117),
+	( 67,  77,  83)
     ]
+#colors = [
+#    ## a default set of contrasting colors the author happens to like
+#    ( 82, 124, 219), # blue
+#    (212,  58, 143), # red
+#    (231, 139,  77), # orange
+#    (145,  83, 207), # purple
+#    (114, 173, 117), # green
+#    ( 67,  77,  83), # dark grey
+#    ]
 
 ## Used when --marker_styles is specified; more info available at:
 ## http://root.cern.ch/root/html/TAttMarker.html
