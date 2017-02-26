@@ -4,7 +4,10 @@ FORMAT=png
 PLOTS='.*'
 CUSTOMIZE=
 INPUTLOCATION=./
-DATALABEL:=Single \#mu (BCDEFGH)
+#DATALABEL:=Single \#mu (BCDEFGH)
+#DATALABEL:=Single \#mu (BCDEF)
+DATALABEL:=Single \#mu (GH)
+
 TREENAME:=Craneen__Mu
 
 VPATH:=$(shell readlink -f ${INPUTLOCATION})
