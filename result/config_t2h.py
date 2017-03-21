@@ -45,6 +45,8 @@ cut_sets = [
     ("PUdown", "", "SFPU_down"),
     ("btagSF", "", "SFbtag"),
     ("leptonSF", "", "SFlepton"),
+    ("toprew", "", "toprew"),
+    ("csvrs", "", "csvrsw[0]"),
     ("noSF", "", ""),
     ("weight1", "", "weight1*ScaleFactor"),
     ("weight2", "", "weight2*ScaleFactor"),
