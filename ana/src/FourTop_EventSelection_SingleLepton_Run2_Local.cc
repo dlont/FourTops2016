@@ -1025,17 +1025,12 @@ int main (int argc, char *argv[])
                     {
                         if(mcParticles_flav[p]->type() == 6)
                         {
-                            if(mcParticles_flav[p]->Pt() < 400) fTopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
-                            else fTopPtsf  = TMath::Exp(0.0615-0.0005*400);
+                            fTopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
                         }
                         else if(mcParticles_flav[p]->type() == -6)
                         {
-                            if(mcParticles_flav[p]->Pt() < 400) fAntitopPtsf  = TMath::Exp(0.159-0.00141*mcParticles_flav[p]->Pt());
-                            else fAntitopPtsf  = TMath::Exp(0.159-0.00141*400);
+                            fAntitopPtsf  = TMath::Exp(0.159-0.00141*mcParticles_flav[p]->Pt());
                         }
-                        fTopPtReWeightsf = TMath::Sqrt(fTopPtsf*fAntitopPtsf);
-                        DLOG(INFO) << "Top reweighting (top/anti-top/comb): " << setw(10) << fTopPtsf << setw(10) << fAntitopPtsf << setw(10) << fTopPtReWeightsf;
-                        scaleFactor *= fTopPtReWeightsf;
                     }
                     //std::cout<<"status: "<<mcParticles_flav[p]->status()<<"  id: "<<mcParticles_flav[p]->type()<<" mother: "<<mcParticles_flav[p]->motherType()<<std::endl;
                     if(mcParticles_flav[p]->status()<30 && mcParticles_flav[p]->status()>20 && abs(mcParticles_flav[p]->motherType())!=6){
@@ -1059,6 +1054,9 @@ int main (int argc, char *argv[])
                     }
 
                 }
+		fTopPtReWeightsf = TMath::Sqrt(fTopPtsf*fAntitopPtsf);
+		DLOG(INFO) << "Top reweighting (top/anti-top/comb): " << setw(10) << fTopPtsf << setw(10) << fAntitopPtsf << setw(10) << fTopPtReWeightsf;
+		scaleFactor *= fTopPtReWeightsf;
             } 
 
             if(numOfbb>=2){
