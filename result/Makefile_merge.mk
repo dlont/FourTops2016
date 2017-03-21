@@ -1,8 +1,8 @@
 SUPPRESSOUT=&>/dev/null
 
-#$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016*.root)
 #$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016[B-F]*.root)
-$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016[G-H]*.root)
+#$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016[G-H]*.root)
+$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016*.root)
 	@echo merging $@
 	@hadd $@ $^ 
 
