@@ -1,0 +1,103 @@
+#-*-python-*-
+# Configuration file for QA tests
+# This file should be a valid python file.
+# To test if format is correct, tye:
+# python testconf.qa
+# no output is produced if the code is correct
+#
+# The general format is:
+#     variable = value
+# There are few top-level variables: Binned and UnBinned for
+# binned and unbinned distributions respectively.
+# The value of the top-level variables is a dictionary of variable:values pairs.
+# See the following as an example
+
+#Configuration for un-binned distributions
+#Describing only differences w.r.t. Binned case
+#Unbinned distributions are stored in TTrees as the
+#content of different branches.
+#Only simple data in branches are supported (see examples)
+TreeName = 'Craneen__Mu'
+UnBinned = {
+    'DefaultTestName' : 'AndersonDarlingTest',
+    'DefaultThresholds' : [0.1,0.5],
+    
+    #These are the list of unbinned distributions
+    
+    'DataSet' : [
+        
+	#Group 1: bookkeeping
+        {
+        'Name' : 'bookkeeping:nPV',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        #Group 2: Craneen
+        {
+        'Name' : TreeName+':BDT',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':nJets',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':nLtags',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':nMtags',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':nTtags',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':LeptonPt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
+        {
+        'Name' : TreeName+':weight1',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
+        {
+        'Name' : TreeName+':weight2',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight3',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight4',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight5',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight7',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
+	        
+        
+        ] #End of DataSets
+    } #End of configuration for UnBinned distributions
+
