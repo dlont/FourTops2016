@@ -329,8 +329,14 @@ int main (int argc, char *argv[])
     MuonSFWeight* muonSFWeightTrig_BCDEF;
     MuonSFWeight* muonSFWeightTrig_GH;
     
+    TFile *muontrackfile = new TFile("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/Tracking_EfficienciesAndSF_BCDEFGH.root","read");
+    TGraph* h_muonSFWeightTrack = static_cast<TGraph*>( muontrackfile->Get("ratio_eff_eta3_dr030e030_corr")->Clone() );//Tracking efficiency as function of eta
+
+    
     ElectronSFWeight* electronSFWeightReco; 
     ElectronSFWeight* electronSFWeightIDISO; 
+    ElectronSFWeight* electronSFWeightTrig_BCDEF; 
+    ElectronSFWeight* electronSFWeightTrig_GH;
     
     if(bLeptonSF){
         if(Muon){
@@ -343,7 +349,9 @@ int main (int argc, char *argv[])
         }
         else if(Electron){
             electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/egammaEffi.txt_EGM2D_RecoEff.root","EGamma_SF2D",true,false);    
-            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/egammaEffi.txt_EGM2D_CutBasedMediumID.root","EGamma_SF2D",true,false);    
+            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/egammaEffi.txt_EGM2D_CutBasedTightID.root","EGamma_SF2D",true,false);    
+            electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
+            electronSFWeightTrig_GH = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016GH_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
         }
     }
     /////////////////////////////////////////////////
@@ -952,7 +960,9 @@ int main (int argc, char *argv[])
                     auto muIDSF =(W_MuonIDSF_BCDEF + W_MuonIDSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Muon ID SF:  "<< muIDSF;
                     
-                    fleptonSF = muIDSF * muISOSF;
+                    auto MuonTrackSF = h_muonSFWeightTrack->Eval(selectedMuons[0]->Eta());
+                    
+                    fleptonSF = muIDSF * muISOSF * MuonTrackSF;
                 }
                 else if(Electron && nEl>0){
                     auto eleTrkSF = electronSFWeightReco->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
@@ -968,11 +978,13 @@ int main (int argc, char *argv[])
                 if(!isData && Muon && nMu>0){
                     auto W_MuonTrigSF_BCDEF =  muonSFWeightTrig_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
                     auto W_MuonTrigSF_GH    =  muonSFWeightTrig_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
-                    auto trigSFBCD       =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
-
-                    DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFBCD;
-                    trigSFTot = trigSFBCD;
-                    
+                    trigSFTot          =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
+                    DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFTot;
+                } else if(Electron && nEl>0) {
+                    auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
+                    auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
+                    trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
+                    DLOG(INFO)<<"Electron Trigger SF:  "<< trigSFTot;
                 }
                 fleptonSF*=trigSFTot;
             }
@@ -988,6 +1000,18 @@ int main (int argc, char *argv[])
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //                                                                                 Baseline Event selection                                                                      //
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//            //Event cleaning filters
+//            if(isData)
+//            {
+//                if(!event->getHBHENoiseFilter() || !event->getHBHENoiseIsoFilter() || !event->getEEBadScFilter() || !event->getglobalTightHalo2016Filter()
+//                 || !event->getEcalDeadCellTriggerPrimitiveFilter() || !event->getPVFilter() || !event->getBadChCandFilter() || !event->getBadPFMuonFilter()) continue;
+//            }
+//            else if(!isData)
+//            {
+//                 if(!event->getHBHENoiseFilter() || !event->getHBHENoiseIsoFilter() || !event->getglobalTightHalo2016Filter()
+//                 || !event->getEcalDeadCellTriggerPrimitiveFilter() || !event->getPVFilter() || !event->getBadChCandFilter() || !event->getBadPFMuonFilter()) continue;
+//            }
+            
             if (Muon)
             {   
                 if  (  (!( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=0)) )continue; // Muon Channel Selection
