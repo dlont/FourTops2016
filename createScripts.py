@@ -24,39 +24,27 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-channels = ["Mu2016","El2016"] 
+#channels = ["Mu2016","El2016"] 
 #channels = ['Syst2016Mu','Syst2016El']
-# channels = ["Mu","El"] 
-# channels = ["Mu"] 
-# channels = ["El"] 
-# channels = ["Dilep"]
-# channels = ["El2016"]
+#channels = ["Dilep"]
+channels = ["El2016"]
 #channels = ["Mu2016"]
-#channels=["test"]
 
 
 # loop over channels
 for chan in channels:
     print "\nSearching list of sample used for ", chan, " channel!"
     # getting the appropriate xml file
-    #if "Mu" in chan:
-        #tree = ET.ElementTree(file='config/output_FullMuonTopTrees80.xml')
-        #tree = ET.ElementTree(file='config/FullMuonTopTrees80.xml')
-        #tree = ET.ElementTree(file='config/output_FullMuonTopTrees76_v3_Denys.xml')
-    #elif "El" in chan:
-    #    tree = ET.ElementTree(file='config/output_FullElectronTopTrees80.xml')
     if "Mu2016" in chan:
-        tree = ET.ElementTree(file='config/FullMuonTopTrees80_v2.xml')
+        tree = ET.ElementTree(file='config/FullMuonTopTrees80_v7.xml')
     elif "El2016" in chan:
-        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v2.xml')
+        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v7.xml')
     elif "Syst2016Mu" in chan:
         tree = ET.ElementTree(file='config/SystMuonTopTrees80_v1.xml')
     elif "Syst2016El" in chan:
         tree = ET.ElementTree(file='config/SystElectronTopTrees80_v1.xml')
     elif "Dilep" in chan:
         tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
-    elif "test" in chan:
-        tree = ET.ElementTree(file='config/test.xml')
     else:
         print "Channel '", chan , "' is not a correct channel name. No tree has been loaded!"
         sys.exit()
