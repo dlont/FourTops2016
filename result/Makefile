@@ -34,8 +34,10 @@ norm:
 	@echo 'TTUEDWNORM' ${TTUEDWNORM}
 	@echo 'TTTT' ${TTTTNORM}
 	@echo 'WJETS' ${WJETSNORM}
-	@echo 'ST' ${TNORM}
-	@echo 'STBAR' ${TBARNORM}
+	@echo 'STTW' ${TWNORM}
+	@echo 'STBARTW' ${TBARWNORM}
+	@echo 'STTCH' ${TTCHNORM}
+	@echo 'STBARTCH' ${TBARTCHNORM}
 
 .PHONY: dirs
 dirs:

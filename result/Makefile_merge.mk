@@ -80,6 +80,14 @@ $(BUILDDIR)/Craneen_Tbar_tW_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+$(BUILDDIR)/Craneen_T_tch_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_T_tch*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_Tbar_tch_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Tbar_tch*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_WJets*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}

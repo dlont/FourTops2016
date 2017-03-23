@@ -20,17 +20,25 @@ $(BUILDDIR)/Hists_WJets.root: ${CONFIG} $(BUILDDIR)/Craneen_WJets_Run2_TopTree_S
 	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${WJETSNORM} ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_T.root: $(BUILDDIR)/Hists_T_tW.root $(BUILDDIR)/Hists_Tbar_tW.root
+$(BUILDDIR)/Hists_T.root: $(BUILDDIR)/Hists_T_tW.root $(BUILDDIR)/Hists_Tbar_tW.root $(BUILDDIR)/Hists_T_tch.root $(BUILDDIR)/Hists_Tbar_tch.root
 	@echo "Merging single top histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_T_tW.root: ${CONFIG} $(BUILDDIR)/Craneen_T_tW_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}  ${TNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TWNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_Tbar_tW.root: ${CONFIG} $(BUILDDIR)/Craneen_Tbar_tW_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
-	@tree2hists $^ $@ ${TREENAME}   ${TBARNORM} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}   ${TBARWNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_T_tch.root: ${CONFIG} $(BUILDDIR)/Craneen_T_tch_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)"
+	@tree2hists $^ $@ ${TREENAME}  ${TTCHNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_Tbar_tch.root: ${CONFIG} $(BUILDDIR)/Craneen_Tbar_tch_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)"
+	@tree2hists $^ $@ ${TREENAME}   ${TBARTCHNORM} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_SYST.root: $(BUILDDIR)/Hists_TT.root $(BUILDDIR)/Hists_tuneup.root $(BUILDDIR)/Hists_tunedown.root $(BUILDDIR)/Hists_isrscaleup.root $(BUILDDIR)/Hists_isrscaledown.root $(BUILDDIR)/Hists_fsrscaleup.root $(BUILDDIR)/Hists_fsrscaledown.root
 	@echo "Preparing TT scale systematic histograms"

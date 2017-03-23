@@ -16,6 +16,10 @@ endef
 
 DATANORM=1.
 TTNNLOXS=831760 #fb
+TTCHNNLOXS=136020 #fb
+TBARTCHNNLOXS=80950 #fb
+TWNNLOXS=35600 #fb
+TBARWNNLOXS=35600 #fb
 #SingleMuon reprov3
 TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
@@ -29,6 +33,8 @@ TTTTSCALE:=100.0
 TTTTNORM:=$(shell echo "${TTTTNEGATIVEFRAC}*${DATALUMI}/266949.673913"|bc -l)
 TTTTNORMSCALED:=$(shell echo "${TTTTSCALE}*${TTTTNORM}"|bc -l)
 WJETSNORM:=$(shell echo "${DATALUMI}/0.472120891981"|bc -l)
-TNORM:=$(shell echo "${DATALUMI}/195.122162921"|bc -l)
-TBARNORM:=$(shell echo "${DATALUMI}/191.754634831"|bc -l)
+TTCHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_T_tch_Run2_TopTree_Study.root, ${TTCHNNLOXS})
+TBARTCHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_Tbar_tch_Run2_TopTree_Study.root, ${TBARTCHNNLOXS})
+TWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_T_tW_Run2_TopTree_Study.root, ${TWNNLOXS})
+TBARWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_Tbar_tW_Run2_TopTree_Study.root, ${TBARWNNLOXS})
 
