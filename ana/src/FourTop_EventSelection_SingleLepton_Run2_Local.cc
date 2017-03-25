@@ -980,7 +980,7 @@ int main (int argc, char *argv[])
                     auto W_MuonTrigSF_GH    =  muonSFWeightTrig_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
                     trigSFTot          =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFTot;
-                } else if(Electron && nEl>0) {
+                } else if(!isData && Electron && nEl>0) {
                     auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
                     auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
                     trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
