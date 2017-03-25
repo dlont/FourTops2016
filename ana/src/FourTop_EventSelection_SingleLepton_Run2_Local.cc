@@ -656,7 +656,7 @@ int main (int argc, char *argv[])
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
 
             LOG(INFO) <<"Get jets";
-            selectedOrigJets                                    = r2selection.GetSelectedJets();                                        
+            selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
@@ -965,9 +965,9 @@ int main (int argc, char *argv[])
                     fleptonSF = muIDSF * muISOSF * MuonTrackSF;
                 }
                 else if(Electron && nEl>0){
-                    auto eleTrkSF = electronSFWeightReco->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
+                    auto eleTrkSF = electronSFWeightReco->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     DLOG(INFO)<<"Electron Tracking SF:  "<< eleTrkSF;
-                    auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0);
+                    auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     DLOG(INFO)<<"Electron ID ISO SF:  "<< eleIDISOSF;
                     fleptonSF = eleTrkSF *  eleIDISOSF;
                 }
@@ -981,8 +981,8 @@ int main (int argc, char *argv[])
                     trigSFTot          =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFTot;
                 } else if(!isData && Electron && nEl>0) {
-                    auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
-                    auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->Eta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
+                    auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
+                    auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
                     trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Electron Trigger SF:  "<< trigSFTot;
                 }
