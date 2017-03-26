@@ -969,7 +969,8 @@ int main (int argc, char *argv[])
                     DLOG(INFO)<<"Electron Tracking SF:  "<< eleTrkSF;
                     auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     DLOG(INFO)<<"Electron ID ISO SF:  "<< eleIDISOSF;
-                    fleptonSF = eleTrkSF *  eleIDISOSF;
+                    fleptonSF = 1.;//eleTrkSF *  eleIDISOSF;
+                    #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: SWITCH ON ELECTRON SFs!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                 }
             }
 
