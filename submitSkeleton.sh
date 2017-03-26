@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q localgrid
-#PBS -l walltime=3:00:00
+#PBS -l walltime=4:00:00
 # setting up your code and your env
 source /user/dlontkov/.bash_profile
 cd /user/dlontkov/CMSSW_8_0_21/src/TopBrussels/FourTops2016
