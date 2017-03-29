@@ -424,56 +424,56 @@ int main (int argc, char *argv[])
 
     JetCorrectionUncertainty *jecUnc;
 
-    if(dName.find("Data_Run2016B")!=string::npos || dName.find("Data_Run2016C")!=string::npos || dName.find("Data_Run2016D")!=string::npos)
-    {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L1FastJet_AK4PFchs.txt");
-        vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2Relative_AK4PFchs.txt");
-        vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L3Absolute_AK4PFchs.txt");
-        vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2L3Residual_AK4PFchs.txt");
-        vCorrParam.push_back(*L2L3ResJetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_Uncertainty_AK4PFchs.txt");
-    }
-    else if(dName.find("Data_Run2016E")!=string::npos || dName.find("Data_Run2016F")!=string::npos)
-    {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L1FastJet_AK4PFchs.txt");
-        vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2Relative_AK4PFchs.txt");
-        vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L3Absolute_AK4PFchs.txt");
-        vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2L3Residual_AK4PFchs.txt");
-        vCorrParam.push_back(*L2L3ResJetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_Uncertainty_AK4PFchs.txt");
-    }
-    else if(dName.find("Data_Run2016G")!=string::npos)
-    {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L1FastJet_AK4PFchs.txt");
-        vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2Relative_AK4PFchs.txt");
-        vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L3Absolute_AK4PFchs.txt");
-        vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2L3Residual_AK4PFchs.txt");
-        vCorrParam.push_back(*L2L3ResJetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_Uncertainty_AK4PFchs.txt");
-    }
-    else if(dName.find("Data_Run2016H")!=string::npos)
-    {
-        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L1FastJet_AK4PFchs.txt");
-        vCorrParam.push_back(*L1JetCorPar);
-        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2Relative_AK4PFchs.txt");
-        vCorrParam.push_back(*L2JetCorPar);
-        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L3Absolute_AK4PFchs.txt");
-        vCorrParam.push_back(*L3JetCorPar);
-        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2L3Residual_AK4PFchs.txt");
-        vCorrParam.push_back(*L2L3ResJetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_Uncertainty_AK4PFchs.txt");
-    }
-    else
-    {
+//    if(dName.find("Data_Run2016B")!=string::npos || dName.find("Data_Run2016C")!=string::npos || dName.find("Data_Run2016D")!=string::npos)
+//    {
+//        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L1FastJet_AK4PFchs.txt");
+//        vCorrParam.push_back(*L1JetCorPar);
+//        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2Relative_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2JetCorPar);
+//        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L3Absolute_AK4PFchs.txt");
+//        vCorrParam.push_back(*L3JetCorPar);
+//        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_L2L3Residual_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2L3ResJetCorPar);
+//        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016BCDV2_DATA_Uncertainty_AK4PFchs.txt");
+//    }
+//    else if(dName.find("Data_Run2016E")!=string::npos || dName.find("Data_Run2016F")!=string::npos)
+//    {
+//        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L1FastJet_AK4PFchs.txt");
+//        vCorrParam.push_back(*L1JetCorPar);
+//        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2Relative_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2JetCorPar);
+//        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L3Absolute_AK4PFchs.txt");
+//        vCorrParam.push_back(*L3JetCorPar);
+//        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_L2L3Residual_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2L3ResJetCorPar);
+//        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016EFV2_DATA_Uncertainty_AK4PFchs.txt");
+//    }
+//    else if(dName.find("Data_Run2016G")!=string::npos)
+//    {
+//        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L1FastJet_AK4PFchs.txt");
+//        vCorrParam.push_back(*L1JetCorPar);
+//        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2Relative_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2JetCorPar);
+//        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L3Absolute_AK4PFchs.txt");
+//        vCorrParam.push_back(*L3JetCorPar);
+//        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_L2L3Residual_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2L3ResJetCorPar);
+//        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016GV2_DATA_Uncertainty_AK4PFchs.txt");
+//    }
+//    else if(dName.find("Data_Run2016H")!=string::npos)
+//    {
+//        JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L1FastJet_AK4PFchs.txt");
+//        vCorrParam.push_back(*L1JetCorPar);
+//        JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2Relative_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2JetCorPar);
+//        JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L3Absolute_AK4PFchs.txt");
+//        vCorrParam.push_back(*L3JetCorPar);
+//        JetCorrectorParameters *L2L3ResJetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L2L3Residual_AK4PFchs.txt");
+//        vCorrParam.push_back(*L2L3ResJetCorPar);
+//        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_Uncertainty_AK4PFchs.txt");
+//    }
+//    else
+//    {
         JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
         JetCorrectorParameters *L2JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L2Relative_AK4PFchs.txt");
@@ -481,7 +481,7 @@ int main (int argc, char *argv[])
         JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
         jecUnc = new JetCorrectionUncertainty("../TopTreeAnalysisBase/Calibrations/JECFiles/Summer16_23Sep2016V3_MC/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt");
-    }
+//    }
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
 
 
@@ -969,7 +969,7 @@ int main (int argc, char *argv[])
                     DLOG(INFO)<<"Electron Tracking SF:  "<< eleTrkSF;
                     auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     DLOG(INFO)<<"Electron ID ISO SF:  "<< eleIDISOSF;
-                    fleptonSF = 1.;//eleTrkSF *  eleIDISOSF;
+                    fleptonSF = eleTrkSF *  eleIDISOSF;
                     #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: SWITCH ON ELECTRON SFs!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                 }
             }
