@@ -1,10 +1,17 @@
+export ERA
+DATASUFFIX=*
+ifeq (${ERA},BCDEF)
+DATASUFFIX=[B-F]*
+endif
+ifeq (${ERA},GH)
+DATASUFFIX=[G-H]*
+endif
+
 SUPPRESSOUT=&>/dev/null
 
 HADD=hadd -k
 
-#$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016[B-F]*.root)
-#$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016[G-H]*.root)
-$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016*.root)
+$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016$(DATASUFFIX).root)
 	@echo merging $@
 	@$(HADD) $@ $^ 
 

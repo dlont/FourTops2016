@@ -4,9 +4,10 @@ FORMAT=png
 PLOTS='.*'
 CUSTOMIZE=
 INPUTLOCATION=./
-#DATALABEL:=Single \#mu (BCDEFGH)
+ERA=full
+DATALABEL:=Single \#mu (BCDEFGH)
 #DATALABEL:=Single \#mu (BCDEF)
-DATALABEL:=Single \#mu (GH)
+#DATALABEL:=Single \#mu (GH)
 
 TREENAME:=Craneen__Mu
 
@@ -15,7 +16,8 @@ VPATH:=$(shell readlink -f ${INPUTLOCATION})
 ROOTPLOT=../rootplot/bin/rootplot
 
 SIZE="1000x1000"
-LEGEND:="${DATALABEL},EW,Single top,t\#bar{t},t\#bar{t}t\#bar{t} (\#times 100)"
+LEGEND:="${DATALABEL},EW,ST,t\#bar{t},t\#bar{t}t\#bar{t} (\#times 100)"
+LEGENDLOC:="upper right"
 
 #include Makefile_norm.mk
 include Makefile_hist.mk
@@ -25,6 +27,7 @@ include Makefile_cards.mk
 
 .PHONY: norm
 norm:
+	@echo 'DATALUMI' ${DATALUMI}
 	@echo 'TT' ${TTNORM}
 	@echo 'TTFSRUP' ${TTFSRUPNORM}
 	@echo 'TTFSRDW' ${TTFSRDWNORM}

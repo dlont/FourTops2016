@@ -47,13 +47,13 @@ import ROOT         # allows access to ROOT colors (e.g. ROOT.kRed)
 ## command-line options.  Any list that is filled must be at least as long
 ## as the number of targets or it will throw an error.
 
-line_colors = []                # normally filled by options.colors
+line_colors = [1,413,7,633,1]                # normally filled by options.colors
 fill_colors = []                # normally filled by options.colors
 marker_colors = []              # normally filled by options.colors
 marker_sizes = [1.1,1.1,1.1,1.1,1.1]         # in pixels
 line_styles = []          # 1 (solid), 2 (dashed), 4 (dashdot), 3 (dotted), ...
 fill_styles = [0,1001,1001,1001,0]          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
-draw_commands = ['pe', 'HIST stack',' HIST stack',' HIST stack','HIST']        # a TH1::Draw option, include 'stack' to make stacked
+draw_commands = ['E X0', 'HIST X0 stack',' HIST X0 stack',' HIST X0 stack','HIST X0']        # a TH1::Draw option, include 'stack' to make stacked
 #draw_commands = ['pe', 'HIST ',' HIST ',' HIST ','HIST']        # a TH1::Draw option, include 'stack' to make stacked
 
 ##############################################################################
@@ -112,8 +112,8 @@ mc_color = (50, 150, 150) # used when there are exactly 2 targets; set to
 data_marker = 20           # marker style (circle)
 
 #### Settings for --ratio-split or --efficiency-split
-ratio_max  = 2.
-ratio_min  = 0.
+ratio_max  = 1.7
+ratio_min  = 0.3
 ratio_logy = False
 ratio_fraction = 0.4  # Fraction of the canvas that bottom plot occupies
 #ratio_label = 'Ratio to %(ratio_file)s' # Label for the bottom plot
@@ -129,8 +129,8 @@ overflow_text = ' Overflow'
 underflow_text = ' Underflow'
 
 #### Define how much headroom to add to the plot
-top_padding_factor = 1.2
-top_padding_factor_log = 10    # used when --logy is set
+top_padding_factor = 1.5
+top_padding_factor_log = 55    # used when --logy is set
 
 #### Plotting options based on histogram names
 ## Apply options to histograms whose names match regular expressions
@@ -144,10 +144,10 @@ options_by_histname = [
 #### Legend
 legend_width = 0.25        # Fraction of canvas width
 legend_entry_height = 0.05 # Fraction of canvas height
-max_legend_height = 0.1    # Fraction of canvas height
-legend_left_bound = 0.20   # For left justification
-legend_right_bound = 0.85  # For right justification
-legend_upper_bound = 0.91  # For top justification
+max_legend_height = 0.12    # Fraction of canvas height
+legend_left_bound = 0.50   # For left justification
+legend_right_bound = 0.92  # For right justification
+legend_upper_bound = 0.94  # For top justification
 legend_lower_bound = 0.15  # For bottom justification
 legend_codes = { 1 : 'upper right',
                  2 : 'upper left',

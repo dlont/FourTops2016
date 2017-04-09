@@ -3,6 +3,11 @@
   
   //gROOT->ProcessLine(".L rootextra.C");
 
+  if (gROOT->FindObjectAny("tdrStyle")) {
+     cout << "TRD is already loaded" << endl;
+     return;
+  }
+
   TStyle *tdrStyle = new TStyle("tdrStyle","Style for P-TDR");
 
 // For the canvas:
@@ -120,7 +125,7 @@
   tdrStyle->SetStripDecimals(kTRUE);
   tdrStyle->SetTickLength(0.03, "XYZ");
   tdrStyle->SetNdivisions(510, "XYZ");
-  tdrStyle->SetPadTickX(1);  // To get tick marks on the opposite side of the frame
+  tdrStyle->SetPadTickX(0);  // To get tick marks on the opposite side of the frame
   tdrStyle->SetPadTickY(1);
 
 // Change for log plots:
