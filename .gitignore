@@ -23,6 +23,5 @@ SubmitScripts
 rootplot
 output
 StatTest-master
-ana/inc/Version.h
 result/plots_el
 result/plots_mu
