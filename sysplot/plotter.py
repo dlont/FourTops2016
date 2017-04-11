@@ -7,6 +7,7 @@ from ROOT import TH1
 from ROOT import TObject
 from ROOT import THStack
 from ROOT import TLegend
+from ROOT import TAxis
 
 TH1.__init__._creates = False
 THStack.__init__._creates = False
@@ -24,7 +25,8 @@ class plotter:
 	Binned comparison plotting tool
 	"""	
 
-	def __init__(self):
+	def __init__(self, **kwargs):
+		self.out_format=kwargs.get('format_plot',".png")
 		self.source_root = None
 		self.reference_root = None
 
@@ -44,6 +46,24 @@ class plotter:
 		"""
 		decorate_page
 		"""
+
+		# Set axis label size
+		for pad_id, c in enumerate(config['pads']):
+			gPad = master_canvas.cd(1).cd(pad_id+1)
+			pad_objs = gPad.GetListOfPrimitives()
+			pad_num = gPad.GetNumber() - 1
+			col = pad_num % config["nx"]
+			row = (pad_num - col) / config["nx"]
+			st = pad_objs.FindObject("st")
+			if st:
+				st.GetYaxis().SetLabelSize(0.)
+				st.GetXaxis().SetLabelSize(0.)
+			if col == 0 and st:
+				st.GetYaxis().SetLabelSize(0.2)
+			if row == config["ny"]-1 and st: 
+				st.GetXaxis().SetLabelSize(0.2)
+
+		# Add legend
 		tmp = master_canvas.cd(1).cd(1).GetListOfPrimitives()
 		leg1 = TLegend(config["legend"]["coord"][0],config["legend"]["coord"][1],config["legend"]["coord"][2],config["legend"]["coord"][3])
 		leg1.SetBorderSize(0)
@@ -62,6 +82,8 @@ class plotter:
 		"""
 		decorate_pad
 		"""
+		stack.GetXaxis().SetNdivisions(5,0,0)
+		stack.GetYaxis().SetNdivisions(5,0,0)
 		if "title" in pad: stack.SetTitle(pad["title"])
 		if "ymax" in pad: stack.SetMaximum(pad["ymax"])
 	 	if "ymin" in pad: stack.SetMinimum(pad["ymin"])
@@ -106,7 +128,8 @@ class plotter:
 			root_canvas.cd(1).Divide(c['nx'],c['ny'],0.,0.)
 			self.make_pads(c['pads'],root_canvas.cd(1))
 	  		self.decorate_page(root_canvas,c)
-			root_canvas.Print('file_'+str(i)+'.pdf')
+			if 'name' in c: root_canvas.Print(c['name'])
+			else: root_canvas.Print('file_'+str(i)+self.out_format)
 	  	return
 
 	def make_stackplot(self, pad, gPad):
@@ -119,6 +142,9 @@ class plotter:
 			logging.debug("ROOT FILE: %s" % self.source_root)
 			logging.debug("NAME HIST: %s" % hist)
 			h = None
+
+			if "name" not in hist: continue
+
 			if self.source_root: h = self.source_root.Get(str(hist["name"])).Clone()
 			else: raise NameError('Wrong source ROOT file handle: %s. Terminating!' % self.source_root)
 			h = self.source_root.Get(str(hist["name"])).Clone()
@@ -146,6 +172,9 @@ class plotter:
 			logging.debug("ROOT FILE: %s" % self.source_root)
                         logging.debug("NAME HIST: %s" % hist)
 			h = None
+
+			if "name" not in hist: continue
+
 			if self.source_root: h = self.source_root.Get(str(hist["name"])).Clone()
 			else: raise NameError('Wrong source ROOT file handle: %s. Terminating!' % self.source_root)
 			h = self.source_root.Get(str(hist["name"])).Clone()

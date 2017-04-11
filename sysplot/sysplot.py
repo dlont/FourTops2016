@@ -18,7 +18,7 @@ from ROOT import gStyle
 from plotter import *
 
 def global_style():
-	#gStyle.SetTitleAlign(32)
+	gStyle.SetTitleSize(0.2,"t")
 	pass
 
 def main(arguments):
@@ -33,7 +33,7 @@ def main(arguments):
 
 
 	global_style()
-	p = plotter() 
+	p = plotter(format_plot=arguments.format_plot) 
 	if arguments.infile:
 		p.set_file(arguments.infile)
 	if arguments.ratio_reference:
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
         parser.add_argument('infile', help="Input file")
-        parser.add_argument('-o', '--outfile', help="Output file")
+        parser.add_argument('-f', '--format-plot', help="Output file format [.C, .root, .png, .pdf]", default=".png")
         parser.add_argument('-j', '--config-json', help="JSON configuration file")
         parser.add_argument('-r', '--ratio-reference', help="FILE for the denominator in the ratio plot")
         parser.add_argument(
