@@ -44,7 +44,7 @@ make install
 cd -
 
 mkdir build; cd build
-cmake .. -DTopBrussels_SOURCE_DIR=$CMSSW_BASE/src/TopBrussels
+cmake .. -DTopBrussels_SOURCE_DIR=$CMSSW_BASE/src/TopBrussels -DCMAKE_INSTALL_PREFIX=$CMSSW_BASE/src/TopBrussels/FourTops2016
 make -j; make install
 cd -
 
