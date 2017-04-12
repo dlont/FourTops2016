@@ -31,7 +31,7 @@ link_directories(~/lib)
 
 # define output target
 #add_executable(FourTops FourTops.cc)
-add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc)
+add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc BTagSF.cc)
 
 # link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
 target_link_libraries(FourTops PUBLIC glog gflags FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
