@@ -1,5 +1,5 @@
 
-#include "TopTreeAnalysisBase/Tools/interface/BTagSF.h"
+#include "BTagSF.h"
 
 #include "TopTreeAnalysisBase/Tools/interface/BTagCalibrationStandalone.h"
 #include "TopTreeProducer/interface/TRootPFJet.h"
