@@ -41,11 +41,11 @@
 #include "TopTreeAnalysisBase/Tools/interface/SourceDate.h"
 #include "TopTreeAnalysisBase/Tools/interface/BTagWeightTools.h"
 #include "TopTreeAnalysisBase/Tools/interface/BTagCalibrationStandalone.h"
-#include "TopTreeAnalysisBase/Tools/interface/BTagSF.h"
 #include "TopTreeAnalysisBase/Tools/interface/JetCombiner.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVATrainer.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVAComputer.h"
 
+#include "BTagSF.h"
 #include "CutsTable.h"
 #include "HadronicTopReco.h"
 #include "EventBDT.h"
