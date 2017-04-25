@@ -180,8 +180,12 @@ int main (int argc, char *argv[])
     bool fillingbTagHistos = false;
     std::string MVAmethod       = "BDT";
 
+
+    std::transform(dataSetName.begin(), dataSetName.end(), dataSetName.begin(), ::tolower);
+
+
     bool isData = false;
-    if(dataSetName.find("Data")!=string::npos){
+    if(dataSetName.find("data")!=string::npos){
         isData = true;
     }
     bool SingleLepton      = true;
@@ -372,7 +376,6 @@ int main (int argc, char *argv[])
     /////////////////////////////////////////////////
     Trigger* trigger = new Trigger(Muon, Electron);
     trigger->bookTriggers();
-    //treeLoader.ListTriggers(currentRun , datasets[d]->eventTree()->GetTreeNumber());
 
     /////////////////////////////////////////////////
     //                Top Reco MVA                 //
@@ -426,7 +429,7 @@ int main (int argc, char *argv[])
 
     JetCorrectionUncertainty *jecUnc;
 
-    if(dName.find("Data_Run2016H")!=string::npos)
+    if(dName.find("Run2016H")!=string::npos)
     {
         JetCorrectorParameters *L1JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Spring16_23Sep2016V2/Spring16_23Sep2016HV2_DATA_L1FastJet_AK4PFchs.txt");
         vCorrParam.push_back(*L1JetCorPar);
@@ -484,7 +487,9 @@ int main (int argc, char *argv[])
 	// trigger variables
 	std::array<Int_t,200> triggers_container;
 	for(int iter_trig=0; iter_trig< (isData?trigger->triggerListData.size():trigger->triggerListMC.size()) && iter_trig<200; iter_trig++){
-		TString trigname = trigger->triggerList[iter_trig];
+		TString trigname;
+		if (isData) trigname = trigger->triggerListData[iter_trig];
+		if (!isData) trigname = trigger->triggerListMC[iter_trig];
 		trigname.ReplaceAll("_v*","");
 		trigname.ReplaceAll("_v1","");
 		trigname.ReplaceAll("_v2","");
@@ -817,7 +822,7 @@ int main (int argc, char *argv[])
             //        Trigger              //
             /////////////////////////////////
             float normfactor = datasets[d]->NormFactor();
-//            treeLoader.ListTriggers(currentRun,0);
+            //treeLoader.ListTriggers(currentRun,0);
             trigger->checkAvail(currentRun, datasets, d, &treeLoader, event, treenumber);
             trigged = trigger->checkIfFired(currentRun, datasets, d);
  

@@ -84,7 +84,8 @@ void Trigger::checkAvail(int currentRun, vector < Dataset* > datasets, unsigned 
 
 	// get trigger info:
 	string datasetName = datasets[d]->Name();
-	if(datasetName.find("Data")==string::npos){ // if MC
+	std::transform(datasetName.begin(), datasetName.end(), datasetName.begin(), ::tolower);
+	if(datasetName.find("data")==string::npos){ // if MC
 	
 		for(std::map<std::string,std::pair<int,bool> >::iterator iter = triggermapMC.begin(); iter != triggermapMC.end(); iter++){
 		    if(redotrigmap){
@@ -134,7 +135,8 @@ int Trigger::checkIfFired(int currentRun, vector < Dataset* > datasets, unsigned
 	trigged =0;
 	string datasetName = datasets[d]->Name();
 
-	if(datasetName.find("Data")==string::npos){ // if MC
+	std::transform(datasetName.begin(), datasetName.end(), datasetName.begin(), ::tolower);
+	if(datasetName.find("data")==string::npos){ // if MC
 		for(UInt_t itrig=0; itrig<triggerListMC.size() && trigged==0; itrig++){
 			// cout<<"fired: "<<triggermapMC[triggerListMC[itrig]].second<<endl;
 		    if(triggermapMC[triggerListMC[itrig]].second)   trigged=1;
