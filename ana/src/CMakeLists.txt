@@ -31,9 +31,9 @@ link_directories(~/lib)
 
 # define output target
 #add_executable(FourTops FourTops.cc)
-add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc)
+add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc BTagSF.cc)
 
 # link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
 target_link_libraries(FourTops PUBLIC glog gflags FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
-install(TARGETS FourTops DESTINATION ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/)
+install(TARGETS FourTops DESTINATION ${CMAKE_INSTALL_PREFIX})
 add_custom_command(TARGET FourTops PRE_BUILD COMMAND cmake -P git_meta_info.cmake)

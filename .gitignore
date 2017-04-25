@@ -18,6 +18,7 @@ glog-install
 gtest
 gtest-install
 gflags-2.2.0-install
+gflags-install
 gflags
 SubmitScripts
 rootplot
