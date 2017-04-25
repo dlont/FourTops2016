@@ -32,6 +32,22 @@ void Trigger::bookTriggers(){
 //        triggerListMC.push_back("HLT_Iso(Tk)Mu22_v3");
 //        triggerListData.push_back("HLT_IsoTkMu22_v*");
 //        triggerListMC.push_back("HLT_IsoTkMu22_v2");
+//
+	//Jet triggers
+	triggerListData.push_back("HLT_HT200_v*");
+	triggerListMC.push_back("HLT_HT200_v*");
+	triggerListData.push_back("HLT_HT275_v*");
+	triggerListMC.push_back("HLT_HT275_v*");
+	triggerListData.push_back("HLT_HT325_v*");
+	triggerListMC.push_back("HLT_HT325_v*");
+	triggerListData.push_back("HLT_DiCentralPFJet170_CFMax0p1_v*");
+	triggerListMC.push_back("HLT_DiCentralPFJet170_CFMax0p1_v*");
+	triggerListData.push_back("HLT_DiCentralPFJet220_CFMax0p3_v*");
+	triggerListMC.push_back("HLT_DiCentralPFJet220_CFMax0p3_v*");
+	triggerListData.push_back("HLT_DiCentralPFJet170_v*");
+	triggerListMC.push_back("HLT_DiCentralPFJet170_v*");
+	triggerListData.push_back("HLT_SingleCentralPFJet170_CFMax0p1_v*");
+	triggerListMC.push_back("HLT_SingleCentralPFJet170_CFMax0p1_v*");
     }
 
     if (electron){
