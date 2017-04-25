@@ -217,8 +217,8 @@ int main (int argc, char *argv[])
     anaEnv.PrimaryVertexCollection = "PrimaryVertex";
     anaEnv.JetCollection = "PFJets_slimmedJets";
     anaEnv.FatJetCollection = "FatJets_slimmedJetsAK8";
-    if(isData) anaEnv.METCollection = "PFMET_slimmedMETs";
-    else anaEnv.METCollection = "PFMET_slimmedMETsMuEGClean";
+    //if(isData) anaEnv.METCollection = "PFMET_slimmedMETsMuEGClean";
+    anaEnv.METCollection = "PFMET_slimmedMETs"; 
     anaEnv.MuonCollection = "Muons_slimmedMuons";
     anaEnv.ElectronCollection = "Electrons_selectedElectrons";
     anaEnv.GenJetCollection   = "GenJets_slimmedGenJets";
@@ -372,6 +372,7 @@ int main (int argc, char *argv[])
     /////////////////////////////////////////////////
     Trigger* trigger = new Trigger(Muon, Electron);
     trigger->bookTriggers();
+    //treeLoader.ListTriggers(currentRun , datasets[d]->eventTree()->GetTreeNumber());
 
     /////////////////////////////////////////////////
     //                Top Reco MVA                 //
@@ -478,6 +479,29 @@ int main (int argc, char *argv[])
         TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());
         Event myEvent;
         myEvent.makeBranches(tup);
+
+	cout << "checking triggers: " << endl;
+	// trigger variables
+	std::array<Int_t,200> triggers_container;
+	for(int iter_trig=0; iter_trig< (isData?trigger->triggerListData.size():trigger->triggerListMC.size()) && iter_trig<200; iter_trig++){
+		TString trigname = trigger->triggerList[iter_trig];
+		trigname.ReplaceAll("_v*","");
+		trigname.ReplaceAll("_v1","");
+		trigname.ReplaceAll("_v2","");
+		trigname.ReplaceAll("_v3","");
+		trigname.ReplaceAll("_v4","");
+		trigname.ReplaceAll("_v5","");
+		trigname.ReplaceAll("_v6","");
+		trigname.ReplaceAll("_v7","");
+		trigname.ReplaceAll("_v8","");
+		trigname.ReplaceAll("_v9","");
+		trigname.ReplaceAll("_v10","");
+		trigname.ReplaceAll("_v11","");
+		trigname.ReplaceAll("_v12","");
+		TString branchname = trigname+"/I";
+		std::cout << "adding trigger to trees " << trigname << " mapped to element " << iter_trig << " " << branchname << std::endl;
+		tup->Branch(trigname,&(triggers_container[iter_trig]),branchname);
+	}
 
         LOG(INFO) << "Output Craneens File: " << Ntupname ;
 
@@ -814,6 +838,13 @@ int main (int argc, char *argv[])
             }
             
             if (!trigged)          continue;  //If an HLT condition is not present, skip this event in the loop.       
+
+	    triggers_container.fill(0);
+	    for(int iter_trig=0; iter_trig< ((isData?trigger->triggerListData.size():trigger->triggerListMC.size())) && iter_trig<200; iter_trig++){
+		    if (isData) triggers_container[iter_trig] = trigger->triggermapData.find(trigger->triggerListData[iter_trig])->second.second;
+		    if (!isData) riggers_container[iter_trig] = trigger->triggermapMC.find(trigger->triggerListMC[iter_trig])->second.second;
+	    }
+
             postTrig+=1.; 
             /////////////////////////////////////////////////
             //            neg weights counter              //
