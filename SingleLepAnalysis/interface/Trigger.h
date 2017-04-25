@@ -34,24 +34,25 @@ class Trigger{
 		void checkAvail(int currentRun, vector < Dataset* > datasets, unsigned int d, TTreeLoader * treeLoader, TRootEvent* event, int treeNumber);
 		int checkIfFired(int currentRun, vector < Dataset* > datasets, unsigned int d);
 
+	public:
+	    std::vector<std::string> triggerListData;
+	    std::vector<std::string> triggerListMC;
+	    std::vector<std::string> triggerList; //for all data MC
+	    std::map<std::string,std::pair<int,bool> > triggermapData;
+	    std::map<std::string,std::pair<int,bool> > triggermapMC;
+	    std::map<std::string,std::pair<int,bool> > triggermap; //for all data MC
 
 	private:
 		bool muon;
 		bool electron;
 		bool trigged;
 		bool redotrigmap;
-	    std::vector<std::string> triggerListData;
-	    std::vector<std::string> triggerListMC;
-	    std::vector<std::string> triggerList; //for all data MC
 
 	    int currentRun;
 	    int previousRun;
 		string currentFilename;
 		string previousFilename;
 		int iFile;
-	    std::map<std::string,std::pair<int,bool> > triggermapData;
-	    std::map<std::string,std::pair<int,bool> > triggermapMC;
-	    std::map<std::string,std::pair<int,bool> > triggermap; //for all data MC
  
 	    TRootRun *runInfos2;
 	    string previousDatasetName;

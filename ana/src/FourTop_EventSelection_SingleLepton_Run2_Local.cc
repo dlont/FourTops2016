@@ -842,7 +842,7 @@ int main (int argc, char *argv[])
 	    triggers_container.fill(0);
 	    for(int iter_trig=0; iter_trig< ((isData?trigger->triggerListData.size():trigger->triggerListMC.size())) && iter_trig<200; iter_trig++){
 		    if (isData) triggers_container[iter_trig] = trigger->triggermapData.find(trigger->triggerListData[iter_trig])->second.second;
-		    if (!isData) riggers_container[iter_trig] = trigger->triggermapMC.find(trigger->triggerListMC[iter_trig])->second.second;
+		    if (!isData) triggers_container[iter_trig] = trigger->triggermapMC.find(trigger->triggerListMC[iter_trig])->second.second;
 	    }
 
             postTrig+=1.; 
