@@ -1,5 +1,26 @@
 export ERA
 DATASUFFIX=*
+ifeq (${ERA},B)
+DATASUFFIX=[B]*
+endif
+ifeq (${ERA},C)
+DATASUFFIX=[C]*
+endif
+ifeq (${ERA},D)
+DATASUFFIX=[D]*
+endif
+ifeq (${ERA},E)
+DATASUFFIX=[E]*
+endif
+ifeq (${ERA},F)
+DATASUFFIX=[F]*
+endif
+ifeq (${ERA},G)
+DATASUFFIX=[G]*
+endif
+ifeq (${ERA},H)
+DATASUFFIX=[H]*
+endif
 ifeq (${ERA},BCDEF)
 DATASUFFIX=[B-F]*
 endif
