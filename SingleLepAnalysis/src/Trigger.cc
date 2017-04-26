@@ -33,7 +33,20 @@ void Trigger::bookTriggers(){
 //        triggerListData.push_back("HLT_IsoTkMu22_v*");
 //        triggerListMC.push_back("HLT_IsoTkMu22_v2");
 //
+	//Jet+mu triggers
+	triggerListData.push_back("HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400_v*");
+	triggerListMC.push_back("HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400_v*");
 	//Jet triggers
+	triggerListData.push_back("HLT_QuadJet45_TripleBTagCSV_p087_v*");
+	triggerListMC.push_back("HLT_QuadJet45_TripleBTagCSV_p087_v*");
+	triggerListData.push_back("HLT_QuadJet45_DoubleBTagCSV_p087_v*");
+	triggerListMC.push_back("HLT_QuadJet45_DoubleBTagCSV_p087_v*");
+	triggerListData.push_back("HLT_DoubleJet90_Double30_TripleBTagCSV_p087_v*");
+	triggerListMC.push_back("HLT_DoubleJet90_Double30_TripleBTagCSV_p087_v*");
+	triggerListData.push_back("HLT_DoubleJet90_Double30_DoubleBTagCSV_p087_v*");
+	triggerListMC.push_back("HLT_DoubleJet90_Double30_DoubleBTagCSV_p087_v*");
+	triggerListData.push_back("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_v*");
+	triggerListMC.push_back("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_v*");
 	triggerListData.push_back("HLT_HT200_v*");
 	triggerListMC.push_back("HLT_HT200_v*");
 	triggerListData.push_back("HLT_HT275_v*");
