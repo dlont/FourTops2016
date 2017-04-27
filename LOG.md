@@ -419,3 +419,11 @@ to make test of histogram compatibility
 ```
 make -j test TARGET=../result/plots_mu REFERENCE=../result/history/30_01_2017/plots_mu
 ```
+
+Don 27 Apr 2017 14:05:16 CEST
+
+Trigger efficiency calculation
+
+`python tools/trgeff.py plots_mu_jethtstream_sixjettrig/Craneen_Data_Run2_TopTree_Study.root --tree-name=Craneen__Mu --variable-name=LeptonPt --triggers=HLT_PFHT400_SixJet30_DoubleBTagCSV_p056:"HLT_IsoMu24||HLT_IsoTkMu24" -o HLT_IsoMu24_OR_HLT_IsoTkMu24_data.root`
+
+
