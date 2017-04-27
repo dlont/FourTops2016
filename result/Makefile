@@ -16,8 +16,6 @@ VPATH:=$(shell readlink -f ${INPUTLOCATION})
 ROOTPLOT=../rootplot/bin/rootplot
 
 SIZE="1000x1000"
-LEGEND:="${DATALABEL},EW,ST,t\#bar{t},t\#bar{t}t\#bar{t} (\#times 100)"
-LEGENDLOC:="upper right"
 
 #include Makefile_norm.mk
 include Makefile_hist.mk
@@ -25,6 +23,13 @@ include Makefile_merge.mk
 include Makefile_plots.mk
 include Makefile_cards.mk
 
+
+# ENTRIES variables are defined in  Makefile_hist.mk
+#LEGEND:="${DATALABEL} (${DATAENTRIES}),EW (${EWENTRIES}),ST (${STENTRIES}),t\#bar{t} (${TTENTRIES}),t\#bar{t}t\#bar{t} \#times 100 (${TTTTENTRIES})"
+LEGEND:="${DATALABEL},EW,ST,t\#bar{t},t\#bar{t}t\#bar{t} \#times 100"
+LEGENDLOC:="upper right"
+
+# LUMI and NORMALIZATION variables are defined in Makefile_norm.mk included from Makefile_hist.mk
 .PHONY: norm
 norm:
 	@echo 'DATALUMI' ${DATALUMI}

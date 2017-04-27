@@ -181,7 +181,16 @@ decoration_root = '''
 ## Add a caption
 #tt = ROOT.TText()
 #tt.DrawTextNDC(0.6, 0.15, "CMS Preliminary")
-ROOT.CMS_lumi()
+#ROOT.CMS_lumi(ROOT.TString("5.9 fb^{-1}")) #B
+#ROOT.CMS_lumi(ROOT.TString("2.6 fb^{-1}")) #C
+#ROOT.CMS_lumi(ROOT.TString("4.4 fb^{-1}")) #D
+#ROOT.CMS_lumi(ROOT.TString("4.1 fb^{-1}")) #E
+#ROOT.CMS_lumi(ROOT.TString("3.2 fb^{-1}")) #F
+#ROOT.CMS_lumi(ROOT.TString("7.7 fb^{-1}")) #G
+#ROOT.CMS_lumi(ROOT.TString("8.8 fb^{-1}")) #H
+#ROOT.CMS_lumi(ROOT.TString("20.2 fb^{-1}")) #B-F
+#ROOT.CMS_lumi(ROOT.TString("16.5 fb^{-1}")) #G-H
+ROOT.CMS_lumi(ROOT.TString("36.7 fb^{-1}")) #B-H
 '''
 
 ##############################################################################

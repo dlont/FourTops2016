@@ -32,7 +32,14 @@ SUPPRESSOUT=&>/dev/null
 
 HADD=hadd -k
 
+##################################### SINGLE LEPTON ##############################################
 $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016$(DATASUFFIX).root)
+	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
+	@echo merging $@
+	@$(HADD) $@ $^ 
+##################################### JETHT ##############################################
+$(BUILDDIR)/Craneen_data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_JetHt_Run_2016$(DATASUFFIX).root)
+	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD) $@ $^ 
 
@@ -120,3 +127,6 @@ $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/C
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+$(BUILDDIR)/Craneen_QCD_MuEnriched_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_QCD_MuEnriched*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
