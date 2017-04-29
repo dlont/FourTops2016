@@ -129,7 +129,7 @@ class plotter:
 			self.make_pads(c['pads'],root_canvas.cd(1))
 	  		self.decorate_page(root_canvas,c)
 			if 'name' in c: root_canvas.Print(c['name'])
-			else: root_canvas.Print('file_'+str(i)+self.out_format)
+			else: root_canvas.Print(str('file_'+str(i)+self.out_format))
 	  	return
 
 	def make_stackplot(self, pad, gPad):
