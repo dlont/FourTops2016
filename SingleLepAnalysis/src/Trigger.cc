@@ -53,19 +53,46 @@ void Trigger::bookTriggers(){
 	triggerListMC.push_back("HLT_HT275_v*");
 	triggerListData.push_back("HLT_HT325_v*");
 	triggerListMC.push_back("HLT_HT325_v*");
-	triggerListData.push_back("HLT_DiCentralPFJet170_CFMax0p1_v*");
-	triggerListMC.push_back("HLT_DiCentralPFJet170_CFMax0p1_v*");
-	triggerListData.push_back("HLT_DiCentralPFJet220_CFMax0p3_v*");
-	triggerListMC.push_back("HLT_DiCentralPFJet220_CFMax0p3_v*");
-	triggerListData.push_back("HLT_DiCentralPFJet170_v*");
-	triggerListMC.push_back("HLT_DiCentralPFJet170_v*");
-	triggerListData.push_back("HLT_SingleCentralPFJet170_CFMax0p1_v*");
-	triggerListMC.push_back("HLT_SingleCentralPFJet170_CFMax0p1_v*");
+	//MET triggers
+	triggerListData.push_back("HLT_PFMET120_Mu5_v*");
+	triggerListMC.push_back("HLT_PFMET120_Mu5_v*");
+	triggerListData.push_back("HLT_Mu6_PFHT200_PFMET80_BTagCSV_p067_v*");
+	triggerListMC.push_back("HLT_Mu6_PFHT200_PFMET80_BTagCSV_p067_v*");
+	triggerListData.push_back("HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400_v*");
+	triggerListMC.push_back("HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400_v*");
+	triggerListData.push_back("HLT_Mu15_IsoVVVL_PFHT350_PFMET50_v*");
+	triggerListMC.push_back("HLT_Mu15_IsoVVVL_PFHT350_PFMET50_v*");
+	triggerListData.push_back("HLT_PFMET120_BTagCSV_p067_v*");
+	triggerListMC.push_back("HLT_PFMET120_BTagCSV_p067_v*");
     }
 
     if (electron){
 	    triggerListData.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v*");    	
 	    triggerListMC.push_back("HLT_Ele32_eta2p1_WPTight_Gsf_v8");
+	    //Jet triggers
+	    triggerListData.push_back("HLT_QuadJet45_TripleBTagCSV_p087_v*");
+	    triggerListMC.push_back("HLT_QuadJet45_TripleBTagCSV_p087_v*");
+	    triggerListData.push_back("HLT_QuadJet45_DoubleBTagCSV_p087_v*");
+	    triggerListMC.push_back("HLT_QuadJet45_DoubleBTagCSV_p087_v*");
+	    triggerListData.push_back("HLT_DoubleJet90_Double30_TripleBTagCSV_p087_v*");
+	    triggerListMC.push_back("HLT_DoubleJet90_Double30_TripleBTagCSV_p087_v*");
+	    triggerListData.push_back("HLT_DoubleJet90_Double30_DoubleBTagCSV_p087_v*");
+	    triggerListMC.push_back("HLT_DoubleJet90_Double30_DoubleBTagCSV_p087_v*");
+	    triggerListData.push_back("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_v*");
+	    triggerListMC.push_back("HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_v*");
+	    triggerListData.push_back("HLT_HT200_v*");
+	    triggerListMC.push_back("HLT_HT200_v*");
+	    triggerListData.push_back("HLT_HT275_v*");
+	    triggerListMC.push_back("HLT_HT275_v*");
+	    triggerListData.push_back("HLT_HT325_v*");
+	    triggerListMC.push_back("HLT_HT325_v*");
+	    //MET triggers
+	    triggerListData.push_back("HLT_Ele15_IsoVVVL_PFHT350_PFMET50_v*");
+	    triggerListMC.push_back("HLT_Ele15_IsoVVVL_PFHT350_PFMET50_v*");
+	    triggerListData.push_back("HLT_Photon22_R9Id90_HE10_Iso40_EBOnly_PFMET40_v*");
+	    triggerListMC.push_back("HLT_Photon22_R9Id90_HE10_Iso40_EBOnly_PFMET40_v*");
+	    triggerListData.push_back("HLT_PFMET120_BTagCSV_p067_v*");
+	    triggerListMC.push_back("HLT_PFMET120_BTagCSV_p067_v*");
     }
 
     for(UInt_t itrig=0; itrig<triggerListMC.size(); itrig++){
