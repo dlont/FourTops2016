@@ -37,13 +37,13 @@ for chan in channels:
     print "\nSearching list of sample used for ", chan, " channel!"
     # getting the appropriate xml file
     if "Mu2016" in chan:
-        tree = ET.ElementTree(file='config/FullMuonTopTrees80_v7.xml')
+        tree = ET.ElementTree(file='config/FullMuonTopTrees80_v9.xml')
     elif "El2016" in chan:
-        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v7.xml')
+        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v9.xml')
     elif "Syst2016Mu" in chan:
-        tree = ET.ElementTree(file='config/SystMuonTopTrees80_v7.xml')
+        tree = ET.ElementTree(file='config/SystMuonTopTrees80_v9.xml')
     elif "Syst2016El" in chan:
-        tree = ET.ElementTree(file='config/SystElectronTopTrees80_v7.xml')
+        tree = ET.ElementTree(file='config/SystElectronTopTrees80_v9.xml')
     elif "Dilep" in chan:
         tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
     else:
