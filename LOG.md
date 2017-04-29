@@ -424,6 +424,28 @@ Don 27 Apr 2017 14:05:16 CEST
 
 Trigger efficiency calculation
 
-`python tools/trgeff.py plots_mu_jethtstream_sixjettrig/Craneen_Data_Run2_TopTree_Study.root --tree-name=Craneen__Mu --variable-name=LeptonPt --triggers=HLT_PFHT400_SixJet30_DoubleBTagCSV_p056:"HLT_IsoMu24||HLT_IsoTkMu24" -o HLT_IsoMu24_OR_HLT_IsoTkMu24_data.root`
+`python trgeff/trgeff.py plots_mu_jethtstream_sixjettrig/Craneen_Data_Run2_TopTree_Study.root --tree-name=Craneen__Mu --variable-name=LeptonPt --triggers=HLT_PFHT400_SixJet30_DoubleBTagCSV_p056:"HLT_IsoMu24||HLT_IsoTkMu24" -o HLT_IsoMu24_OR_HLT_IsoTkMu24_data.root`
 
 
+Sam 29 Apr 2017 10:53:11 CEST
+Pileup comparison
+Need Freya's crab lumi files
+cd PU
+producePU.zsh [NAME OF THE CRAB LUMI JSON] [OUTPUTFILE/HIST suffix]
+
+producePU.zsh uses official input (GOLDEN/SILVER) json --inputLumiJSON=INPUTLUMIJSON
+
+/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/PU/producePU.zsh /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/PU/Freya_crab_jsons/lumiSummary_crab_SingleMuon-Run2016F-03Feb2017-v1crab37.json Run2016F-03Feb2017-v1crab37
+
+Event yields histogram
+cd result/
+
+#single lepton stream
+python -i datayields.py '{"B":["plots_mu_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}'
+
+#jetht stream
+python -i datayields.py '{"B":["plots_mu_jethtstream_sixjettrig_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_jethtstream_sixjettrig_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_jethtstream_sixjettrig_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_jethtstream_sixjettrig_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_jethtstream_sixjettrig_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_jethtstream_sixjettrig_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_jethtstream_sixjettrig_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}'
+
+
+#How to plot systematics comparison
+python -b sysplot.py -b ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/result/v6JECapplied/plots_mu/Hists_TT_CARDS.root -j JES.json -r ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/result/v6JECapplied/plots_mu/Hists_TT_CARDS.root -f .png
