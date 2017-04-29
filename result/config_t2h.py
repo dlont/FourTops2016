@@ -19,7 +19,7 @@ scalefactor=float(sys.argv[5])
 print 'Using input file: ' + inputfile
 print 'Output file: ' + inputfile
 
-list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
+list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="(HLT_IsoMu24==1||HLT_IsoTkMu24==1)")]
 
 cut_for_all_files = ""
 
