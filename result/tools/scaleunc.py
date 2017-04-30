@@ -62,7 +62,8 @@ class scaleUncProcessor:
 						]
 						binmax = max(binvariations)
 						binmin = min(binvariations)
-						#print obj.GetBinError(ibin), max(binvariations), min(binvariations)
+						#print "all:", binvariations
+						#print "max/min:", obj.GetBinError(ibin), max(binvariations), min(binvariations)
 						diff2  = (binmax - binmin)*(binmax - binmin)/4.
 						binerror = obj.GetBinError(ibin)*obj.GetBinError(ibin) + diff2
                                 		obj.SetBinError(ibin,ROOT.TMath.Sqrt(binerror))
