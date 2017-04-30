@@ -12,7 +12,7 @@ def lp(treename):
 	if 'El' in treename:
 		isorangemax=0.15
 	elif 'Mu' in treename:
-		isorangemax=0.5
+		isorangemax=0.15
 	else:
 		raise NameError('Tree name %s is not recognized'%treename)
 	plots_list = [
