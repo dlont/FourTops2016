@@ -171,8 +171,9 @@ int main (int argc, char *argv[])
     bool bTopPt            = FLAGS_fourtops_toprew;
     bool bLeptonSF         = true; //! apply lepton SFs
     bool debug             = false;
-    bool applyJER          = true;
-    bool applyJEC          = true;
+    #warning "SWITCH ON JET CORRECTIONS"
+    bool applyJER          = false;
+    bool applyJEC          = false;
     bool JERUp             = isJERUp();
     bool JERDown           = isJERDown();
     bool JESUp             = isJESUp();
@@ -658,7 +659,6 @@ int main (int argc, char *argv[])
             //////////////////////////////////////
             ///  Jet Energy Scale Corrections  ///
             //////////////////////////////////////
-            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE JEC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             if (applyJER && !isData)
             {
                 if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
@@ -680,7 +680,6 @@ int main (int argc, char *argv[])
             ///////////////////////////////////////////////////////////
             //           Object definitions for selection            //
             ///////////////////////////////////////////////////////////
-            #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: UPDATE LEPTON SELECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             Run2Selection r2selection(init_jets, init_muons, init_electrons, mets);
 
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
@@ -1005,7 +1004,6 @@ int main (int argc, char *argv[])
                     auto eleIDISOSF = electronSFWeightIDISO->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     DLOG(INFO)<<"Electron ID ISO SF:  "<< eleIDISOSF;
                     fleptonSF = eleTrkSF *  eleIDISOSF;
-                    #warning "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WARNING: SWITCH ON ELECTRON SFs!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                 }
             }
 
