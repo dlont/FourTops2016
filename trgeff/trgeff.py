@@ -35,9 +35,13 @@ def efficiency(root_file,args):
 
 	cpp2python_logic = {"||":" or ", "&&":" and "}
 	trigger_requirement = ''
+
+	#study trigger combination
 	for token in study_trigger:
 		if len(Set(['||', '&&']) & Set([token])) > 0: trigger_requirement += cpp2python_logic[token]
 		else: trigger_requirement += 'event.{}==1'.format(token)
+	#study trigger && reference trigger
+	trigger_requirement += 'and event.{}==1'.format(ref_trigger_name)
 	event_filter = 'pass_study = ('+trigger_requirement+')'
 
 	logging.info(event_filter)
@@ -57,10 +61,9 @@ def efficiency(root_file,args):
 		exec("pass_ref = event.%s == 1" % (ref_trigger_name))
 		exec(event_filter)
 		logging.info(pass_study)
-		if pass_ref and event.leptonIso < 0.12:
-			pEff.Fill(pass_study,var)
+		pEff.Fill(pass_study,var)
                 
-		progress(ientry, nentries, 'Progress. N entries={}'.format(nentries))
+		if (ientry % 100 == 0): progress(ientry, nentries, 'Progress. N entries={}'.format(nentries))
 		ientry += 1
 
 	c = rt.TCanvas("c","CMS",5,45,500,500)
@@ -71,6 +74,8 @@ def efficiency(root_file,args):
 		outfile = rt.TFile.Open(args.outfile,"RECREATE")
 		graph = pEff.GetPaintedGraph()
 		graph.Write()
+		pEff.GetPassedHistogram().Write()
+		pEff.GetTotalHistogram().Write()
 	
 
 def main(arguments):
