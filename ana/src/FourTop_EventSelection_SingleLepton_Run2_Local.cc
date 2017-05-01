@@ -813,8 +813,10 @@ int main (int argc, char *argv[])
 
             if(!isData){
                 ttXtype = event->getgenTTX_id();
-		if (ttXtype % 100 > 50) ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
-	        if (ttXtype % 100 == 0) ttXrew  = 184./257.;	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
+		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
+			if (ttXtype % 100 > 50) ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
+			if (ttXtype % 100 == 0) ttXrew  = 184./257.;	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
+		}
                 if(event->getWeight(1)!= -9999){
                     weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
                     weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
