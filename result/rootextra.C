@@ -106,7 +106,7 @@ bool drawLogo      = false;
       lumiText += lumi_sqrtS;
     }
    
-  std::cout << lumiText << endl;
+  //std::cout << lumiText << endl;
 
   TLatex latex;
   latex.SetNDC();
