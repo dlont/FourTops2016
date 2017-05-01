@@ -38,7 +38,12 @@ $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cr
 	@echo merging $@
 	@$(HADD) $@ $^ 
 ##################################### JETHT ##############################################
-$(BUILDDIR)/Craneen_data_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_JetHt_Run_2016$(DATASUFFIX).root)
+$(BUILDDIR)/Craneen_dataJETHT_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_JetHt_Run_2016$(DATASUFFIX).root)
+	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
+	@echo merging $@
+	@$(HADD) $@ $^ 
+##################################### MET ##############################################
+$(BUILDDIR)/Craneen_dataMET_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_MET_Run_2016$(DATASUFFIX).root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD) $@ $^ 
