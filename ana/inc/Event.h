@@ -91,6 +91,7 @@ struct Event {
     double hdampw[2];       // POWHEG hdamp weight variation 
     double toprew;          // TOP pT reweighting factor
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
+    double ttxrew;          // Heavy flavour fraction reweighting
 }; //end Event
 
 //______________________________________________________________________________
@@ -166,6 +167,7 @@ void Event::clear() {
       std::fill( hdampw, hdampw + sizeof(hdampw), 1.);
       toprew = 0.;
       ttxType = -1.;
+      ttxrew = 1.;
 } //End Event::clear()
 
 /**
@@ -225,6 +227,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("SFPU_down", &SFPU_down    ,"SFPU_down/D"); 
       tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
       tree -> Branch("toprew", &toprew    ,"toprew/D");
+      tree -> Branch("ttxrew", &ttxrew    ,"ttxrew/D");
       tree -> Branch("NormFactor", &NormFactor    ,"NormFactor/D"); 
       tree -> Branch("GenWeight", &GenWeight    ,"GenWeight/D"); 
       
@@ -330,11 +333,15 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[], double c
     csvJetpt4 = vals[61];
     toprew = vals[62];
     ttxType = vals[63];
+    ttxrew = vals[64];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
-    for (auto par = 0; par < 8; ++par) weight[par]=w[par];
-    for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
+    std::copy ( w, w+8, weight);
+    std::copy ( csvrs, csvrs+19, csvrsw);
+    std::copy ( hdamp, hdamp+2, hdampw );
+    //for (auto par = 0; par < 8; ++par) weight[par]=w[par];
+    //for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
     
 } // end Event::fill()
 
