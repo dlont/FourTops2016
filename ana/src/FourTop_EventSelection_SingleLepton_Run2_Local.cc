@@ -816,6 +816,7 @@ int main (int argc, char *argv[])
 		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
 			if (ttXtype % 100 > 50) ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
 			if (ttXtype % 100 == 0) ttXrew  = 184./257.;	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
+			scaleFactor *= ttXrew;
 		}
                 if(event->getWeight(1)!= -9999){
                     weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
