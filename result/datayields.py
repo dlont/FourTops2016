@@ -15,8 +15,9 @@ for label, entry in sorted(data.iteritems()):
 	print label, entry
 	temp_f = ROOT.TFile.Open(entry[0],'READ')
 	temp_t = temp_f.Get(entry[1].encode('ascii'))
-	#temp_t.Draw("BDT>>h_temp","(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)")
-	temp_t.Draw("BDT>>h_temp")
+	temp_t.Draw("BDT>>h_temp","(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)")
+	#temp_t.Draw("BDT>>h_temp","(HLT_IsoMu24||HLT_IsoTkMu24)")
+	#temp_t.Draw("BDT>>h_temp")
 	temp_h = ROOT.gDirectory.Get("h_temp")
 	temp_nevents = temp_h.GetEntries()
 	print "Nevents: ", temp_nevents
@@ -26,3 +27,7 @@ for label, entry in sorted(data.iteritems()):
 	ibin+=1
 
 h.Draw("pe")
+outfilename = sys.argv[2].split(":")[0]
+outhistname = sys.argv[2].split(":")[1]
+outfile = ROOT.TFile.Open(outfilename,'UPDATE')
+h.Write(outhistname)
