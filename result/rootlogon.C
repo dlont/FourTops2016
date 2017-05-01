@@ -1,4 +1,6 @@
 {
+#ifndef TDR_STYLE
+#define TDR_STYLE
   cout << "tdr style" << endl;
   
   //gROOT->ProcessLine(".L rootextra.C");
@@ -153,6 +155,6 @@
   tdrStyle->SetHatchesSpacing(0.05);
 
   tdrStyle->cd();
+#endif
 }
-
 
