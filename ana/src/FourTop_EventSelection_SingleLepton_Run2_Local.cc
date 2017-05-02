@@ -353,9 +353,9 @@ int main (int argc, char *argv[])
             muonSFWeightTrig_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsGH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
         else if(Electron){
-            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_reco_20170413.root","EGamma_SF2D",true,false,false,true);    
-            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_IDcutbTight_20170413.root","EGamma_SF2D",true,false,false,false);    
-            electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
+            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_reco_20170413.root","EGamma_SF2D",true,false,false);    
+            electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_IDcutbTight_20170413.root","EGamma_SF2D",true,false,false);    
+            electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false);
             electronSFWeightTrig_GH = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016GH_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
         }
     }
@@ -558,7 +558,7 @@ int main (int argc, char *argv[])
         //       Define object containers and initalisations      //
         ////////////////////////////////////////////////////////////
 
-        float BDTScore, MHT, MHTSig, STJet,leptoneta, leptonpt, leptonphi, electronpt, electroneta, bjetpt, EventMass, EventMassX, SumJetMass, SumJetMassX, H, HX;
+        float BDTScore, MHT, MHTSig, STJet, leptonvalidhits, leptoneta, leptonpt, leptonphi, electronpt, electroneta, bjetpt, EventMass, EventMassX, SumJetMass, SumJetMassX, H, HX;
         float HTHi, HTRat, HT, HTX, HTH, HTXHX, sumpx_X, sumpy_X, sumpz_X, sume_X, sumpx, sumpy, sumpz, sume, jetpt, PTBalTopEventX, PTBalTopSumJetX, PTBalTopMuMet;     
         int itrigger = -1, previousRun = -1;
         int currentRun;           
@@ -610,7 +610,7 @@ int main (int argc, char *argv[])
         {
             LOG(INFO) <<"START OF EVENT LOOP";
 
-            BDTScore= -99999.0, MHT = 0., MHTSig = 0.,leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
+            BDTScore= -99999.0, MHT = 0., MHTSig = 0., leptonvalidhits = 0., leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
             EventMass =0., EventMassX =0., SumJetMass = 0., SumJetMassX=0., HTHi =0., HTRat = 0;  H = 0., HX =0., HT = 0., HTX = 0.;
             HTH=0.,HTXHX=0., sumpx_X = 0., sumpy_X= 0., sumpz_X =0., sume_X= 0. , sumpx =0., sumpy=0., sumpz=0., sume=0., jetpt =0.;
             PTBalTopEventX = 0., PTBalTopSumJetX =0.;
@@ -1255,11 +1255,13 @@ int main (int argc, char *argv[])
                 selectedLeptonPt = selectedMuons[0]->Pt();
                 leptoneta = selectedMuons[0]->Eta();
                 leptonphi = selectedMuons[0]->Phi();                
+                leptonvalidhits = selectedMuons[0]->nofValidHits();
             }
             else if(Electron&&selectedElectrons.size()>0){
                 selectedLeptonPt = selectedElectrons[0]->Pt();
                 leptoneta = selectedElectrons[0]->Eta();
                 leptonphi = selectedElectrons[0]->Phi();
+                leptonvalidhits = selectedElectrons[0]->trackNValidHits();
             }
 
 
@@ -1301,7 +1303,7 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[65] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            double vals[67] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
             HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
             SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
             scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
@@ -1309,7 +1311,8 @@ int main (int argc, char *argv[])
             weight_0,weight_1,weight_2,weight_3,weight_4,weight_5,weight_6,weight_7,weight_8,
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
-            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew};
+            csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
+	    trigSFTot,leptonvalidhits};
             
             double csvrs[] = {
                     csvrsweights.find("nominal")->second,

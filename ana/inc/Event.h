@@ -92,6 +92,8 @@ struct Event {
     double toprew;          // TOP pT reweighting factor
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
     double ttxrew;          // Heavy flavour fraction reweighting
+    double SFtrig;	    // Trigger scale factor
+    double leptonValidHits; // Number of lepton valid hits
 }; //end Event
 
 //______________________________________________________________________________
@@ -168,6 +170,8 @@ void Event::clear() {
       toprew = 0.;
       ttxType = -1.;
       ttxrew = 1.;
+      SFtrig = 1.;
+      leptonValidHits = 0.;
 } //End Event::clear()
 
 /**
@@ -194,6 +198,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("LeptonEta", &LeptonEta    ,"LeptonEta/D"); 
       tree -> Branch("leptonIso", &leptonIso    ,"leptonIso/D"); 
       tree -> Branch("leptonphi", &leptonphi    ,"leptonphi/D"); 
+      tree -> Branch("leptonValidHits", &leptonValidHits    ,"leptonValidHits/D"); 
       tree -> Branch("chargedHIso", &chargedHIso    ,"chargedHIso/D"); 
       tree -> Branch("neutralHIso", &neutralHIso    ,"neutralHIso/D"); 
       tree -> Branch("photonIso", &photonIso    ,"photonIso/D"); 
@@ -225,6 +230,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("SFPU", &SFPU    ,"SFPU/D"); 
       tree -> Branch("SFPU_up", &SFPU_up    ,"SFPU_up/D"); 
       tree -> Branch("SFPU_down", &SFPU_down    ,"SFPU_down/D"); 
+      tree -> Branch("SFtrig", &SFtrig    ,"SFtrig/D"); 
       tree -> Branch("csvrsw", csvrsw    ,"csvrsw[19]/D");
       tree -> Branch("toprew", &toprew    ,"toprew/D");
       tree -> Branch("ttxrew", &ttxrew    ,"ttxrew/D");
@@ -334,6 +340,8 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[], double c
     toprew = vals[62];
     ttxType = vals[63];
     ttxrew = vals[64];
+    SFtrig = vals[65];
+    leptonValidHits = vals[66];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
