@@ -355,7 +355,7 @@ int main (int argc, char *argv[])
         else if(Electron){
             electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_reco_20170413.root","EGamma_SF2D",true,false,false);    
             electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_IDcutbTight_20170413.root","EGamma_SF2D",true,false,false);    
-            electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false);
+            electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
             electronSFWeightTrig_GH = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016GH_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
         }
     }
@@ -1352,6 +1352,7 @@ int main (int argc, char *argv[])
         std::cout <<"n events with negative weights pretrig= "<<negWeightsPretrig << std::endl;
         std::cout << "Event Count: " << eventCount << std::endl;
         std::cout << "Weight Count: " << weightCount << std::endl;
+	std::cout << "Output Craneen: " << Ntupname << std::endl;
         //important: free memory
         treeLoader.UnLoadDataset();
 //            MLoutput.close();
@@ -1404,7 +1405,6 @@ int main (int argc, char *argv[])
     }
 
     if(jetTools) delete jetTools;
-
     std::cout << "It took us " << ((double)clock() - start) / CLOCKS_PER_SEC << " to run the program" << std::endl;
     std::cout << "********************************************" << std::endl;
     std::cout << "           End of the program !!            " << std::endl;
