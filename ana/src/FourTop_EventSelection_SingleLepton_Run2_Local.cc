@@ -1048,12 +1048,12 @@ int main (int argc, char *argv[])
 	    auto EcalDead = event->getEcalDeadCellTriggerPrimitiveFilter();
 	    auto badchan   = event-> getBadChCandFilter();
 	    auto badmu = event-> getBadPFMuonFilter();
-	    if (!HBHEnoise) continue;
-	    if (!HBHEIso) continue;
-	    if (!CSCTight) continue;
-            if (!EcalDead) continue;
-	    if (!badchan) continue;
-	    if (!badmu) continue;
+	    //if (!HBHEnoise) continue;
+	    //if (!HBHEIso) continue;
+	    //if (!CSCTight) continue;
+            //if (!EcalDead) continue;
+	    //if (!badchan) continue;
+	    //if (!badmu) continue;
 
             if (Muon)
             {   
