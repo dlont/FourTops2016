@@ -30,6 +30,7 @@ def lp(treename):
 	Plot("LeptonEta"           , TH1D("leptoneta"    , ";Lepton #eta ;entries/bin", 50, -2.5, 2.5)),
 	Plot("leptonphi"           , TH1D("leptonphi"    , ";Lepton #phi ;entries/bin", 50, -pi, pi)),
 	Plot("leptonIso"           , TH1D("leptonIso"    , ";Lepton Isolation ;entries/bin", 25, 0., isorangemax)),
+	Plot("leptonValidHits"        , TH1D("leptonNVHits" , ";Lepton Number of valid hits ;entries/bin", 41, 0., 40.)),
 	Plot("nLtags"           , TH1D("nltags"    , ";Number of loose tags;entries/bin", 8, -0.5, 7.5)),
 	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 8, -0.5, 7.5)),
 	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 6, -0.5, 5.5)),
