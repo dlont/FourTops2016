@@ -23,8 +23,7 @@ trigger_cuts = ''
 if 'Mu' in tree_name:
 	trigger_cuts = "(HLT_IsoMu24==1||HLT_IsoTkMu24==1)"
 elif 'El' in tree_name:
-	trigger_cuts = "HLT_Ele32_eta2p1_WPTight_Gsf==1"
-
+	trigger_cuts = "(HLT_Ele32_eta2p1_WPTight_Gsf==1)"
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 
 cut_for_all_files = ""
@@ -33,7 +32,7 @@ cut_for_all_files = ""
 # A "cut set" is 3 things: folder name to store hists in, string to add to hist titles, and cuts for these hists.
 # Let cut_sets = [] to make all plots.
 cut_sets = [
-    ("allSF", "", "ScaleFactor"),
+    ("allSF", "", "ScaleFactor*"+trigger_cuts),
     ("6J2M", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2)*ScaleFactor*"+trigger_cuts),
     ("6J3M", "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3)*ScaleFactor*"+trigger_cuts),
     ("6J4M", "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4)*ScaleFactor*"+trigger_cuts),
