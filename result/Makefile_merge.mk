@@ -165,6 +165,10 @@ $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/C
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+$(BUILDDIR)/Craneen_DYJets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DYJets_50MG*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Craneen_QCD_MuEnriched_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_QCD_MuEnriched*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
