@@ -1023,11 +1023,11 @@ int main (int argc, char *argv[])
                     auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
                     auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
                     trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
-		    trigSFTot = 1.2;
+		    trigSFTot = 1.;
 		    #warning "Add proper electron trigger SFs"
                     DLOG(INFO)<<"Electron Trigger SF:  "<< trigSFTot;
                 }
-                fleptonSF*=trigSFTot;
+                //fleptonSF*=trigSFTot;
             }
 
             LOG(INFO)<<"lepton SF:  "<<fleptonSF;
