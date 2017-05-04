@@ -1,12 +1,43 @@
 #Order of arguments matters (first config.py, second input_tree.root, third scale)
 include Makefile_norm.mk
 
+#DATAENTRIES=0
+TTTTENTRIES=0
+EWENTRIES=0
+STENTRIES=0
+TTENTRIES=0
+
 CONFIG:=config_t2h.py
 SUPPRESSOUT=>/dev/null
 
-$(BUILDDIR)/Hists_data.root: ${CONFIG} $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root
+define calcEntries
+        $(shell echo "from ROOT import TH1, TFile;file = TFile.Open(\"$(1)\");hist = file.Get(\"allSF/bdt\");print hist.Integral()"|python)
+endef
+
+$(BUILDDIR)/Hists_dataB.root: ${CONFIG} $(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataC.root: ${CONFIG} $(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataD.root: ${CONFIG} $(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataE.root: ${CONFIG} $(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataF.root: ${CONFIG} $(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataG.root: ${CONFIG} $(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_dataH.root: ${CONFIG} $(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_data.root: $(BUILDDIR)/Hists_dataB.root $(BUILDDIR)/Hists_dataC.root $(BUILDDIR)/Hists_dataD.root $(BUILDDIR)/Hists_dataE.root $(BUILDDIR)/Hists_dataF.root $(BUILDDIR)/Hists_dataG.root $(BUILDDIR)/Hists_dataH.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@hadd $@ $^
 
 $(BUILDDIR)/Hists_TTTT_SCALED.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)" 
