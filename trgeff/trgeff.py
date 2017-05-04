@@ -65,6 +65,7 @@ def efficiency(root_file,args):
                 
 		if (ientry % 100 == 0): progress(ientry, nentries, 'Progress. N entries={}'.format(nentries))
 		ientry += 1
+	print '\n'
 
 	c = rt.TCanvas("c","CMS",5,45,500,500)
 	pEff.Draw("AP")
