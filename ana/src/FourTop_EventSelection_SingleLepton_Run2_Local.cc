@@ -912,8 +912,8 @@ int main (int argc, char *argv[])
                 lumiWeight_down = LumiWeights_down.ITweight( (int)event->nTruePU()); 
                 
                 LOG(INFO)<<"Lumi weight "<<lumiWeight<<"  Lumi weight Up "<<lumiWeight_up<<"   Lumi weight Down "<<lumiWeight_down;
+		scaleFactor = scaleFactor * lumiWeight;
             }
-            scaleFactor = scaleFactor * lumiWeight;
 	
 
 
@@ -979,7 +979,7 @@ int main (int argc, char *argv[])
                     for(auto el: csvrsweights) DLOG(INFO) << "CSVRS:" << std::setw(10) << el.first << std::setw(10) << el.second ;
                 }      
             }
-            if( bTagCSVReweight ) scaleFactor*=csvrsweights.find("nominal")->second;
+            if( bTagCSVReweight && !isData ) scaleFactor*=csvrsweights.find("nominal")->second;
 
 
             /////////////////////////////////////////////////
@@ -987,7 +987,7 @@ int main (int argc, char *argv[])
             /////////////////////////////////////////////////
 
             float fleptonSF = 1;
-            if(bLeptonSF){ ///lepton SF for ID and ISO
+            if(bLeptonSF && !isData){ ///lepton SF for ID and ISO
                 if(Muon && nMu>0){
                     auto W_MuonIsoSF_BCDEF = muonSFWeightIso_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
                     auto W_MuonIsoSF_GH    = muonSFWeightIso_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
@@ -1013,17 +1013,17 @@ int main (int argc, char *argv[])
             }
 
             double trigSFTot = 1.;
-            if(bLeptonSF){ //lepton SF for trigger
-                if(!isData && Muon && nMu>0){
+            if(bLeptonSF && !isData){ //lepton SF for trigger
+                if(Muon && nMu>0){
                     auto W_MuonTrigSF_BCDEF =  muonSFWeightTrig_BCDEF->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsBCDEF;
                     auto W_MuonTrigSF_GH    =  muonSFWeightTrig_GH->at(selectedMuons[0]->Eta(), selectedMuons[0]->Pt(), 0)*Constant::lum_RunsGH;
                     trigSFTot          =  (W_MuonTrigSF_BCDEF + W_MuonTrigSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
                     DLOG(INFO)<<"Muon Trigger SF:  "<< trigSFTot;
-                } else if(!isData && Electron && nEl>0) {
+                } else if(Electron && nEl>0) {
                     auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
                     auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
                     trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
-		    trigSFTot = 0.84;
+		    trigSFTot = 1.2;
 		    #warning "Add proper electron trigger SFs"
                     DLOG(INFO)<<"Electron Trigger SF:  "<< trigSFTot;
                 }
@@ -1048,12 +1048,12 @@ int main (int argc, char *argv[])
 	    auto EcalDead = event->getEcalDeadCellTriggerPrimitiveFilter();
 	    auto badchan   = event-> getBadChCandFilter();
 	    auto badmu = event-> getBadPFMuonFilter();
-	    //if (!HBHEnoise) continue;
-	    //if (!HBHEIso) continue;
-	    //if (!CSCTight) continue;
-            //if (!EcalDead) continue;
-	    //if (!badchan) continue;
-	    //if (!badmu) continue;
+	    if (!HBHEnoise) continue;
+	    if (!HBHEIso) continue;
+	    if (!CSCTight) continue;
+            if (!EcalDead) continue;
+	    if (!badchan) continue;
+	    if (!badmu) continue;
 
             if (Muon)
             {   
