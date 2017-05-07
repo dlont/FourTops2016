@@ -345,10 +345,15 @@ int main (int argc, char *argv[])
     
     if(bLeptonSF){
         if(Muon){
-            muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+		#warning "Switch to Tight Muon ID"
+            //muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            //muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            //muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            //muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
             muonSFWeightTrig_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
             muonSFWeightTrig_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsGH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
@@ -551,6 +556,7 @@ int main (int argc, char *argv[])
 	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
 	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
         long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
+        double    genweight = 0.;		booktup -> Branch("Genweight",&nPV,"Genweight/D");
 	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
   
 
@@ -642,6 +648,8 @@ int main (int argc, char *argv[])
 	    evId     = event->eventId();
 	    lumBlkId = event->lumiBlockId();
             nPV      = event->nTruePU();
+	    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
+	    else if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
 	    booktup -> Fill();
    
             datasets[d]->eventTree()->LoadTree(ievt); 
@@ -687,7 +695,8 @@ int main (int argc, char *argv[])
             selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
-                selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
+                //selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
+                selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 nMu = selectedMuons.size();
                 LOG(INFO) <<"Get Tight Electrons";                                                                                          
                 selectedOrigElectrons                               = r2selection.GetSelectedElectrons(35, 2.1, "Tight", "Spring16_80X", true, true); 
@@ -695,12 +704,14 @@ int main (int argc, char *argv[])
                 selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true); 
             }
             else if(Muon){
-                LOG(INFO) <<"Get Tight Muons";
-                selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Tight", "Spring15"); 
+                //LOG(INFO) <<"Get Tight Muons";
+                LOG(INFO) <<"Get Medium Muons";
+                selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
                 nMu = selectedMuons.size(); //Number of Muons in Event
                 selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true);
                 LOG(INFO) <<"Get Loose Electrons";    
-                selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
+                //selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
+                selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 LOG(INFO) <<"Get Loose Muons";
                 nLooseMu = selectedExtraMuons.size();   //Number of loose muons      
             }
