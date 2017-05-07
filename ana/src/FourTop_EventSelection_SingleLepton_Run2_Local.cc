@@ -44,6 +44,7 @@
 #include "TopTreeAnalysisBase/Tools/interface/JetCombiner.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVATrainer.h"
 #include "TopTreeAnalysisBase/Tools/interface/MVAComputer.h"
+#include "TopTreeAnalysisBase/Tools/interface/TopologyWorker.h"
 
 #include "BTagSF.h"
 #include "CutsTable.h"
@@ -63,6 +64,7 @@
 
 #include "Version.h"
 
+#include "FillLeptonArrays.h"
 #include "Event.h"
 
 using namespace std;
@@ -346,14 +348,14 @@ int main (int argc, char *argv[])
     if(bLeptonSF){
         if(Muon){
 		#warning "Switch to Tight Muon ID"
-            //muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            //muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
-            //muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            //muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
-            muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            //muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            //muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
+            muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            //muonSFWeightIso_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_BCDEF.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_TightID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
+            //muonSFWeightIso_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonIso_EfficienciesAndSF_GH.root", "TightISO_MediumID_pt_eta/abseta_pt_ratio", true, false, false);  // Tight RelIso, Tight ID
             muonSFWeightTrig_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsBCDEF.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
             muonSFWeightTrig_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsGH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
@@ -556,7 +558,7 @@ int main (int argc, char *argv[])
 	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
 	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
         long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
-        double    genweight = 0.;		booktup -> Branch("Genweight",&nPV,"Genweight/D");
+        double    genweight = 0.;		booktup -> Branch("Genweight",&genweight,"Genweight/D");
 	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
   
 
@@ -593,6 +595,12 @@ int main (int argc, char *argv[])
         datasets[d]->runTree()->SetBranchStatus("runInfos*",1);
         datasets[d]->runTree()->SetBranchAddress("runInfos",&runInfos);
         if (isData) TrainMVA=false;
+
+        //////////////////////////////////////////////////////////
+        //                  Load Topology worker                //
+        //////////////////////////////////////////////////////////  tools for getting event variables based on the topology
+        
+        TopologyWorker* topologyW = new TopologyWorker(false);
 
         ///////////////////////////////////////////////////////////
         //             Get # of events to run over               //
@@ -641,6 +649,9 @@ int main (int argc, char *argv[])
             //      Set up for miniAOD weights       //
             ///////////////////////////////////////////
 
+            datasets[d]->eventTree()->LoadTree(ievt); 
+            LOG(INFO) <<"load tree";
+
             currentRun  = event->runId(); 
             LOG(INFO) <<"got run ID";
 
@@ -648,13 +659,12 @@ int main (int argc, char *argv[])
 	    evId     = event->eventId();
 	    lumBlkId = event->lumiBlockId();
             nPV      = event->nTruePU();
-	    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
-	    else if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
+            if(!isData){
+		    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
+		    if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
+	    }
 	    booktup -> Fill();
    
-            datasets[d]->eventTree()->LoadTree(ievt); 
-            LOG(INFO) <<"load tree";
-
             int treenumber = datasets[d]->eventTree()->GetTreeNumber(); 
             currentfilename2 = datasets[d]->eventTree()->GetFile()->GetName();
             if(previousFilename2 != currentfilename2){
@@ -695,7 +705,6 @@ int main (int argc, char *argv[])
             selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
-                //selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 nMu = selectedMuons.size();
                 LOG(INFO) <<"Get Tight Electrons";                                                                                          
@@ -704,13 +713,13 @@ int main (int argc, char *argv[])
                 selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true); 
             }
             else if(Muon){
-                //LOG(INFO) <<"Get Tight Muons";
-                LOG(INFO) <<"Get Medium Muons";
-                selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
+                LOG(INFO) <<"Get Tight Muons";
+                selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Tight", "Summer16"); 
+                //LOG(INFO) <<"Get Medium Muons";
+                //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
                 nMu = selectedMuons.size(); //Number of Muons in Event
                 selectedOrigElectrons                                   = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true);
                 LOG(INFO) <<"Get Loose Electrons";    
-                //selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Spring15"); 
                 selectedExtraMuons                                  = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 LOG(INFO) <<"Get Loose Muons";
                 nLooseMu = selectedExtraMuons.size();   //Number of loose muons      
@@ -1157,10 +1166,15 @@ int main (int argc, char *argv[])
             float csvJetcsv1 = 1, csvJetcsv2 = 1, csvJetcsv3 =1, csvJetcsv4 =1;
 
             if (selectedJets.size()>4){
-                csvJetcsv1 = selectedJets[0]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
-                csvJetcsv2 = selectedJets[1]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
-                csvJetcsv3 = selectedJets[2]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
-                csvJetcsv4 = selectedJets[3]->btag_combinedInclusiveSecondaryVertexV2BJetTags();                
+		const int njets = selectedJets.size();
+		std::vector<double> csvArray(njets);
+		for (int ijet=0; ijet<njets; ++ijet) csvArray[ijet] = selectedJets[ijet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+		std::sort(csvArray.begin(), csvArray.end());
+		std::reverse(csvArray.begin(), csvArray.end());
+                csvJetcsv1 = csvArray[0];
+                csvJetcsv2 = csvArray[1];
+                csvJetcsv3 = csvArray[2];
+                csvJetcsv4 = csvArray[3];                
             }
             // std::cout<<"csv: "<<csvJetcsv1<<std::endl;
 
@@ -1229,6 +1243,7 @@ int main (int argc, char *argv[])
             float HT1M2L=0, H1M2L=0, HTbjets=0, HT2M=0, H2M=0, HT2L2J=0;
             sort(selectedJets.begin(),selectedJets.end(),HighestPt()); //order Jets wrt Pt for tuple output
 
+	    vector<TLorentzVector> TLVjetholder;
             for (Int_t seljet1 =0; seljet1 < selectedJets.size(); seljet1++ )
             {
 
@@ -1237,6 +1252,7 @@ int main (int argc, char *argv[])
                 HT = HT + jetpt;
                 H = H +  selectedJets[seljet1]->P();
                 if (seljet1 > 4  )  HTHi +=  selectedJets[seljet1]->Pt();
+		TLVjetholder.push_back(*selectedJets[seljet1]);
             }
 
             float csvJetpt1 = 1, csvJetpt2 = 1, csvJetpt3 =1, csvJetpt4 =1;
@@ -1250,6 +1266,28 @@ int main (int argc, char *argv[])
 
             HTH = HT/H;
             HTRat = HTHi/HT;
+
+            ////////////////////////////////////////////
+            //        Topological variables           //
+            ////////////////////////////////////////////
+	    topologyW->setPartList(TLVjetholder, TLVjetholder);
+	    float fSphericity = topologyW->get_sphericity();
+	    float fOblateness = topologyW->oblateness();
+	    float fAplanarity = topologyW->get_aplanarity();
+	    float fh10 = topologyW->get_h10();
+	    float fh20 = topologyW->get_h20();
+	    float fh30 = topologyW->get_h30();
+	    float fh40 = topologyW->get_h40();
+	    float fh50 = topologyW->get_h50();
+	    float fh60 = topologyW->get_h60();
+	    float fht = topologyW->get_ht();
+	    float fht3 = topologyW->get_ht3();
+	    float fet0 = topologyW->get_et0();
+	    float fsqrts = topologyW->get_sqrts();
+	    float fnjetW = topologyW->get_njetW(); //125
+
+	    float fet56 = topologyW->get_et56(); 
+	    float fcentrality = topologyW->get_centrality();
 
             //////////////////////
             // Jets Based Plots //
@@ -1323,7 +1361,7 @@ int main (int argc, char *argv[])
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
-	    trigSFTot,leptonvalidhits};
+	    trigSFTot,fnjetW};
             
             double csvrs[] = {
                     csvrsweights.find("nominal")->second,
@@ -1346,7 +1384,11 @@ int main (int argc, char *argv[])
                 jetvec[jet][2] = selectedJets[jet]->Phi();
                 jetvec[jet][3] = selectedJets[jet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
             }
-            myEvent.fill(vals,jetvec,nJets,w,csvrs,hdampw);
+	    double electron[20]; std::fill_n( electron, 20, -10.);
+	    double muon[20];	 std::fill_n( muon, 20, -10.);
+	    if(Muon) FillMuonParams(selectedMuons[0],muon);
+	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw);
             tupfile->cd();
             tup->Fill();
 

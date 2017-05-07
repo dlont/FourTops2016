@@ -21,7 +21,7 @@
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
-    void fill(double [], double [][5], int , double [], double [], double []);
+    void fill(double [], double [][5], double [], double[], int , double [], double [], double []);
     
     double BDT;
     int nJets; 
@@ -85,6 +85,8 @@ struct Event {
     double csvJetpt2; 
     double csvJetpt3; 
     double csvJetpt4;
+    double electronparams[20]; // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
+    double muonparams[20];  // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double jetvec[30][5];   // jet properties (pT,eta,phi,csv)
     double weight[9];       // ME scale variation weights
     double csvrsw[20];      // CSVRS systematic weights
@@ -93,7 +95,7 @@ struct Event {
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
     double ttxrew;          // Heavy flavour fraction reweighting
     double SFtrig;	    // Trigger scale factor
-    double leptonValidHits; // Number of lepton valid hits
+    double NjetsW; // Number of lepton valid hits
 }; //end Event
 
 //______________________________________________________________________________
@@ -163,15 +165,17 @@ void Event::clear() {
       csvJetpt2 = 0.; 
       csvJetpt3 = 0.; 
       csvJetpt4 = 0.;
-      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec), -1.);
-      std::fill( weight, weight + sizeof(weight), 0.);
-      std::fill( csvrsw, csvrsw + sizeof(csvrsw), 0.);
-      std::fill( hdampw, hdampw + sizeof(hdampw), 1.);
+      std::fill_n( electronparams, 20, -10.);
+      std::fill_n( muonparams, 20, -10.);
+      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec)/sizeof(jetvec[0]), -1.);
+      std::fill_n( weight, 9, 0.);
+      std::fill_n( csvrsw, 20, 0.);
+      std::fill_n( hdampw, 2, 1.);
       toprew = 0.;
       ttxType = -1.;
       ttxrew = 1.;
       SFtrig = 1.;
-      leptonValidHits = 0.;
+      NjetsW = 0.;
 } //End Event::clear()
 
 /**
@@ -194,11 +198,13 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
       tree -> Branch("6thjetpt", &jet6Pt   ,"6thjetpt/D"); 
       
+      tree -> Branch("Electronparam", electronparams, "Electronparam[20]/D");
+      tree -> Branch("Muonparam", muonparams, "Muonparam[20]/D");
       tree -> Branch("LeptonPt", &LeptonPt    ,"LeptonPt/D"); 
       tree -> Branch("LeptonEta", &LeptonEta    ,"LeptonEta/D"); 
       tree -> Branch("leptonIso", &leptonIso    ,"leptonIso/D"); 
       tree -> Branch("leptonphi", &leptonphi    ,"leptonphi/D"); 
-      tree -> Branch("leptonValidHits", &leptonValidHits    ,"leptonValidHits/D"); 
+      tree -> Branch("NjetsW", &NjetsW    ,"NjetsW/D"); 
       tree -> Branch("chargedHIso", &chargedHIso    ,"chargedHIso/D"); 
       tree -> Branch("neutralHIso", &neutralHIso    ,"neutralHIso/D"); 
       tree -> Branch("photonIso", &photonIso    ,"photonIso/D"); 
@@ -273,7 +279,7 @@ void Event::makeBranches(TTree* tree) {
  * @param hdamp POWHEG hdamp weights
  * @param topr top reweighting event weight
  */
-void Event::fill(double vals[], double jets[][5], int njet, double w[], double csvrs[], double hdamp[]) {
+void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, double w[], double csvrs[], double hdamp[]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -341,10 +347,12 @@ void Event::fill(double vals[], double jets[][5], int njet, double w[], double c
     ttxType = vals[63];
     ttxrew = vals[64];
     SFtrig = vals[65];
-    leptonValidHits = vals[66];
+    NjetsW = vals[66];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
+    std::copy ( electron, electron+20, electronparams);
+    std::copy ( muon, muon+20, muonparams);
     std::copy ( w, w+8, weight);
     std::copy ( csvrs, csvrs+19, csvrsw);
     std::copy ( hdamp, hdamp+2, hdampw );
