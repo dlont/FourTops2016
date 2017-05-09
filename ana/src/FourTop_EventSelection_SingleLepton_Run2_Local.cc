@@ -344,10 +344,10 @@ int main (int argc, char *argv[])
     ElectronSFWeight* electronSFWeightIDISO; 
     ElectronSFWeight* electronSFWeightTrig_BCDEF; 
     ElectronSFWeight* electronSFWeightTrig_GH;
+    ElectronSFWeight* electronSFWeightTrig;
     
     if(bLeptonSF){
         if(Muon){
-		#warning "Switch to Tight Muon ID"
             muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
             //muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_MediumID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
             muonSFWeightID_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_GH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
@@ -364,6 +364,7 @@ int main (int argc, char *argv[])
             electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_IDcutbTight_20170413.root","EGamma_SF2D",true,false,false);    
             electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
             electronSFWeightTrig_GH = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016GH_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
+            electronSFWeightTrig = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/SF_HLT_Ele32_eta2p1.root","SF",true,false,false);
         }
     }
     /////////////////////////////////////////////////
@@ -1042,9 +1043,9 @@ int main (int argc, char *argv[])
                 } else if(Electron && nEl>0) {
                     auto eleTRIGSF_BCDEF = electronSFWeightTrig_BCDEF->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsBCDEF;
                     auto eleTRIGSF_GH = electronSFWeightTrig_GH->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0)*Constant::lum_RunsGH;
+                    auto eleTRIGSF = electronSFWeightTrig->at(selectedElectrons[0]->superClusterEta(),selectedElectrons[0]->Pt(),0);
                     trigSFTot = (eleTRIGSF_BCDEF + eleTRIGSF_GH)/(Constant::lum_RunsGH+Constant::lum_RunsBCDEF);
-		    trigSFTot = 1.;
-		    #warning "Add proper electron trigger SFs"
+		    trigSFTot = eleTRIGSF;
                     DLOG(INFO)<<"Electron Trigger SF:  "<< trigSFTot;
                 }
                 //fleptonSF*=trigSFTot;
