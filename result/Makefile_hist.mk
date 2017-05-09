@@ -51,6 +51,18 @@ $(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_DY50.r
 	@echo "Merging EW histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTW.root: ${CONFIG} $(BUILDDIR)/Craneen_TTW_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTWNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZ_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTZNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TT_RARE.root: $(BUILDDIR)/Hists_TTW.root $(BUILDDIR)/Hists_TTZ.root
+	@echo "Merging TT RARE histograms"
+	@hadd -f $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_WJets.root: ${CONFIG} $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${WJETSNORM} ${SUPPRESSOUT}
