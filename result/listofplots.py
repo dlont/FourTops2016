@@ -9,10 +9,20 @@ from math import pi
 from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
 def lp(treename):
+	specific_plots = []
 	if 'El' in treename:
 		isorangemax=0.15
 	elif 'Mu' in treename:
 		isorangemax=0.15
+		specific_plots = [
+		Plot("Muonparam[5]"        , TH1D("leptonNVHits" , ";Lepton Number of valid hits ;entries/bin", 52, -0.5, 50.5)),
+		Plot("Muonparam[8]"        , TH1D("leptonNVPixelHits" , ";Lepton Number of valid pixel hits ;entries/bin", 17, -0.5, 15.5)),
+		Plot("Muonparam[3]"        , TH1D("leptonchi2" , ";Lepton #chi^{2} ;entries/bin", 15, 0., 15.)),
+		Plot("Muonparam[4]"        , TH1D("leptonTrackerLayersWithMeasurement" , ";Lepton # tracker layers with measurement ;entries/bin", 22, -0.5, 20.5)),
+		Plot("Muonparam[9]"        , TH1D("leptonMatchedStations" , ";Lepton # of matched tracker stations ;entries/bin", 11, -0.5, 10.5)),
+		Plot("Muonparam[6]"        , TH1D("leptond0" , ";Lepton d0 [cm] ;entries/bin", 100, -0.2, 0.2)),
+		Plot("Muonparam[7]"        , TH1D("leptonz0" , ";Lepton z0 [cm] ;entries/bin", 100, -2., 2.))
+		]
 	else:
 		raise NameError('Tree name %s is not recognized'%treename)
 	plots_list = [
@@ -30,7 +40,6 @@ def lp(treename):
 	Plot("LeptonEta"           , TH1D("leptoneta"    , ";Lepton #eta ;entries/bin", 50, -2.5, 2.5)),
 	Plot("leptonphi"           , TH1D("leptonphi"    , ";Lepton #phi ;entries/bin", 50, -pi, pi)),
 	Plot("leptonIso"           , TH1D("leptonIso"    , ";Lepton Isolation ;entries/bin", 25, 0., isorangemax)),
-	Plot("leptonValidHits"        , TH1D("leptonNVHits" , ";Lepton Number of valid hits ;entries/bin", 41, 0., 40.)),
 	Plot("nLtags"           , TH1D("nltags"    , ";Number of loose tags;entries/bin", 8, -0.5, 7.5)),
 	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 8, -0.5, 7.5)),
 	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 6, -0.5, 5.5)),
@@ -57,4 +66,5 @@ def lp(treename):
 	#Plot("csvJetpt3"            , TH1D("csvJetpt3"     , ";CSV3;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetpt4"            , TH1D("csvJetpt4"     , ";CSV4;entries/bin", 100, 0., 1.))
 	]
+	plots_list += specific_plots
 	return plots_list
