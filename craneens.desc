@@ -1,0 +1,89 @@
+*Br    0 :BDT       : BDT/D                                                  *	vanila event level discriminant
+*Br    1 :NOrigJets : NOrigJets/I                                            *  Number of all pf jets in the event
+*Br    2 :nJets     : nJets/I                                                *	Number of selected jets (pt>30, |eta| < 2.4
+*Br    3 :jetvec    : jetvec[nJets][5]/D                                     *	array of selected jet parameters (pt, eta, phi, csvv2)
+*Br    4 :1stjetpt  : 1stjetpt/D                                             *	leading jet pt
+*Br    5 :2ndjetpt  : 2ndjetpt/D                                             *	second leading jet pt
+*Br    6 :5thjetpt  : 5thjetpt/D                                             *	5th jet pt
+*Br    7 :6thjetpt  : 6thjetpt/D                                             *	6th jet pt
+*Br    8 :Electronparam : Electronparam[20]/D                                *	Electron reco variables (e.g. 1/E - 1/p, nHits etc.)
+*Br    9 :Muonparam : Muonparam[20]/D                                        *	same for Muon
+*Br   10 :LeptonPt  : LeptonPt/D                                             *	Tight lepton pT
+*Br   11 :LeptonEta : LeptonEta/D                                            *	eta
+*Br   12 :leptonIso : leptonIso/D                                            *	Iso
+*Br   13 :leptonphi : leptonphi/D                                            *	phi
+*Br   14 :NjetsW    : NjetsW/D                                               *	weighted jet multilicity calculated according to crazy formula from the paper
+*Br   15 :chargedHIso : chargedHIso/D                                        *	different contributions to iso variable (I have never checked them)
+*Br   16 :neutralHIso : neutralHIso/D                                        *	...
+*Br   17 :photonIso : photonIso/D                                            *	...
+*Br   18 :PUIso     : PUIso/D                                                *	...
+*Br   19 :PU        : PU/I                                                   *	Number of PV
+*Br   20 :HT        : HT/D                                                   *	HT calculated from the sum over selected jets (nJets/jetvec)
+*Br   21 :HT2M      : HT2M/D                                                 *	I don't know (should be always 0)
+*Br   22 :HTb       : HTb/D                                                  *	HT calculated from M tagged jets https://github.com/dlont/FourTops2016/blob/master/ana/src/FourTop_EventSelection_SingleLepton_Run2_Local.cc#L788
+*Br   23 :HTH       : HTH/D                                                  *	HT/H https://github.com/dlont/FourTops2016/blob/master/ana/src/FourTop_EventSelection_SingleLepton_Run2_Local.cc#L1268
+*Br   24 :HTRat     : HTRat/D                                                *	HTi/HT, where HTi=HT - HT(of four leading jets)(https://github.com/dlont/FourTops2016/blob/master/ana/src/FourTop_EventSelection_SingleLepton_Run2_Local.cc#L1269)
+*Br   25 :HTX       : HTX/D                                                  *	HT of the reduced hadronic system (excluding best trijet top candidate) https://github.com/dlont/FourTops2016/blob/master/SingleLepAnalysis/src/HadronicTopReco.cc#L127
+*Br   26 :SumJetMassX : SumJetMassX/D                                        *	invariant mass of the reduced system https://github.com/dlont/FourTops2016/blob/master/SingleLepAnalysis/src/HadronicTopReco.cc#L134
+*Br   27 :multitopness : multitopness/D                                      *	BDT discriminant of the second best candidate
+*Br   28 :met       : met/D                                                  *	MET
+*Br   29 :angletop1top2 : angletop1top2/D                                    *	angle between the best candidates https://github.com/dlont/FourTops2016/blob/master/SingleLepAnalysis/src/HadronicTopReco.cc#L264
+*Br   30 :angletoplep : angletoplep/D                                        *	angle between best candidate and the lepton
+*Br   31 :ttxType   : ttxType/I                                              *	ttcc, ttjj, ttbb code (https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2)
+*Br   32 :nbb       : nbb/I                                                  *	number of b quarks originating not from tops
+*Br   33 :ncc       : ncc/I                                                  *	...
+*Br   34 :nll       : nll/I                                                  *	...
+*Br   35 :ttbar_flav : ttbar_flav/D                                          *  another flavour tag 
+*Br   36 :ScaleFactor : ScaleFactor/D                                        *	The product of SFlepton*SFPU*csvrsw[0]*ttxrew*toprew
+*Br   37 :SFlepton  : SFlepton/D                                             *  Lepton scale factor including (ID, ISO and RECO)
+*Br   38 :SFbtag    : SFbtag/D                                               *	regular btag sf
+*Br   39 :SFbtagUp  : SFbtagUp/D                                             *	regular btag sf
+*Br   40 :SFbtagDown : SFbtagDown/D                                          *	regular btag sf
+*Br   41 :SFPU      : SFPU/D                                                 *	PU reweighting sf
+*Br   42 :SFPU_up   : SFPU_up/D                                              *	PU reweighting sf
+*Br   43 :SFPU_down : SFPU_down/D                                            *	PU reweighting sf
+*Br   44 :SFtrig    : SFtrig/D                                               *	Trigger scale factor
+*Br   45 :csvrsw    : csvrsw[19]/D                                           *	CSVRS weights
+*Br   46 :toprew    : toprew/D                                               *	top pt reweighting
+*Br   47 :ttxrew    : ttxrew/D                                               *	HF fraction reweighting
+*Br   48 :NormFactor : NormFactor/D                                          *	should be always 1.
+*Br   49 :GenWeight : GenWeight/D                                            *	MC nominal weight (~1 - for powheg/ +/-1 for amc) 
+*Br   50 :weight    : weight[8]/D                                            *	mu_r, mu_f variations 
+*Br   51 :weight1   : weight1/D                                              *	same thing...
+*Br   52 :weight2   : weight2/D                                              *	...
+*Br   53 :weight3   : weight3/D                                              *	...
+*Br   54 :weight4   : weight4/D                                              *	...
+*Br   55 :weight5   : weight5/D                                              *	...
+*Br   56 :weight6   : weight6/D                                              *	...
+*Br   57 :weight7   : weight7/D                                              *	...
+*Br   58 :weight8   : weight8/D                                              *	...
+*Br   59 :hdampw    : hdamp[2]/D                                             *	hdamp variations for powheg
+*Br   60 :LeadingBJetPt : LeadingBJetPt/D                                    * 	I don't know
+*Br   61 :nLtags    : nLtags/I                                               *	number of loose b tags
+*Br   62 :nMtags    : nMtags/I                                               *	number of medium b tags
+*Br   63 :nTtags    : nTtags/I                                               *	number of tight b tags
+*Br   64 :jet5and6pt : jet5and6pt/D                                          *	sum of 5th and 6th jet pt
+*Br   65 :csvJetcsv1 : csvJetcsv1/D                                          *	csv of the best b candidate
+*Br   66 :csvJetcsv2 : csvJetcsv2/D                                          *  csv of the second best b candidate
+*Br   67 :csvJetcsv3 : csvJetcsv3/D                                          *	...
+*Br   68 :csvJetcsv4 : csvJetcsv4/D                                          *	...
+*Br   69 :csvJetpt1 : csvJetpt1/D                                            *	csv of the leading jet
+*Br   70 :csvJetpt2 : csvJetpt2/D                                            *	csv of the second leading jet
+*Br   71 :csvJetpt3 : csvJetpt3/D                                            *	...
+*Br   72 :csvJetpt4 : csvJetpt4/D                                            *	...
+*Br   73 :HLT_IsoMu24 : HLT_IsoMu24/I                                        *	Trigger bits for different triggers (1 if fired)
+*Br   74 :HLT_IsoTkMu24 : HLT_IsoTkMu24/I                                    *
+*Br   75 :HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400 :                            *
+*Br   76 :HLT_QuadJet45_TripleBTagCSV_p087 :                                 *
+*Br   77 :HLT_QuadJet45_DoubleBTagCSV_p087 :                                 *
+*Br   78 :HLT_DoubleJet90_Double30_TripleBTagCSV_p087 :                      *
+*Br   79 :HLT_DoubleJet90_Double30_DoubleBTagCSV_p087 :                      *
+*Br   80 :HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 :                          *
+*Br   81 :HLT_HT200 : HLT_HT200/I                                            *
+*Br   82 :HLT_HT275 : HLT_HT275/I                                            *
+*Br   83 :HLT_HT325 : HLT_HT325/I                                            *
+*Br   84 :HLT_PFMET120_Mu5 : HLT_PFMET120_Mu5/I                              *
+*Br   85 :HLT_Mu6_PFHT200_PFMET80_BTagCSV_p067 :                             *
+*Br   86 :HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400 :                            *
+*Br   87 :HLT_Mu15_IsoVVVL_PFHT350_PFMET50 :                                 *
+*Br   88 :HLT_PFMET120_BTagCSV_p067 : HLT_PFMET120_BTagCSV_p067/I            *
