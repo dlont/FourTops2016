@@ -1,13 +1,13 @@
-*Br    0 :BDT       : BDT/D                                                  *	vanila event level discriminant
-*Br    1 :NOrigJets : NOrigJets/I                                            *  Number of all pf jets in the event
-*Br    2 :nJets     : nJets/I                                                *	Number of selected jets (pt>30, |eta| < 2.4
-*Br    3 :jetvec    : jetvec[nJets][5]/D                                     *	array of selected jet parameters (pt, eta, phi, csvv2)
+*Br    0 :BDT       : BDT/D                                                  *	vanilla event level discriminant
+*Br    1 :NOrigJets : NOrigJets/I                                            *  Number of all pf ak4 jets in the event
+*Br    2 :nJets     : nJets/I                                                *	Number of selected jets (pt>30, |eta| < 2.4)
+*Br    3 :jetvec    : jetvec[nJets][5]/D                                     *	array of parameters (pt, eta, phi, csvv2) of selected jets 
 *Br    4 :1stjetpt  : 1stjetpt/D                                             *	leading jet pt
 *Br    5 :2ndjetpt  : 2ndjetpt/D                                             *	second leading jet pt
 *Br    6 :5thjetpt  : 5thjetpt/D                                             *	5th jet pt
 *Br    7 :6thjetpt  : 6thjetpt/D                                             *	6th jet pt
 *Br    8 :Electronparam : Electronparam[20]/D                                *	Electron reco variables (e.g. 1/E - 1/p, nHits etc.)
-*Br    9 :Muonparam : Muonparam[20]/D                                        *	same for Muon
+*Br    9 :Muonparam : Muonparam[20]/D                                        *	~the same for the muon but with a different set variables
 *Br   10 :LeptonPt  : LeptonPt/D                                             *	Tight lepton pT
 *Br   11 :LeptonEta : LeptonEta/D                                            *	eta
 *Br   12 :leptonIso : leptonIso/D                                            *	Iso
@@ -17,7 +17,7 @@
 *Br   16 :neutralHIso : neutralHIso/D                                        *	...
 *Br   17 :photonIso : photonIso/D                                            *	...
 *Br   18 :PUIso     : PUIso/D                                                *	...
-*Br   19 :PU        : PU/I                                                   *	Number of PV
+*Br   19 :PU        : PU/I                                                   *	Number of PVs
 *Br   20 :HT        : HT/D                                                   *	HT calculated from the sum over selected jets (nJets/jetvec)
 *Br   21 :HT2M      : HT2M/D                                                 *	I don't know (should be always 0)
 *Br   22 :HTb       : HTb/D                                                  *	HT calculated from M tagged jets https://github.com/dlont/FourTops2016/blob/master/ana/src/FourTop_EventSelection_SingleLepton_Run2_Local.cc#L788
