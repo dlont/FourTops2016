@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-"""A simple python script template.
+"""
+Add new branch to existing tree with new TMVA discriminant.
 """
 
 import os
@@ -44,6 +45,7 @@ def main(arguments):
 	intree.AddFriend(friendtree)
 
 	#initialize tmva reader
+	#change this if you have a different package
 	reader = r.TMVA.Reader()
 	BDT_trijet2    = array('f',[0]) ; reader.AddVariable("BDT_trijet2",BDT_trijet2)
 	leptonpt       = array('f',[0]) ; reader.AddVariable("leptonpt",leptonpt)
@@ -59,6 +61,7 @@ def main(arguments):
 
 
 	#recompute mva discriminant for every event
+	#change this to create a different discriminant
 	i = 0
         total = intree.GetEntries()
         for ev in intree:
