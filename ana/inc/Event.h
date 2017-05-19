@@ -243,7 +243,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("NormFactor", &NormFactor    ,"NormFactor/D"); 
       tree -> Branch("GenWeight", &GenWeight    ,"GenWeight/D"); 
       
-      tree -> Branch("weight", weight    ,"weight[8]/D");
+      tree -> Branch("weight", weight    ,"weight[9]/D");
       tree -> Branch("weight1", &weight1   ,"weight1/D"); 
       tree -> Branch("weight2", &weight2    ,"weight2/D"); 
       tree -> Branch("weight3", &weight3    ,"weight3/D"); 
