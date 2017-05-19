@@ -1363,6 +1363,9 @@ int main (int argc, char *argv[])
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
 	    trigSFTot,fnjetW};
+
+//		std::cout << "Interesting event: " << setw(20) << runId << ":" << lumBlkId << ":" << evId << " " << BDTScore << setw(20) << nJets 
+//			  << " " << nMtags << " " << HT << " " << fnjetW << std::endl;
             
             double csvrs[] = {
                     csvrsweights.find("nominal")->second,
@@ -1376,7 +1379,7 @@ int main (int argc, char *argv[])
                     csvrsweights.find("CSVCFErr1Up")->second,    csvrsweights.find("CSVCFErr1Down")->second,
                     csvrsweights.find("CSVCFErr2Up")->second,    csvrsweights.find("CSVCFErr2Down")->second
             };
-            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_6,weight_6,weight_8,weight_8};    //replace extream variations by good
+            double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_6,weight_6,weight_8,weight_8};    //replace extreme variations by good
             double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
