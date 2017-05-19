@@ -1,0 +1,52 @@
+{
+	"pages": [
+		{
+			"name":"syscsv_tt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:syscsv_tt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"CSV_tt.png", "subcaption":""}	 ]
+		},
+		{
+			"name":"syscsv_tttt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:syscsv_tttt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"CSV_tttt.png", "subcaption":""}	 ]
+		},
+		{
+			"name":"sysjes_tt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:sysjes_tt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"JES_tt.png", "subcaption":""}	 ]
+		},
+		{
+			"name":"sysjes_tttt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:sysjes_tttt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"JES_tttt.png", "subcaption":""}	 ]
+		},
+		{
+			"name":"systh_tt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:systh_tt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"Theory_tt.png", "subcaption":""}	 ]
+		},
+		{
+			"name":"systh_tttt.tex",
+			"nx":1,
+			"ny":1,
+			"label":"fig:systh_tttt",
+			"caption":"Ralative change of discriminant distributions due to systematics variations. $t\\bar{t}t\\bar{t}$ MC",
+			"subfloats":[	{"angle":0,  "file":"Theory_tttt.png", "subcaption":""}	 ]
+		}
+	]
+}

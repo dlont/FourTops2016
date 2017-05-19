@@ -1,0 +1,33 @@
+{
+	"pages": [
+		{
+			"name":"singlemuoncp.tex",
+			"nx":4,
+			"ny":1,
+			"label":"fig:singlemucp",
+			"caption":"Control distributions. ",
+			"subfloats":[
+				{"angle":0,  "file":"leptonpt.png", "subcaption":"Lepton transverse momentum"},
+				{"angle":0,  "file":"leptoneta.png", "subcaption":"Lepton pseudorapidity"},
+				{"angle":0,  "file":"leptonphi.png", "subcaption":"Lepton azimuthal angle"},
+				{"angle":0,  "file":"leptonIso.png", "subcaption":"Lepton isolation"},
+				{"angle":0,  "file":"jetpt.png", "subcaption":"Lepton transverse momentum"},
+				{"angle":0,  "file":"jeteta.png", "subcaption":"Lepton pseudorapidity"},
+				{"angle":0,  "file":"jetphi.png", "subcaption":"Lepton azimuthal angle"},
+				{"angle":0,  "file":"jetcsv.png", "subcaption":"Lepton isolation"},
+				{"angle":0,  "file":"njets.png", "subcaption":"Jet multiplicity"},
+				{"angle":0,  "file":"nltags.png", "subcaption":"Loose b tags multiplicity"},
+				{"angle":0,  "file":"nmtags.png", "subcaption":"Medium b tags multiplicity"},
+				{"angle":0,  "file":"nttags.png", "subcaption":"Tight b tags multiplicity"},
+				{"angle":0,  "file":"ht.png", "subcaption":"Hadronic transverse energy"},
+				{"angle":0,  "file":"met.png", "subcaption":"Missing transverse energy"},
+				{"angle":0,  "file":"HTRat.png", "subcaption":""},
+				{"angle":0,  "file":"HTX.png", "subcaption":""},
+				{"angle":0,  "file":"HTB.png", "subcaption":""},
+				{"angle":0,  "file":"SumJetMassX.png", "subcaption":"Inv. mass of reduced system"},
+				{"angle":0,  "file":"multitopness.png", "subcaption":"Topness"},
+				{"angle":0,  "file":"pu.png", "subcaption":"Number of primary vertices"}
+				 ]
+		}
+	]
+}
