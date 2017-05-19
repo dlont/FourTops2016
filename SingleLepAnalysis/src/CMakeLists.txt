@@ -23,6 +23,7 @@ include_directories(${FourTops2016_SOURCE_DIR}/SingleLepAnalysis/interface)
 
 # define output target
 add_library(FourTopSingleLep SHARED CutsTable.cc EventBDT.cc HadronicTopReco.cc Trigger.cc Zpeak.cc MultiTopEvent.cpp)
+#add_library(FourTopSingleLep SHARED CutsTable.cc EventBDT.cc HadronicTopReco.cc Trigger_sync.cc Zpeak.cc MultiTopEvent.cpp)
 
 # link against root and TopTreeAna80 TopTreeAnaContent80
 target_link_libraries(FourTopSingleLep PUBLIC TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
