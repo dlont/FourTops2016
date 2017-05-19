@@ -1,7 +1,7 @@
 {
 	"canvas": [
 		{
-			"name":"Theory.png",
+			"name":"Theory_tt.png",
 			"width":1000,
 			"height":1000,
 			"nx":4,
@@ -12,6 +12,8 @@
 				[
 				 {"name":"6J2M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"6J2M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"6J2M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"6J2M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"6J2M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"6J2M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"6J2M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -31,6 +33,8 @@
 				[
 				 {"name":"7J2M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"7J2M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"7J2M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"7J2M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"7J2M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"7J2M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"7J2M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -50,6 +54,8 @@
 				[
 				 {"name":"8J2M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"8J2M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"8J2M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"8J2M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"8J2M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"8J2M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"8J2M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -69,6 +75,8 @@
 				[
 				 {"name":"9J2M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"9J2M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"9J2M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"9J2M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"9J2M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"9J2M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"9J2M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -88,6 +96,8 @@
 				[
 				 {"name":"6J3M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"6J3M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"6J3M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"6J3M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"6J3M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"6J3M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"6J3M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -107,6 +117,8 @@
 				[
 				 {"name":"7J3M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"7J3M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"7J3M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"7J3M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"7J3M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"7J3M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"7J3M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -126,6 +138,8 @@
 				[
 				 {"name":"8J3M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"8J3M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"8J3M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"8J3M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"8J3M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"8J3M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"8J3M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -145,6 +159,8 @@
 				[
 				 {"name":"9J3M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"9J3M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"9J3M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"9J3M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"9J3M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"9J3M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"9J3M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -164,6 +180,8 @@
 				[
 				 {"name":"6J4M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"6J4M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"6J4M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"6J4M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"6J4M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"6J4M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"6J4M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -183,6 +201,8 @@
 				[
 				 {"name":"7J4M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"7J4M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"7J4M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"7J4M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"7J4M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"7J4M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"7J4M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -202,6 +222,8 @@
 				[
 				 {"name":"8J4M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"8J4M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"8J4M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"8J4M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"8J4M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"8J4M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"8J4M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
@@ -221,6 +243,8 @@
 				[
 				 {"name":"9J4M_TTJets_MEScaleDown/bdt", "style":[2,830,1],"title":"ME scale -1#sigma"},
                                  {"name":"9J4M_TTJets_MEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma"},
+				 {"name":"9J4M_TTJets_HDAMPDown/bdt", "style":[2,720,1],"title":"h_{damp} -1#sigma"},
+                                 {"name":"9J4M_TTJets_HDAMPUp//bdt", "style":[2,720,1],"title":"h_{damp} +1#sigma"},
 				 {"name":"9J4M_TTFSRDown/bdt", "style":[2,814,1],"title":"FSR -1#sigma"},
                                  {"name":"9J4M_TTFSRUp//bdt", "style":[2,814,1],"title":"FSR +1#sigma"},
 				 {"name":"9J4M_TTISRDown/bdt", "style":[2,860,1],"title":"ISR -1#sigma"},
