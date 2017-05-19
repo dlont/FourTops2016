@@ -22,6 +22,7 @@ include Makefile_hist.mk
 include Makefile_merge.mk
 include Makefile_plots.mk
 include Makefile_cards.mk
+include Makefile_sys.mk
 
 
 # ENTRIES variables are defined in  Makefile_hist.mk
