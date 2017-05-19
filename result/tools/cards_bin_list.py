@@ -1,8 +1,8 @@
 binlist = {
 'mu':[
-'mu6J2M',
-'mu6J3M',
-'mu6J4M',
+#'mu6J2M',
+#'mu6J3M',
+#'mu6J4M',
 'mu7J2M',
 'mu7J3M',
 'mu7J4M',
@@ -16,9 +16,9 @@ binlist = {
 'mu10J3M',
 'mu10J4M'],
 'el':[
-'el6J2M',
-'el6J3M',
-'el6J4M',
+#'el6J2M',
+#'el6J3M',
+#'el6J4M',
 'el7J2M',
 'el7J3M',
 'el7J4M',
