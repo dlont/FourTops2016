@@ -878,9 +878,11 @@ int main (int argc, char *argv[])
 		}
 		// pdf envelope variations (NNPDF30, CT10, MMHT14)
 		if (event->getWeight(1001)!= -9999) {
-			weight_ct10 = event->getWeight(3001)/fabs(event->originalXWGTUP());
-			weight_mmht14 = event->getWeight(4001)/fabs(event->originalXWGTUP());
-			DLOG(INFO) << "w(ct10)= " << weight_ct10 << "\t" << "w(mmht14)= " << weight_mmht14;
+			if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
+				weight_ct10 = event->getWeight(3001)/fabs(event->originalXWGTUP());
+				weight_mmht14 = event->getWeight(4001)/fabs(event->originalXWGTUP());
+				DLOG(INFO) << "w(ct10)= " << weight_ct10 << "\t" << "w(mmht14)= " << weight_mmht14;
+			}
 		}
             }
 
