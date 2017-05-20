@@ -21,7 +21,7 @@
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
-    void fill(double [], double [][5], double [], double[], int , double [], double [], double []);
+    void fill(double [], double [][5], double [], double[], int , double [], double [], double [], double []);
     
     double BDT;
     int nJets; 
@@ -91,6 +91,7 @@ struct Event {
     double weight[9];       // ME scale variation weights
     double csvrsw[20];      // CSVRS systematic weights
     double hdampw[2];       // POWHEG hdamp weight variation 
+    double pdfw[2];         // POWHEG CT10,MMH14 weight variation 
     double toprew;          // TOP pT reweighting factor
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
     double ttxrew;          // Heavy flavour fraction reweighting
@@ -171,6 +172,7 @@ void Event::clear() {
       std::fill_n( weight, 9, 0.);
       std::fill_n( csvrsw, 20, 0.);
       std::fill_n( hdampw, 2, 1.);
+      std::fill_n( pdfw, 2, 1.);
       toprew = 0.;
       ttxType = -1.;
       ttxrew = 1.;
@@ -253,6 +255,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("weight7", &weight7    ,"weight7/D"); 
       tree -> Branch("weight8", &weight8    ,"weight8/D"); 
       tree -> Branch("hdampw", hdampw    ,"hdamp[2]/D");
+      tree -> Branch("pdfw",   pdfw      ,"pdfw[2]/D");
       
       tree -> Branch("LeadingBJetPt", &LeadingBJetPt    ,"LeadingBJetPt/D"); 
       tree -> Branch("nLtags", &nLtags    ,"nLtags/I"); 
@@ -277,9 +280,10 @@ void Event::makeBranches(TTree* tree) {
  * @param w ME scale variation weights
  * @param csvrs CSVRS systematics weights breakdown 
  * @param hdamp POWHEG hdamp weights
+ * @param pdf   POWHEG CT10,MMHT14 weights
  * @param topr top reweighting event weight
  */
-void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, double w[], double csvrs[], double hdamp[]) {
+void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, double w[], double csvrs[], double hdamp[], double pdf[]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -353,9 +357,10 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     }
     std::copy ( electron, electron+20, electronparams);
     std::copy ( muon, muon+20, muonparams);
-    std::copy ( w, w+8, weight);
+    std::copy ( w, w+9, weight);
     std::copy ( csvrs, csvrs+19, csvrsw);
     std::copy ( hdamp, hdamp+2, hdampw );
+    std::copy ( pdf, pdf+2, pdfw );
     //for (auto par = 0; par < 8; ++par) weight[par]=w[par];
     //for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
     

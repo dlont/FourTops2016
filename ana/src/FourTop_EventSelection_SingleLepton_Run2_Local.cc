@@ -829,6 +829,7 @@ int main (int argc, char *argv[])
             double weight_0 = 1; //nominal
             double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
             double weight_hdamp_up = 1., weight_hdamp_dw = 1.;
+	    double weight_ct10 = 1., weight_mmht14 = 1.;
             auto ttXtype =  -1; // ttbb, ttcc, ttx event type
 	    auto ttXrew  = 1.;  // heavy-flavour reweighting factor
 
@@ -839,6 +840,7 @@ int main (int argc, char *argv[])
 			if (ttXtype % 100 == 0) ttXrew  = 184./257.;	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
 			scaleFactor *= ttXrew;
 		}
+		
                 if(event->getWeight(1)!= -9999){
                     weight_0 = (event->getWeight(1))/(abs(event->originalXWGTUP()));  
                     weight_1 = (event->getWeight(2))/(abs(event->originalXWGTUP()));                
@@ -859,6 +861,10 @@ int main (int argc, char *argv[])
                     weight_6 = (event->getWeight(1007))/(abs(event->originalXWGTUP()));                
                     weight_7 = (event->getWeight(1008))/(abs(event->originalXWGTUP()));                
                     weight_8 = (event->getWeight(1009))/(abs(event->originalXWGTUP()));                    
+		    if (dataSetName.find("tttt")!=string::npos) {
+			weight_6 = weight_5;
+			weight_8 = weight_7;
+		    }
                 }
 
 		DLOG(INFO) << "GEN weights:" << setw(10) << weight_0 << setw(10) << weight_1 << setw(10) << weight_2 << setw(10) << weight_3
@@ -869,6 +875,12 @@ int main (int argc, char *argv[])
 			weight_hdamp_up = event->getWeight(5019)/fabs(event->originalXWGTUP());
 			weight_hdamp_dw = event->getWeight(5010)/fabs(event->originalXWGTUP());
 			DLOG(INFO) << "hdamp w(up)= " << weight_hdamp_up << "\t" << "hdamp w(down)= " << weight_hdamp_dw;
+		}
+		// pdf envelope variations (NNPDF30, CT10, MMHT14)
+		if (event->getWeight(1001)!= -9999) {
+			weight_ct10 = event->getWeight(3001)/fabs(event->originalXWGTUP());
+			weight_mmht14 = event->getWeight(4001)/fabs(event->originalXWGTUP());
+			DLOG(INFO) << "w(ct10)= " << weight_ct10 << "\t" << "w(mmht14)= " << weight_mmht14;
 		}
             }
 
@@ -1381,6 +1393,7 @@ int main (int argc, char *argv[])
             };
             double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_6,weight_6,weight_8,weight_8};    //replace extreme variations by good
             double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
+            double pdfw[]   = {weight_ct10, weight_mmht14};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
                 jetvec[jet][0] = selectedJets[jet]->Pt();
@@ -1392,7 +1405,7 @@ int main (int argc, char *argv[])
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw);
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw);
             tupfile->cd();
             tup->Fill();
 
