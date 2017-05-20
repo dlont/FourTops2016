@@ -831,13 +831,17 @@ int main (int argc, char *argv[])
             double weight_hdamp_up = 1., weight_hdamp_dw = 1.;
 	    double weight_ct10 = 1., weight_mmht14 = 1.;
             auto ttXtype =  -1; // ttbb, ttcc, ttx event type
-	    auto ttXrew  = 1.;  // heavy-flavour reweighting factor
+	    auto ttXrew  = 1., ttXrew_up = 1., ttXrew_down = 1.;  // heavy-flavour reweighting factor
 
             if(!isData){
                 ttXtype = event->getgenTTX_id();
 		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
 			if (ttXtype % 100 > 50) ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
-			if (ttXtype % 100 == 0) ttXrew  = 184./257.;	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
+			if (ttXtype % 100 == 0) {	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
+				ttXrew  = 184./257.;
+				ttXrew_up = (184. + 6. + 33.) / (257. - 26.);
+				ttXrew_down = (184. - 6. - 33.) / (257. + 26.);
+			}
 			scaleFactor *= ttXrew;
 		}
 		
@@ -1396,6 +1400,7 @@ int main (int argc, char *argv[])
             double w[] = {weight_0,weight_1,weight_2,weight_3,weight_4,weight_6,weight_6,weight_8,weight_8};    //replace extreme variations by good
             double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
             double pdfw[]   = {weight_ct10, weight_mmht14};
+            double ttxrew[]   = {ttXrew_up, ttXrew_down};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
                 jetvec[jet][0] = selectedJets[jet]->Pt();
@@ -1407,7 +1412,7 @@ int main (int argc, char *argv[])
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw);
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew);
             tupfile->cd();
             tup->Fill();
 
