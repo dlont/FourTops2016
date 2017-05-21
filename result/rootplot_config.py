@@ -179,8 +179,12 @@ decoration_root = '''
 #line = ROOT.TLine(5.,0.,5.,9.e9)
 #line.Draw()
 ## Add a caption
-#tt = ROOT.TText()
-#tt.DrawTextNDC(0.6, 0.15, "CMS Preliminary")
+import subprocess
+gittag = subprocess.check_output(['git','rev-parse', '--abbrev-ref', 'HEAD']).strip()+'-'+subprocess.check_output(['git','log', '-1', '--format=%h']).strip()
+tt = ROOT.TText()
+tt.SetTextAngle(90);
+tt.SetTextSize(0.02);
+tt.DrawTextNDC(0.97, 0.15, gittag)
 #ROOT.CMS_lumi(ROOT.TString("5.9 fb^{-1}")) #B
 #ROOT.CMS_lumi(ROOT.TString("2.6 fb^{-1}")) #C
 #ROOT.CMS_lumi(ROOT.TString("4.4 fb^{-1}")) #D
