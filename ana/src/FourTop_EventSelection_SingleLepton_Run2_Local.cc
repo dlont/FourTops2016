@@ -360,7 +360,7 @@ int main (int argc, char *argv[])
             muonSFWeightTrig_GH = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/SingleMuonTrigger_EfficienciesAndSF_RunsGH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio", true, false, false);
         }
         else if(Electron){
-            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_reco_20170413.root","EGamma_SF2D",true,false,false);    
+            electronSFWeightReco = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_reco_20170413.root","EGamma_SF2D",true,false,false,true);    
             electronSFWeightIDISO = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/20170413/egammaEffi.txt_EGM2D_IDcutbTight_20170413.root","EGamma_SF2D",true,false,false);    
             electronSFWeightTrig_BCDEF = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016BCDEF_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
             electronSFWeightTrig_GH = new ElectronSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/ElectronSF/Moriond17/TriggerSF_Run2016GH_v2.root","Ele32_eta2p1_WPTight_Gsf_swappedAxes",true,false,false);
