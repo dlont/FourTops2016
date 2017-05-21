@@ -40,18 +40,24 @@ cut_for_all_files = ""
 # Let cut_sets = [] to make all plots.
 
 cut_sets = []
-if systematic == 'PU':
+if 'PU' in systematic:
     from cards_syst_PU import cut_PU
     cut_sets = cut_PU('&&'+trigger_cuts)
 elif 'BTAG' in systematic:
     from cards_syst_BTAG import cut_BTAG
     cut_sets = cut_BTAG('&&'+trigger_cuts)  
+elif 'BJCOR' in systematic:
+    from cards_syst_BTAG_JES import cut_BTAG_JES
+    cut_sets = cut_BTAG_JES(systematic, '&&'+trigger_cuts)  
 elif 'JE' in systematic:
     from cards_syst_JEC import getJECCutSets
     cut_sets = getJECCutSets(systematic, '&&'+trigger_cuts)
 elif 'MEScale' in systematic:
     from cards_syst_ME import getMECutSets
     cut_sets = getMECutSets(systematic, '&&'+trigger_cuts)
+elif 'PDF' in systematic:
+    from cards_syst_PDF import getPDFCutSets
+    cut_sets = getPDFCutSets(systematic, '&&'+trigger_cuts)
 elif 'HDAMP' in systematic:
     from cards_syst_HDAMP import getHDAMPCutSets
     cut_sets = getHDAMPCutSets(systematic, '&&'+trigger_cuts)
@@ -64,6 +70,9 @@ elif 'FSR' in systematic:
 elif 'UE' in systematic:
     from cards_syst_IFSRUE import getIFSRUECutSets
     cut_sets = getIFSRUECutSets(systematic, '&&'+trigger_cuts)
+elif 'TTX' in systematic:
+    from cards_syst_TTX import getTTXCutSets
+    cut_sets = getTTXCutSets(systematic, '&&'+trigger_cuts)
 #    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
