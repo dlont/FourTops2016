@@ -560,7 +560,7 @@ int main (int argc, char *argv[])
 	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
         long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
         double    genweight = 0.;		booktup -> Branch("Genweight",&genweight,"Genweight/D");
-	std::string tag = GIT_TAG; 		booktup -> Branch("Tag",&tag);
+	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
 
         ////////////////////////////////////////////////////////////
