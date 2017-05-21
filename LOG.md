@@ -441,11 +441,43 @@ Event yields histogram
 cd result/
 
 #single lepton stream
-python -i datayields.py '{"B":["plots_mu_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}'
+python -i datayields.py '{"B":["plots_mu_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}' yields.root:mu24
 
 #jetht stream
-python -i datayields.py '{"B":["plots_mu_jethtstream_sixjettrig_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_jethtstream_sixjettrig_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_jethtstream_sixjettrig_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_jethtstream_sixjettrig_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_jethtstream_sixjettrig_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_jethtstream_sixjettrig_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_jethtstream_sixjettrig_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}'
+python -i datayields.py '{"B":["plots_mu_jethtstream_sixjettrig_B/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",5743725979.478], "C":["plots_mu_jethtstream_sixjettrig_C/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",2573399420.069 ], "D":["plots_mu_jethtstream_sixjettrig_D/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4248383597.366], "E":["plots_mu_jethtstream_sixjettrig_E/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",4008375931.882], "F":["plots_mu_jethtstream_sixjettrig_F/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",3101618412.335], "G":["plots_mu_jethtstream_sixjettrig_G/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",7540487735.974], "H":["plots_mu_jethtstream_sixjettrig_H/Craneen_Data_Run2_TopTree_Study.root","Craneen__Mu",8605689861.909]}' yields.root:jetht
 
 
 #How to plot systematics comparison
 python -b sysplot.py -b ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/result/v6JECapplied/plots_mu/Hists_TT_CARDS.root -j JES.json -r ~/CMSSW_8_0_21/src/TopBrussels/FourTops2016/result/v6JECapplied/plots_mu/Hists_TT_CARDS.root -f .png
+
+
+#Trigger efficiency calculation for SingleElectron trigger HLT_Ele32_eta2p1_WPTight_Gsf
+python ../trgeff/trgeff.py plots_el/Craneen_TTJets_powheg_Run2_TopTree_Study.root --tree-name=Craneen__El --variable-name=LeptonPt --triggers=HLT_PFHT400_SixJet30_DoubleBTagCSV_p056:"HLT_Ele32_eta2p1_WPTight_Gsf" -o HLT_Ele32_eta2p1_WPTight_Gsf_mcJETHT_pt.root
+
+
+Tue 09 May 2017 11:52:23 PM CEST
+Friend tree afterburner with MVA recalcualtion
+
+python tools/addfriend_bdt.py plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root -w ../weights_Mu29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents/MasterMVA_SingleMuon_29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_BDT.weights.xml  -s Craneen__Mu -f BDT2
+
+
+
+Fri 19 May 2017 11:06:22 AM CEST
+Dump latex source for control plots
+python ../latex/texplotspage.py -j singlemuoncp.json log/allSF/
+
+
+Fri 19 May 2017 11:49:50 PM CEST
+
+Friend tree afterburner with MVA recalcualtion for all craneens in the folder
+for i in plots_mu/Craneen_*.root; do python tools/addfriend_bdt.py -o $i -s Craneen__Mu -f bdt_paper -w ../MVA/weights_Mu29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents/MasterMVA_SingleMuon_29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_BDT.weights.xml $i;done
+
+
+Sat 20 May 2017 10:55:17 AM CEST
+Impacts
+text2workspace.py card_mu.txt
+combineTool.py -M Impacts -d card_mu.root --doInitialFit -m 125
+combineTool.py -M Impacts -d card_mu.root --doFits -m 125 --parallel 4
+combineTool.py -M Impacts -d card_mu.root -o impacts_mu.json -m 125
+plotImpacts.py -i impacts_mu.json -o impacts_mu
+
