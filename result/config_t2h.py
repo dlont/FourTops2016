@@ -21,11 +21,11 @@ print 'Output file: ' + inputfile
 
 trigger_cuts = ''
 if 'Mu' in tree_name:
-	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50)"
+	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && nJets>6)"
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
-	trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && met > 50)"
+	trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && met > 50 && nJets>6 && HT > 500)"
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
@@ -37,9 +37,9 @@ cut_for_all_files = ""
 # Let cut_sets = [] to make all plots.
 cut_sets = [
     ("allSF", "", "ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
-    ("6J2M", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
-    ("6J3M", "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
-    ("6J4M", "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
+    #("6J2M", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
+    #("6J3M", "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
+    #("6J4M", "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
     ("7J2M", "Njet=7, nMtags=2",  "(nJets==7 && nMtags==2)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
     ("7J3M", "Njet=7, nMtags=3",  "(nJets==7 && nMtags==3)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
     ("7J4M", "Njet=7, nMtags=4",  "(nJets==7 && nMtags>=4)*ScaleFactor*SFtrig*GenWeight*"+trigger_cuts),
