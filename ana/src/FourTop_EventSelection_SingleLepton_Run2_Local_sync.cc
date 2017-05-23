@@ -725,19 +725,23 @@ int main (int argc, char *argv[])
             selectedJets.clear();
             //std::cout<<nMu<<"<--nmu  nEl-->"<<nEl<<std::endl;
             if( nMu>0){
+		for (auto lepton: selectedMuons) {
                 for (int origJets=0; origJets<selectedOrigJets.size(); origJets++){
                     if(selectedOrigJets[origJets]->Pt()<30) std::cout<<selectedOrigJets[origJets]->Pt()<<std::endl;
-                    if(selectedOrigJets[origJets]->DeltaR(*selectedMuons[0])>0.4){
+                    if(selectedOrigJets[origJets]->DeltaR(*lepton)>=0.4){
                         selectedJets.push_back(selectedOrigJets[origJets]);
                     }                    
                 }
+		}
             }
             else if( nEl>0){
+		for (auto lepton: selectedElectrons) {
                 for (int origJets=0; origJets<selectedOrigJets.size(); origJets++){
-                    if(selectedOrigJets[origJets]->DeltaR(*selectedElectrons[0])>0.4){
+                    if(selectedOrigJets[origJets]->DeltaR(*lepton)>=0.4){
                         selectedJets.push_back(selectedOrigJets[origJets]);
                     }                       
                 }
+		}
             }
             else selectedJets = selectedOrigJets;
 
@@ -1366,7 +1370,9 @@ int main (int argc, char *argv[])
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw);
+	    double pdfw[] = {1.,1.}, ttxrew[] = {1.,1.};
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew);
+            //myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw);
             tupfile->cd();
             tup->Fill();
 
