@@ -10,5 +10,5 @@ from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
 lp = [
     Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
-    #Plot("bdt_paper.bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
+    #Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
     ]

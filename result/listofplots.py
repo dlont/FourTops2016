@@ -27,7 +27,7 @@ def lp(treename):
 		raise NameError('Tree name %s is not recognized'%treename)
 	plots_list = [
 	Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
-	#Plot("bdt_paper.bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
+	#Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
 	Plot("jetvec[][0]"           , TH1D("jetpt"    , ";jet p_{T} (GeV);entries/bin", 15, 30., 1500.)),
 	Plot("jetvec[][1]"           , TH1D("jeteta"    , ";jet #eta;entries/bin", 50, -2.5, 2.5)),
