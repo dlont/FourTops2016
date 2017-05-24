@@ -161,18 +161,42 @@ $(BUILDDIR)/Craneen_Tbar_tch_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+
+######################################################## EWK WJETS ##################################################
 $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_WJets*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_W1Jets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_W1Jets*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_W2Jets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_W2Jets*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_W3Jets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_W3Jets*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_W4Jets_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_W4Jets*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+######################################################## EWK DY JETS ##################################################
 $(BUILDDIR)/Craneen_DYJets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DYJets_50MG*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
-
-$(BUILDDIR)/Craneen_QCD_MuEnriched_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_QCD_MuEnriched*.root)
+$(BUILDDIR)/Craneen_DY1Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY1Jets_50MG*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_DY2Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY2Jets_50MG*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_DY3Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY3Jets_50MG*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+$(BUILDDIR)/Craneen_DY4Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY1Jets_50MG*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+######################################################## TTX RARE ##################################################
 $(BUILDDIR)/Craneen_TTW_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTW*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
@@ -180,3 +204,12 @@ $(BUILDDIR)/Craneen_TTW_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cra
 $(BUILDDIR)/Craneen_TTZ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTZ*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTH*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+######################################################## QCD Mu enriched ##################################################
+$(BUILDDIR)/Craneen_QCD_MuEnriched_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_QCD_MuEnriched*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+

@@ -27,7 +27,7 @@ include Makefile_sys.mk
 
 # ENTRIES variables are defined in  Makefile_hist.mk
 #LEGEND:="${DATALABEL} (${DATAENTRIES}),EW (${EWENTRIES}),ST (${STENTRIES}),t\#bar{t} (${TTENTRIES}),t\#bar{t}t\#bar{t} \#times 100 (${TTTTENTRIES})"
-LEGEND:="${DATALABEL},EW,ST,t\#bar{t},t\#bar{t}t\#bar{t} \#times 100"
+LEGEND:="${DATALABEL},EW,ST,t\#bar{t}X,t\#bar{t},t\#bar{t}t\#bar{t} \#times 100"
 LEGENDLOC:="upper right"
 
 # LUMI and NORMALIZATION variables are defined in Makefile_norm.mk included from Makefile_hist.mk
@@ -43,10 +43,22 @@ norm:
 	@echo 'TTUEDWNORM' ${TTUEDWNORM}
 	@echo 'TTTT' ${TTTTNORM}
 	@echo 'WJETS' ${WJETSNORM}
+	@echo 'W1JETS' ${W1JETSNORM}
+	@echo 'W2JETS' ${W2JETSNORM}
+	@echo 'W3JETS' ${W3JETSNORM}
+	@echo 'W4JETS' ${W4JETSNORM}
+	@echo 'DY50JETS' ${DY50JETSNORM}
+	@echo 'DY1J50JETS' ${DY1J50JETSNORM}
+	@echo 'DY2J50JETS' ${DY2J50JETSNORM}
+	@echo 'DY3J50JETS' ${DY3J50JETSNORM}
+	@echo 'DY4J50JETS' ${DY4J50JETSNORM}
 	@echo 'STTW' ${TWNORM}
 	@echo 'STBARTW' ${TBARWNORM}
 	@echo 'STTCH' ${TTCHNORM}
 	@echo 'STBARTCH' ${TBARTCHNORM}
+	@echo 'TTZ' ${TTZNORM}
+	@echo 'TTW' ${TTWNORM}
+	@echo 'TTH' ${TTHNORM}
 
 .PHONY: dirs
 dirs:

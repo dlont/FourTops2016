@@ -43,7 +43,7 @@ endif
 endif
 
 define calcEqLumi
-	$(shell echo "from ROOT import TChain;a = TChain(\"bookkeeping\");a.Add(\"$(1)\");print ${DATALUMI}/(a.GetEntries()/$(2))"|python - -b)
+	$(shell echo "from ROOT import TChain;a = TChain(\"bookkeeping\");a.Add(\"$(1)\");print ${DATALUMI}/(a.GetEntries()/float($(2)))"|python - -b)
 endef
 
 define calcEqLumiMCNLO
@@ -52,16 +52,24 @@ endef
 
 DATANORM=1.
 TTTTNLOXS=9.2 #fb
-TTNNLOXS=831760 #fb
+TTNNLOXS=831760 #fb 				checked
 TTCHNNLOXS=136020 #fb
 TBARTCHNNLOXS=80950 #fb
 TWNNLOXS=35600 #fb
 TBARWNNLOXS=35600 #fb
-WJETSNNLOXS=61526700 #fb
-TTWNLOXS=1.
-TTZNLOXS=1.
-TTHNLOXS=1.
-DY50XS=5765400. # 1921800 X 3 #fb 6025200
+WJETSNNLOXS  =61526700 #fb			checked
+W1JJETSNNLOXS=9493000 #fb			checked
+W2JJETSNNLOXS=3120000 #fb			checked
+W3JJETSNNLOXS=942300 #fb			checked
+W4JJETSNNLOXS=524200 #fb			checked
+TTWNLOXS=611.	#fb				checked
+TTZNLOXS=783.	#fb				checked
+TTHNLOXS=293.	#fb				checked
+DY50XS=5765400. # fb 				checked 
+DY1J50XS=101600. # fb				checked
+DY2J50XS=33140. # fb				checked
+DY3J50XS=9640. # fb				checked
+DY4J50XS=5140. # fb				checked
 #SingleMuon reprov3
 TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
@@ -74,13 +82,22 @@ TTTTNEGATIVEFRAC:=0.449449
 TTTTSCALE:=100.0
 #TTTTNORM:=$(shell echo "${TTTTNEGATIVEFRAC}*${DATALUMI}/266949.673913"|bc -l)
 WJETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_WJets_Run2_TopTree_Study.root, ${WJETSNNLOXS})
+W1JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_W1Jets_Run2_TopTree_Study.root, ${W1JJETSNNLOXS})
+W2JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_W2Jets_Run2_TopTree_Study.root, ${W2JJETSNNLOXS})
+W3JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_W3Jets_Run2_TopTree_Study.root, ${W3JJETSNNLOXS})
+W4JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_W4Jets_Run2_TopTree_Study.root, ${W4JJETSNNLOXS})
 DY50JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_DYJets_50MG_Run2_TopTree_Study.root, ${DY50XS})
+DY1J50JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_DY1Jets_50MG_Run2_TopTree_Study.root, ${DY1J50XS})
+DY2J50JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_DY2Jets_50MG_Run2_TopTree_Study.root, ${DY1J50XS})
+DY3J50JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_DY3Jets_50MG_Run2_TopTree_Study.root, ${DY3J50XS})
+DY4J50JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_DY4Jets_50MG_Run2_TopTree_Study.root, ${DY4J50XS})
 TTCHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_T_tch_Run2_TopTree_Study.root, ${TTCHNNLOXS})
 TBARTCHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_Tbar_tch_Run2_TopTree_Study.root, ${TBARTCHNNLOXS})
 TWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_T_tW_Run2_TopTree_Study.root, ${TWNNLOXS})
 TBARWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_Tbar_tW_Run2_TopTree_Study.root, ${TBARWNNLOXS})
-#TTWNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTW_Run2_TopTree_Study.root, ${TTWNLOXS})
-#TTZNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTZ_Run2_TopTree_Study.root, ${TTZNLOXS})
+TTWNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTW_Run2_TopTree_Study.root, ${TTWNLOXS})
+TTZNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTZ_Run2_TopTree_Study.root, ${TTZNLOXS})
+TTHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTH_Run2_TopTree_Study.root, ${TTHNLOXS})
 TTTTNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_Run2_TopTree_Study.root, ${TTTTNLOXS})
 #TTTTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_ttttNLO_Run2_TopTree_Study.root, ${TTTTNLOXS})
 TTTTNORMSCALED=$(shell echo "${TTTTSCALE}*${TTTTNORM}"|bc -l)
