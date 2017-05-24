@@ -195,7 +195,7 @@ tt.DrawTextNDC(0.97, 0.15, gittag)
 #ROOT.CMS_lumi(ROOT.TString("8.8 fb^{-1}")) #H
 #ROOT.CMS_lumi(ROOT.TString("20.2 fb^{-1}")) #B-F
 #ROOT.CMS_lumi(ROOT.TString("16.5 fb^{-1}")) #G-H
-ROOT.CMS_lumi(ROOT.TString("36.7 fb^{-1}")) #B-H
+ROOT.CMS_lumi(ROOT.TString("36 fb^{-1}")) #B-H
 '''
 
 ##############################################################################
