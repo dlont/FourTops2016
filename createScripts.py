@@ -25,6 +25,8 @@ date = dd+"_"+mm+"_"+yyyy
 
 # pick one of the following
 channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"]
+#channels = ["Mu2016","Syst2016Mu"]
+#channels = ["El2016","Syst2016El"]
 #channels = ["Mu2016","El2016"] 
 #channels = ['Syst2016Mu','Syst2016El']
 #channels = ["Dilep"]
