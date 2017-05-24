@@ -36,8 +36,8 @@ $(BUILDDIR)/Hists_dataH.root: ${CONFIG} $(BUILDDIR)/Craneen_DataH_Run2_TopTree_S
 	@echo "Convert tree to hist $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_data.root: $(BUILDDIR)/Hists_dataB.root $(BUILDDIR)/Hists_dataC.root $(BUILDDIR)/Hists_dataD.root $(BUILDDIR)/Hists_dataE.root $(BUILDDIR)/Hists_dataF.root $(BUILDDIR)/Hists_dataG.root $(BUILDDIR)/Hists_dataH.root
-	@echo "Convert tree to hist $@ ($^)" 
-	@hadd $@ $^
+	@echo "Merge data histograms $@ ($^)" 
+	@hadd -f $@ $^
 
 $(BUILDDIR)/Hists_TTTT_SCALED.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)" 
@@ -48,7 +48,7 @@ $(BUILDDIR)/Hists_TTTT.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} ${SUPPRESSOUT}
 
 #$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY50.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root 
-$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY50.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root 
+$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root 
 	@echo "Merging EW histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 
