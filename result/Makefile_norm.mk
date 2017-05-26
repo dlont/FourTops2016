@@ -1,4 +1,5 @@
 export TREENAME
+export TTCENTRAL
 #Muons
 ifeq (${TREENAME},Craneen__Mu)
 DATALUMI=35.83		#V9
@@ -71,7 +72,7 @@ DY2J50XS=33140. # fb				checked
 DY3J50XS=9640. # fb				checked
 DY4J50XS=5140. # fb				checked
 #SingleMuon reprov3
-TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
+TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRDWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTFSRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
