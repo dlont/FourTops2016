@@ -481,3 +481,13 @@ combineTool.py -M Impacts -d card_mu.root --doFits -m 125 --parallel 4
 combineTool.py -M Impacts -d card_mu.root -o impacts_mu.json -m 125
 plotImpacts.py -i impacts_mu.json -o impacts_mu
 
+
+Thu 25 May 2017 01:08:09 AM CEST
+Rescale shape systematics
+python tools/renormsysshapes.py plots_mu/Hists_TTTT_CARDS.root -r plots_mu/Hists_TTTT.root -t bdt -d -s MEScale
+
+
+
+Sat 27 May 2017 12:06:33 AM CEST
+TO run over alternative TT samples (e.g. powheg-herwig)
+make -j card_mu.txt ERA=full INPUTLOCATION=/pnfs/iihe/cms/store/user/dlontkov/backup/t2016/tag_v0.0.21/Craneens_Mu/Craneens22_5_2017/ BUILDDIR=plots_mu DATALABEL:=Single\ \#mu TREENAME=Craneen__Mu FORMAT=png TTCENTRAL=powheg_herwig
