@@ -1,5 +1,7 @@
 include Makefile_norm.mk
 
+export TTCENTRAL
+
 CONFIG:=config_t2h_cards.py
 SUPPRESSOUT=>/dev/null
 
@@ -46,23 +48,23 @@ $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_MEScale.root $(BUILDDIR)/Hists_TTTT_PU.root \
 	$(BUILDDIR)/Hists_TTTT_BTAG.root $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root
 	@echo "MERGE TTTT SYSTEMATICS histograms $@ ($^)" 
-	@hadd $@ $^ ${SUPPRESSOUT}
+	@hadd -f $@ $^ ${SUPPRESSOUT}
 	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TTTT.root -t bdt -s MEScale
 
 #TT
-$(BUILDDIR)/Hists_TT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_MEScale ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT_PDF.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_PDF.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_PDF ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT_HDAMP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_HDAMP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_HDAMP ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} PU ${SUPPRESSOUT}
 
@@ -82,7 +84,7 @@ $(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_j
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESDOWN ${SUPPRESSOUT}
 	
-$(BUILDDIR)/Hists_TT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} BTAG ${SUPPRESSOUT}
 	
@@ -118,7 +120,7 @@ $(BUILDDIR)/Hists_TT_UEDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETunedown_pow
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTUEDWNORM} UEDOWN ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_TTX ${SUPPRESSOUT}
 
@@ -133,7 +135,7 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_HDAMP.root $(BUILDDIR)/Hists_TT_PDF.root \
 	$(BUILDDIR)/Hists_TT_BTAG.root  $(BUILDDIR)/Hists_TT_BTAGJESUP.root $(BUILDDIR)/Hists_TT_BTAGJESDOWN.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
-	@hadd $@ $^ ${SUPPRESSOUT}
+	@hadd -f $@ $^ ${SUPPRESSOUT}
 	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP
 
 

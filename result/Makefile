@@ -10,12 +10,14 @@ DATALABEL:=Single \#mu (BCDEFGH)
 #DATALABEL:=Single \#mu (GH)
 
 TREENAME:=Craneen__Mu
+TTCENTRAL:=powheg
 
 VPATH:=$(shell readlink -f ${INPUTLOCATION})
 
 ROOTPLOT=../rootplot/bin/rootplot
 
 SIZE="1000x1000"
+
 
 #include Makefile_norm.mk
 include Makefile_hist.mk

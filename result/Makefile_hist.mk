@@ -1,6 +1,8 @@
 #Order of arguments matters (first config.py, second input_tree.root, third scale)
 include Makefile_norm.mk
 
+export TTCENTRAL
+
 #DATAENTRIES=0
 TTTTENTRIES=0
 EWENTRIES=0
@@ -124,7 +126,7 @@ $(BUILDDIR)/Hists_SYST.root: $(BUILDDIR)/Hists_TT.root $(BUILDDIR)/Hists_tuneup.
 	@echo "Preparing TT scale systematic histograms"
 	@tools/scalehist.py -o $@ --nominal=$(BUILDDIR)/Hists_TT.root --isrscaleup=$(BUILDDIR)/Hists_isrscaleup.root --isrscaledown=$(BUILDDIR)/Hists_isrscaledown.root
 
-$(BUILDDIR)/Hists_TT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} ${SUPPRESSOUT}
 
