@@ -59,9 +59,9 @@ class plotter:
 				st.GetYaxis().SetLabelSize(0.)
 				st.GetXaxis().SetLabelSize(0.)
 			if col == 0 and st:
-				st.GetYaxis().SetLabelSize(0.2)
+				st.GetYaxis().SetLabelSize(0.1)
 			if row == config["ny"]-1 and st: 
-				st.GetXaxis().SetLabelSize(0.2)
+				st.GetXaxis().SetLabelSize(0.1)
 
 		# Add legend
 		tmp = master_canvas.cd(1).cd(1).GetListOfPrimitives()
@@ -128,7 +128,7 @@ class plotter:
 			root_canvas.cd(1).Divide(c['nx'],c['ny'],0.,0.)
 			self.make_pads(c['pads'],root_canvas.cd(1))
 	  		self.decorate_page(root_canvas,c)
-			if 'name' in c: root_canvas.Print(c['name'])
+			if 'name' in c: root_canvas.Print(c['name']+"."+self.out_format)
 			else: root_canvas.Print(str('file_'+str(i)+self.out_format))
 	  	return
 
