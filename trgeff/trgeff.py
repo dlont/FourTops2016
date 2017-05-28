@@ -13,6 +13,7 @@ from pprint import pprint
 
 import ROOT as rt
 import re
+from array import array
 from sets import Set
 
 def progress(current, total, status=''):
@@ -47,12 +48,25 @@ def efficiency(root_file,args):
 	logging.info(event_filter)
 	
 	histbinning = (0, 0, 0) #(nbins, xmin, xmax)
+	xbins_list = []
+	xbins = None
 	if 'Pt' in args.variable_name:
+		#uniform
 		histbinning = (25,0.,500.)
+		#non uniform
+		xbins_list = [0., 10., 15., 18., 22., 24., 26., 30., 40., 50., 60., 80., 120., 200., 500.]
+		xbins = array('d',xbins_list)
 	if 'Eta' in args.variable_name:
+		#uniform
 		histbinning = (50,-2.5,2.5)
+		#non uniform
+		xbins_list = [-2.4, -2.1, -1.6, -1.2, -0.9, -0.3, -0.2, 0., 0.2, 0.3, 0.9, 1.2, 1.6, 2.1, 2.4]
+		xbins = array('d',xbins_list)
 
-	pEff = rt.TEfficiency("eff","{};{};#epsilon".format(trigger_requirement,args.variable_name),histbinning[0],histbinning[1],histbinning[2]);
+	#Uniform binning
+	#pEff = rt.TEfficiency("eff","{};{};#epsilon".format(trigger_requirement,args.variable_name),histbinning[0],histbinning[1],histbinning[2])
+	#Non uniform binning
+	pEff = rt.TEfficiency("eff","{};{};#epsilon".format(trigger_requirement,args.variable_name),len(xbins)-1,xbins)
 
 	nentries = tree.GetEntries()
         ientry = 0
@@ -61,7 +75,8 @@ def efficiency(root_file,args):
 		exec("pass_ref = event.%s == 1" % (ref_trigger_name))
 		exec(event_filter)
 		logging.info(pass_study)
-		pEff.Fill(pass_study,var)
+		if pass_ref:
+			pEff.Fill(pass_study,var)
                 
 		if (ientry % 100 == 0): progress(ientry, nentries, 'Progress. N entries={}'.format(nentries))
 		ientry += 1
