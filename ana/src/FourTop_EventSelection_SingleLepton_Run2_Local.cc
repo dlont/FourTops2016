@@ -1135,7 +1135,7 @@ int main (int argc, char *argv[])
                         }
                         else if(mcParticles_flav[p]->type() == -6)
                         {
-                            fAntitopPtsf  = TMath::Exp(0.159-0.00141*mcParticles_flav[p]->Pt());
+                            fAntitopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
                         }
                     }
                     //std::cout<<"status: "<<mcParticles_flav[p]->status()<<"  id: "<<mcParticles_flav[p]->type()<<" mother: "<<mcParticles_flav[p]->motherType()<<std::endl;
