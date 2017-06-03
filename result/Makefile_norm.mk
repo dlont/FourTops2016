@@ -72,7 +72,7 @@ DY2J50XS=33140. # fb				checked
 DY3J50XS=9640. # fb				checked
 DY4J50XS=5140. # fb				checked
 #SingleMuon reprov3
-TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root, ${TTNNLOXS})
+TTNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTISRDWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTFSRUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
@@ -80,7 +80,7 @@ TTFSRDWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTFSRScaledown_powheg_Run2_To
 TTUEUPNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTUEDWNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTTTNEGATIVEFRAC:=0.449449
-TTTTSCALE:=100.0
+TTTTSCALE:=10.0
 #TTTTNORM:=$(shell echo "${TTTTNEGATIVEFRAC}*${DATALUMI}/266949.673913"|bc -l)
 WJETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_WJets_Run2_TopTree_Study.root, ${WJETSNNLOXS})
 W1JETSNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_W1Jets_Run2_TopTree_Study.root, ${W1JJETSNNLOXS})
