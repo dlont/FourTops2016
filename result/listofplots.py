@@ -8,7 +8,7 @@ from array import array      # to allow making Float_t arrays for ROOT hists
 from math import pi
 from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
-def lp(treename):
+def lp(treename,filename):
 	specific_plots = []
 	if 'El' in treename:
 		isorangemax=0.15
@@ -25,8 +25,12 @@ def lp(treename):
 		]
 	else:
 		raise NameError('Tree name %s is not recognized'%treename)
-	plots_list = [
-	Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
+	
+	bdtplot = None
+	if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
+	else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
+
+	plots_list = [bdtplot,
 	#Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
 	Plot("jetvec[][0]"           , TH1D("jetpt"    , ";jet p_{T} (GeV);entries/bin", 15, 30., 1500.)),

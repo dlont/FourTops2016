@@ -25,7 +25,8 @@ if 'Mu' in tree_name:
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
-	trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && met > 50)"
+	trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && HT > 450 && met > 50)"
+	#trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && nJets>6 && HT > 450 && met > 50)"
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
@@ -60,12 +61,14 @@ cut_sets = [
     #("toprew", "", "toprew"),
     #("csvrs", "", "csvrsw[0]"),
     #("noSF", "", ""),
-    ("weight1", "", "(weight1*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
-    ("weight2", "", "(weight2*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
-    ("weight3", "", "(weight3*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
-    ("weight4", "", "(weight4*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
-    ("weight6", "", "(weight6*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
-    ("weight8", "", "(weight8*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
+    ("weight1", "", "(abs(weight1)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
+    ("weight2", "", "(abs(weight2)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
+    ("weight3", "", "(abs(weight3)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
+    ("weight4", "", "(abs(weight4)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts),
+    #("weight5", "", "(abs(weight5)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts), 
+    ("weight6", "", "(abs(weight6)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts), 
+    #("weight7", "", "(abs(weight7)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts), 
+    ("weight8", "", "(abs(weight8)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts), 
 #    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
@@ -75,4 +78,4 @@ cut_sets = [
 # Define histograms to plot
 bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
 from listofplots import lp
-list_of_plots = lp(tree_name)
+list_of_plots = lp(tree_name,inputfile)
