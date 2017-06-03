@@ -155,10 +155,16 @@ datacard_elmu.txt:	card_el.txt card_mu.txt
 
 datacard_elmu.res: datacard_elmu.txt
 	@combine -M Asymptotic --run $(RUN) $^ > $@
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
 card_el.res: card_el.txt
 	@combine -M Asymptotic --run $(RUN) $^ > $@
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
 card_mu.res: card_mu.txt
 	@combine -M Asymptotic --run $(RUN) $^ > $@
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
 limits: datacard_elmu.res card_el.res card_mu.res
 	@python ./tools/parseLimits.py -i card_el.res -f tex | tail -n1
 	@echo "\hline"
