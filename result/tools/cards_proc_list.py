@@ -1,7 +1,7 @@
 proc_id = {
-'TTTT':0,
-'TT':1,
-'ST':2,
+'NP_overlay_ttttNLO':0,
+'ttbarTTX':1,
+'ST_tW':2,
 'EW':3,
 'TTRARE':4
 }

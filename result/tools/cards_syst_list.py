@@ -3,16 +3,16 @@ from cards_bin_list import binlist
 systtypelist = {
 'mu':{
 'TTJets_norm':'lnN',
-'TTJets_MEScale':'shape',
+'ttMEScale':'shape',
 'TTJets_HDAMP':'shape',
 'TTJets_PDF':'shape',
 'TTJets_TTX':'shape',
-'TTTT_norm':'lnN',
+'tttt_norm':'lnN',
 'TTTT_MEScale':'shape',
 'ST_tW_norm':'lnN',
 'EW_norm':'lnN',
 'TTRARE_norm':'lnN',
-'LUMI':'lnN',
+'lumi':'lnN',
 'PU':'shape',
 'JES':'shape',
 'JER':'shape',
@@ -34,16 +34,16 @@ systtypelist = {
 },
 'el':{
 'TTJets_norm':'lnN',
-'TTJets_MEScale':'shape',
+'ttMEScale':'shape',
 'TTJets_HDAMP':'shape',
 'TTJets_PDF':'shape',
 'TTJets_TTX':'shape',
-'TTTT_norm':'lnN',
+'tttt_norm':'lnN',
 'TTTT_MEScale':'shape',
 'ST_tW_norm':'lnN',
 'TTRARE_norm':'lnN',
 'EW_norm':'lnN',
-'LUMI':'lnN',
+'lumi':'lnN',
 'PU':'shape',
 'JES':'shape',
 'JER':'shape',
@@ -67,95 +67,95 @@ systtypelist = {
 
 
 na = '-'
-lumiunc = 1.028
-leptonsf = 1.02
+lumiunc = 1.026
+leptonsf = 1.03
 syst_norm_size_list = {
-'mu':{ 'TTTT' : {
+'mu':{ 'NP_overlay_ttttNLO' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :['0.94/1.05']*len(binlist['mu']),
+            'tttt_norm'         :['0.94/1.05']*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
-       'TT' : {
+       'ttbarTTX' : {
             'TTJets_norm'       :['0.95/1.05']*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
        'EW' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[1.04       ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
        'TTRARE' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[1.5        ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
-       'ST' : {
+       'ST_tW' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[1.04       ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
 },
-'el':{ 'TTTT' : {
+'el':{ 'NP_overlay_ttttNLO' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :['0.94/1.05']*len(binlist['mu']),
+            'tttt_norm'         :['0.94/1.05']*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
-       'TT' : {
+       'ttbarTTX' : {
             'TTJets_norm'       :['0.95/1.05']*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
        'EW' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[1.04       ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
        'TTRARE' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[1.5        ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
-       'ST' : {
+       'ST_tW' : {
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
-            'TTTT_norm'         :[na         ]*len(binlist['mu']),
+            'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[1.04       ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
             'TTRARE_norm'          :[na         ]*len(binlist['mu']),
-            'LUMI'              :[lumiunc    ]*len(binlist['mu']),
+            'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
 }}
 syst_shape_size_list = {
-'mu':{ 'TTTT' : {
+'mu':{ 'NP_overlay_ttttNLO' : {
             'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
             'TTJets_TTX'        :[na         ]*len(binlist['mu']),
@@ -175,9 +175,9 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[1.         ]*len(binlist['mu']),
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['mu'])
             },
-      'TT' : {
+      'ttbarTTX' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[1.         ]*len(binlist['mu']),
+            'ttMEScale'    :[1.         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[1.         ]*len(binlist['mu']),
             'TTJets_PDF'	:[1.         ]*len(binlist['mu']),
             'TTJets_TTX'        :[1.         ]*len(binlist['mu']),
@@ -199,7 +199,7 @@ syst_shape_size_list = {
             },
       'EW' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
             'TTJets_TTX'        :[na         ]*len(binlist['mu']),
@@ -219,9 +219,9 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[na        ]*len(binlist['mu']),
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
-      'ST' : {
+      'ST_tW' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
             'TTJets_TTX'        :[na         ]*len(binlist['mu']),
@@ -243,7 +243,7 @@ syst_shape_size_list = {
             },
       'TTRARE' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['mu']),
+            'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
             'TTJets_TTX'        :[na         ]*len(binlist['mu']),
@@ -264,9 +264,9 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
 },
-'el':{ 'TTTT' : {
+'el':{ 'NP_overlay_ttttNLO' : {
             'TTTT_MEScale'      :[1.         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
             'TTJets_TTX'        :[na         ]*len(binlist['el']),
@@ -286,9 +286,9 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[1.        ]*len(binlist['el']),
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['el'])
             },
-      'TT' : {
+      'ttbarTTX' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[1.         ]*len(binlist['el']),
+            'ttMEScale'    :[1.         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[1.         ]*len(binlist['el']),
             'TTJets_PDF'	:[1.         ]*len(binlist['el']),
             'TTJets_TTX'        :[1.         ]*len(binlist['el']),
@@ -310,7 +310,7 @@ syst_shape_size_list = {
             },
       'EW' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
             'TTJets_TTX'        :[na         ]*len(binlist['el']),
@@ -330,9 +330,9 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[na        ]*len(binlist['el']),
             'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
-      'ST' : {
+      'ST_tW' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
             'TTJets_TTX'        :[na         ]*len(binlist['el']),
@@ -354,7 +354,7 @@ syst_shape_size_list = {
             },
       'TTRARE' : {
             'TTTT_MEScale'      :[na         ]*len(binlist['el']),
-            'TTJets_MEScale'    :[na         ]*len(binlist['el']),
+            'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
             'TTJets_TTX'        :[na         ]*len(binlist['el']),
