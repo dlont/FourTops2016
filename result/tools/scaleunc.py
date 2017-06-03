@@ -44,7 +44,9 @@ class scaleUncProcessor:
 				'hist_muRd_muF0'  : self.nominal.Get('weight2/'+objname),
 				'hist_muR0_muFd'  : self.nominal.Get('weight3/'+objname),
 				'hist_muR0_muFu'  : self.nominal.Get('weight4/'+objname),
+				#'hist_muRu_muF0'  : self.nominal.Get('weight5/'+objname),
 				'hist_muRu_muF0'  : self.nominal.Get('weight6/'+objname),
+				#'hist_muRu_muFu'  : self.nominal.Get('weight7/'+objname)
 				'hist_muRu_muFu'  : self.nominal.Get('weight8/'+objname)
 				}
 
