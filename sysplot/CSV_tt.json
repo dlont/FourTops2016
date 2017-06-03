@@ -4,8 +4,8 @@
 			"name":"CSV_tt",
 			"width":1000,
 			"height":1000,
-			"nx":4,
-			"ny":4,
+			"nx":5,
+			"ny":3,
 			"legend":{"coord":[0.02,0.5,0.98,0.9]},
 			"pads":[
 				{"id":1, "ymin":-0.2, "ymax":0.2, "title":"nJets==6&&nMtags==2", "refhistogram":"6J2M/bdt", "histograms":
