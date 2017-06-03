@@ -54,7 +54,7 @@ $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 #TT
 $(BUILDDIR)/Hists_TT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_MEScale ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} ttMEScale ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_PDF.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -139,16 +139,31 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP
 
 
-card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
+card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
 	@echo "make HiggsCombine cards"
 	@if [ -d "cards_mu" ]; then echo "cards_mu dir exists" ; else mkdir cards_mu ; fi
-	@python tools/cards.py -o $@ --channel=mu --data $(BUILDDIR)/Hists_data.root  --source '{"TTTT":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "TT":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
+	@python tools/cards.py -o $@ --channel=mu --data $(BUILDDIR)/Hists_data.root  --source '{"NP_overlay_ttttNLO":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "ttbarTTX":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST_tW":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
 	
-card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
+card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
 	@echo "make HiggsCombine cards"
 	@if [ -d "cards_el" ]; then echo "cards_el dir exists" ; else mkdir cards_el ; fi
-	@python tools/cards.py -o $@ --channel=el --data $(BUILDDIR)/Hists_data.root  --source '{"TTTT":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "TT":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
+	@python tools/cards.py -o $@ --channel=el --data $(BUILDDIR)/Hists_data.root  --source '{"NP_overlay_ttttNLO":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "ttbarTTX":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST_tW":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
 
 datacard_elmu.txt:	card_el.txt card_mu.txt
 	@echo "Combining datacards $^"
 	@combineCards.py EL=card_el.txt MU=card_mu.txt > $@
+
+datacard_elmu.res: datacard_elmu.txt
+	@combine -M Asymptotic --run $(RUN) $^ > $@
+card_el.res: card_el.txt
+	@combine -M Asymptotic --run $(RUN) $^ > $@
+card_mu.res: card_mu.txt
+	@combine -M Asymptotic --run $(RUN) $^ > $@
+limits: datacard_elmu.res card_el.res card_mu.res
+	@python ./tools/parseLimits.py -i card_el.res -f tex | tail -n1
+	@echo "\hline"
+	@python ./tools/parseLimits.py -i card_mu.res -f tex | tail -n1
+	@echo "\hline"
+	@python ./tools/parseLimits.py -i datacard_elmu.res -f tex | tail -n1
+	@echo "\hline"
+
