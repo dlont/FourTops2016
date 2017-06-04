@@ -27,11 +27,12 @@ def lp(treename,filename):
 		raise NameError('Tree name %s is not recognized'%treename)
 	
 	bdtplot = None
-	if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
-	else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
+	if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
+	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
+	else: bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
+	#else: bdtplot =  Plot("Gradninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 10, -5., 5.))
 
 	plots_list = [bdtplot,
-	#Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.)),
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
 	Plot("jetvec[][0]"           , TH1D("jetpt"    , ";jet p_{T} (GeV);entries/bin", 15, 30., 1500.)),
 	Plot("jetvec[][1]"           , TH1D("jeteta"    , ";jet #eta;entries/bin", 50, -2.5, 2.5)),
