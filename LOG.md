@@ -491,3 +491,35 @@ python tools/renormsysshapes.py plots_mu/Hists_TTTT_CARDS.root -r plots_mu/Hists
 Sat 27 May 2017 12:06:33 AM CEST
 TO run over alternative TT samples (e.g. powheg-herwig)
 make -j card_mu.txt ERA=full INPUTLOCATION=/pnfs/iihe/cms/store/user/dlontkov/backup/t2016/tag_v0.0.21/Craneens_Mu/Craneens22_5_2017/ BUILDDIR=plots_mu DATALABEL:=Single\ \#mu TREENAME=Craneen__Mu FORMAT=png TTCENTRAL=powheg_herwig
+
+
+Sat 27 May 2017 11:58:47 AM CEST
+Prepare bigsub and smallsub scripts
+for i in ../*El*/submit*.sh;do echo qsub $i;done > bigsub.txt
+for i in ../*Mu*/submit*.sh;do echo qsub $i;done > bigsub.txt
+grep -v MET bigsub.txt |grep -v JETHT|grep -v herwig_je
+
+
+Sat 03 Jun 2017 09:55:45 AM CEST
+Expected limit optimisation
+cp ../long_and_denys_2016/datacard* .
+cp ../long_and_denys_2016/shapefile* .
+cp ~/t2016/result/card_el.txt ~/t2016/result/card_mu.txt .
+mkdir plots_el plots_mu
+cp ~/t2016/result/plots_mu/*CARDS* ~/t2016/result/plots_mu/Hists_data.root plots_mu
+cp ~/t2016/result/plots_el/*CARDS* ~/t2016/result/plots_el/Hists_data.root plots_el
+cp /user/dlontkov/t2016/result/plots_el/Hists_EW.root plots_el
+cp /user/dlontkov/t2016/result/plots_mu/Hists_EW.root plots_mu
+cp /user/dlontkov/t2016/result/plots_el/Hists_T.root plots_el
+cp /user/dlontkov/t2016/result/plots_mu/Hists_T.root plots_mu
+cp /user/dlontkov/t2016/result/plots_el/Hists_TT_RARE.root plots_el
+cp /user/dlontkov/t2016/result/plots_mu/Hists_TT_RARE.root plots_mu
+
+combineCards.py EL=card_el.txt MU=card_mu.txt > combo_sl.txt
+combineCards.py EL=card_el.txt MU=card_mu.txt MUMU=datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt ELEL=datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt MUEL=datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt  > combo.txt
+
+combine -M MaxLikelihoodFit combo.txt -t -1 --expectSignal=1 --robustFit=1
+combine -M ProfileLikelihood combo.txt -t -1 --expectSignal=1 --significance
+combine -M Asymptotic --run blind combo.txt
+
+
