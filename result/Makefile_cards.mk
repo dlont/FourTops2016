@@ -154,22 +154,25 @@ datacard_elmu.txt:	card_el.txt card_mu.txt
 	@combineCards.py EL=card_el.txt MU=card_mu.txt > $@
 
 datacard_elmu.res: datacard_elmu.txt
-	@combine -M Asymptotic --run $(RUN) $^ > $@
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
+	@combine -M Asymptotic --run $(RUN) $^ >> temp.comb.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.comb.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.comb.3
+	@cat temp.comb.* > $@
+	@rm temp.comb.*
 card_el.res: card_el.txt
-	@combine -M Asymptotic --run $(RUN) $^ > $@
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
+	@combine -M Asymptotic --run $(RUN) $^ >> temp.el.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.el.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.el.3
+	@cat temp.el.* > $@
+	@rm temp.el.*
 card_mu.res: card_mu.txt
-	@combine -M Asymptotic --run $(RUN) $^ > $@
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >> $@
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >> $@
+	@combine -M Asymptotic --run $(RUN) $^ >> temp.mu.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.mu.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.mu.3
+	@cat temp.mu.* > $@
+	@rm temp.mu.*
 limits: datacard_elmu.res card_el.res card_mu.res
-	@python ./tools/parseLimits.py -i card_el.res -f tex | tail -n1
-	@echo "\hline"
-	@python ./tools/parseLimits.py -i card_mu.res -f tex | tail -n1
-	@echo "\hline"
-	@python ./tools/parseLimits.py -i datacard_elmu.res -f tex | tail -n1
-	@echo "\hline"
+	@python ./tools/parseLimits.py -i card_el.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i card_mu.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i datacard_elmu.res -f $(FORMAT) | tail -n2
 
