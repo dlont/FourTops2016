@@ -149,9 +149,13 @@ for chan in channels:
 
                 # Combine multiple root files in a single job
                 listOfFiles.append(topTrees[f])
-                CopyCmdlistOfFiles.append("dccp dcap://maite.iihe.ac.be:"+topTrees[f]+" /$TMPDIR/TOPTREE_"+str(f)+".root")
-                listOfScratchFiles.append(" /scratch/$PBS_JOBID/TOPTREE_"+str(f)+".root")
-                listOfTmpDirFiles.append(" /$TMPDIR/TOPTREE_"+str(f)+".root")
+		# intermediate copy to scratch space
+                #CopyCmdlistOfFiles.append("dccp dcap://maite.iihe.ac.be:"+topTrees[f]+" /$TMPDIR/TOPTREE_"+str(f)+".root")
+                #listOfScratchFiles.append(" /scratch/$PBS_JOBID/TOPTREE_"+str(f)+".root")
+                #listOfTmpDirFiles.append(" /$TMPDIR/TOPTREE_"+str(f)+".root")
+
+		# read input directly from dcache
+                listOfTmpDirFiles.append("dcap://maite.iihe.ac.be:"+topTrees[f]+",")
                 
 #                print CopyCmdlistOfFiles[0]
                 
@@ -166,32 +170,11 @@ for chan in channels:
 
                     # add one copy cmd per file in that job
                     outfile = open (filename, 'a')
-                    print >> outfile , "#first make all the copies"
-
-                    # Loop over the files of the current job
-                    for fpj in range (0,len(listOfFiles)):
-#                        print listOfFiles[fpj]
-                        
-                        # add prefix if need
-                        if (addPrefix == True):
-                            listOfFiles[fpj]="dcap://maite.iihe.ac.be"+listOfFiles[fpj]
-                        # string contain the list of files separated by a space
-                        files_str=files_str+ "," + listOfFiles[fpj]
-                        scractFiles_str=scractFiles_str+ "," + listOfScratchFiles[fpj]
-                        tmpdirFiles_str=tmpdirFiles_str+ "," + listOfTmpDirFiles [fpj]
-                        N_processed=N_processed+1
-                        # copy all the file
-                        print >> outfile , CopyCmdlistOfFiles[fpj]
-                        
-                    print >> outfile , "\n\n"
-
-#                    print files_str
-
 
                     # run on the files
                     print >> outfile, "# now run on the file copied under /$TMPDIR/ "
 		    print >> outfile, './FourTops --version '
-                    print >> outfile, commandString, '--input_files="{}"'.format(scractFiles_str) , ' ', '--fourtops_channel="{}"'.format(chan), \
+                    print >> outfile, commandString, '--input_files="{}"'.format(''.join(listOfTmpDirFiles)) , ' ', '--fourtops_channel="{}"'.format(chan), \
 						     jes, jer, '--jobid="{}"'.format('$PBS_JOBID')
                     # , " " , str(N_job+1) , " 0" , " 2000000" 
 
