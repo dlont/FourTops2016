@@ -189,9 +189,20 @@ class plotter:
 			# Set style
 			if "style" in hist:  self.set_hist_style(h,hist)
 			######################
+			# if Rebin histogram
+			hrebin = None; hrefrebin = None
+			if "rebin" in hist: 
+				hrebin = h.Clone(h.GetName()+'_rebin')
+				hrefrebin = href.Clone(href.GetName()+'_rebin')
+				hrebin.Rebin(hist['rebin']); hrefrebin.Rebin(hist['rebin'])
+				hrebin.Add(hrefrebin,-1.)
+				hrebin.Divide(hrefrebin)
+			######################
 			h.Add(href,-1.)
 			h.Divide(href)
-			st.Add(h,'hist')
+			##########################
+			if "rebin" in hist:	st.Add(hrebin,'hist')
+			else:			st.Add(h,'hist')
 
 		gPad.cd()
 		st.Draw("nostack")
