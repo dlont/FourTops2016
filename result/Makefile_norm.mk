@@ -100,6 +100,10 @@ TTWNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTW_Run2_TopTree_Study.root,
 TTZNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTZ_Run2_TopTree_Study.root, ${TTZNLOXS})
 TTHNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTH_Run2_TopTree_Study.root, ${TTHNLOXS})
 TTTTNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_Run2_TopTree_Study.root, ${TTTTNLOXS})
+TTTTISRUPNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_isrup_Run2_TopTree_Study.root, ${TTTTNLOXS})
+TTTTISRDWNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_isrdown_Run2_TopTree_Study.root, ${TTTTNLOXS})
+TTTTFSRUPNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_fsrup_Run2_TopTree_Study.root, ${TTTTNLOXS})
+TTTTFSRDWNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_ttttNLO_fsrdown_Run2_TopTree_Study.root, ${TTTTNLOXS})
 #TTTTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_ttttNLO_Run2_TopTree_Study.root, ${TTTTNLOXS})
 TTTTNORMSCALED=$(shell echo "${TTTTSCALE}*${TTTTNORM}"|bc -l)
 
