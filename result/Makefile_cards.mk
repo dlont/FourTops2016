@@ -41,12 +41,29 @@ $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jes
 $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} BJCORDOWN ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_ISRUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_isrup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTISRUPNORM} TTTTISRUp ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_ISRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_isrdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTISRDWNORM} TTTTISRDown ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_FSRUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_fsrup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTFSRUPNORM} TTTTFSRUp ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_FSRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_fsrdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTFSRDWNORM} TTTTFSRDown ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_JERUP.root $(BUILDDIR)/Hists_TTTT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_JESUP.root $(BUILDDIR)/Hists_TTTT_JESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_MEScale.root $(BUILDDIR)/Hists_TTTT_PU.root \
-	$(BUILDDIR)/Hists_TTTT_BTAG.root $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root
+	$(BUILDDIR)/Hists_TTTT_BTAG.root $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_FSRDOWN.root $(BUILDDIR)/Hists_TTTT_FSRUP.root $(BUILDDIR)/Hists_TTTT_ISRDOWN.root $(BUILDDIR)/Hists_TTTT_ISRUP.root
 	@echo "MERGE TTTT SYSTEMATICS histograms $@ ($^)" 
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TTTT.root -t bdt -s MEScale
@@ -98,27 +115,27 @@ $(BUILDDIR)/Hists_TT_BTAGJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TT
 	
 $(BUILDDIR)/Hists_TT_ISRUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTISRUPNORM} ISRUP ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTISRUPNORM} TTISRUp ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_ISRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTISRDWNORM} ISRDOWN ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTISRDWNORM} TTISRDown ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_FSRUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTFSRUPNORM} FSRUP ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTFSRUPNORM} TTFSRUp ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_FSRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTFSRScaledown_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTFSRDWNORM} FSRDOWN ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTFSRDWNORM} TTFSRDown ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_UEUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTUEUPNORM} UEUP ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTUEUPNORM} TTUEUp ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_UEDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTUEDWNORM} UEDOWN ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTUEDWNORM} TTUEDown ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
