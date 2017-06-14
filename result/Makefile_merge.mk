@@ -155,6 +155,14 @@ $(BUILDDIR)/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root: $(wildcard $(INPU
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 	
+$(BUILDDIR)/Craneen_TTHdampup_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTHdampup_powheg_*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTHdampdown_powheg_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTHdampdown_powheg_*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Craneen_TTJets_powheg_jerup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_jerup_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}

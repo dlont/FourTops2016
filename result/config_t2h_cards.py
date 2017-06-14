@@ -58,8 +58,11 @@ elif 'MEScale' in systematic:
 elif 'PDF' in systematic:
     from cards_syst_PDF import getPDFCutSets
     cut_sets = getPDFCutSets(systematic, '&&'+trigger_cuts)
-elif 'HDAMP' in systematic:
+elif 'HDAMP' in systematic and 'ALT' not in systematic:
     from cards_syst_HDAMP import getHDAMPCutSets
+    cut_sets = getHDAMPCutSets(systematic, '&&'+trigger_cuts)
+elif 'HDAMPALT' in systematic:
+    from cards_syst_HDAMP_alt import getHDAMPAltCutSets
     cut_sets = getHDAMPCutSets(systematic, '&&'+trigger_cuts)
 elif 'ISR' in systematic:
     from cards_syst_IFSRUE import getIFSRUECutSets
