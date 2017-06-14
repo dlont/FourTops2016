@@ -32,10 +32,11 @@ report_data_unbinned.pdf: ${CONFIGDATA} $(wildcard ${TARGET}/Craneen_Data_Run2_T
 	@echo "Test data"
 	${STATTEST} -g $@ $^
 
-report_TTJets_unbinned.pdf: ${CONFIGMC} $(wildcard ${TARGET}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root)
+report_TTJets_unbinned.pdf: ${configmcunbinned} $(wildcard ${TARGET}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root)
 	@echo "Test TT MC"
 	${STATTEST} -g $@ $^
 
-report_TTTT_unbinned.pdf: ${CONFIGMC} $(wildcard ${TARGET}/Craneen_ttttNLO_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_ttttNLO_Run2_TopTree_Study*.root)
+#report_TTTT_unbinned.pdf: ${configmcunbinned} $(wildcard ${TARGET}/Craneen_ttttNLO_fsrdown_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_ttttNLO_Run2_TopTree_Study*.root)
+report_TTTT_unbinned.pdf: ${configmcunbinned} $(wildcard ${TARGET}/Craneen_ttttNLO_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_ttttNLO_Run2_TopTree_Study*.root)
 	@echo "Test TTTT MC"
 	${STATTEST} -g $@ $^
