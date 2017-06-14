@@ -20,7 +20,7 @@
 TreeName = 'Craneen__Mu'
 UnBinned = {
     'DefaultTestName' : 'AndersonDarlingTest',
-    'DefaultThresholds' : [0.1,0.5],
+    'DefaultThresholds' : [0.99,1.],
     
     #These are the list of unbinned distributions
     
@@ -63,6 +63,32 @@ UnBinned = {
         'Type' : 'DOUBLE',
         'Size' : 1
         },
+        {
+        'Name' : TreeName+':multitopness',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':SumJetMassX',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':HTX',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':HT',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':HTb',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
 
         {
         'Name' : TreeName+':weight1',
