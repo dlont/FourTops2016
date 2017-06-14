@@ -5,7 +5,6 @@
 #include "../interface/HadronicTopReco.h"
 
 HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool TrainMVA, vector < Dataset* > datasets, string MVAmethodIn, bool isdebug, float Lumi):
-	MSPlot(),
 	debug(false),
 	leptonChoice(""),
 	selectedLeptonTLV_JC(),
@@ -57,30 +56,9 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	}
 
 	if(isdebug)	debug = true;
-	
-	//fout->cd();
-	MSPlot["MVA1TriJetMass"]       = new MultiSamplePlot(datasets, "MVA1TriJetMass", 75, 0, 500, "m_{bjj}");
-	MSPlot["MVA1DiJetMass"]        = new MultiSamplePlot(datasets, "MVA1DiJetMass", 75, 0, 500, "m_{bjj}");
-	MSPlot["MVA1PtRat"]            = new MultiSamplePlot(datasets, "MVA1PtRat", 25, 0, 2, "P_{t}^{Rat}");
-	MSPlot["MVA1BTag"]             = new MultiSamplePlot(datasets, "MVA1BTag", 35, 0, 1, "BTag");
-	MSPlot["MVA1AnThBh1"]          = new MultiSamplePlot(datasets, "MVA1AnThBh1", 35, 0, 3.14, "AnThBh");
-	MSPlot["MVA1AnThWh1"]          = new MultiSamplePlot(datasets, "MVA1AnThWh1", 35, 0, 3.14, "AnThWh1");
-	MSPlot["MVA1TriJet"]           = new MultiSamplePlot(datasets, "MVA1TriJet", 35, -1., 0.5, "BDT Discriminator");
-	MSPlot["MultiTopness"]         = new MultiSamplePlot(datasets, "MultiTopness", 35, -1., 0.5, "MultiTopness");
-	MSPlot["Topness"]              = new MultiSamplePlot(datasets, "Topness", 35, -1., 0.5, "Topness");
-	MSPlot["DiTopness"]            = new MultiSamplePlot(datasets, "DiTopness", 35, -1., 0.5, "DiTopness");
-	MSPlot["TriTopness"]           = new MultiSamplePlot(datasets, "TriTopness", 35, -1., 0.5, "TriTopness");
-	MSPlot["MVA2ndPassTriJetMass"] = new MultiSamplePlot(datasets, "MVA2ndPassTriJetMass", 30, 0, 1000, "m_{bjj}");
-	MSPlot["MVA_AnTop1Top2"]       = new MultiSamplePlot(datasets, "MVAAnTop1Top2", 35, 0, 3.14, "Angle first two hadronic tops");
-	MSPlot["MVA_AnTop1Lep"]		   = new MultiSamplePlot(datasets, "MVAAnTop1Lep", 35, 0, 3.14, "Angle first top and lepton");
 }
 
 HadronicTopReco::~HadronicTopReco(){
-    for(map<string,MultiSamplePlot*>::const_iterator it = MSPlot.begin(); it != MSPlot.end(); it++)
-    {
-        string name = it->first;
-		MSPlot.erase(name);
-    }
 }
 
 void HadronicTopReco::SetCollections(vector<TRootPFJet*> selectJets,  vector<TRootMuon*> selectedMuons, vector<TRootElectron*> selectedElectrons, float scaleFac){
@@ -105,8 +83,6 @@ void HadronicTopReco::Compute1st(unsigned int d, vector<TRootPFJet*> selectedJet
 
     MVAvals1 = jetCombiner->getMVAValue(MVAmethod, 1); // 1 means the highest MVA value
     Topness = MVAvals1.first;
-
-    MSPlot["Topness"]->Fill(Topness, datasets[d], true, Luminosity*scaleFactor );
 
     if (debug) cout <<"Processing event with jetcombiner : 1 "<< endl;
 }
@@ -139,7 +115,6 @@ void HadronicTopReco::Compute2nd(unsigned int d, vector<TRootPFJet*> selectedJet
 
     MVAvals2ndPass = jetCombiner->getMVAValue(MVAmethod, 1);
     DiTopness = MVAvals2ndPass.first;
-    MSPlot["DiTopness"]->Fill(DiTopness,  datasets[d], true, Luminosity*scaleFactor);
     if (debug) cout <<"Processing event with jetcombiner : 2 "<< endl;
 }
 
@@ -161,122 +136,10 @@ void HadronicTopReco::Compute3rd(unsigned int d, vector<TRootPFJet*> selectedJet
 
 	    MVAvals3rdPass = jetCombiner->getMVAValue(MVAmethod, 1);
 	    TriTopness = MVAvals3rdPass.first;
-	    MSPlot["TriTopness"]->Fill(TriTopness,  datasets[d], true, Luminosity*scaleFactor);   	
     }
 
 }
 
-void HadronicTopReco::FillDiagnosticPlots(TFile *fout, unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets){
-
-    //check data-mc agreement of kin. reco. variables.
-    float mindeltaR =100.;
-    float mindeltaR_temp =100.;
-    float tempJetSum = 0;
-    float angleT1TempJetSum = 0;
- 	wj1 = 0, wj2 = 0, bj1 = 0, wj1_2ndpass = 0, wj2_2ndpass = 0, bj1_2ndpass = 0, angleT1AllJets=0;  //wjet1, wjet2, bjet
-
-    //define the jets from W as the jet pair with smallest deltaR
-    for (unsigned int m=0; m<MVASelJets1.size(); m++) {
-        for (unsigned int n=0; n<MVASelJets1.size(); n++) {
-            if(n==m) continue;
-            TLorentzVector lj1  = *MVASelJets1[m];
-            TLorentzVector lj2  = *MVASelJets1[n];
-            mindeltaR_temp  = lj1.DeltaR(lj2);
-            if (mindeltaR_temp < mindeltaR){
-                mindeltaR = mindeltaR_temp;
-                wj1 = m;
-                wj2 = n;
-            }
-        }
-    }
-
-    // find the index of the jet not chosen as a W-jet
-    for (unsigned int p=0; p<MVASelJets1.size(); p++) {
-        if(p!=wj1 && p!=wj2) bj1 = p;
-    }
-
-    if (debug) cout <<"Processing event with jetcombiner : 3 "<< endl;
-
-    //now that putative b and W jets are chosen, calculate the six kin. variables.
-    TLorentzVector Wh1 = *MVASelJets1[wj1] + *MVASelJets1[wj2]; //lorentz vector of dijet
-    TLorentzVector Bh1 = *MVASelJets1[bj1]; //lorentz vector of b
-    TLorentzVector Th1 = Wh1+Bh1; //lorentz vector of top
-
-    TriJetMass = Th1.M();
-    DiJetMass = Wh1.M();
-
-    //DeltaR
-    float AngleThWh1 = fabs(Th1.DeltaPhi(Wh1)); //angle between top and dijet
-    float AngleThBh1 = fabs(Th1.DeltaPhi(Bh1)); //angle between top and remaining jet
-
-    float btag = MVASelJets1[bj1]->btag_combinedInclusiveSecondaryVertexV2BJetTags();  //CSV discriminator value of "other jet"
-
-    double PtRat = ( ( *MVASelJets1[0] + *MVASelJets1[1] + *MVASelJets1[2] ).Pt() ) / ( MVASelJets1[0]->Pt() + MVASelJets1[1]->Pt() + MVASelJets1[2]->Pt());  //ratio of vectorial pT over scalar pT (should be larger for tops)
-
-    if (debug) cout <<"Processing event with jetcombiner : 4 "<< endl;    
-
-    bestTopMass1       = ( *selectedJets[MVAvals1.second[0]] + *selectedJets[MVAvals1.second[1]] + *selectedJets[MVAvals1.second[2]]).M();
-    bestTopMass2ndPass = ( *selectedJets[MVAvals2ndPass.second[0]] + *selectedJets[MVAvals2ndPass.second[1]] + *selectedJets[MVAvals2ndPass.second[2]]).M(); //top mass of second highest ranked tri jet
-    bestTopPt          = ( *selectedJets[MVAvals1.second[0]] + *selectedJets[MVAvals1.second[1]] + *selectedJets[MVAvals1.second[2]]).Pt();
-
-    if(debug) {
-        cout <<"Indices of best MVA jets are :  "<< MVAvals1.second[0] <<"  "<< MVAvals1.second[1]  <<" " << MVAvals1.second[2]<<endl;
-        cout <<"MVA Mass 1 = "<< bestTopMass1 << " MVA Mass 2 = "<< bestTopMass2ndPass << endl; cout <<"   "<<endl;
-    }
-
-    //define the jets from W as the jet pair with smallest deltaR
-    for (unsigned int m=0; m<MVASelJets2.size(); m++) {
-        for (unsigned int n=0; n<MVASelJets2.size(); n++) {
-            if(n==m) continue;
-            TLorentzVector lj1  = *MVASelJets2[m];
-            TLorentzVector lj2  = *MVASelJets2[n];
-            mindeltaR_temp  = lj1.DeltaR(lj2);
-            if (mindeltaR_temp < mindeltaR){
-                mindeltaR = mindeltaR_temp;
-                wj1_2ndpass = m;
-                wj2_2ndpass = n;
-            }
-        }
-    }
-
-    // find the index of the jet not chosen as a W-jet
-    for (unsigned int p=0; p<MVASelJets2.size(); p++) {
-        if(p!=wj1_2ndpass && p!=wj2_2ndpass) bj1_2ndpass = p;
-    }
-
-    if (debug) cout <<"Processing event with jetcombiner : 5 "<< endl;
-    //now that putative b and W jets are chosen, calculate the six kin. variables.
-    TLorentzVector Wh2ndpass = *MVASelJets1[wj1_2ndpass] + *MVASelJets1[wj2_2ndpass]; //lorentz vector of dijet
-    TLorentzVector Bh2ndpass = *MVASelJets1[bj1_2ndpass]; //lorentz vector of b
-    TLorentzVector Th2ndpass = Wh2ndpass+Bh2ndpass; //lorentz vector of top
-
-    for(unsigned int MVAsel2ndpas=0; MVAsel2ndpas<selectedJets2ndPass.size();MVAsel2ndpas++){ //calculating the sum(|pTop.pOtherJets|)/ sum(|pOtherJets|)
-    	TLorentzVector tempjet = *selectedJets2ndPass[MVAsel2ndpas];
-    	float angleBestTopTempJet = fabs( (Th1.DeltaPhi(tempjet))/(Th1.M()));
-    	float magOfTempJet = fabs(tempjet.M());
-    	tempJetSum += magOfTempJet;
-    	angleT1TempJetSum += angleBestTopTempJet;
-    }
-	angleT1AllJets = angleT1TempJetSum/tempJetSum;
-    //DeltaR
-    // float AngleThWh2ndpass = fabs(Th2ndpass.DeltaPhi(Wh2ndpass)); //angle between top and dijet
-    // float AngleThBh2ndpass = fabs(Th2ndpass.DeltaPhi(Bh2ndpass)); //angle between top and remaining jet
-    AngleT1T22ndpass = fabs(Th2ndpass.DeltaPhi(Th1)); //angle between had top 1 and had top 2
-    AngleT1Lep = fabs(Th1.DeltaPhi(*selectedLeptonTLV_JC[0]));
-    fout->cd();
-
-    //cout<<"d: "<<d<<"   Lumi: "<<Luminosity<<"  scaleFactor: "<<scaleFactor<<endl;
-    MSPlot["MVA1TriJetMass"]->Fill(TriJetMass,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA1DiJetMass"]->Fill(DiJetMass,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA1BTag"]->Fill(btag,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA1PtRat"]->Fill(PtRat,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA1AnThWh1"]->Fill(AngleThWh1,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA1AnThBh1"]->Fill(AngleThBh1,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA2ndPassTriJetMass"]->Fill(bestTopMass2ndPass,  datasets[d], true, Luminosity*scaleFactor );
-    MSPlot["MVA_AnTop1Top2"]->Fill(AngleT1T22ndpass, datasets[d], true, Luminosity*scaleFactor);
-    MSPlot["MVA_AnTop1Lep"]->Fill(AngleT1Lep, datasets[d], true, Luminosity*scaleFactor);
-    if (debug)  cout <<"MVA Mass 1 = "<< bestTopMass1 << " MVA Mass 2 = "<< bestTopMass2 << endl;
-}
 float HadronicTopReco::ReturnAnglet1Jet(){
 	return angleT1AllJets;
 }
@@ -322,14 +185,6 @@ float HadronicTopReco::ReturnTriTopness(){
 	return TriTopness;
 }
 
-void HadronicTopReco::WriteDiagnosticPlots(TFile *fout, string pathPNG){
-	for(map<string,MultiSamplePlot*>::const_iterator it = MSPlot.begin(); it != MSPlot.end(); it++)
-    {
-        string name = it->first;
-        MultiSamplePlot *temp = it->second;
-        temp->Write(fout, name, true, pathPNG, "pdf");
-    }
-}
 
 void HadronicTopReco::RecoCheck(bool debug, vector<TRootMuon*> selectedMuons, vector<TRootElectron*> selectedElectrons, vector<TRootPFJet*> selectedJets){
 	/////////////////////////////////

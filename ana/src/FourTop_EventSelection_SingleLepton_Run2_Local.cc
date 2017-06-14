@@ -1209,7 +1209,6 @@ int main (int argc, char *argv[])
                     SumJetMassX = hadronicTopReco->ReturnSumJetMassX();
                     HTX = hadronicTopReco->ReturnHTX();// std::cout<<"HTX: "<<HTX<<std::endl;
                 }
-//                hadronicTopReco->FillDiagnosticPlots(fout, d, selectedJets, datasets);
             }
 
             //std::cout<<"SumJetMassX: "<<SumJetMassX<<std::endl;
@@ -1474,7 +1473,6 @@ int main (int argc, char *argv[])
 
     if (HadTopOn){
         //if(TrainMVA)jetCombiner->Write(foutmva, true, pathPNGJetCombi.c_str());
-//        hadronicTopReco->WriteDiagnosticPlots(fout, pathPNG);
         delete hadronicTopReco;        
     }
     if(EventBDTOn){
