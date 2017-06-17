@@ -20,7 +20,7 @@
 TreeName = 'Craneen__Mu'
 UnBinned = {
     'DefaultTestName' : 'AndersonDarlingTest',
-    'DefaultThresholds' : [0.99,1.],
+    'DefaultThresholds' : [0.99999,0.99999],
     
     #These are the list of unbinned distributions
     
