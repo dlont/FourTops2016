@@ -3,8 +3,11 @@
 //////////////////////////////////////////////
 
 #include "../interface/HadronicTopReco.h"
+#include "TopTreeProducer/interface/TRootJet.h"
+#include <regex>
 
 HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool TrainMVA, vector < Dataset* > datasets, string MVAmethodIn, bool isdebug, float Lumi):
+	MSPlot(),
 	debug(false),
 	leptonChoice(""),
 	selectedLeptonTLV_JC(),
@@ -27,7 +30,7 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	selectedJets3rdPass(), //remaining jets after removing highest & second highest ranked tri jet
 	MVASelJets1(), //the selected jets from the highest ranked tri jet
 	MVASelJets2(), //the selected jets from the second highest ranked tri jet
-	jetCombiner(new JetCombiner(TrainMVA, Lumi, datasets, MVAmethodIn, false, "","_13TeV" )), //_13TeV in last arg for 13tev training
+	jetCombiner(0),
 	bestTopMass1(0),
 	bestTopMass2(0),
 	bestTopMass2ndPass(0), 
@@ -48,6 +51,13 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	sumjet_X(TLorentzVector(0,0,0,0)),
 	angleT1AllJets(0)
 	{
+        std::string postfix;
+	if (fout) postfix = fout->GetName();
+//        std::string postfix = "FourTop_Run2_TopTree_Study";
+        postfix = std::regex_replace(postfix, std::regex("Train"), "MVAOutput");
+        
+        jetCombiner = new JetCombiner(TrainMVA, Lumi, datasets, MVAmethodIn, false, "", postfix, "_13TeV_new"); //_13TeV in last arg for 13tev training
+    
 	if (isMuon){
 		leptonChoice = "Muon";
 	}
@@ -56,9 +66,16 @@ HadronicTopReco::HadronicTopReco(TFile *fout, bool isMuon, bool isElectron, bool
 	}
 
 	if(isdebug)	debug = true;
+	
 }
 
 HadronicTopReco::~HadronicTopReco(){
+    for(map<string,MultiSamplePlot*>::const_iterator it = MSPlot.begin(); it != MSPlot.end(); it++)
+    {
+        string name = it->first;
+		MSPlot.erase(name);
+    }
+    delete jetCombiner;
 }
 
 void HadronicTopReco::SetCollections(vector<TRootPFJet*> selectJets,  vector<TRootMuon*> selectedMuons, vector<TRootElectron*> selectedElectrons, float scaleFac){
@@ -69,6 +86,19 @@ void HadronicTopReco::SetCollections(vector<TRootPFJet*> selectJets,  vector<TRo
 	    selectedLeptonTLV_JC.push_back(selectedElectrons[0]);               
 	}
 	scaleFactor = scaleFac;
+}
+
+// Fill training trees for hadronic top decay reconstruction
+void HadronicTopReco::Train(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets){
+    selectedJets2ndPass.clear();
+    selectedJets3rdPass.clear();
+    MVASelJets1.clear();   
+
+    jetCombiner->ProcessEvent_SingleHadTop(datasets[d], mcParticles_flav, selectedJets, selectedLeptonTLV_JC[0], scaleFactor);
+}
+
+void HadronicTopReco::SetMCParticles(const vector<TRootMCParticle*>& mcParticles){
+    mcParticles_flav = mcParticles;
 }
 
 void HadronicTopReco::Compute1st(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets){
@@ -250,4 +280,8 @@ void HadronicTopReco::RecoCheck(bool debug, vector<TRootMuon*> selectedMuons, ve
 
 	if (debug) cout <<"Indices of matched jets are :  "<< hadronicBJet_.first<<"  "<< hadronicWJet1_.first  <<" " << hadronicWJet2_.first <<endl;
 
+}
+
+ JetCombiner* HadronicTopReco::GetJetCombiner() {
+    return jetCombiner;
 }

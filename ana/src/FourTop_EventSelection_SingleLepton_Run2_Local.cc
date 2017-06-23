@@ -390,7 +390,10 @@ int main (int argc, char *argv[])
     /////////////////////////////////////////////////
     HadronicTopReco *hadronicTopReco;
     if(HadTopOn){
-        hadronicTopReco = new HadronicTopReco(nullptr, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, 1.);
+        string rootFileName ("~/t2016/output/train"+channelpostfix+"/Train"+postfix+"_"+dName+".root"); //eg. FourTop_Run2_TopTree_Study_Data_Mu.root
+	TFile *fout = nullptr;
+        if (TrainMVA) fout = new TFile (rootFileName.c_str(), "RECREATE");
+        hadronicTopReco = new HadronicTopReco(fout, Muon, Electron, TrainMVA, datasets, MVAmethod, debug, 1.);
     }
     /////////////////////////////////////////////////
     //            vectors of objects               //
@@ -1180,6 +1183,7 @@ int main (int argc, char *argv[])
             //     TMVA for mass Reconstruction     //
             //////////////////////////////////////////
             float diTopness = 0;
+	    float triTopness = 0;
             LOG(INFO)<<"TMVA mass reco";
             sort(selectedJets.begin(),selectedJets.end(),HighestCVSBtag());
             float csvJetcsv1 = 1, csvJetcsv2 = 1, csvJetcsv3 =1, csvJetcsv4 =1;
@@ -1201,6 +1205,7 @@ int main (int argc, char *argv[])
                 hadronicTopReco->SetCollections(selectedJets, selectedMuons, selectedElectrons, scaleFactor);
             }
 
+	    double MT1 = 0., MW1 = 0.,  MT2 = 0., MW2 = 0., MT3 = 0., MW3 = 0.;
             if(HadTopOn){
                 if(!TrainMVA){ //if not training, but computing 
                     hadronicTopReco->Compute1st(d, selectedJets, datasets);
@@ -1208,6 +1213,40 @@ int main (int argc, char *argv[])
                     diTopness = hadronicTopReco->ReturnDiTopness();
                     SumJetMassX = hadronicTopReco->ReturnSumJetMassX();
                     HTX = hadronicTopReco->ReturnHTX();// std::cout<<"HTX: "<<HTX<<std::endl;
+
+		    std::vector<unsigned int> selectedTrijetIDs1st = hadronicTopReco->MVAvals1.second;
+		    TLorentzVector TLVTop1(0.,0.,0.,0.);
+		    TLorentzVector TLVW1(0.,0.,0.,0.);
+		    for (auto jetId: selectedTrijetIDs1st) TLVTop1 += (*selectedJets[jetId]);
+		    for (auto jetId: {selectedTrijetIDs1st[0], selectedTrijetIDs1st[1]}) TLVW1 += (*selectedJets[jetId]); 
+		    MT1 = TLVTop1.M(); MW1 =  TLVW1.M();
+		    DLOG(INFO) << "MT1,MW1: " << setw(10) << MT1 << setw(10) << MW1;
+
+		    std::vector<unsigned int> selectedTrijetIDs2nd = hadronicTopReco->MVAvals2ndPass.second;
+		    TLorentzVector TLVTop2(0.,0.,0.,0.);
+		    TLorentzVector TLVW2(0.,0.,0.,0.);
+		    for (auto jetId: selectedTrijetIDs2nd) {
+			TLVTop2 += (*selectedJets[jetId]);
+		}
+		    for (auto jetId: {selectedTrijetIDs2nd[0], selectedTrijetIDs2nd[1]}) TLVW2 += (*selectedJets[jetId]); 
+		    MT2 = TLVTop2.M(); MW2 =  TLVW2.M();
+		    DLOG(INFO) << "MT2,MW2: " << setw(10) << MT2 << setw(10) << MW2;
+
+		    if (selectedJets.size()>=10) {
+			hadronicTopReco->Compute3rd(d, selectedJets, datasets);
+			triTopness = hadronicTopReco->ReturnTriTopness();
+			std::vector<unsigned int> selectedTrijetIDs3rd = hadronicTopReco->MVAvals3rdPass.second;
+			TLorentzVector TLVTop3(0.,0.,0.,0.);
+			TLorentzVector TLVW3(0.,0.,0.,0.);
+			for (auto jetId: selectedTrijetIDs2nd) TLVTop3 += (*selectedJets[jetId]);
+			for (auto jetId: {selectedTrijetIDs3rd[0], selectedTrijetIDs3rd[1]}) TLVW3 += (*selectedJets[jetId]); 
+			MT3 = TLVTop3.M(); MW3 =  TLVW3.M();
+			DLOG(INFO) << "tritopness,MT3,MW3: " << nJets << setw(20) << triTopness << setw(20) << MT3 << setw(20) << MW3;
+
+		    }
+                } else { // if training hadronic top decay reconstruction
+                    hadronicTopReco->SetMCParticles(mcParticles_flav);
+                    hadronicTopReco->Train(d, selectedJets, datasets);
                 }
             }
 
@@ -1370,7 +1409,7 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[67] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            double vals[73] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
             HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
             SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
             scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
@@ -1379,7 +1418,7 @@ int main (int argc, char *argv[])
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
-	    trigSFTot,fnjetW};
+	    trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3};
 
 //		std::cout << "Interesting event: " << setw(20) << runId << ":" << lumBlkId << ":" << evId << " " << BDTScore << setw(20) << nJets 
 //			  << " " << nMtags << " " << HT << " " << fnjetW << std::endl;

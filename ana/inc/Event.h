@@ -40,6 +40,13 @@ struct Event {
     double HTX; 
     double SumJetMassX; 
     double multitopness; 
+    double tritopness;
+    double mt1;
+    double mt2;
+    double mt3;
+    double mw1;
+    double mw2;
+    double mw3;
     double nbb; 
     double ncc; 
     double nll; 
@@ -122,6 +129,12 @@ void Event::clear() {
       HTX = 0.; 
       SumJetMassX = 0.; 
       multitopness = 0.; 
+      mt1 = 0.;
+      mt2 = 0.;
+      mt3 = 0.;
+      mw1 = 0.;
+      mw2 = 0.;
+      mw3 = 0.;
       nbb = 0.; 
       ncc = 0.; 
       nll = 0.; 
@@ -223,6 +236,12 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("HTX", &HTX    ,"HTX/D"); 
       tree -> Branch("SumJetMassX", &SumJetMassX    ,"SumJetMassX/D"); 
       tree -> Branch("multitopness", &multitopness    ,"multitopness/D"); 
+      tree -> Branch("mt1", &mt1    ,"mt1/D"); 
+      tree -> Branch("mt2", &mt2    ,"mt2/D"); 
+      tree -> Branch("mt3", &mt3    ,"mt3/D"); 
+      tree -> Branch("mw1", &mw1    ,"mw1/D"); 
+      tree -> Branch("mw2", &mw2    ,"mw2/D"); 
+      tree -> Branch("mw3", &mw3    ,"mw3/D"); 
       tree -> Branch("met", &met    ,"met/D"); 
       tree -> Branch("angletop1top2", &angletop1top2    ,"angletop1top2/D"); 
       tree -> Branch("angletoplep", &angletoplep    ,"angletoplep/D"); 
@@ -355,6 +374,12 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     ttxrew = vals[64];
     SFtrig = vals[65];
     NjetsW = vals[66];
+    mt1 = vals[67];
+    mt2 = vals[68];
+    mt3 = vals[69];
+    mw1 = vals[70];
+    mw2 = vals[71];
+    mw3 = vals[72];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
