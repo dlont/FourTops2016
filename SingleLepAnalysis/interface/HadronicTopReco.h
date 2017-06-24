@@ -73,39 +73,42 @@ class HadronicTopReco{
 		void Compute1st(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets);
 		void Compute2nd(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets);
 		void Compute3rd(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets);
-		void Train();
+		void Train(unsigned int d, vector<TRootPFJet*> selectedJets, vector < Dataset* > datasets);
+                void SetMCParticles(const vector<TRootMCParticle*>& mcParticles);
 		float ReturnTopness();
 		float ReturnDiTopness();
 		float ReturnTriTopness();
 		void ComputeMVASuccesses();
 		int ReturnMVASuccesses();
 		void SetCollections(vector<TRootPFJet*> selectJets,  vector<TRootMuon*> selectedMuons, vector<TRootElectron*> selectedElectrons, float scaleFac);
-		void WriteDiagnosticPlots(TFile *fout, string pathPNG);
 		float ReturnAnglet1t2();
 		float ReturnAngletoplep();
 		float ReturnSumJetMassX();
 		float ReturnHTX();
 		float ReturnBestTopPt();
 		float ReturnAnglet1Jet();
+                
+                 JetCombiner* GetJetCombiner();
 
+		 vector<TRootPFJet*>     selectedJets2ndPass; //remaining jets after removing highest ranked tri jet
+		 vector<TRootPFJet*>     selectedJets3rdPass; //remaining jets after removing highest & second highest ranked tri jet
+		 vector<TRootPFJet*>     MVASelJets1; //the selected jets from the highest ranked tri jet
+		 vector<TRootPFJet*>	 MVASelJets2; //the selected jets from the second highest ranked tri jet
+		 pair<float, vector<unsigned int> > MVAvals1; //BDT discriminator value of highest ranked tri jet
+		 pair<float, vector<unsigned int> > MVAvals2ndPass; //BDT discriminator value of second highest ranked tri jet
+		 pair<float, vector<unsigned int> > MVAvals3rdPass; //BDT discriminator value of third highest ranked tri jet (if possible)
 	private:
+		map<string,MultiSamplePlot*> MSPlot;
 		bool debug;
 		string leptonChoice;
-                vector<TLorentzVector*> selectedLeptonTLV_JC;
-                vector<TLorentzVector> mcParticlesTLV, selectedJetsTLV, mcMuonsTLV;
-                vector<TRootMCParticle*> mcParticlesMatching_;
-                pair<unsigned int, unsigned int> leptonicBJet_, hadronicBJet_, hadronicWJet1_, hadronicWJet2_; //First index is the JET number, second one is the parton
-                vector<TRootMCParticle*> mcParticles_flav;
-                vector< pair<unsigned int, unsigned int> > JetPartonPair;
-                double TriJetMass, DiJetMass;
-                float Topness, MultiTopness, DiTopness, TriTopness;
-		pair<float, vector<unsigned int> > MVAvals1; //BDT discriminator value of highest ranked tri jet
-		pair<float, vector<unsigned int> > MVAvals2ndPass; //BDT discriminator value of second highest ranked tri jet
-		pair<float, vector<unsigned int> > MVAvals3rdPass; //BDT discriminator value of third highest ranked tri jet (if possible)
-                vector<TRootPFJet*>      selectedJets2ndPass; //remaining jets after removing highest ranked tri jet
-                vector<TRootPFJet*>      selectedJets3rdPass; //remaining jets after removing highest & second highest ranked tri jet
-                vector<TRootPFJet*>      MVASelJets1; //the selected jets from the highest ranked tri jet
-                vector<TRootPFJet*>		 MVASelJets2; //the selected jets from the second highest ranked tri jet
+        vector<TLorentzVector*> selectedLeptonTLV_JC;
+        vector<TLorentzVector> mcParticlesTLV, selectedJetsTLV, mcMuonsTLV;
+	    vector<TRootMCParticle*> mcParticlesMatching_;
+        pair<unsigned int, unsigned int> leptonicBJet_, hadronicBJet_, hadronicWJet1_, hadronicWJet2_; //First index is the JET number, second one is the parton
+        vector<TRootMCParticle*> mcParticles_flav;
+        vector< pair<unsigned int, unsigned int> > JetPartonPair;
+        double TriJetMass, DiJetMass;
+       	float Topness, MultiTopness, DiTopness, TriTopness;
 		JetCombiner* jetCombiner;
 		double bestTopMass1;
 		double bestTopMass2;
@@ -126,6 +129,7 @@ class HadronicTopReco{
 		float sume_X; 
 		TRootJet sumjet_X;
 		float angleT1AllJets;
+
 };
 
 #endif
