@@ -104,7 +104,7 @@ for chan in channels:
                         jer = '--fourtops_jer=down'
 		
 
-                commandString = './FourTops'\
+                commandString = 'GLOG_log_dir=/scratch/$PBS_JOBID/ ./FourTops'\
 		+' --dataset_name="{}"'.format(str(d.attrib['name'])) \
 		+' --dataset_title="{}"'.format(str(d.attrib['title']))\
 		+' --dataset_color={}'.format(str(d.attrib['color']))\
