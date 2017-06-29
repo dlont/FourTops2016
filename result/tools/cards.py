@@ -139,6 +139,11 @@ def main(arguments):
         #Printout MC (rate and systematics) block to file
         print >> arguments.outfile, 'bin', result
 
+	print >> arguments.outfile, 'TT group = ', 'TTJets_norm', 'ttMEScale', 'TTJets_HDAMP', 'TTJets_PDF', 'TTJets_TTX', 'TTISR', 'TTFSR', 'TTUE'
+	print >> arguments.outfile, 'TTTT group = ', 'tttt_norm', 'TTTT_MEScale', 'TTTTISR', 'TTTTFSR'
+	print >> arguments.outfile, 'BTAG group = ', 'btagWeightCSVJES', 'btagWeightCSVHF', 'btagWeightCSVLF', 'btagWeightCSVHFStats1', 'btagWeightCSVHFStats2', \
+							'btagWeightCSVLFStats1', 'btagWeightCSVLFStats2', 'btagWeightCSVCFErr1', 'btagWeightCSVCFErr2'
+
         return 0
 
 if __name__ == '__main__':
