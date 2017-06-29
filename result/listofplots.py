@@ -27,10 +27,19 @@ def lp(treename,filename):
 		raise NameError('Tree name %s is not recognized'%treename)
 	
 	bdtplot = None
-	if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
-	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
-	else: bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
+	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
+	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
+	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
+	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
+	#else: bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("Gradninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 10, -5., 5.))
+	#else: bdtplot =  Plot("BDTjetsplit.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
+	#else: bdtplot =  Plot("BDTjetsplit.BDTjetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	#else: bdtplot =  Plot("BDTjetsplit.BDTjetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
+	#else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
+	else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 
 	plots_list = [bdtplot,
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
@@ -38,8 +47,8 @@ def lp(treename,filename):
 	Plot("jetvec[][1]"           , TH1D("jeteta"    , ";jet #eta;entries/bin", 50, -2.5, 2.5)),
 	Plot("jetvec[][2]"           , TH1D("jetphi"    , ";jet #phi;entries/bin", 50, -pi, pi)),
 	Plot("jetvec[][3]"           , TH1D("jetcsv"    , ";jet CSVv2;entries/bin", 100, 0., 1.)),
-	#Plot("1stjetpt"           , TH1D("1stjetpt"    , ";1st jet p_{T} (GeV);entries/bin", 50, 0., 1500.)),
-	#Plot("2ndjetpt"           , TH1D("2ndjetpt"    , ";2nd jet p_{T} (GeV);entries/bin", 50, 0., 1000.)),
+	Plot("1stjetpt"           , TH1D("1stjetpt"    , ";1st jet p_{T} (GeV);entries/bin", 50, 0., 1500.)),
+	Plot("2ndjetpt"           , TH1D("2ndjetpt"    , ";2nd jet p_{T} (GeV);entries/bin", 50, 0., 1000.)),
 	Plot("5thjetpt"           , TH1D("5thjetpt"    , ";5th jet p_{T} (GeV);entries/bin", 20, 30., 250.)),
 	Plot("6thjetpt"           , TH1D("6thjetpt"    , ";6th jet p_{T} (GeV);entries/bin", 20, 30., 200.)),
 	Plot("LeptonPt"           , TH1D("leptonpt"    , ";Lepton p_{T} (GeV);entries/bin", 20, 0., 800.)),
@@ -57,6 +66,7 @@ def lp(treename,filename):
 	Plot("HTX"            , TH1D("HTX"     , ";HTX;entries/bin", 20, 0., 3000.)),
 	Plot("SumJetMassX"            , TH1D("SumJetMassX"     , ";Sum jet M (GeV);entries/bin", 50, 0., 3500.)),
 	Plot("PU"           , TH1D("pu"    , ";Number of prim. v.;entries/bin", 55, -0.5, 54.5)),
+	Plot("NjetsW"           , TH1D("njetsw"    , ";p_{T} weighted jet multiplicity;entries/bin", 20, -0.5, 15.5)),
 	#Plot("SFlepton"            , TH1D("SFlepton"     , ";Event SF due to leptons;entries/bin", 100, 0., 2.5)),
 	#Plot("SFbtag"            , TH1D("SFbtag"     , ";Event SF due to btag;entries/bin", 100, 0., 5.)),
 	#Plot("SFbtagUp"            , TH1D("SFbtagUp"     , ";Event SF due to btag (up variation);entries/bin", 100, 0., 2.5)),
@@ -65,8 +75,8 @@ def lp(treename,filename):
 	Plot("met"            , TH1D("met"     , ";MET (GeV);entries/bin", 50, 0., 800.)),
 	#Plot("csvJetcsv1"            , TH1D("csvJetcsv1"     , ";CSV1;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetcsv2"            , TH1D("csvJetcsv2"     , ";CSV2;entries/bin", 100, 0., 1.)),
-	#Plot("csvJetcsv3"            , TH1D("csvJetcsv3"     , ";CSV3;entries/bin", 100, 0., 1.)),
-	#Plot("csvJetcsv4"            , TH1D("csvJetcsv4"     , ";CSV4;entries/bin", 100, 0., 1.)),
+	Plot("csvJetcsv3"            , TH1D("csvJetcsv3"     , ";CSV3;entries/bin", 100, 0., 1.)),
+	Plot("csvJetcsv4"            , TH1D("csvJetcsv4"     , ";CSV4;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetpt1"            , TH1D("csvJetpt1"     , ";CSV1;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetpt2"            , TH1D("csvJetpt2"     , ";CSV2;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetpt3"            , TH1D("csvJetpt3"     , ";CSV3;entries/bin", 100, 0., 1.)),
