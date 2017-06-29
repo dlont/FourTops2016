@@ -30,7 +30,7 @@ print 'tthftype cut=',tthftype
 
 trigger_cuts = ''
 if 'Mu' in tree_name:
-	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50)"
+	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && nJets>6 && met > 50)"
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
