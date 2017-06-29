@@ -47,13 +47,13 @@ import ROOT         # allows access to ROOT colors (e.g. ROOT.kRed)
 ## command-line options.  Any list that is filled must be at least as long
 ## as the number of targets or it will throw an error.
 
-line_colors = [1,413,7,610,633,1]                # normally filled by options.colors
+line_colors = [1,413,7,615,610,633,ROOT.kRed-3,ROOT.kRed+2,633,1]                # normally filled by options.colors
 fill_colors = []                # normally filled by options.colors
 marker_colors = []              # normally filled by options.colors
-marker_sizes = [1.1,1.1,1.1,1.1,1.1,1.1]         # in pixels
+marker_sizes = [1.1,1.1,1.1,1.1,1.1,1.1,1.1,1.1,1.1,1.1]         # in pixels
 line_styles = []          # 1 (solid), 2 (dashed), 4 (dashdot), 3 (dotted), ...
-fill_styles = [0,1001,1001,1001,1001,0]          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
-draw_commands = ['E X0', 'HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 stack','HIST X0']        # a TH1::Draw option, include 'stack' to make stacked
+fill_styles = [0,1001,1001,1001,1001,1001,1001,1001,1001,0]          # 0 (hollow), 1001 (solid), 2001 (hatched), ...
+draw_commands = ['E X0', ' HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 stack',' HIST X0 skip','HIST X0']        # a TH1::Draw option, include 'stack' to make stacked
 #draw_commands = ['pe', 'HIST ',' HIST ',' HIST ','HIST']        # a TH1::Draw option, include 'stack' to make stacked
 
 ##############################################################################
@@ -67,7 +67,11 @@ colors = [
 	0,
 	413,
 	7,
+	615,
 	610,
+	633,
+	ROOT.kRed-3,
+	ROOT.kRed+2,
 	633,
 	(114, 173, 117),
 	( 67,  77,  83)
@@ -103,6 +107,10 @@ marker_styles = [
     1, # diamond
     1, # cross
     1, # asterisk
+    1,
+    1,
+    1,
+    1
     ]
 
 #### Styles for --data
