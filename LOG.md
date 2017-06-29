@@ -523,3 +523,50 @@ combine -M ProfileLikelihood combo.txt -t -1 --expectSignal=1 --significance
 combine -M Asymptotic --run blind combo.txt
 
 
+Tue 06 Jun 2017 10:10:58 PM CEST
+Jet split training (add jet multiplicity-dependent tree)
+
+python addfriend_freya_njets.py -j '{"10j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets10_100_2.p","9j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets9_100_2.p","8j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets8_300_2.p","7j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets6_500_2.p"}' -s Craneen__Mu -f BDTjetsplit ../plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root
+
+for i in ../plots_el/Craneen_*.root;do echo python ../tools/addfriend_freya_njets.py -j "'"'{"10j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets10_100_2.p","9j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets9_100_2.p","8j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets8_300_2.p","7j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets6_500_2.p"}'"'" -s Craneen__El -f BDTjetsplit $i|cat submitSkeleton.sh - > sub_`basename $i .root`.sh;done
+
+for i in ../plots_mu/Craneen_*.root;do echo python ../tools/addfriend_freya_njets.py -j "'"'{"10j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets10_100_2.p","9j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets9_100_2.p","8j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets8_300_2.p","7j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets6_500_2.p"}'"'" -s Craneen__Mu -f BDTjetsplit $i|cat submitSkeleton.sh - > sub_`basename $i .root`.sh;done
+
+# 9to10 jet split
+for i in ../plots_el/Craneen_*.root;do echo python ../tools/addfriend_freya_njets.py -j "'"'{"10j":"../../MVA/Freyas/9to10jetsplitting/BDTAdaBoost_250_2.p","9j":"../../MVA/Freyas/9to10jetsplitting/BDTAdaBoost_250_2.p","8j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets8_300_2.p","7j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets6_500_2.p"}'"'" -s Craneen__El -f BDT9and10jetsplit $i|cat submitSkeleton.sh - > sub_`basename $i .root`.sh;done
+
+for i in ../plots_mu/Craneen_*.root;do echo python ../tools/addfriend_freya_njets.py -j "'"'{"10j":"../../MVA/Freyas/9to10jetsplitting/BDTAdaBoost_250_2.p","9j":"../../MVA/Freyas/9to10jetsplitting/BDTAdaBoost_250_2.p","8j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets8_300_2.p","7j":"../../MVA/Freyas/individualnjtraining/BDTAdaBoost_njets6_500_2.p"}'"'" -s Craneen__Mu -f BDT9and10jetsplit $i|cat submitSkeleton.sh - > sub_`basename $i .root`.sh;done
+
+
+Fri 09 Jun 2017 02:22:47 PM CEST
+Mask channels
+#Single electron
+text2workspace.py card_el.txt  --channel-masks
+combine card_el.root  -M Asymptotic --run blind --setPhysicsModelParameters mask_el7J2M=1,mask_el7J3M=1,mask_el7J4M=1
+## With nuissance freezing
+combine card_el.root  -M Asymptotic --run blind --setPhysicsModelParameters mask_el7J2M=1,mask_el7J3M=1,mask_el7J4M=1,TTTTISR=0.,TTTTFSR=0. --freezeNuisances TTTTISR,TTTTFSR
+#Single and dilepton combined
+text2workspace.py combo.txt --channel-masks
+combine combo.root -M Asymptotic --setPhysicsModelParameters mask_EL_el7J2M=1,mask_EL_el7J3M=1,mask_EL_el7J4M=1
+
+
+#Sat 17 Jun 2017 07:57:30 PM CEST
+##Signal injection test
+for i in {1..20};do combine -M MaxLikelihoodFit combo_sl.root -t -1 --expectSignal=$i --rMax=50 --robustFit=1|grep "Best fit"|awk -v var="$i" '{print var" "$4" "$5}';done
+python linearity.py
+
+##Postfit mountainrange plot
+python mountainrange.py -j mountain_mu.json  mlfit.root
+
+
+#Sun 18 Jun 2017 01:03:16 AM CEST
+cd test;make report_TTJets_unbinned.pdf TARGET=../output/Craneens_Mu/Craneens15_6_2017 REFERENCE=../output/Craneens_Mu/Craneens14_6_2017/ref;cd -
+cd test;make report_TTTT_unbinned.pdf TARGET=../output/Craneens_Mu/Craneens14_6_2017 REFERENCE=../output/Craneens_Mu/Craneens14_6_2017/ref;cd -
+
+
+#Sat 24 Jun 2017 05:01:57 PM CEST
+## 2d mass plots
+python tools/mass2dplots.py -s plots_mu_tritop/Craneen_ttttNLO_Run2_TopTree_Study.root -g plots_mu_tritop/Craneen_TTJets_powheg_Run2_TopTree_Study.root -t Craneen__Mu -o mass_plots.png -b
+
+## POWHEG fake tag multiplicity studies
+python tools/ttbbfakes.py plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root -t Craneen__Mu -o fake_ttbb.png -b
