@@ -105,6 +105,46 @@ def main(arguments):
 	h_njet10.Draw('hist text0')
 	c2.Print(arguments.fmt)
 
+	# TT+xx type
+	c3 = rt.TCanvas('ttx_type','ttx_type',5,45,800,800); c3.Divide(2,2)
+	
+	#7j category
+	c3.cd(1);	rt.gPad.SetLogy();	rt.gPad.SetGridy()
+	tree_TT.Draw('ttxType>>h_ttx7',"nJets == 7")
+	h_ttx7 = rt.gPad.GetPrimitive('h_ttx7')
+	h_ttx7.SetTitle('n Reco Jets = 7; tt+XX type;rel. contribution')
+	h_ttx7.Scale(1./h_ttx7.Integral())
+	h_ttx7.SetMarkerSize(2.5)
+	h_ttx7.Draw('hist ')
+	leg = rt.TLegend(0.1,0.5,0.5,0.89)
+	leg.AddEntry(None,"X00 --- t#bar{t}jj","")
+	leg.AddEntry(None,"X41 --- t#bar{t}c","")
+	leg.AddEntry(None,">=X42 --- t#bar{t}cc","")
+	leg.AddEntry(None,"X51 --- t#bar{t}b","")
+	leg.AddEntry(None,">=X52 --- t#bar{t}bb","")
+	
+	c3.cd(2);	rt.gPad.SetLogy();	rt.gPad.SetGridy()
+	tree_TT.Draw('ttxType>>h_ttx8',"nJets == 8")
+	h_ttx8 = rt.gPad.GetPrimitive('h_ttx8')
+	h_ttx8.SetTitle('n Reco Jets = 8; tt+XX type;rel. contribution')
+	h_ttx8.Scale(1./h_ttx8.Integral())
+	h_ttx8.SetMarkerSize(2.5)
+	h_ttx8.Draw('hist ')
+	c3.cd(3);	rt.gPad.SetLogy();	rt.gPad.SetGridy()
+	tree_TT.Draw('ttxType>>h_ttx9',"nJets == 9")
+	h_ttx9 = rt.gPad.GetPrimitive('h_ttx9')
+	h_ttx9.SetTitle('n Reco Jets = 9; tt+XX type;rel. contribution')
+	h_ttx9.Scale(1./h_ttx9.Integral())
+	h_ttx9.SetMarkerSize(2.5)
+	h_ttx9.Draw('hist ')
+	c3.cd(4);	rt.gPad.SetLogy();	rt.gPad.SetGridy()
+	tree_TT.Draw('ttxType>>h_ttx10',"nJets >= 10")
+	h_ttx10 = rt.gPad.GetPrimitive('h_ttx10')
+	h_ttx10.SetTitle('n Reco Jets #geq 10; tt+XX type;rel. contribution')
+	h_ttx10.Scale(1./h_ttx10.Integral())
+	h_ttx10.SetMarkerSize(2.5)
+	h_ttx10.Draw('hist ')
+	c3.Print(arguments.fmt)
         return 0
 
 
