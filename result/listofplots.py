@@ -42,7 +42,7 @@ def lp(treename,filename):
 	else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 
 	plots_list = [bdtplot,
-	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 100, -1.1, 0.3)),
+	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 105, -0.7, 0.35)),
 	Plot("jetvec[][0]"           , TH1D("jetpt"    , ";jet p_{T} (GeV);entries/bin", 15, 30., 1500.)),
 	Plot("jetvec[][1]"           , TH1D("jeteta"    , ";jet #eta;entries/bin", 50, -2.5, 2.5)),
 	Plot("jetvec[][2]"           , TH1D("jetphi"    , ";jet #phi;entries/bin", 50, -pi, pi)),
@@ -56,8 +56,8 @@ def lp(treename,filename):
 	Plot("leptonphi"           , TH1D("leptonphi"    , ";Lepton #phi ;entries/bin", 50, -pi, pi)),
 	Plot("leptonIso"           , TH1D("leptonIso"    , ";Lepton Isolation ;entries/bin", 25, 0., isorangemax)),
 	Plot("nLtags"           , TH1D("nltags"    , ";Number of loose tags;entries/bin", 8, -0.5, 7.5)),
-	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 8, -0.5, 7.5)),
-	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 6, -0.5, 5.5)),
+	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 6, -0.5, 5.5)),
+	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 5, -0.5, 4.5)),
 	Plot("nJets"            , TH1D("njets"     , ";Number of jets;entries/bin", 9, 5.5, 14.5)),
 	Plot("HT"           , TH1D("ht"    , ";HT (GeV);entries/bin", 25, 150., 2000.)),
 	Plot("HTb"            , TH1D("HTB"     , ";HTB (GeV);entries/bin", 25, 0., 1000.)),
