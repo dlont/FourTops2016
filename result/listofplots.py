@@ -72,7 +72,7 @@ def lp(treename,filename):
 	#Plot("SFbtagUp"            , TH1D("SFbtagUp"     , ";Event SF due to btag (up variation);entries/bin", 100, 0., 2.5)),
 	#Plot("SFbtagDown"            , TH1D("SFbtagDown"     , ";Event SF due to btag (down variation);entries/bin", 100, 0., 2.5)),
 	#Plot("SFPU"            , TH1D("SFPU"     , ";Event SF due to PU;entries/bin", 100, 0., 5.)),
-	Plot("met"            , TH1D("met"     , ";MET (GeV);entries/bin", 50, 0., 800.)),
+	Plot("met"            , TH1D("met"     , ";MET (GeV);entries/bin", 40, 0., 400.)),
 	#Plot("csvJetcsv1"            , TH1D("csvJetcsv1"     , ";CSV1;entries/bin", 100, 0., 1.)),
 	#Plot("csvJetcsv2"            , TH1D("csvJetcsv2"     , ";CSV2;entries/bin", 100, 0., 1.)),
 	Plot("csvJetcsv3"            , TH1D("csvJetcsv3"     , ";CSV3;entries/bin", 100, 0., 1.)),
