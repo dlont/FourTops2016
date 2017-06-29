@@ -56,7 +56,7 @@ def lp(treename,filename):
 	Plot("leptonphi"           , TH1D("leptonphi"    , ";Lepton #phi ;entries/bin", 50, -pi, pi)),
 	Plot("leptonIso"           , TH1D("leptonIso"    , ";Lepton Isolation ;entries/bin", 25, 0., isorangemax)),
 	Plot("nLtags"           , TH1D("nltags"    , ";Number of loose tags;entries/bin", 8, -0.5, 7.5)),
-	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 6, -0.5, 5.5)),
+	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 4, 1.5, 5.5)),
 	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 5, -0.5, 4.5)),
 	Plot("nJets"            , TH1D("njets"     , ";Number of jets;entries/bin", 9, 5.5, 14.5)),
 	Plot("HT"           , TH1D("ht"    , ";HT (GeV);entries/bin", 25, 150., 2000.)),
