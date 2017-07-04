@@ -258,6 +258,30 @@ $(BUILDDIR)/Craneen_TTZ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cra
 $(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTH*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTTJ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTTJ*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTTW_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTTW*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTWZ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTWZ*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTZZ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTZZ*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTZH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTZH*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTHH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTHH*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
 ######################################################## QCD Mu enriched ##################################################
 $(BUILDDIR)/Craneen_QCD_MuEnriched_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_QCD_MuEnriched*.root)
 	@echo merging $@

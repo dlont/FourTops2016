@@ -66,6 +66,34 @@ $(BUILDDIR)/Hists_TTH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study
 	@echo "Convert tree to hist $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTHNORM} ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTTJ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTTJ_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTJNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTTW.root: ${CONFIG} $(BUILDDIR)/Craneen_TTTW_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTWNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTWZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTWZ_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTWZNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTZZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZZ_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTZZNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTZH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZH_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTZHNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTHH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTHH_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTHHNORM} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTXY.root: $(BUILDDIR)/Hists_TTTJ.root $(BUILDDIR)/Hists_TTTW.root $(BUILDDIR)/Hists_TTWZ.root $(BUILDDIR)/Hists_TTZZ.root $(BUILDDIR)/Hists_TTZH.root $(BUILDDIR)/Hists_TTHH.root 
+	@echo "Merging TTXY histograms"
+	@hadd -f $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TT_RARE.root: $(BUILDDIR)/Hists_TTW.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTH.root
 	@echo "Merging TT RARE histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
