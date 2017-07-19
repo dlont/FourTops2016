@@ -712,13 +712,13 @@ int main (int argc, char *argv[])
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 nMu = selectedMuons.size();
                 LOG(INFO) <<"Get Tight Electrons";                                                                                          
-                selectedOrigElectrons                               = r2selection.GetSelectedElectrons(35, 2.1, "Tight", "Spring16_80X", true, true); 
+                selectedOrigElectrons                               = r2selection.GetSelectedElectrons(35, 2.4, "Tight", "Spring16_80X", true, true); 
                 LOG(INFO) <<"Get Loose Electrons";
                 selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true); 
             }
             else if(Muon){
                 LOG(INFO) <<"Get Tight Muons";
-		selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Tight", "Summer16");
+		selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.4, 0.15, "Tight", "Summer16");
                 //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 1000.0, "Tight", "Summer16"); 
                 //LOG(INFO) <<"Get Medium Muons";
                 //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
@@ -1122,6 +1122,8 @@ int main (int argc, char *argv[])
             float numOfll = 0;
             float ttbar_flav = -1;
             double fTopPtReWeightsf = 1.;
+            double fTopPtReWeightsfUp = 1.;
+            double fTopPtReWeightsfDown = 1.;
             vector<TRootMCParticle*> mcParticles_flav;
             // TRootGenEvent* genEvt_flav = 0;
             if(dataSetName.find("TTJets")!=string::npos){
@@ -1129,17 +1131,23 @@ int main (int argc, char *argv[])
                 treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
                 
                 auto fAntitopPtsf = 1., fTopPtsf = 1.;
+                auto fAntitopPtsfUp = 1., fTopPtsfUp = 1.;
+                auto fAntitopPtsfDown = 1., fTopPtsfDown = 1.;
                 for(unsigned int p=0; p<mcParticles_flav.size(); p++) {
                     //Calculating event weight according to the TopPtReweighing: https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
                     if(bTopPt && (dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos))
                     {
-                        if(mcParticles_flav[p]->type() == 6)
+                        if(mcParticles_flav[p]->type() == 6 )
                         {
                             fTopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
+                            fTopPtsfUp  = TMath::Exp((6.15024e-02+3.24328e-02)-(5.17833e-04 - 1.72690e-04)*mcParticles_flav[p]->Pt());
+                            fTopPtsfDown  = TMath::Exp((6.15024e-02-3.24328e-02)-(5.17833e-04 + 1.72690e-04)*mcParticles_flav[p]->Pt());
                         }
                         else if(mcParticles_flav[p]->type() == -6)
                         {
                             fAntitopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
+                            fAntitopPtsfUp  = TMath::Exp((6.15024e-02+3.24328e-02)-(5.17833e-04 - 1.72690e-04)*mcParticles_flav[p]->Pt());
+                            fAntitopPtsfDown  = TMath::Exp((6.15024e-02-3.24328e-02)-(5.17833e-04 + 1.72690e-04)*mcParticles_flav[p]->Pt());
                         }
                     }
                     //std::cout<<"status: "<<mcParticles_flav[p]->status()<<"  id: "<<mcParticles_flav[p]->type()<<" mother: "<<mcParticles_flav[p]->motherType()<<std::endl;
@@ -1165,6 +1173,8 @@ int main (int argc, char *argv[])
 
                 }
 		fTopPtReWeightsf = TMath::Sqrt(fTopPtsf*fAntitopPtsf);
+		fTopPtReWeightsfUp = TMath::Sqrt(fTopPtsfUp*fAntitopPtsfUp);
+		fTopPtReWeightsfDown = TMath::Sqrt(fTopPtsfDown*fAntitopPtsfDown);
 		DLOG(INFO) << "Top reweighting (top/anti-top/comb): " << setw(10) << fTopPtsf << setw(10) << fAntitopPtsf << setw(10) << fTopPtReWeightsf;
 		scaleFactor *= fTopPtReWeightsf;
             } 
@@ -1440,6 +1450,7 @@ int main (int argc, char *argv[])
             double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
             double pdfw[]   = {weight_ct10, weight_mmht14};
             double ttxrew[]   = {ttXrew_up, ttXrew_down};
+            double topptrew[]   = {fTopPtReWeightsf,fTopPtReWeightsfUp,fTopPtReWeightsfDown};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
                 jetvec[jet][0] = selectedJets[jet]->Pt();
@@ -1451,7 +1462,7 @@ int main (int argc, char *argv[])
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew);
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
             tupfile->cd();
             tup->Fill();
 
