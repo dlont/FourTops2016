@@ -706,7 +706,7 @@ int main (int argc, char *argv[])
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
 
             LOG(INFO) <<"Get jets";
-            selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
+            selectedOrigJets                                    = r2selection.GetSelectedJets(25.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
@@ -731,10 +731,12 @@ int main (int argc, char *argv[])
             }
 
             //remove electrons between 1.4442 and 1.5660
+            auto bCrackVeto = false;
             selectedElectrons.clear();
             for(int e_iter=0; e_iter<selectedOrigElectrons.size();e_iter++){
                 if(selectedOrigElectrons[e_iter]->Eta()<=1.4442 || selectedOrigElectrons[e_iter]->Eta()>=1.5660){
                     selectedElectrons.push_back(selectedOrigElectrons[e_iter]);
+		    bCrackVeto = true;
                 }
             }
             nEl = selectedElectrons.size(); //Number of Electrons in Event   
@@ -802,6 +804,13 @@ int main (int argc, char *argv[])
                     selectedLightJets.push_back(selectedJets[seljet]);
                 }
             }
+
+	    auto jetPtSelector = [](TRootJet* jet){ 
+		if (jet->btag_combinedInclusiveSecondaryVertexV2BJetTags() <= 0.8484 && jet->Pt()<30. ) return true; 
+		else return false;
+	    };
+	    selectedJets.erase(std::remove_if(selectedJets.begin(),selectedJets.end(),jetPtSelector),selectedJets.end());
+
             float nJets = selectedJets.size(); //Number of Jets in Event
             float nLtags = selectedLBJets.size(); //Number of CSVL tags in Event (includes jets that pass CSVM & CSVT)
             float nMtags = selectedMBJets.size(); //Number of CSVM tags in Event (includes jets that pass CSVT)
@@ -1100,7 +1109,7 @@ int main (int argc, char *argv[])
 
             if (Muon)
             {   
-                if  (  (!( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2)) )continue; // Muon Channel Selection
+                if  (  (!( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2 && !bCrackVeto)) )continue; // Muon Channel Selection
             }
             else if(Electron){
                 if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=2)) continue; // Electron Channel Selection
