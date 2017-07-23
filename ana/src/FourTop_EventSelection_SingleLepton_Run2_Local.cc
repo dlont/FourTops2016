@@ -758,7 +758,7 @@ int main (int argc, char *argv[])
             //std::cout<<nMu<<"<--nmu  nEl-->"<<nEl<<std::endl;
             if(Muon && nMu>0){
                 for (int origJets=0; origJets<selectedOrigJets.size(); origJets++){
-                    if(selectedOrigJets[origJets]->Pt()<30) std::cout<<selectedOrigJets[origJets]->Pt()<<std::endl;
+                    //if(selectedOrigJets[origJets]->Pt()<30) std::cout<<selectedOrigJets[origJets]->Pt()<<std::endl;
                     if(selectedOrigJets[origJets]->DeltaR(*selectedMuons[0])>0.4){
                         selectedJets.push_back(selectedOrigJets[origJets]);
                     }                    
