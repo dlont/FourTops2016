@@ -805,11 +805,11 @@ int main (int argc, char *argv[])
                 }
             }
 
-	    auto jetPtSelector = [](TRootJet* jet){ 
-		if (jet->btag_combinedInclusiveSecondaryVertexV2BJetTags() <= 0.8484 && jet->Pt()<30. ) return true; 
-		else return false;
-	    };
-	    selectedJets.erase(std::remove_if(selectedJets.begin(),selectedJets.end(),jetPtSelector),selectedJets.end());
+	    //auto jetPtSelector = [](TRootJet* jet){ 
+	    //    if (jet->btag_combinedInclusiveSecondaryVertexV2BJetTags() <= 0.8484 && jet->Pt()<30. ) return true; 
+	    //    else return false;
+	    //};
+	    //selectedJets.erase(std::remove_if(selectedJets.begin(),selectedJets.end(),jetPtSelector),selectedJets.end());
 
             float nJets = selectedJets.size(); //Number of Jets in Event
             float nLtags = selectedLBJets.size(); //Number of CSVL tags in Event (includes jets that pass CSVM & CSVT)
