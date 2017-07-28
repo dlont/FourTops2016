@@ -706,7 +706,7 @@ int main (int argc, char *argv[])
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
 
             LOG(INFO) <<"Get jets";
-            selectedOrigJets                                    = r2selection.GetSelectedJets(25.,2.4,true,"Loose");                                        
+            selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
