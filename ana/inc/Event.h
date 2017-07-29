@@ -393,7 +393,7 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     std::copy ( hdamp, hdamp+2, hdampw );
     std::copy ( pdf, pdf+2, pdfw );
     std::copy ( ttx, ttx+2, ttxw );
-    std::copy ( toprewunc, toprewunc+3, topptreww );
+    std::copy ( topptreww, topptreww+3, toprewunc );
     //for (auto par = 0; par < 8; ++par) weight[par]=w[par];
     //for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];
     
