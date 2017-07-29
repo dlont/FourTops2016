@@ -1146,13 +1146,13 @@ int main (int argc, char *argv[])
                     //Calculating event weight according to the TopPtReweighing: https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
                     if(bTopPt && (dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos))
                     {
-                        if(mcParticles_flav[p]->type() == 6 )
+                        if(mcParticles_flav[p]->type() == 6 && mcParticles_flav[p]->isLastCopy() )
                         {
                             fTopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
                             fTopPtsfUp  = TMath::Exp((6.15024e-02+3.24328e-02)-(5.17833e-04 - 1.72690e-04)*mcParticles_flav[p]->Pt());
                             fTopPtsfDown  = TMath::Exp((6.15024e-02-3.24328e-02)-(5.17833e-04 + 1.72690e-04)*mcParticles_flav[p]->Pt());
                         }
-                        else if(mcParticles_flav[p]->type() == -6)
+                        else if(mcParticles_flav[p]->type() == -6 && mcParticles_flav[p]->isLastCopy() )
                         {
                             fAntitopPtsf  = TMath::Exp(0.0615-0.0005*mcParticles_flav[p]->Pt());
                             fAntitopPtsfUp  = TMath::Exp((6.15024e-02+3.24328e-02)-(5.17833e-04 - 1.72690e-04)*mcParticles_flav[p]->Pt());
