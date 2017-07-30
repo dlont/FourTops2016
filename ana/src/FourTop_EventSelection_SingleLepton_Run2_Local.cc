@@ -525,6 +525,7 @@ int main (int argc, char *argv[])
         string Ntuptitle   = "Craneen_" + channelpostfix;
         
         string Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
+        std::cout << "Output Craneens File: " << Ntupname << std::endl;
         TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
         TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());
         Event myEvent;
