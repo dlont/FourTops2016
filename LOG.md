@@ -570,3 +570,21 @@ python tools/mass2dplots.py -s plots_mu_tritop/Craneen_ttttNLO_Run2_TopTree_Stud
 
 ## POWHEG fake tag multiplicity studies
 python tools/ttbbfakes.py plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root -t Craneen__Mu -o fake_ttbb.png -b
+
+## ABCD
+# muon channel
+python ABCD.py -j '{"data":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/output/Craneens_Mu/Craneens25_6_2017/merged/Craneen_Data_Run2016_Run2_TopTree_Study.root"}' -t Craneen__Mu -b
+
+python tools/ABCD.py -j '{"data":["plots_mu_ABCD/Craneen_Data_Run2_TopTree_Study.root",1.0], "MC":{"TT":["plots_mu_ABCD/Craneen_TTJets_powheg_Run2_TopTree_Study.root",0.193716347452], "DY1":["plots_mu_ABCD/Craneen_DY1Jets_50MG_Run2_TopTree_Study.root",0.059297982638], "DY2":["plots_mu_ABCD/Craneen_DY2Jets_50MG_Run2_TopTree_Study.root",0.182288730249],"DY3":["plots_mu_ABCD/Craneen_DY3Jets_50MG_Run2_TopTree_Study.root",0.0589828180267], "DY4":["plots_mu_ABCD/Craneen_DY4Jets_50MG_Run2_TopTree_Study.root",0.00299991762558], "W1":["plots_mu_ABCD/Craneen_W1Jets_Run2_TopTree_Study.root",7.49748867091], "W2":["plots_mu_ABCD/Craneen_W2Jets_Run2_TopTree_Study.root",3.74154234029], "W3":["plots_mu_ABCD/Craneen_W3Jets_Run2_TopTree_Study.root",2.03671725612], "W4":["plots_mu_ABCD/Craneen_W4Jets_Run2_TopTree_Study.root",2.04812850961], "STTW":["plots_mu_ABCD/Craneen_T_tW_Run2_TopTree_Study.root",1.28582690024], "STBARTW":["plots_mu_ABCD/Craneen_Tbar_tW_Run2_TopTree_Study.root",1.27777900214], "STTCH":["plots_mu_ABCD/Craneen_T_tch_Run2_TopTree_Study.root",0.813137512367], "STBARTCH":["plots_mu_ABCD/Craneen_Tbar_tch_Run2_TopTree_Study.root",0.73840459982], "TTW":["plots_mu_ABCD/Craneen_TTW_Run2_TopTree_Study.root",0.00314013867289], "TTZ":["plots_mu_ABCD/Craneen_TTZ_Run2_TopTree_Study.root",0.00257810454647], "TTH":["plots_mu_ABCD/Craneen_TTH_Run2_TopTree_Study.root",0.000170315610139]}}' -t Craneen__Mu -b
+
+
+
+Sun 30 Jul 2017 09:15:51 PM CEST
+for i in `grep -L "End of" *.o*`; do ../../resubmit.sh -f $i -o ~/t2016/output/Craneens_Mu/Craneens29_7_2017/ -s ~/t2016/SubmitScripts/2_7_2017/Mu2016/; done
+
+
+Mon 31 Jul 2017 07:52:51 PM CEST
+Generate scripts for adding exta mvas on cluster
+cd /user/dlontkov/t2016/result/addfriend/Mu
+../generate_jobs.sh -s ../submitSkeleton.sh ../../plots_mu_toppt/"Cran*".root
+for i in *.sh;do qsub $i;done
