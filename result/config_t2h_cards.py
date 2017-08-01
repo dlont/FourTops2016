@@ -27,7 +27,7 @@ if 'Mu' in tree_name:
         #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
         #trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
-        trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) &&  met > 50)"
+        trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) &&  met > 50 && HT > 450)"
         #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
         #trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
 
@@ -73,7 +73,7 @@ elif 'FSR' in systematic:
 elif 'UE' in systematic:
     from cards_syst_IFSRUE import getIFSRUECutSets
     cut_sets = getIFSRUECutSets(systematic, '&&'+trigger_cuts)
-elif 'TTX' in systematic:
+elif 'heavyFlav' in systematic:
     from cards_syst_TTX import getTTXCutSets
     cut_sets = getTTXCutSets(systematic, '&&'+trigger_cuts)
 #    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),

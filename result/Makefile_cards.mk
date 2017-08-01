@@ -147,7 +147,7 @@ $(BUILDDIR)/Hists_TT_UEDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETunedown_pow
 
 $(BUILDDIR)/Hists_TT_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_TTX ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} heavyFlav ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_ISRUP.root $(BUILDDIR)/Hists_TT_ISRDOWN.root \
