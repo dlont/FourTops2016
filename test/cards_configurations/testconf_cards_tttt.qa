@@ -1,0 +1,1116 @@
+#-*-python-*-
+# Configuration file for QA tests
+# This file should be a valid python file.
+# To test if format is correct, tye:
+# python testconf.qa
+# no output is produced if the code is correct
+#
+# The general format is:
+#     variable = value
+# There are few top-level variables: Binned and UnBinned for
+# binned and unbinned distributions respectively.
+# The value of the top-level variables is a dictionary of variable:values pairs.
+# See the following as an example
+
+#Configuration for un-binned distributions
+#Describing only differences w.r.t. Binned case
+#Unbinned distributions are stored in TTrees as the
+#content of different branches.
+#Only simple data in branches are supported (see examples)
+#
+Binned = {
+    #Define the Test to be executed by Default
+    #If a test is specified for a specific histogram the latter will overwrite this
+    #Availble tests are defined in module: StatTest.Tests, there the function
+    # getTestByName is used to retrieve the test class corresponding to the name
+    #Specified here
+    'DefaultTestName' : 'Binned1DChi2Test',
+    #Define the default thresholds for the test.
+    #These are used together with the test above
+    #Three special cases could be useful in special cases
+    # If Thresholds : [ 0 , 0 ] It will cause the test to always PASS (basically disabble test)
+    # If Thresholds : [ 0 , 1 ] Test will always be NOTPASSED (useful to force user to check results manually)
+    # If Thresholds : [ 1 , 1 ] Test will always FAIL
+    'DefaultThresholds' : [ 0.1,0.5],
+
+    #Define the default file from where retrieve the reference histograms.
+    #Reference histograms should have the same name (including ROOT's directory structure)
+    #of the tested histogram.
+    #Reference file is searched in working directory
+    #'DefaultReferenceFile' : 'reference.root',
+    #It is possible to access remote files via HHTP (See documentation of ROOT's TWebFile'
+    #'DefaultReferenceFile' : 'http://someserver.org/somerootfile.root',
+
+    #Define inputs: histograms a list of dictionaries
+    'Histos' : [
+        #Each dictionary represents a configuration for a set of histograms.
+        #At least one configuration should be defined.
+
+
+        #Group 1
+        {
+            'Name' : '/allSF/bdt',
+        },
+        #Group 2 (central distributions)
+        {
+            'Name' : '/7J2M/bdt',
+        },
+        {
+            'Name' : '/7J3M/bdt',
+        },
+        {
+            'Name' : '/7J4M/bdt',
+        },
+        {
+            'Name' : '/8J2M/bdt',
+        },
+        {
+            'Name' : '/8J3M/bdt',
+        },
+        {
+            'Name' : '/8J4M/bdt',
+        },
+        {
+            'Name' : '/9J2M/bdt',
+        },
+        {
+            'Name' : '/9J3M/bdt',
+        },
+        {
+            'Name' : '/9J4M/bdt',
+        },
+        {
+            'Name' : '/10J2M/bdt',
+        },
+        {
+            'Name' : '/10J3M/bdt',
+        },
+        {
+            'Name' : '/10J4M/bdt',
+        },
+        #Group 3 (TTTTISR distributions)
+        {
+            'Name' : '/7J2M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_TTTTISRUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_TTTTISRDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_TTTTISRDown/bdt',
+        },
+        #Group 4 (TTTTFSR distributions)
+        {
+            'Name' : '/7J2M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_TTTTFSRUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_TTTTFSRDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_TTTTFSRDown/bdt',
+        },
+        #Group 6 (PU distributions)
+        {
+            'Name' : '/7J2M_PUUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_PUUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_PUUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_PUUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_PUUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_PUUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_PUUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_PUUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_PUUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_PUUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_PUUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_PUUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_PUDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_PUDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_PUDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_PUDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_PUDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_PUDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_PUDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_PUDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_PUDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_PUDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_PUDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_PUDown/bdt',
+        },
+        #Group 7 (JES distributions)
+        {
+            'Name' : '/7J2M_JESUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_JESUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_JESUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_JESUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_JESUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_JESUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_JESUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_JESUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_JESUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_JESUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_JESUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_JESUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_JESDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_JESDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_JESDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_JESDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_JESDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_JESDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_JESDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_JESDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_JESDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_JESDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_JESDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_JESDown/bdt',
+        },
+        #Group 8 (JER distributions)
+        {
+            'Name' : '/7J2M_JERUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_JERUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_JERUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_JERUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_JERUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_JERUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_JERUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_JERUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_JERUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_JERUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_JERUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_JERUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_JERDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_JERDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_JERDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_JERDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_JERDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_JERDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_JERDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_JERDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_JERDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_JERDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_JERDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_JERDown/bdt',
+        },
+        #Group 11 (btagWeightCSVCFErr1 distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVCFErr1Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVCFErr1Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVCFErr1Down/bdt',
+        },
+        #Group 12 (PU distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVCFErr2Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVCFErr2Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVCFErr2Down/bdt',
+        },
+        #Group 13 (btagWeightCSVHF distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFDown/bdt',
+        },
+        #Group 6 (btagWeightCSVHFStats1 distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFStats1Down/bdt',
+        },
+        #Group 6 (btagWeightCSVHFStats2 distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVHFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVHFStats2Down/bdt',
+        },
+        #Group 6 (btagWeightCSVJES distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVJESUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVJESDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVJESDown/bdt',
+        },
+        #Group 6 (btagWeightCSVLF distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFUp/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFDown/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFDown/bdt',
+        },
+        #Group 6 (btagWeightCSVLFStats1 distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFStats1Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFStats1Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFStats1Down/bdt',
+        },
+        #Group 6 (btagWeightCSVLFStats2 distributions)
+        {
+            'Name' : '/7J2M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFStats2Up/bdt',
+        },
+        {
+            'Name' : '/7J2M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/7J3M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/7J4M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J2M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J3M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/8J4M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J2M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J3M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/9J4M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J2M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J3M_btagWeightCSVLFStats2Down/bdt',
+        },
+        {
+            'Name' : '/10J4M_btagWeightCSVLFStats2Down/bdt',
+        },
+        ] #End of Histos defintion
+
+    } #End of configuration
+
