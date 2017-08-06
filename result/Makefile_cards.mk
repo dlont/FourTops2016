@@ -5,6 +5,8 @@ export TTCENTRAL
 CONFIG:=config_t2h_cards.py
 SUPPRESSOUT=>/dev/null
 
+CARDGEN=/user/dlontkov/t2016/result/tools/cards.py
+
 #TTTT
 $(BUILDDIR)/Hists_TTTT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
@@ -93,6 +95,10 @@ $(BUILDDIR)/Hists_TT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} PU ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TT_PT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTPT ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TT_JERUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_jerup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JERUP ${SUPPRESSOUT}
@@ -156,7 +162,7 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_JERUP.root $(BUILDDIR)/Hists_TT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
 	$(BUILDDIR)/Hists_TT_TTX.root $(BUILDDIR)/Hists_TT_PU.root \
-	$(BUILDDIR)/Hists_TT_MEScale.root \
+	$(BUILDDIR)/Hists_TT_MEScale.root $(BUILDDIR)/Hists_TT_PT.root \
 	$(BUILDDIR)/Hists_TT_HDAMP.root $(BUILDDIR)/Hists_TT_PDF.root \
 	$(BUILDDIR)/Hists_TT_BTAG.root  $(BUILDDIR)/Hists_TT_BTAGJESUP.root $(BUILDDIR)/Hists_TT_BTAGJESDOWN.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
@@ -166,38 +172,36 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 
 card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
 	@echo "make HiggsCombine cards"
-	@if [ -d "cards_mu" ]; then echo "cards_mu dir exists" ; else mkdir cards_mu ; fi
-	@python tools/cards.py -o $@ --channel=mu --data $(BUILDDIR)/Hists_data.root  --source '{"NP_overlay_ttttNLO":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "ttbarTTX":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST_tW":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
 	
 card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
 	@echo "make HiggsCombine cards"
-	@if [ -d "cards_el" ]; then echo "cards_el dir exists" ; else mkdir cards_el ; fi
-	@python tools/cards.py -o $@ --channel=el --data $(BUILDDIR)/Hists_data.root  --source '{"NP_overlay_ttttNLO":"$(BUILDDIR)/Hists_TTTT_CARDS.root", "ttbarTTX":"$(BUILDDIR)/Hists_TT_CARDS.root", "EW":"$(BUILDDIR)/Hists_EW.root", "ST_tW":"$(BUILDDIR)/Hists_T.root", "TTRARE":"$(BUILDDIR)/Hists_TT_RARE.root"}' --observable=bdt
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
 
-datacard_elmu.txt:	card_el.txt card_mu.txt
+datacard_elmu.txt:	$(BUILDDIR)/card_el.txt $(BUILDDIR)/card_mu.txt
 	@echo "Combining datacards $^"
-	@combineCards.py EL=card_el.txt MU=card_mu.txt > $@
+	@combineCards.py EL=$(BUILDDIR)/card_el.txt MU=$(BUILDDIR)/card_mu.txt > $(BUILDDIR)/$@
 
-datacard_elmu.res: datacard_elmu.txt
+datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
 	@combine -M Asymptotic --run $(RUN) $^ >> temp.comb.1
 	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.comb.2
 	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.comb.3
-	@cat temp.comb.* > $@
+	@cat temp.comb.* > $(BUILDDIR)/$@
 	@rm temp.comb.*
-card_el.res: card_el.txt
+card_el.res: $(BUILDDIR)/card_el.txt
 	@combine -M Asymptotic --run $(RUN) $^ >> temp.el.1
 	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.el.2
 	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.el.3
-	@cat temp.el.* > $@
+	@cat temp.el.* > $(BUILDDIR)/$@
 	@rm temp.el.*
-card_mu.res: card_mu.txt
+card_mu.res: $(BUILDDIR)/card_mu.txt
 	@combine -M Asymptotic --run $(RUN) $^ >> temp.mu.1
 	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.mu.2
 	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.mu.3
-	@cat temp.mu.* > $@
+	@cat temp.mu.* > $(BUILDDIR)/$@
 	@rm temp.mu.*
-limits: datacard_elmu.res card_el.res card_mu.res
-	@python ./tools/parseLimits.py -i card_el.res -f $(FORMAT) | tail -n2
-	@python ./tools/parseLimits.py -i card_mu.res -f $(FORMAT) | tail -n2
-	@python ./tools/parseLimits.py -i datacard_elmu.res -f $(FORMAT) | tail -n2
+limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR)/card_el.res $(BUILDDIR)/card_mu.res
+	@python ./tools/parseLimits.py -i $(BUILDDIR)/card_el.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i $(BUILDDIR)/card_mu.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i $(BUILDDIR)/datacard_elmu.res -f $(FORMAT) | tail -n2
 
