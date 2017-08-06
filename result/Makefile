@@ -9,6 +9,7 @@ DATALABEL:=Single \#mu (BCDEFGH)
 #DATALABEL:=Single \#mu (BCDEF)
 #DATALABEL:=Single \#mu (GH)
 
+TARGETVAR=BDT
 TREENAME:=Craneen__Mu
 TTCENTRAL:=powheg
 

@@ -16,10 +16,12 @@ output_filename=str(sys.argv[3])
 tree_name=str(sys.argv[4])
 scalefactor=float(sys.argv[5])
 systematic=str(sys.argv[6])
+target=str(sys.argv[7])
 
 print 'Using input file: ' + inputfile
 print 'Output file: ' + inputfile
 print 'Systematic source: ' + systematic
+print 'Target variable: ' + target
 
 trigger_cuts = ''
 if 'Mu' in tree_name:
@@ -87,5 +89,5 @@ elif 'heavyFlav' in systematic:
 
 # Define histograms to plot
 bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
-from listofplots_cards import lp_cards
-list_of_plots = lp_cards
+from listofplots_cards import targetvar
+list_of_plots = [targetvar(target)]

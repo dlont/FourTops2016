@@ -8,6 +8,8 @@ from array import array      # to allow making Float_t arrays for ROOT hists
 from math import pi
 from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
+def targetvar(name):
+	bdtplot = None
 #bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 #bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
 #bdtplot =  Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
@@ -19,23 +21,41 @@ from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 #bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 #bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 
-#	Plot("multitopness"   , TH1D("bdt"     , "; Topness;entries/bin", 105, -0.7, 0.35))
-#	Plot("HTb"            , TH1D("bdt"     , ";HTB (GeV);entries/bin", 25, 0., 1000.))
-#	Plot("HTH"            , TH1D("bdt"     , ";HTH;entries/bin", 100, 0.1, 1.1))
-#bdtplot =	Plot("LeptonPt"       , TH1D("bdt"    , ";Lepton p_{T} (GeV);entries/bin", 20, 0., 800.))
-#	Plot("SumJetMassX"    , TH1D("bdt"     , ";Sum jet M (GeV);entries/bin", 50, 0., 3500.))
-bins_njetsw = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0])
-bdtplot = 	Plot("NjetsW"         , TH1D("bdt"    , ";p_{T} weighted jet multiplicity;entries/bin", 20, -0.5, 15.5))
-#	Plot("HTX"            , TH1D("bdt"     , ";HTX;entries/bin", 20, 0., 3000.))
-#	Plot("csvJetcsv3"     , TH1D("bdt"     , ";CSV3;entries/bin", 100, 0., 1.))
-#	Plot("csvJetcsv4"     , TH1D("bdt"     , ";CSV4;entries/bin", 100, 0., 1.))
-#	Plot("1stjetpt"       , TH1D("bdt"    , ";1st jet p_{T} (GeV);entries/bin", 50, 0., 1500.))
-#	Plot("2ndjetpt"       , TH1D("bdt"    , ";2nd jet p_{T} (GeV);entries/bin", 50, 0., 1000.))
-#	Plot("5thjetpt"       , TH1D("bdt"    , ";5th jet p_{T} (GeV);entries/bin", 20, 30., 250.))
-#	Plot("6thjetpt"       , TH1D("bdt"    , ";6th jet p_{T} (GeV);entries/bin", 20, 30., 200.))
-#	Plot("csvJetpt3"      , TH1D("bdt"     , ";CSV3;entries/bin", 100, 0., 1.))
-#	Plot("csvJetpt4"      , TH1D("bdt"     , ";CSV4;entries/bin", 100, 0., 1.))
-lp_cards = [bdtplot]
+	if name == "multitopness":
+		bdtplot = Plot("multitopness"   , TH1D("bdt"     , "; Topness;entries/bin", 105, -0.7, 0.35))
+	elif name == "HTb":
+		bdtplot = Plot("HTb"            , TH1D("bdt"     , ";HTB (GeV);entries/bin", 25, 0., 1000.))
+	elif name == "HTH":
+		bdtplot = Plot("HTH"            , TH1D("bdt"     , ";HTH;entries/bin", 100, 0.1, 1.1))
+	elif name == "LeptonPt":
+		bdtplot = Plot("LeptonPt"       , TH1D("bdt"    , ";Lepton p_{T} (GeV);entries/bin", 20, 0., 800.))
+	elif name == "SumJetMassX":
+		bdtplot = Plot("SumJetMassX"    , TH1D("bdt"     , ";Sum jet M (GeV);entries/bin", 50, 0., 3500.))
+	elif name == "NjetsW":
+		bdtplot = Plot("NjetsW"         , TH1D("bdt"    , ";p_{T} weighted jet multiplicity;entries/bin", 20, -0.5, 15.5))
+	elif name == "HTX":
+		bdtplot = Plot("HTX"            , TH1D("bdt"     , ";HTX;entries/bin", 20, 0., 3000.))
+	elif name == "csvJetcsv3":
+		bdtplot = Plot("csvJetcsv3"     , TH1D("bdt"     , ";CSV3;entries/bin", 100, 0., 1.))
+	elif name == "csvJetcsv4":
+		bdtplot = Plot("csvJetcsv4"     , TH1D("bdt"     , ";CSV4;entries/bin", 100, 0., 1.))
+	elif name == "1stjetpt":
+		bdtplot = Plot("1stjetpt"       , TH1D("bdt"    , ";1st jet p_{T} (GeV);entries/bin", 50, 0., 1500.))
+	elif name == "2ndjetpt":
+		bdtplot = Plot("2ndjetpt"       , TH1D("bdt"    , ";2nd jet p_{T} (GeV);entries/bin", 50, 0., 1000.))
+	elif name == "5thjetpt":
+		bdtplot = Plot("5thjetpt"       , TH1D("bdt"    , ";5th jet p_{T} (GeV);entries/bin", 20, 30., 250.))
+	elif name == "6thjetpt":
+		bdtplot = Plot("6thjetpt"       , TH1D("bdt"    , ";6th jet p_{T} (GeV);entries/bin", 20, 30., 200.))
+	elif name == "csvJetpt3":
+		bdtplot = Plot("csvJetpt3"      , TH1D("bdt"     , ";CSV3;entries/bin", 100, 0., 1.))
+	elif name == "csvJetpt4":
+		bdtplot = Plot("csvJetpt4"      , TH1D("bdt"     , ";CSV4;entries/bin", 100, 0., 1.))
+	else:
+		bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	lp_cards = bdtplot
+
+	return lp_cards
 
 
 #Example non-uniform binning

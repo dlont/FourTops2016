@@ -15,6 +15,7 @@ inputfile=str(sys.argv[2])
 output_filename=str(sys.argv[3])
 tree_name=str(sys.argv[4])
 scalefactor=float(sys.argv[5])
+target=str(sys.argv[6])
 
 print 'Using input file: ' + inputfile
 print 'Output file: ' + inputfile
@@ -30,7 +31,7 @@ print 'tthftype cut=',tthftype
 
 trigger_cuts = ''
 if 'Mu' in tree_name:
-	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && nJets>6 && met > 50)"
+	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && nJets>=7 && HT > 450 && met > 50)"
 	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
 	#trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
@@ -84,7 +85,6 @@ cut_sets = [
 #    ("endcap20to30", "(1.7<|#eta|<2.5, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)>1.7&&abs(eta)<2.5")
     ]
 
-# Define histograms to plot
-bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
+print "Target variable: ", target
 from listofplots import lp
-list_of_plots = lp(tree_name,inputfile)
+list_of_plots = lp(tree_name,inputfile,target)

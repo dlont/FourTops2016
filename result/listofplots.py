@@ -8,7 +8,7 @@ from array import array      # to allow making Float_t arrays for ROOT hists
 from math import pi
 from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
-def lp(treename,filename):
+def lp(treename,filename,target):
 	specific_plots = []
 	if 'El' in treename:
 		isorangemax=0.15
@@ -25,9 +25,9 @@ def lp(treename,filename):
 		]
 	else:
 		raise NameError('Tree name %s is not recognized'%treename)
-	
-	import listofplots_cards as lpcards
-	bdtplot = lpcards.bdtplot
+
+	from listofplots_cards import targetvar
+	bdtplot = targetvar(target)
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
@@ -41,7 +41,6 @@ def lp(treename,filename):
 	#else: bdtplot =  Plot("BDTjetsplit.BDTjetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	##else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-
 	plots_list = [bdtplot,
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 105, -0.7, 0.35)),
 	Plot("jetvec[][0]"           , TH1D("jetpt"    , ";jet p_{T} (GeV);entries/bin", 15, 30., 1500.)),
