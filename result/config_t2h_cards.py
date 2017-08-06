@@ -23,11 +23,11 @@ print 'Systematic source: ' + systematic
 
 trigger_cuts = ''
 if 'Mu' in tree_name:
-        trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1)  && met > 50)"
+        trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1)  && met > 50 && fabs(LeptonEta)<2.1 )"
         #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
         #trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
 elif 'El' in tree_name:
-        trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) &&  met > 50 && HT > 450)"
+        trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) &&  met > 50 && HT > 450 && fabs(LeptonEta)<=2.1 )"
         #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
         #trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
 
@@ -43,6 +43,9 @@ cut_sets = []
 if 'PU' in systematic:
     from cards_syst_PU import cut_PU
     cut_sets = cut_PU('&&'+trigger_cuts)
+elif 'PT' in systematic:
+    from cards_syst_PT import cut_PT
+    cut_sets = cut_PT('&&'+trigger_cuts)  
 elif 'BTAG' in systematic:
     from cards_syst_BTAG import cut_BTAG
     cut_sets = cut_BTAG('&&'+trigger_cuts)  
@@ -84,5 +87,5 @@ elif 'heavyFlav' in systematic:
 
 # Define histograms to plot
 bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
-from listofplots_cards import lp
-list_of_plots = lp
+from listofplots_cards import lp_cards
+list_of_plots = lp_cards
