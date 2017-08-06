@@ -6,3 +6,9 @@ or:
 python ../runtests.py testconf.qa test.root
 
 See testconf.qa and testconfall.qa for examples of configuration files.
+
+
+
+~/t2016/StatTest-master/runtests.py --colors -g rep.pdf cards_configurations/testconf_cards.qa ~/CMSSW_7_4_7/src/postpreapp/topptunc/Datacard_slepton/plots_mu_toppt/Hists_TT_CARDS.root  ~/CMSSW_7_4_7/src/preapp/plots_mu/Hists_TT_CARDS.root
+
+
