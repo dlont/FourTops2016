@@ -26,11 +26,12 @@ def lp(treename,filename):
 	else:
 		raise NameError('Tree name %s is not recognized'%treename)
 	
-	bdtplot = None
+	import listofplots_cards as lpcards
+	bdtplot = lpcards.bdtplot
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-	if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	##if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
 	#else: bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
@@ -39,7 +40,7 @@ def lp(treename,filename):
 	#else: bdtplot =  Plot("BDTjetsplit.BDTjetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	#else: bdtplot =  Plot("BDTjetsplit.BDTjetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
-	else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	##else: bdtplot =  Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 
 	plots_list = [bdtplot,
 	Plot("multitopness"            , TH1D("multitopness"     , "; Topness;entries/bin", 105, -0.7, 0.35)),
