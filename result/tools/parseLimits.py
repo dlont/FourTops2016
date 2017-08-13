@@ -65,7 +65,7 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
 	if ch == 'El': ch = 'e'
         print "Limits for %s" % name
         if obs > 0.: print "  Obs: %.2f \%s" % (obs, unit)
-        print "%s & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], 
+        print "$%s$ & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], 
 									 exp, exp_sp1-exp, exp-exp_sm1, unit)
     if 'json' in format:
 	if json_filename is not None:
