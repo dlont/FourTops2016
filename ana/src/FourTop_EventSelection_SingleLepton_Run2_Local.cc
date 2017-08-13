@@ -1110,10 +1110,10 @@ int main (int argc, char *argv[])
 
             if (Muon)
             {   
-                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2 && !bCrackVeto) )continue; // Muon Channel Selection
+                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=1 && !bCrackVeto) )continue; // Muon Channel Selection
             }
             else if(Electron){
-                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=2) ) continue; // Electron Channel Selection
+                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=1) ) continue; // Electron Channel Selection
             }
             else{
                 cerr<<"Correct Channel not selected."<<std::endl;
