@@ -8,7 +8,7 @@ systtypelist = {
 'TTJets_PDF':'shape',
 'heavyFlav':'shape',
 'tttt_norm':'lnN',
-'TTTT_MEScale':'shape',
+'TTTTMEScale':'shape',
 'ST_tW_norm':'lnN',
 'EW_norm':'lnN',
 'TTRARE_norm':'lnN',
@@ -42,7 +42,7 @@ systtypelist = {
 'TTJets_PDF':'shape',
 'heavyFlav':'shape',
 'tttt_norm':'lnN',
-'TTTT_MEScale':'shape',
+'TTTTMEScale':'shape',
 'ST_tW_norm':'lnN',
 'TTRARE_norm':'lnN',
 'EW_norm':'lnN',
@@ -160,7 +160,7 @@ syst_norm_size_list = {
 }}
 syst_shape_size_list = {
 'mu':{ 'NP_overlay_ttttNLO' : {
-            'TTTT_MEScale'      :[1.         ]*len(binlist['mu']),
+            'TTTTMEScale'      :[1.         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -185,7 +185,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['mu'])
             },
       'ttbarTTX' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTTTMEScale'      :[na         ]*len(binlist['mu']),
             'ttMEScale'    :[1.         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[1.         ]*len(binlist['mu']),
             'TTJets_PDF'	:[1.         ]*len(binlist['mu']),
@@ -210,7 +210,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['mu'])
             },
       'EW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTTTMEScale'      :[na         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -235,7 +235,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
       'ST_tW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTTTMEScale'      :[na         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -260,7 +260,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
       'TTRARE' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['mu']),
+            'TTTTMEScale'      :[na         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -286,7 +286,7 @@ syst_shape_size_list = {
             },
 },
 'el':{ 'NP_overlay_ttttNLO' : {
-            'TTTT_MEScale'      :[1.         ]*len(binlist['el']),
+            'TTTTMEScale'      :[1.         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
@@ -311,7 +311,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['el'])
             },
       'ttbarTTX' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTTTMEScale'      :[na         ]*len(binlist['el']),
             'ttMEScale'    :[1.         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[1.         ]*len(binlist['el']),
             'TTJets_PDF'	:[1.         ]*len(binlist['el']),
@@ -336,7 +336,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[1.         ]*len(binlist['el'])
             },
       'EW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTTTMEScale'      :[na         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
@@ -361,7 +361,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
       'ST_tW' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTTTMEScale'      :[na         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
@@ -386,7 +386,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
       'TTRARE' : {
-            'TTTT_MEScale'      :[na         ]*len(binlist['el']),
+            'TTTTMEScale'      :[na         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),

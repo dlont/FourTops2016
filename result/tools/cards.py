@@ -140,9 +140,16 @@ def main(arguments):
         print >> arguments.outfile, 'bin', result
 
 	print >> arguments.outfile, 'TT group = ', 'TTJets_norm', 'ttMEScale', 'TTJets_HDAMP', 'TTJets_PDF', 'heavyFlav', 'TTISR', 'TTFSR', 'TTUE'
-	print >> arguments.outfile, 'TTTT group = ', 'tttt_norm', 'TTTT_MEScale', 'TTTTISR', 'TTTTFSR'
+	print >> arguments.outfile, 'TTTT group = ', 'tttt_norm', 'TTTTMEScale', 'TTTTISR', 'TTTTFSR'
 	print >> arguments.outfile, 'BTAG group = ', 'btagWeightCSVJES', 'btagWeightCSVHF', 'btagWeightCSVLF', 'btagWeightCSVHFStats1', 'btagWeightCSVHFStats2', \
 							'btagWeightCSVLFStats1', 'btagWeightCSVLFStats2', 'btagWeightCSVCFErr1', 'btagWeightCSVCFErr2'
+
+	print >> arguments.outfile, 'scale_nj6d8s rateParam {}8J2M ttbarTTX 1.'.format(arguments.channel) 
+        print >> arguments.outfile, 'scale_nj6d8s rateParam {}8J3M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, 'scale_nj6d8s rateParam {}8J4M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J2M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J3M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J4M ttbarTTX 1.'.format(arguments.channel)
 
         return 0
 

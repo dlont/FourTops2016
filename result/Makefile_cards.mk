@@ -6,14 +6,14 @@ export TARGETVAR
 CONFIG:=config_t2h_cards.py
 SUPPRESSOUT=>/dev/null
 
-CARDGEN=/user/dlontkov/t2016/result/tools/cards.py
+CARDGEN=/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/cards.py
 
 TARGETVAR=BDT
 
 #TTTT
 $(BUILDDIR)/Hists_TTTT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} TTTT_MEScale ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} TTTTMEScale ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
@@ -181,9 +181,9 @@ card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/H
 	@echo "make HiggsCombine cards"
 	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
 
-datacard_elmu.txt:	$(BUILDDIR)/card_el.txt $(BUILDDIR)/card_mu.txt
+datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
 	@echo "Combining datacards $^"
-	@combineCards.py EL=$(BUILDDIR)/card_el.txt MU=$(BUILDDIR)/card_mu.txt > $(BUILDDIR)/$@
+	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $(BUILDDIR)/$@
 
 datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
 	@combine -M Asymptotic --run $(RUN) $^ >> temp.comb.1
