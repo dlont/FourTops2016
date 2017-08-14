@@ -44,7 +44,7 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
         elif "Expected" in line: d["exp_"+line.split("%")[0].replace("Expected","").strip()] = float(line.split("<")[-1])
 
     unit = "pb"
-    if d["exp_50.0"]*xsec < 0.1:
+    if d["exp_50.0"]*xsec < 0.9:
         xsec *= 1000.0
         unit = "fb"
     obs = -1.
