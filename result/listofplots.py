@@ -58,7 +58,7 @@ def lp(treename,filename,target):
 	Plot("nLtags"           , TH1D("nltags"    , ";Number of loose tags;entries/bin", 8, -0.5, 7.5)),
 	Plot("nMtags"           , TH1D("nmtags"    , ";Number of medium tags;entries/bin", 4, 1.5, 5.5)),
 	Plot("nTtags"           , TH1D("nttags"    , ";Number of tight tags;entries/bin", 5, -0.5, 4.5)),
-	Plot("nJets"            , TH1D("njets"     , ";Number of jets;entries/bin", 9, 5.5, 14.5)),
+	Plot("nJets"            , TH1D("njets"     , ";Number of jets;entries/bin", 4, 6.5, 10.5)),
 	Plot("HT"           , TH1D("ht"    , ";HT (GeV);entries/bin", 25, 150., 2000.)),
 	Plot("HTb"            , TH1D("HTB"     , ";HTB (GeV);entries/bin", 25, 0., 1000.)),
 	Plot("HTH"            , TH1D("HTH"     , ";HTH;entries/bin", 100, 0.1, 1.1)),
