@@ -10,7 +10,6 @@ from ROOT import TH1D, TH2F  # import other kinds of hists as neeeded
 
 def targetvar(name):
 	bdtplot = None
-#bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 #bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
 #bdtplot =  Plot("bdt_paper"           , TH1D("bdt"    , ";BDT;entries/bin", 17, -0.6, 1.))
 #bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
@@ -52,6 +51,7 @@ def targetvar(name):
 	elif name == "csvJetpt4":
 		bdtplot = Plot("csvJetpt4"      , TH1D("bdt"     , ";CSV4;entries/bin", 100, 0., 1.))
 	else:
+		#bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 		#bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 		bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	lp_cards = bdtplot
