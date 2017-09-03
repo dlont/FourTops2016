@@ -707,6 +707,7 @@ int main (int argc, char *argv[])
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
 
             LOG(INFO) <<"Get jets";
+            //selectedOrigJets                                    = r2selection.GetSelectedJets(25.,2.4,true,"Loose");                                        
             selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
@@ -759,7 +760,6 @@ int main (int argc, char *argv[])
             //std::cout<<nMu<<"<--nmu  nEl-->"<<nEl<<std::endl;
             if(Muon && nMu>0){
                 for (int origJets=0; origJets<selectedOrigJets.size(); origJets++){
-                    //if(selectedOrigJets[origJets]->Pt()<30) std::cout<<selectedOrigJets[origJets]->Pt()<<std::endl;
                     if(selectedOrigJets[origJets]->DeltaR(*selectedMuons[0])>0.4){
                         selectedJets.push_back(selectedOrigJets[origJets]);
                     }                    
@@ -773,6 +773,17 @@ int main (int argc, char *argv[])
                 }
             }
             else selectedJets = selectedOrigJets;
+
+	    //auto printPtBtag = [](const TRootPFJet* jet){
+	    //    cout << setw(10) << jet->Pt() << setw(10) << jet->btag_combinedInclusiveSecondaryVertexV2BJetTags() << endl;
+	    //};
+	    //std::for_each(selectedJets.begin(), selectedJets.end(), printPtBtag);
+	    //auto noLightsBelow30 = [](const TRootPFJet* jet) {
+	    //    bool result = false;
+            //    if (jet -> btag_combinedInclusiveSecondaryVertexV2BJetTags() < 0.8484 && jet -> Pt() < 30.) result = true;
+            //    return result;
+	    //};
+	    //selectedJets.erase( std::remove_if( selectedJets.begin(), selectedJets.end(), noLightsBelow30 ), selectedJets.end() );
 
             ///////////////////////////////////////////////////////////////////////////////////
             // Preselection looping over Jet Collection                                      //
@@ -1110,10 +1121,10 @@ int main (int argc, char *argv[])
 
             if (Muon)
             {   
-                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=1 && !bCrackVeto) )continue; // Muon Channel Selection
+                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2 && !bCrackVeto) )continue; // Muon Channel Selection
             }
             else if(Electron){
-                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=1) ) continue; // Electron Channel Selection
+                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=2) ) continue; // Electron Channel Selection
             }
             else{
                 cerr<<"Correct Channel not selected."<<std::endl;
