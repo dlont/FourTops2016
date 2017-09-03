@@ -150,12 +150,12 @@ for chan in channels:
                 # Combine multiple root files in a single job
                 listOfFiles.append(topTrees[f])
 		# intermediate copy to scratch space
-                #CopyCmdlistOfFiles.append("dccp dcap://maite.iihe.ac.be:"+topTrees[f]+" /$TMPDIR/TOPTREE_"+str(f)+".root")
+                #CopyCmdlistOfFiles.append("dccp dcap://maite.iihe.ac.be"+topTrees[f]+" /$TMPDIR/TOPTREE_"+str(f)+".root")
                 #listOfScratchFiles.append(" /scratch/$PBS_JOBID/TOPTREE_"+str(f)+".root")
                 #listOfTmpDirFiles.append(" /$TMPDIR/TOPTREE_"+str(f)+".root")
 
 		# read input directly from dcache
-                listOfTmpDirFiles.append("dcap://maite.iihe.ac.be:"+topTrees[f]+",")
+                listOfTmpDirFiles.append("dcap://maite.iihe.ac.be"+topTrees[f]+",")
                 
 #                print CopyCmdlistOfFiles[0]
                 
