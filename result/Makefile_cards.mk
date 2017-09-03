@@ -203,8 +203,8 @@ card_mu.res: $(BUILDDIR)/card_mu.txt
 	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.mu.3
 	@cat temp.mu.* > $(BUILDDIR)/$@
 	@rm temp.mu.*
-limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR)/card_el.res $(BUILDDIR)/card_mu.res
-	@python ./tools/parseLimits.py -i $(BUILDDIR)/card_el.res -f $(FORMAT) | tail -n2
-	@python ./tools/parseLimits.py -i $(BUILDDIR)/card_mu.res -f $(FORMAT) | tail -n2
+limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR_EL)/card_el.res $(BUILDDIR_EL)/card_mu.res
+	@python ./tools/parseLimits.py -i $(BUILDDIR_EL)/card_el.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i $(BUILDDIR_MU)/card_mu.res -f $(FORMAT) | tail -n2
 	@python ./tools/parseLimits.py -i $(BUILDDIR)/datacard_elmu.res -f $(FORMAT) | tail -n2
 
