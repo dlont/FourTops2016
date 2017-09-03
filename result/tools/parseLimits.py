@@ -42,6 +42,11 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
     for line in lim_str.splitlines():
         if "Observed" in line: d["obs"] = float(line.split("<")[-1])
         elif "Expected" in line: d["exp_"+line.split("%")[0].replace("Expected","").strip()] = float(line.split("<")[-1])
+        elif "Significance" in line: d["signif"] = float(line.split(":")[-1])
+        elif "Best" in line: 
+		d["bestfit"] = float(line.split(":")[-1].split()[0])
+		d["bestfit_16.0"] = float(line.split(":")[-1].split()[1].split("/")[0])
+		d["bestfit_64.0"] = float(line.split(":")[-1].split()[1].split("/")[1])
 
     unit = "pb"
     if d["exp_50.0"]*xsec < 0.9:
@@ -65,8 +70,9 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
 	if ch == 'El': ch = 'e'
         print "Limits for %s" % name
         if obs > 0.: print "  Obs: %.2f \%s" % (obs, unit)
-        print "$%s$ & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], 
-									 exp, exp_sp1-exp, exp-exp_sm1, unit)
+        print "$%s$ & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], exp, exp_sp1-exp, exp-exp_sm1, unit)
+	if 'signif' in d and 'bestfit' in d:
+		print "$%s$ & $%.2f$ & $%.0f^{+%.1f}_{%.1f}$ & $%.1f^{+%.0f}_{%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["signif"], d['bestfit'], d['bestfit_64.0'], d['bestfit_16.0'], d['bestfit']*xsec, d['bestfit_64.0']*xsec, d['bestfit_16.0']*xsec, unit)
     if 'json' in format:
 	if json_filename is not None:
 		with open(json_filename, 'w') as outfile:
@@ -87,7 +93,7 @@ def main():
 
 	with open( args.input ) as f:
 		for line in f:
-			if line.startswith('Expected') or line.startswith('Observed'):
+			if line.startswith('Expected') or line.startswith('Observed') or line.startswith('Best') or line.startswith('Significance'):
 				print(line.strip())
 				lim_tttt += line
 
