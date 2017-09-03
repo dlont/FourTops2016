@@ -150,6 +150,7 @@ def main(arguments):
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J2M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J3M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J4M ttbarTTX 1.'.format(arguments.channel)
+	print >> arguments.outfile, '* autoMCStats 0'
 
         return 0
 
