@@ -46,6 +46,7 @@ std::string JESSource() {
     std::string source = "Total";
     const std::array<const std::string,10> possible_options = 
 	{
+	"central",
 	"Total_up",		"Total_down",
 	"SubTotalPileUp_up", 	"SubTotalPileUp_down",
 	"SubTotalRelative_up", 	"SubTotalRelative_down", 

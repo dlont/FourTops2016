@@ -498,7 +498,7 @@ int main (int argc, char *argv[])
         vCorrParam.push_back(*L3JetCorPar);
 
 	const std::string uncSourceType = JESSource();
-	if ( uncSourceType.compare("Total_down") == 0 || uncSourceType.compare("Total_up") == 0 ) {
+	if ( uncSourceType.compare("central") == 0 || uncSourceType.compare("Total_down") == 0 || uncSourceType.compare("Total_up") == 0 ) {
         	jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_Uncertainty_AK4PFchs.txt");
    		DLOG(INFO)<<"DEBUG:Total "<<flag;
 	} else if (uncSourceType.compare("SubTotalScale_up") == 0 || uncSourceType.compare("SubTotalScale_down") == 0) {
