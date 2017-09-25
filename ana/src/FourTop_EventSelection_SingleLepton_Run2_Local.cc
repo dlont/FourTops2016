@@ -500,23 +500,23 @@ int main (int argc, char *argv[])
 	const std::string uncSourceType = JESSource();
 	if ( uncSourceType.compare("central") == 0 || uncSourceType.compare("Total_down") == 0 || uncSourceType.compare("Total_up") == 0 ) {
         	jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_Uncertainty_AK4PFchs.txt");
-   		DLOG(INFO)<<"DEBUG:Total "<<flag;
+   		DLOG(INFO)<<"DEBUG:Total ";
 	} else if (uncSourceType.compare("SubTotalScale_up") == 0 || uncSourceType.compare("SubTotalScale_down") == 0) {
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalScale");
         	jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
-   		DLOG(INFO)<<"DEBUG:SubTotalScale"<<flag;
+   		DLOG(INFO)<<"DEBUG:SubTotalScale";
 	} else if (uncSourceType.compare("SubTotalPt_up") == 0 || uncSourceType.compare("SubTotalPt_down") == 0) {
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPt");
                 jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
-   		DLOG(INFO)<<"DEBUG:SubTotalPt"<<flag;
+   		DLOG(INFO)<<"DEBUG:SubTotalPt";
 	} else if (uncSourceType.compare("SubTotalRelative_up") == 0 || uncSourceType.compare("SubTotalRelative_down") == 0) {
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalRelative");
                 jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
-   		DLOG(INFO)<<"DEBUG:SubTotalRelative"<<flag;
+   		DLOG(INFO)<<"DEBUG:SubTotalRelative";
 	} else if (uncSourceType.compare("SubTotalPileUp_up") == 0 || uncSourceType.compare("SubTotalPileUp_down") == 0) {
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPileUp");
                 jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
-   		DLOG(INFO)<<"DEBUG:SubTotalPileUp"<<flag;
+   		DLOG(INFO)<<"DEBUG:SubTotalPileUp";
 	}
     }
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1

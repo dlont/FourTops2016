@@ -44,7 +44,7 @@ bool isJESUp() {
 
 std::string JESSource() {
     std::string source = "Total";
-    const std::array<const std::string,10> possible_options = 
+    const std::array<const std::string,11> possible_options = 
 	{
 	"central",
 	"Total_up",		"Total_down",
