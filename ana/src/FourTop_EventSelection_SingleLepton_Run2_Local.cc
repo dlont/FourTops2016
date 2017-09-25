@@ -322,7 +322,7 @@ int main (int argc, char *argv[])
     if(bTagCSVReweight && !isData){
         // BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/ttH_BTV_CSVv2_13TeV_2015D_20151120.csv");
 //        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2_80X_ichep_incl_ChangedTo_mujets.csv");
-        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv");
+        BTagCalibration calib_csvv2("csvv2", "../TopTreeAnalysisBase/Calibrations/BTagging/CSVv2Moriond17_2017_1_26_BtoH.csv"); //TTAB default
         csvrsw = new BTagSF(&calib_csvv2);
     }
 //    std::exit(EXIT_SUCCESS);
@@ -496,7 +496,28 @@ int main (int argc, char *argv[])
         vCorrParam.push_back(*L2JetCorPar);
         JetCorrectorParameters *L3JetCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_L3Absolute_AK4PFchs.txt");
         vCorrParam.push_back(*L3JetCorPar);
-        jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_Uncertainty_AK4PFchs.txt");
+
+	const std::string uncSourceType = JESSource();
+	if ( uncSourceType.compare("Total_down") == 0 || uncSourceType.compare("Total_up") == 0 ) {
+        	jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_Uncertainty_AK4PFchs.txt");
+   		DLOG(INFO)<<"DEBUG:Total "<<flag;
+	} else if (uncSourceType.compare("SubTotalScale_up") == 0 || uncSourceType.compare("SubTotalScale_down") == 0) {
+		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalScale");
+        	jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
+   		DLOG(INFO)<<"DEBUG:SubTotalScale"<<flag;
+	} else if (uncSourceType.compare("SubTotalPt_up") == 0 || uncSourceType.compare("SubTotalPt_down") == 0) {
+		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPt");
+                jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
+   		DLOG(INFO)<<"DEBUG:SubTotalPt"<<flag;
+	} else if (uncSourceType.compare("SubTotalRelative_up") == 0 || uncSourceType.compare("SubTotalRelative_down") == 0) {
+		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalRelative");
+                jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
+   		DLOG(INFO)<<"DEBUG:SubTotalRelative"<<flag;
+	} else if (uncSourceType.compare("SubTotalPileUp_up") == 0 || uncSourceType.compare("SubTotalPileUp_down") == 0) {
+		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPileUp");
+                jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
+   		DLOG(INFO)<<"DEBUG:SubTotalPileUp"<<flag;
+	}
     }
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
 

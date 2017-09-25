@@ -26,7 +26,8 @@ DEFINE_int32(nevents, -1, "Number of events to run over");                      
 
 bool isJESDown() {
     auto flag = false;
-    boost::algorithm::to_lower(FLAGS_fourtops_jes);
+    auto temp_flag = FLAGS_fourtops_jes;
+    boost::algorithm::to_lower(temp_flag);
     if (FLAGS_fourtops_jes.find("down") != string::npos) flag = true;
     DLOG(INFO)<<"isJESDown flag "<<flag;
     return flag;
@@ -34,10 +35,30 @@ bool isJESDown() {
 
 bool isJESUp() {
     auto flag = false;
-    boost::algorithm::to_lower(FLAGS_fourtops_jes);
+    auto temp_flag = FLAGS_fourtops_jes;
+    boost::algorithm::to_lower(temp_flag);
     if (FLAGS_fourtops_jes.find("up") != string::npos) flag = true;
     DLOG(INFO)<<"JESUp flag "<<flag;
     return flag;
+}
+
+std::string JESSource() {
+    std::string source = "Total";
+    const std::array<const std::string,10> possible_options = 
+	{
+	"Total_up",		"Total_down",
+	"SubTotalPileUp_up", 	"SubTotalPileUp_down",
+	"SubTotalRelative_up", 	"SubTotalRelative_down", 
+	"SubTotalPt_up", 	"SubTotalPt_down",
+	"SubTotalScale_up", 	"SubTotalScale_down"
+	};
+
+    if ( std::find( std::begin(possible_options), std::end(possible_options), FLAGS_fourtops_jes ) != std::end(possible_options) ) {
+   	return FLAGS_fourtops_jes;
+    } else {
+	throw std::runtime_error("JES option NOT found: "+FLAGS_fourtops_jes);
+    }
+
 }
 
 bool isJERDown() {
