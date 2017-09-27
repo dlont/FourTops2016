@@ -27,7 +27,7 @@ import argparse
 import json
 import sys
 
-xsec_tttt = 0.009103 # pb
+xsec_tttt = 0.009201 # pb
 
 def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
     """
