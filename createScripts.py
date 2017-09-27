@@ -92,10 +92,26 @@ for chan in channels:
                 commandString = "./MACRO "+str(d.attrib['name'])+" "+str(d.attrib['title'])+" "+str(d.attrib['add'])+" "+str(d.attrib['color'])+" "+str(d.attrib['ls'])+" "+str(d.attrib['lw'])+" "+str(d.attrib['normf'])+" "+str(d.attrib['EqLumi'])+" "+str(d.attrib['xsection'])+" "+str(d.attrib['PreselEff'])
             else:
 		jes = ''
-		if 'jesup' in str(d.attrib['name']):
-			jes = '--fourtops_jes=up'
-		elif 'jesdown' in str(d.attrib['name']):
-			jes = '--fourtops_jes=down'
+		if 'totaljesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=Total_up'
+		elif 'totaljesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=Total_down'
+		elif 'SubTotalPileUp_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalPileUp_up'
+		elif 'SubTotalPileUp_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalPileUp_down'
+		elif 'SubTotalRelative_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalRelative_up'
+		elif 'SubTotalRelative_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalRelative_down'
+		elif 'SubTotalPt_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalPt_up'
+		elif 'SubTotalPt_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalPt_down'
+		elif 'SubTotalScale_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalScale_up'
+		elif 'SubTotalScale_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalScale_down'
 		
 		jer = ''
 		if 'jerup' in str(d.attrib['name']):
