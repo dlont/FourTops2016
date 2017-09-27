@@ -10,6 +10,7 @@ from array import array      # to allow making Float_t arrays for ROOT hists
 from math import pi
 from ROOT import TH1F, TH2F  # import other kinds of hists as neeeded
 import sys
+from triggercuts import trgcuts
 
 inputfile=str(sys.argv[2])
 output_filename=str(sys.argv[3])
@@ -18,7 +19,8 @@ scalefactor=float(sys.argv[5])
 target=str(sys.argv[6])
 
 print 'Using input file: ' + inputfile
-print 'Output file: ' + inputfile
+print 'Output file: ' + output_filename
+print 'Input tree name: ' + tree_name
 
 tthftype = ''
 if 'TTll' in output_filename:
@@ -29,16 +31,8 @@ if 'TTcc' in output_filename:
 	tthftype = '&& ((ttxType%100) >= 41 && (ttxType%100) < 50)'
 print 'tthftype cut=',tthftype
 
-trigger_cuts = ''
-if 'Mu' in tree_name:
-	trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && nJets>=7 && HT > 450 && met > 50)"
-	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
-	#trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
-elif 'El' in tree_name:
-	#trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && HT > 450 && met > 50)"
-	trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) && nJets>7 && HT > 450 && met > 50)"
-	#trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
-	#trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
+trigger_cuts = trgcuts(tree_name)
+
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 
 cut_for_all_files = ""

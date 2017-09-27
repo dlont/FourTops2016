@@ -10,6 +10,7 @@ from array import array      # to allow making Float_t arrays for ROOT hists
 from math import pi
 from ROOT import TH1F, TH2F  # import other kinds of hists as neeeded
 import sys
+from triggercuts import trgcuts
 
 inputfile=str(sys.argv[2])
 output_filename=str(sys.argv[3])
@@ -19,19 +20,12 @@ systematic=str(sys.argv[6])
 target=str(sys.argv[7])
 
 print 'Using input file: ' + inputfile
-print 'Output file: ' + inputfile
+print 'Output file: ' + output_filename
+print 'Input tree name: ' + tree_name
 print 'Systematic source: ' + systematic
 print 'Target variable: ' + target
 
-trigger_cuts = ''
-if 'Mu' in tree_name:
-        trigger_cuts = "((HLT_IsoMu24==1||HLT_IsoTkMu24==1)  && met > 50 && fabs(LeptonEta)<2.1 )"
-        #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
-        #trigger_cuts = "(HLT_Mu15_IsoVVVL_BTagCSV_p067_PFHT400==1)"
-elif 'El' in tree_name:
-        trigger_cuts = "((HLT_Ele32_eta2p1_WPTight_Gsf==1) &&  met > 50 && HT > 450 && fabs(LeptonEta)<=2.1 )"
-        #trigger_cuts = "(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056==1)"
-        #trigger_cuts = "(HLT_Ele15_IsoVVVL_PFHT350_PFMET50==1)"
+trigger_cuts = trgcuts(tree_name)
 
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 

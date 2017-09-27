@@ -72,6 +72,7 @@ $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	@echo "MERGE TTTT SYSTEMATICS histograms $@ ($^)" 
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TTTT.root -t bdt -s MEScale
+	#@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TTTT.root -t bdt -s MEScale,FSR,ISR
 
 #TT
 $(BUILDDIR)/Hists_TT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
@@ -170,7 +171,8 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_BTAG.root  $(BUILDDIR)/Hists_TT_BTAGJESUP.root $(BUILDDIR)/Hists_TT_BTAGJESDOWN.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
 	@hadd -f $@ $^ ${SUPPRESSOUT}
-	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP
+	#@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale
+	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP,TTPT
 
 
 card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
@@ -186,24 +188,24 @@ datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
 	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $(BUILDDIR)/$@
 
 datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
-	@combine -M Asymptotic --run $(RUN) $^ >> temp.comb.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.comb.2
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.comb.3
+	@combine -M Asymptotic --run $(RUN) --X-rtd MINIMIZER_analytic --picky --cminDefaultMinimizerType=Minuit $^ >> temp.comb.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit >>temp.comb.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit >>temp.comb.3
 	@cat temp.comb.* > $(BUILDDIR)/$@
 	@rm temp.comb.*
-card_el.res: $(BUILDDIR)/card_el.txt
-	@combine -M Asymptotic --run $(RUN) $^ >> temp.el.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.el.2
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.el.3
-	@cat temp.el.* > $(BUILDDIR)/$@
+card_el.res: $(BUILDDIR_EL)/card_el.txt
+	@combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --picky --cminDefaultMinimizerType=Minuit >> temp.el.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit >>temp.el.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit >>temp.el.3
+	@cat temp.el.* > $(BUILDDIR_EL)/$@
 	@rm temp.el.*
-card_mu.res: $(BUILDDIR)/card_mu.txt
-	@combine -M Asymptotic --run $(RUN) $^ >> temp.mu.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 >>temp.mu.2
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance >>temp.mu.3
-	@cat temp.mu.* > $(BUILDDIR)/$@
+card_mu.res: $(BUILDDIR_MU)/card_mu.txt
+	@combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --picky --cminDefaultMinimizerType=Minuit >> temp.mu.1
+	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit2 >>temp.mu.2
+	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit >>temp.mu.3
+	@cat temp.mu.* > $(BUILDDIR_MU)/$@
 	@rm temp.mu.*
-limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR_EL)/card_el.res $(BUILDDIR_EL)/card_mu.res
+limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR_EL)/card_el.res $(BUILDDIR_MU)/card_mu.res
 	@python ./tools/parseLimits.py -i $(BUILDDIR_EL)/card_el.res -f $(FORMAT) | tail -n2
 	@python ./tools/parseLimits.py -i $(BUILDDIR_MU)/card_mu.res -f $(FORMAT) | tail -n2
 	@python ./tools/parseLimits.py -i $(BUILDDIR)/datacard_elmu.res -f $(FORMAT) | tail -n2
