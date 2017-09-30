@@ -702,6 +702,10 @@ int main (int argc, char *argv[])
             //////////////////////////////////////
             ///  Jet Energy Scale Corrections  ///
             //////////////////////////////////////
+	
+	    auto printjetdata = [](const TRootJet* j) {std::cout << j->Pt() << " " << j->Eta() << std::endl;};
+		//std::cout << "Before correction" << std::endl;
+		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
             if (applyJER && !isData)
             {
                 if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
@@ -719,6 +723,8 @@ int main (int argc, char *argv[])
             {
                 jetTools->correctJets(init_jets, event->fixedGridRhoFastjetAll(), isData);
             }
+		//std::cout << "After correction" << std::endl;
+		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
 
             ///////////////////////////////////////////////////////////
             //           Object definitions for selection            //
@@ -882,7 +888,12 @@ int main (int argc, char *argv[])
             if(!isData){
                 ttXtype = event->getgenTTX_id();
 		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
-			if (ttXtype % 100 > 50) ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
+			if (ttXtype % 100 > 50) {
+				ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
+                                ttXrew_up = (4.0 + 0.6 + 1.3) / (3.2 - 0.4);
+                                ttXrew_down = (4.0 - 0.6 - 1.3) / (3.2 + 0.4);
+
+			}
 			if (ttXtype % 100 == 0) {	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
 				ttXrew  = 184./257.;
 				ttXrew_up = (184. + 6. + 33.) / (257. - 26.);
