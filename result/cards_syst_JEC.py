@@ -2,6 +2,14 @@ def getJECCutSets(systematic, cut_string):
     syst, var = '',''
     if 'JES' in systematic.upper():
         syst = 'JES'
+    elif 'SUBTOTALSCALEJEC' in systematic.upper():
+	syst = 'SubTotalScaleJES'
+    elif 'SUBTOTALRELATIVEJEC' in systematic.upper():
+	syst = 'SubTotalRelativeJES'
+    elif 'SUBTOTALPTJEC' in systematic.upper():
+	syst = 'SubTotalPtJES'
+    elif 'SUBTOTALPILEUPJEC' in systematic.upper():
+	syst = 'SubTotalPileUpJES'
     elif 'JER' in systematic.upper():
         syst = 'JER'
     else:
