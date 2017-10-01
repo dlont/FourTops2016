@@ -197,4 +197,8 @@ $(BUILDDIR)/Hists_fsrscaledown.root: ${CONFIG} $(BUILDDIR)/Craneen_TTFSRScaledow
 	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}   ${TTFSRDWNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
+mergechannelsplots:
+	@echo "Combining Electron and Muon histograms"
+	@for i in $(BUILDDIR_EL)/Hist*.root; do hadd $(BUILDDIR)/`basename $$i` $(BUILDDIR_MU)/`basename $$i`;done
+
 #@if [ -d "$(dir $@)" ]; then echo "$(BUILDDIR) exists" ; else mkdir $@ ; fi

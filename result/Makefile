@@ -68,7 +68,7 @@ dirs:
 	@echo "Creating folders"
 	-mkdir plots_el plots_mu
 
-.PHONY: clean
-clean:
+.PHONY: cleancards
+cleancards:
 	@echo "Remove plots"
-	-rm -rf plots_el plots_mu
+	-rm -rf $(BUILDDIR)/*.txt $(BUILDDIR_EL)/Hist* $(BUILDDIR_EL)/*.txt $(BUILDDIR_MU)/Hist* $(BUILDDIR_MU)/*.txt
