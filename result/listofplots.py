@@ -32,7 +32,8 @@ def lp(treename,filename,target):
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	#if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-	if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	#if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	if 'Data' in filename: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
 	#else: bdtplot =  Plot("BDTninejet.MVAoutput"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
@@ -64,7 +65,7 @@ def lp(treename,filename,target):
 	Plot("HTb"            , TH1D("HTB"     , ";HTB (GeV);entries/bin", 25, 0., 1000.)),
 	Plot("HTH"            , TH1D("HTH"     , ";HTH;entries/bin", 100, 0.1, 1.1)),
 	Plot("HTRat"            , TH1D("HTRat"     , ";HTRat;entries/bin", 45, 0., 0.45)),
-	Plot("HTX"            , TH1D("HTX"     , ";HTX;entries/bin", 20, 0., 3000.)),
+	Plot("HTX"            , TH1D("HTX"     , ";HTX (GeV);entries/bin", 20, 0., 3000.)),
 	Plot("SumJetMassX"            , TH1D("SumJetMassX"     , ";Sum jet M (GeV);entries/bin", 50, 0., 3500.)),
 	Plot("PU"           , TH1D("pu"    , ";Number of prim. v.;entries/bin", 55, -0.5, 54.5)),
 	Plot("NjetsW"           , TH1D("njetsw"    , ";p_{T} weighted jet multiplicity;entries/bin", 20, -0.5, 15.5)),
