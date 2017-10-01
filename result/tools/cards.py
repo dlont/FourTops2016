@@ -18,8 +18,10 @@ import numpy as np
 import ROOT
 
 from cards_proc_list import proc_id
-from cards_syst_list import systtypelist
-from cards_syst_list import syst_norm_size_list, syst_shape_size_list
+from cards_syst_list_fsrisruenorm import systtypelist
+from cards_syst_list_fsrisruenorm import syst_norm_size_list, syst_shape_size_list
+#from cards_syst_list import systtypelist
+#from cards_syst_list import syst_norm_size_list, syst_shape_size_list
 from cards_bin_list import binlist
 
 #Global definitions
