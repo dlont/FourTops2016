@@ -765,6 +765,8 @@ int main (int argc, char *argv[])
             for(int e_iter=0; e_iter<selectedOrigElectrons.size();e_iter++){
                 if(selectedOrigElectrons[e_iter]->Eta()<=1.4442 || selectedOrigElectrons[e_iter]->Eta()>=1.5660){
                     selectedElectrons.push_back(selectedOrigElectrons[e_iter]);
+		    bCrackVeto = false;
+                } else {
 		    bCrackVeto = true;
                 }
             }
