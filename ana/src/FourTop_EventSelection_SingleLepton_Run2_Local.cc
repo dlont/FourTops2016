@@ -897,9 +897,9 @@ int main (int argc, char *argv[])
 
 			}
 			if (ttXtype % 100 == 0) {	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
-				ttXrew  = 184./257.;
-				ttXrew_up = (184. + 6. + 33.) / (257. - 26.);
-				ttXrew_down = (184. - 6. - 33.) / (257. + 26.);
+				ttXrew  = 184./257.;				//0.716
+				ttXrew_up = (184. + 6. + 33.) / (257. - 26.);	//0.965
+				ttXrew_down = (184. - 6. - 33.) / (257. + 26.);	//0.512
 			}
 			scaleFactor *= ttXrew;
 		}
