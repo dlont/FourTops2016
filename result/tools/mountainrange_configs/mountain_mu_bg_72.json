@@ -1,0 +1,14 @@
+{
+	"stack":[
+		["mu7J2M_postfit/EW", "mu7J2M_postfit/ST_tW", "mu7J2M_postfit/TTRARE", "mu7J2M_postfit/ttbarTTX" ]
+	],
+	"totalbg":["mu7J2M_postfit/TotalBkg"],
+	"prefitbg":["mu7J2M_prefit/TotalBkg"],
+	"signal":["mu7J2M_postfit/NP_overlay_ttttNLO"],
+	"data":["mu7J2M_postfit/data_obs"],
+		
+	"legend":{"header":"single #mu", "coord":[0.45,0.85,0.62,0.95]},
+	"binlabels":{"ypos":0.0007,"labels":{"4":"N_{j}=7,N_{b}=2", "31":"N_{j}=7,N_{b}=3", "53":"N_{j}=7,N_{b}=4", "82":"N_{j}=8,N_{b}=2"}},
+	"filename":"hist_mu_bg"
+}
+

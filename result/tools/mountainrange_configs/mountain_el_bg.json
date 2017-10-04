@@ -1,0 +1,15 @@
+{
+	"stack":[
+		["el8J2M_postfit/EW", "el8J2M_postfit/ST_tW", "el8J2M_postfit/TTRARE", "el8J2M_postfit/ttbarTTX" ],
+		["el9J2M_postfit/EW", "el9J2M_postfit/ST_tW", "el9J2M_postfit/TTRARE", "el9J2M_postfit/ttbarTTX" ]
+	],
+	"totalbg": ["el8J2M_postfit/TotalBkg","el9J2M_postfit/TotalBkg"],
+	"prefitbg":["el8J2M_prefit/TotalBkg","el9J2M_prefit/TotalBkg"],
+	"signal":  ["el8J2M_postfit/NP_overlay_ttttNLO","el9J2M_postfit/NP_overlay_ttttNLO"],
+	"data":    ["el8J2M_postfit/data_obs","el9J2M_postfit/data_obs"],
+		
+	"legend":{"header":"single e", "coord":[0.5,0.83,0.69,0.95]},
+	"binlabels":{"ypos":0.07,"labels":{"15":"N_{j}=8,N_{b}=2","45":"N_{j}=9,N_{b}=2"}},
+	"filename":"hist_el_bg"
+}
+
