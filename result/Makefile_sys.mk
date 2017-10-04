@@ -9,6 +9,8 @@ MINOS=
 RUN=blind
 
 sysplots: 	$(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
+	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSPLOTDIR)/JESCOMPONENTS_tt.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
+	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TTTT_CARDS.root -j $(SYSPLOTDIR)/JESCOMPONENTS_tttt.json -r $(BUILDDIR)/Hists_TTTT_CARDS.root -f $(FORMAT)
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSPLOTDIR)/JES_tt.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TTTT_CARDS.root -j $(SYSPLOTDIR)/JES_tttt.json -r $(BUILDDIR)/Hists_TTTT_CARDS.root -f $(FORMAT)
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSPLOTDIR)/CSV_tt.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
