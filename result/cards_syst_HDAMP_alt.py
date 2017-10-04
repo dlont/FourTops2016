@@ -1,4 +1,4 @@
-def getHDAMPCutSets(syst,cut_string):
+def getHDAMPAltCutSets(syst,cut_string):
     if 'UP' in syst.upper():
         var = 'Up'
     elif 'DOWN' in syst.upper():
