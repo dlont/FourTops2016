@@ -39,9 +39,12 @@ cut_sets = []
 if 'PU' in systematic:
     from cards_syst_PU import cut_PU
     cut_sets = cut_PU('&&'+trigger_cuts)
-elif 'PT' in systematic:
+elif 'TTPT' in systematic:
     from cards_syst_PT import cut_PT
     cut_sets = cut_PT('&&'+trigger_cuts)  
+elif 'TTPAGPT' in systematic:
+    from cards_syst_PAGPT import cut_PAGPT
+    cut_sets = cut_PAGPT('&&'+trigger_cuts)  
 elif 'BTAG' in systematic:
     from cards_syst_BTAG import cut_BTAG
     cut_sets = cut_BTAG('&&'+trigger_cuts)  
@@ -62,7 +65,7 @@ elif 'HDAMP' in systematic and 'ALT' not in systematic:
     cut_sets = getHDAMPCutSets(systematic, '&&'+trigger_cuts)
 elif 'HDAMPALT' in systematic:
     from cards_syst_HDAMP_alt import getHDAMPAltCutSets
-    cut_sets = getHDAMPCutSets(systematic, '&&'+trigger_cuts)
+    cut_sets = getHDAMPAltCutSets(systematic, '&&'+trigger_cuts)
 elif 'ISR' in systematic:
     from cards_syst_IFSRUE import getIFSRUECutSets
     cut_sets = getIFSRUECutSets(systematic, '&&'+trigger_cuts)
