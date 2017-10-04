@@ -35,6 +35,48 @@ $(BUILDDIR)/Hists_TTTT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jesdo
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} JESDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
+#$(BUILDDIR)/Hists_TTTT_JESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_totaljesup_Run2_TopTree_Study.root
+#	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} JESUP ${TARGETVAR} ${SUPPRESSOUT}
+#	
+#$(BUILDDIR)/Hists_TTTT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_totaljesdown_Run2_TopTree_Study.root
+#	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} JESDOWN ${TARGETVAR} ${SUPPRESSOUT}
+########################################################################################################################
+$(BUILDDIR)/Hists_TTTT_SubTotalScaleJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalScale_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalScaleJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalScale_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalRelative_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalRelativeJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalRelative_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalRelativeJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTTT_SubTotalPtJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalPt_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPtJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_SubTotalPtJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalPt_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPtJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalPileUp_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPileJECUP  ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalPileUp_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPileJECDOWN  ${TARGETVAR} ${SUPPRESSOUT}
+########################################################################################################################
+
+	
 $(BUILDDIR)/Hists_TTTT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} BTAG ${TARGETVAR} ${SUPPRESSOUT}
@@ -46,6 +88,14 @@ $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jes
 $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} BJCORDOWN ${TARGETVAR} ${SUPPRESSOUT}
+
+#$(BUILDDIR)/Hists_TTTT_BTAGJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_totaljesup_Run2_TopTree_Study.root
+#	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} BJCORUP ${TARGETVAR} ${SUPPRESSOUT}
+#	
+#$(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_totaljesdown_Run2_TopTree_Study.root
+#	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} BJCORDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TTTT_ISRUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_isrup_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
@@ -66,6 +116,10 @@ $(BUILDDIR)/Hists_TTTT_FSRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_fsrdo
 $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_JERUP.root $(BUILDDIR)/Hists_TTTT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_JESUP.root $(BUILDDIR)/Hists_TTTT_JESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalScaleJESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalPtJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalPtJESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_MEScale.root $(BUILDDIR)/Hists_TTTT_PU.root \
 	$(BUILDDIR)/Hists_TTTT_BTAG.root $(BUILDDIR)/Hists_TTTT_BTAGJESUP.root $(BUILDDIR)/Hists_TTTT_BTAGJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_FSRDOWN.root $(BUILDDIR)/Hists_TTTT_FSRUP.root $(BUILDDIR)/Hists_TTTT_ISRDOWN.root $(BUILDDIR)/Hists_TTTT_ISRUP.root
@@ -89,11 +143,11 @@ $(BUILDDIR)/Hists_TT_HDAMP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRA
 
 $(BUILDDIR)/Hists_TT_HDAMPUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTHdampup_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_HDAMPALTUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTHDAMPUPNORM} TTJets_HDAMPALTUP ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_HDAMPDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTHdampdown_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTJets_HDAMPALTDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTHDAMPDOWNNORM} TTJets_HDAMPALTDOWN ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -102,6 +156,10 @@ $(BUILDDIR)/Hists_TT_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_
 $(BUILDDIR)/Hists_TT_PT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTPT ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TT_PAGPT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} TTPAGPT ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_JERUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_jerup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -119,37 +177,45 @@ $(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENT
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
+#$(BUILDDIR)/Hists_TT_JESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_totaljesup_Run2_TopTree_Study.root
+#	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESUP ${TARGETVAR} ${SUPPRESSOUT}
+#	
+#$(BUILDDIR)/Hists_TT_JESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_totaljesdown_Run2_TopTree_Study.root
+#	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+#	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} JESDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	
 $(BUILDDIR)/Hists_TT_SubTotalPileUpJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalPileUp_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalPileUpJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBPUUPNORM} SubTotalPileJECUP ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalPileUpJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalPileUp_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalPileUpJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBPUDOWNNORM} SubTotalPileJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalPtJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalPt_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalPtJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBPTUPNORM} SubTotalPtJECUP ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalPtJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalPt_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalPtJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBPTDOWNNORM} SubTotalPtJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalRelative_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalRelativeJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBRELUPNORM} SubTotalRelativeJECUP ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalRelative_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalRelativeJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBRELDOWNNORM} SubTotalRelativeJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalScaleJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalScale_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalScaleJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEUPNORM} SubTotalScaleJECUP ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalScale_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEDOWNNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -199,15 +265,15 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root \
-	$(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root \
+	$(BUILDDIR)/Hists_TT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TT_SubTotalPileUpJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalPtJESUP.root $(BUILDDIR)/Hists_TT_SubTotalPtJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_TTX.root $(BUILDDIR)/Hists_TT_PU.root \
-	$(BUILDDIR)/Hists_TT_MEScale.root $(BUILDDIR)/Hists_TT_PT.root \
+	$(BUILDDIR)/Hists_TT_MEScale.root $(BUILDDIR)/Hists_TT_PT.root $(BUILDDIR)/Hists_TT_PAGPT.root\
 	$(BUILDDIR)/Hists_TT_HDAMP.root $(BUILDDIR)/Hists_TT_PDF.root \
 	$(BUILDDIR)/Hists_TT_BTAG.root  $(BUILDDIR)/Hists_TT_BTAGJESUP.root $(BUILDDIR)/Hists_TT_BTAGJESDOWN.root
 	@echo "MERGE TT SYSTEMATICS histograms $@ ($^)" 
 	@hadd -f $@ $^ ${SUPPRESSOUT}
-	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,TTPT,PDF
+	@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,TTPT,TTPAGPT,PDF
 	#@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP,TTPT
 
 
