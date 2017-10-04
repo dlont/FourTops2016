@@ -71,6 +71,7 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
         print "Limits for %s" % name
         if obs > 0.: print "  Obs: %.2f \%s" % (obs, unit)
         print "$%s$ & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], exp, exp_sp1-exp, exp-exp_sm1, unit)
+        #print "$%s$ & $%.5f^{+%.5f}_{-%.5f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], exp, exp_sp1-exp, exp-exp_sm1, unit)
 	if 'signif' in d and 'bestfit' in d:
 		print "$%s$ & $%.2f$ & $%.0f^{+%.1f}_{%.1f}$ & $%.1f^{+%.0f}_{%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["signif"], d['bestfit'], d['bestfit_64.0'], d['bestfit_16.0'], d['bestfit']*xsec, d['bestfit_64.0']*xsec, d['bestfit_16.0']*xsec, unit)
     if 'json' in format:
