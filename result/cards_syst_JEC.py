@@ -8,7 +8,7 @@ def getJECCutSets(systematic, cut_string):
 	syst = 'SubTotalRelativeJES'
     elif 'SUBTOTALPTJEC' in systematic.upper():
 	syst = 'SubTotalPtJES'
-    elif 'SUBTOTALPILEUPJEC' in systematic.upper():
+    elif 'SUBTOTALPILEJEC' in systematic.upper():
 	syst = 'SubTotalPileUpJES'
     elif 'JER' in systematic.upper():
         syst = 'JER'
