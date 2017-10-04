@@ -1,0 +1,136 @@
+{
+	"canvas": [
+		{
+			"name":"TTPTcomparison_tt",
+			"width":5000,
+			"height":5000,
+			"nx":5,
+			"ny":3,
+			"legend":{"coord":[0.1,0.5,0.9,0.9]},
+			"pads":[
+				{"id":1, "ymin":-0.1, "ymax":0.1, "title":"nJets==6&&nMtags==2", "refhistogram":"6J2M/bdt", "histograms":
+				[
+				 {"name":"6J2M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"6J2M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"6J2M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"6J2M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"6J2M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":2, "ymin":-0.1, "ymax":0.1, "title":"nJets==7&&nMtags==2", "refhistogram":"7J2M/bdt", "histograms":
+				[
+				 {"name":"7J2M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"7J2M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"7J2M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"7J2M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"7J2M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":3, "ymin":-0.1, "ymax":0.1, "title":"nJets==8&&nMtags==2", "refhistogram":"8J2M/bdt", "histograms":
+				[
+				 {"name":"8J2M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"8J2M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"8J2M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"8J2M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"8J2M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":4, "ymin":-0.1, "ymax":0.1, "title":"nJets==9&&nMtags==2", "refhistogram":"9J2M/bdt", "histograms":
+				[
+				 {"name":"9J2M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"9J2M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"9J2M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"9J2M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"9J2M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":5, "ymin":-0.1, "ymax":0.1, "title":"nJets>9&&nMtags==2", "refhistogram":"10J2M/bdt", "histograms":
+				[
+				 {"name":"10J2M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"10J2M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"10J2M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"10J2M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"10J2M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+
+				{"id":6, "ymin":-0.1, "ymax":0.1, "title":"nJets==6&&nMtags==3", "refhistogram":"6J3M/bdt", "histograms":
+				[
+				 {"name":"6J3M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"6J3M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"6J3M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"6J3M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"6J3M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":7, "ymin":-0.1, "ymax":0.1, "title":"nJets==7&&nMtags==3", "refhistogram":"7J3M/bdt", "histograms":
+				[
+				 {"name":"7J3M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"7J3M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"7J3M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"7J3M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"7J3M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":8, "ymin":-0.1, "ymax":0.1, "title":"nJets==8&&nMtags==3", "refhistogram":"8J3M/bdt", "histograms":
+				[
+				 {"name":"8J3M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"8J3M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"8J3M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"8J3M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"8J3M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":9, "ymin":-0.1, "ymax":0.1, "title":"nJets==9&&nMtags==3", "refhistogram":"9J3M/bdt", "histograms":
+				[
+				 {"name":"9J3M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"9J3M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"9J3M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"9J3M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"9J3M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":2, "ymin":-0.1, "ymax":0.1, "title":"nJets>9&&nMtags==3", "refhistogram":"10J3M/bdt", "histograms":
+				[
+				 {"name":"10J3M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"10J3M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"10J3M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"10J3M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"10J3M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+
+				{"id":11, "ymin":-0.1, "ymax":0.1, "title":"nJets==6&&nMtags>=4", "refhistogram":"6J4M/bdt", "histograms":
+				[
+				 {"name":"6J4M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"6J4M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"6J4M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+				 {"name":"6J4M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+				 {"name":"6J4M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":12, "ymin":-0.1, "ymax":0.1, "title":"nJets==7&&nMtags>=4", "refhistogram":"7J4M/bdt", "histograms":
+				[
+				 {"name":"7J4M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"7J4M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"7J4M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"7J4M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"7J4M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":13, "ymin":-0.1, "ymax":0.1, "title":"nJets==8&&nMtags>=4", "refhistogram":"8J4M/bdt", "histograms":
+				[
+				 {"name":"8J4M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"8J4M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"8J4M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"8J4M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"8J4M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":14, "ymin":-0.1, "ymax":0.1, "title":"nJets==9&&nMtags>=4", "refhistogram":"9J4M/bdt", "histograms":
+				[
+				 {"name":"9J4M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"9J4M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"9J4M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"9J4M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"9J4M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]},
+				{"id":15, "ymin":-0.1, "ymax":0.1, "title":"nJets>9&&nMtags>=4", "refhistogram":"10J4M/bdt", "histograms":
+				[
+				 {"name":"10J4M_ttMEScaleDown//bdt", "style":[2,830,1],"title":"ME scale -1#sigma","rebin":2},
+                                 {"name":"10J4M_ttMEScaleUp//bdt", "style":[2,830,1],"title":"ME scale +1#sigma","rebin":2},
+				 {"name":"10J4M_TTPTDown//bdt", "style":[2,610,1],"title":"TOP pT corr -1#sigma","rebin":2},
+                                 {"name":"10J4M_TTPTUp//bdt", "style":[2,610,1],"title":"TOP pT corr +1#sigma","rebin":2},
+                                 {"name":"10J4M_TTPAGPTUp//bdt", "style":[2,2,1],"title":"#frac{TOP pT no corr}{TOP pT corr} ","rebin":2}
+]}
+			]
+		}
+	]
+}
