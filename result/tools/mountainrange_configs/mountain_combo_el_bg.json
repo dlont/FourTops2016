@@ -8,7 +8,8 @@
 	"signal":  ["EL_el8J2M_postfit/NP_overlay_ttttNLO","EL_el9J2M_postfit/NP_overlay_ttttNLO"],
 	"data":    ["EL_el8J2M_postfit/data_obs","EL_el9J2M_postfit/data_obs"],
 		
-	"legend":{"header":"single e", "coord":[0.5,0.83,0.69,0.95]},
+	"axes":{"ymax":500,"ymin":0.0001},
+	"legend":{"header":"Single lepton: e", "coord":[0.2,0.0,1.0,1.0]},
 	"binlabels":{"ypos":0.07,"labels":{"15":"N_{j}=8,N_{b}=2","45":"N_{j}=9,N_{b}=2"}},
 	"filename":"hist_el_bg"
 }
