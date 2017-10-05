@@ -196,37 +196,42 @@ def draw_legend(**kwargs):
 			logging.debug('legend coordinates: %s %s %s %s' % (coords[0],coords[1],coords[2],coords[3]))
 			legend = rt.TLegend(coords[0],coords[1],coords[2],coords[3])
 	else: legend = rt.TLegend(0.6,0.75,0.9,0.9)
+
+	datagr = None
+	if 'data' in kwargs: datagr = kwargs['data']
 	
 	if 'header' in kwargs['legend']:
 		legend.SetHeader(kwargs['legend']['header'])
 
 	if canvas is not None:
-		legend.SetNColumns(2)
-		legend.SetBorderSize(2)
+		legend.SetNColumns(3)
+		legend.SetBorderSize(0)
 		#legend.SetFillStyle(0)
+
+		if datagr: legend.AddEntry(datagr,"Data",'pe')
 		if 'hist_tt' in kwargs: 
 			hist_tt = kwargs['hist_tt']
 			legend.AddEntry(hist_tt,"t#bar{t}",'lf')
 		if 'hist_st' in kwargs:
 			hist_st = kwargs['hist_st']
-                        legend.AddEntry(hist_st,"ST",'lf')
+                        legend.AddEntry(hist_st,"tX",'lf')
 		if 'hist_ew' in kwargs:
 			hist_ew = kwargs['hist_ew']
-                        #legend.AddEntry(hist_ew,"EW",'lf')	#for slepton
-                        legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
+                        legend.AddEntry(hist_ew,"EW",'lf')	#for slepton
+                        #legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
 		if 'hist_rare' in kwargs:
 			hist_rare = kwargs['hist_rare']
-                        legend.AddEntry(hist_rare,"RARE",'lf')
+                        legend.AddEntry(hist_rare,"Rare",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
 			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t}",'lf')
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
-			legend.AddEntry(hist_pre,"prefit unc.","fe")
+			legend.AddEntry(hist_pre,"Prefit unc.","fe")
 		if 'hist_post' in kwargs:
 			hist_post = kwargs['hist_post']
-			legend.AddEntry(hist_post,"postfit unc.","fe")
-		canvas.cd()
+			legend.AddEntry(hist_post,"Postfit unc.","fe")
+		canvas.cd(3)
 		legend.Draw()
 
 def draw_bin_labels(c,masterhist,labels,ycoord,edges=None):
@@ -287,7 +292,7 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 	
 		if isinstance(labels,list):
 			tex = rt.TLatex()
-			tex.SetTextSize(0.025)
+			tex.SetTextSize(0.030)
 			tex.SetTextAlign(32)
 			tex.SetTextAngle(45)
 			cxmin=c.GetLeftMargin()
@@ -423,13 +428,15 @@ def main(arguments):
 	c1.RedrawAxis()
 	c1.Print('hist1.png')
 
-	c = rt.TCanvas('c',"CMS",5,45,1000,500)
+	c = rt.TCanvas('c',"CMS",5,45,1000,950)
 	if arguments.is_ratio and gr_data:
-		c.Divide(1,2)
+		c.Divide(1,3)
+		c.cd(3)
+		rt.gPad.SetPad(0.,0.,1.,0.2)
 		c.cd(2)
-		rt.gPad.SetPad(0.,0.,1.,0.3)
+		rt.gPad.SetPad(0.,0.2,1.,0.5)
 		c.cd(1)
-		rt.gPad.SetPad(0.,0.3,1.,1.)
+		rt.gPad.SetPad(0.,0.5,1.,1.)
 	hist_bg_prefit_unc_noempty.Draw("E2")
 	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
 	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
@@ -442,7 +449,7 @@ def main(arguments):
 	hist_bg_unc_noempty.Draw("E2 same")
 	hist_sig_noempty.Draw("hist same")
 	if gr_data_noempty: gr_data_noempty.Draw("same pe")
-	draw_legend(canvas=c,legend=jsondic['legend'],hist_pre=hist_bg_prefit_unc_noempty,hist_post=hist_bg_unc_noempty,
+	draw_legend(canvas=c,legend=jsondic['legend'],data=gr_data_noempty,hist_pre=hist_bg_prefit_unc_noempty,hist_post=hist_bg_unc_noempty,
 			hist_tttt=hist_sig_noempty,
 			hist_tt=hist_st_noempty.GetHists()[-1],
 			hist_rare=hist_st_noempty.GetHists()[-2],
@@ -460,9 +467,10 @@ def main(arguments):
 		if arguments.distrib_title_ratio is not None: hist_ratio_unity.SetTitle(arguments.distrib_title_ratio)
 		else:
 			motherhistxtitle = hist_bg_unc_noempty.GetXaxis().GetTitle()
-			motherhistxtitle = ';Bin id (%s);Rel. dif.' % re.sub(r' \(.*\)', '', motherhistxtitle)
+			motherhistxtitle = ';Bin id (%s);Data/Pred.' % re.sub(r' \(.*\)', '', motherhistxtitle)
 			hist_ratio_unity.SetTitle(motherhistxtitle)
-		hist_ratio_unity.GetXaxis().SetTitleSize(0.05)
+		hist_ratio_unity.GetXaxis().SetTitleSize(0.15)
+		hist_ratio_unity.GetXaxis().SetLabelSize(0.15)
 		hist_ratio_unity.GetYaxis().SetTitleSize(0.15)
 		hist_ratio_unity.GetYaxis().SetTitleOffset(0.3)
 		hist_ratio_unity.GetYaxis().SetLabelSize(0.10)
@@ -487,8 +495,8 @@ def main(arguments):
 				ndf+=1.
 				gr_ratio_data.SetPoint(ibin,xdata[ibin],(ydata[ibin]-ymc)/ymc)
 				gr_ratio_data.SetPointError(ibin,0.,0.,eyl/ymc, eyh/ymc)
-		hist_ratio_unity.GetYaxis().SetRangeUser(-0.5,0.5)
-		#hist_ratio_unity.GetYaxis().SetRangeUser(-1.,1.)
+		#hist_ratio_unity.GetYaxis().SetRangeUser(-0.5,0.5)
+		hist_ratio_unity.GetYaxis().SetRangeUser(-1.,1.)
 		#hist_ratio_unity.GetYaxis().SetRangeUser(-2.,2.)
 		hist_ratio_unity.Draw("hist e2")
 		gr_ratio_data.Draw("same pe")
@@ -500,7 +508,7 @@ def main(arguments):
 	#hist_bg_prefit_unc_noempty.GetXaxis().SetRangeUser(100.,125.)
 
 	if 'filename' in jsondic: c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+arguments.extension)
-	c.cd(1); rt.gPad.SetLogy(); CMS_lumi.CMS_lumi(c.cd(1),4,1)
+	c.cd(1); rt.gPad.SetLogy(); CMS_lumi.CMS_lumi(c.cd(1),4,0)
 	if 'filename' in jsondic: c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+arguments.extension)
 
 	# Extracting p-values from files
