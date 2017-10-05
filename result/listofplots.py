@@ -32,7 +32,7 @@ def lp(treename,filename,target):
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1., 0.5))
 	#if 'Data' in filename: bdtplot = Plot("-666."           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	#if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-	if 'Data' in filename: bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+	if 'Data' in filename and 'BDT' in target: bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 	#if 'Data' in filename: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 	#else: bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 30, -1.0, 0.5))
