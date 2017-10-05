@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x 
 
 folderwithmergedcraneens=plots_mu_topptnonjw_v2
 prefix=ARCcomments
