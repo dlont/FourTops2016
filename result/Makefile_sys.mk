@@ -17,8 +17,9 @@ sysplots: 	$(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TTTT_CARDS.root -j $(SYSPLOTDIR)/CSV_tttt.json -r $(BUILDDIR)/Hists_TTTT_CARDS.root -f $(FORMAT)
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSPLOTDIR)/Theory_tt.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TTTT_CARDS.root -j $(SYSPLOTDIR)/Theory_tttt.json -r $(BUILDDIR)/Hists_TTTT_CARDS.root -f $(FORMAT)
+	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSPLOTDIR)/TOPPTREW.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
 	@if [ -d "$(BUILDDIR)/sys" ]; then echo "$(BUILDDIR)/sys dir exists" ; else mkdir $(BUILDDIR)/sys  ; fi 
-	@mv JES_tt.$(FORMAT) JES_tttt.$(FORMAT) CSV_tt.$(FORMAT) CSV_tttt.$(FORMAT) Theory_tt.$(FORMAT) Theory_tttt.$(FORMAT) $(BUILDDIR)/sys
+	@mv JES_tt.$(FORMAT) JES_tttt.$(FORMAT) CSV_tt.$(FORMAT) CSV_tttt.$(FORMAT) Theory_tt.$(FORMAT) Theory_tttt.$(FORMAT) JESComponents_tt.$(FORMAT) JESComponents_tttt.$(FORMAT) TTPT_tt.$(FORMAT)  $(BUILDDIR)/sys
 
 sysplotsnorm: 	$(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root
 	@python -b $(SYSPLOTDIR)/sysplot.py -b $(BUILDDIR)/Hists_TT_CARDS.root -j $(SYSNORMPLOTDIR)/JES_tt.json -r $(BUILDDIR)/Hists_TT_CARDS.root -f $(FORMAT)
