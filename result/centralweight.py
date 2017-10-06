@@ -1,1 +1,1 @@
-centralweight = "ScaleFactor/toprewunc[0]*SFtrig*GenWeight"
+centralweight = "ScaleFactor*SFtrig*GenWeight"
