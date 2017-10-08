@@ -491,6 +491,7 @@ def main(arguments):
 			eyh   = gr_data_noempty.GetErrorYhigh(ibin)
 			eyl   = gr_data_noempty.GetErrorYlow(ibin)
 			if ydata[ibin] > 1.E-6:
+				#chi2+=(ydata[ibin]-ymc)**2/(((eyh+eyl)/2.)**2.)
 				chi2+=(ydata[ibin]-ymc)**2/(((eyh+eyl)/2.)**2.+eymc**2.)
 				ndf+=1.
 				gr_ratio_data.SetPoint(ibin,xdata[ibin],(ydata[ibin]-ymc)/ymc)
@@ -501,15 +502,22 @@ def main(arguments):
 		hist_ratio_unity.Draw("hist e2")
 		gr_ratio_data.Draw("same pe")
 		draw_chi2_ndf(rt.gPad,chi2,ndf)
+		print "chi2/ndf=", chi2,"/",ndf,"=",chi2/ndf
 		rt.gPad.RedrawAxis()
 			
 			
 
 	#hist_bg_prefit_unc_noempty.GetXaxis().SetRangeUser(100.,125.)
-
-	if 'filename' in jsondic: c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+arguments.extension)
-	c.cd(1); rt.gPad.SetLogy(); CMS_lumi.CMS_lumi(c.cd(1),4,0)
-	if 'filename' in jsondic: c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+arguments.extension)
+	CMS_lumi.CMS_lumi(c.cd(1),4,0)
+	if arguments.outfile: 
+		c.Print(arguments.outfile+'_lin.'+arguments.extension)
+		c.cd(1); rt.gPad.SetLogy(); 
+		c.Print(arguments.outfile+'_log.'+arguments.extension)
+	else:
+		if 'filename' in jsondic: 
+			c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+arguments.extension)
+			c.cd(1); rt.gPad.SetLogy(); 
+			c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+arguments.extension)
 
 	# Extracting p-values from files
 	if arguments.gof_data is not None and arguments.gof_toys is not None :
