@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x 
+set -x
 
 folderwithmergedcraneens=plots_mu_topptnonjw_v2
 prefix=ARCcomments/plots_mu_topptnonjw_v2
@@ -18,3 +18,4 @@ do
 	rm $targetdir/Hist*.root
 	make -j card_mu.txt ERA=full INPUTLOCATION=$folderwithmergedcraneens BUILDDIR=$targetdir/ DATALABEL:=Single\ \#mu TREENAME=Craneen__Mu TARGETVAR=$targetvar
 done
+set +x
