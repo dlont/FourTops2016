@@ -154,7 +154,12 @@ def main(arguments):
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J2M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J3M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J4M ttbarTTX 1.'.format(arguments.channel)
-	print >> arguments.outfile, '* autoMCStats 0'
+
+        print >> arguments.outfile, '#scale_nj7d10s rateParam {}10J2M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, '#scale_nj7d10s rateParam {}10J3M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, '#scale_nj7d10s rateParam {}10J4M ttbarTTX 1.'.format(arguments.channel)
+
+	print >> arguments.outfile, '#* autoMCStats 0'
 
         return 0
 
