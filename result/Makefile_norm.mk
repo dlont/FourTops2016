@@ -52,7 +52,7 @@ define calcEqLumiMCNLO
 endef
 
 DATANORM=1.
-TTTTNLOXS=9.2 #fb
+TTTTNLOXS=9.2 #fb				checked
 TTNNLOXS=831760 #fb 				checked
 TTCHNNLOXS=136020 #fb
 TBARTCHNNLOXS=80950 #fb
