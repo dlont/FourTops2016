@@ -82,7 +82,8 @@ def setTDRStyle():
 # Margins:
   #tdrStyle.SetPadTopMargin(0.05)
   tdrStyle.SetPadTopMargin(0.1)
-  tdrStyle.SetPadBottomMargin(0.13)
+  #tdrStyle.SetPadBottomMargin(0.13)
+  tdrStyle.SetPadBottomMargin(0.07)
   tdrStyle.SetPadLeftMargin(0.16)
   tdrStyle.SetPadRightMargin(0.02)
 
