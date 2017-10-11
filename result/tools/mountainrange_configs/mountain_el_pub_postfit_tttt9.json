@@ -1,0 +1,26 @@
+{
+	"stack":[
+		["el9J2M_postfit/EW", "el9J2M_postfit/ST_tW", "el9J2M_postfit/TTRARE", "el9J2M_postfit/ttbarTTX" ],
+		["el9J3M_postfit/EW", "el9J3M_postfit/ST_tW", "el9J3M_postfit/TTRARE", "el9J3M_postfit/ttbarTTX" ],
+		["el9J4M_postfit/EW", "el9J4M_postfit/ST_tW", "el9J4M_postfit/TTRARE", "el9J4M_postfit/ttbarTTX" ]
+	],
+	"totalbg":["el9J2M_postfit/TotalBkg",
+		   "el9J3M_postfit/TotalBkg",
+		   "el9J4M_postfit/TotalBkg"],
+	"prefitbg":["el9J2M_prefit/TotalBkg",
+		    "el9J3M_prefit/TotalBkg",
+		    "el9J4M_prefit/TotalBkg"],
+	"signal":["el9J2M_postfit/NP_overlay_ttttNLO",
+		  "el9J3M_postfit/NP_overlay_ttttNLO", 
+		  "el9J4M_postfit/NP_overlay_ttttNLO"],
+	"data":["el9J2M_postfit/data_obs",
+		"el9J3M_postfit/data_obs", 
+		"el9J4M_postfit/data_obs"],
+		
+	"legend":{"header":"e+jets", "coord":[0.75,0.85,0.95,0.95]},
+	"binlabels":{"ypos":0.11,
+			"labels":["N_{j}=9,N_{b}=2", "N_{j}=9,N_{b}=3", "N_{j}=9,N_{b}=4"]
+	},
+	"filename":"hist_el9_origbin_pub"
+}
+

@@ -1,0 +1,26 @@
+{
+	"stack":[
+		["mu8J2M_postfit/EW_rebin", "mu8J2M_postfit/ST_tW_rebin", "mu8J2M_postfit/TTRARE_rebin", "mu8J2M_postfit/ttbarTTX_rebin" ],
+		["mu8J3M_postfit/EW_rebin", "mu8J3M_postfit/ST_tW_rebin", "mu8J3M_postfit/TTRARE_rebin", "mu8J3M_postfit/ttbarTTX_rebin" ],
+		["mu8J4M_postfit/EW_rebin", "mu8J4M_postfit/ST_tW_rebin", "mu8J4M_postfit/TTRARE_rebin", "mu8J4M_postfit/ttbarTTX_rebin" ]
+	],
+	"totalbg":["mu8J2M_postfit/TotalBkg_rebin",
+		   "mu8J3M_postfit/TotalBkg_rebin",
+		   "mu8J4M_postfit/TotalBkg_rebin"],
+	"prefitbg":["mu8J2M_prefit/TotalBkg_rebin",
+		    "mu8J3M_prefit/TotalBkg_rebin",
+		    "mu8J4M_prefit/TotalBkg_rebin"],
+	"signal":["mu8J2M_prefit/NP_overlay_ttttNLO_rebin",
+		  "mu8J3M_prefit/NP_overlay_ttttNLO_rebin", 
+		  "mu8J4M_prefit/NP_overlay_ttttNLO_rebin"],
+	"data":["mu8J2M_postfit/data_obs_rebin",
+		"mu8J3M_postfit/data_obs_rebin", 
+		"mu8J4M_postfit/data_obs_rebin"],
+		
+	"legend":{"header":"#mu+jets", "coord":[0.2,0.0,1.0,1.0]},
+	"binlabels":{"ypos":0.11,
+			"labels":["N_{j}=8,N_{b}=2", "N_{j}=8,N_{b}=3", "N_{j}=8,N_{b}=4"]
+	},
+	"filename":"hist_mu8_pub"
+}
+
