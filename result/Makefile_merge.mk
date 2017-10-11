@@ -320,7 +320,7 @@ $(BUILDDIR)/Craneen_TTZ_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Cra
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
-$(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTH*.root)
+$(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTH_Run*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
