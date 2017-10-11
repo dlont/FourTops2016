@@ -201,10 +201,12 @@ def draw_legend(**kwargs):
 	if 'data' in kwargs: datagr = kwargs['data']
 	
 	if 'header' in kwargs['legend']:
-		legend.SetHeader(kwargs['legend']['header'])
+		#legend.SetHeader(kwargs['legend']['header'])
+		header = rt.TLatex()
+		header.DrawLatexNDC(0.2,0.8,kwargs['legend']['header'])
 
 	if canvas is not None:
-		legend.SetNColumns(3)
+		legend.SetNColumns(4)
 		legend.SetBorderSize(0)
 		#legend.SetFillStyle(0)
 
@@ -224,7 +226,7 @@ def draw_legend(**kwargs):
                         legend.AddEntry(hist_rare,"Rare",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
-			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t}",'lf')
+			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} #times 10",'lf')
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
 			legend.AddEntry(hist_pre,"Prefit unc.","fe")
@@ -284,7 +286,8 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 	
 	for item, isep in enumerate(separator_bins):
 		x = hist_template.GetBinLowEdge(isep)+hist_template.GetBinWidth(isep)
-		ymin = hist_template.GetYaxis().GetXmin()
+		#ymin = hist_template.GetYaxis().GetXmin()
+		ymin = hist_template.GetMinimum()
 		ymax = hist_template.GetMaximum()
 		#print x, hist_template.GetMaximum()
 		l = rt.TLine(x,ymin,x,ymax); l.SetLineColor(rt.kBlack); l.SetLineWidth(2)
@@ -292,9 +295,9 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 	
 		if isinstance(labels,list):
 			tex = rt.TLatex()
-			tex.SetTextSize(0.030)
+			tex.SetTextSize(0.045)
 			tex.SetTextAlign(32)
-			tex.SetTextAngle(45)
+			#tex.SetTextAngle(45)
 			cxmin=c.GetLeftMargin()
 			cxmax=1.-c.GetRightMargin()
 			cymin=c.GetXlowNDC()
@@ -303,8 +306,8 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
 			#xndc= c.GetLeftMargin()
 			print isep,xndc,ycoord,labels[item]
-			tex.DrawLatexNDC(xndc,ycoord,labels[item])
-			if (item == len(separator_bins)-1): tex.DrawLatexNDC(cxmax,ycoord,labels[item+1])
+			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item])
+			if (item == len(separator_bins)-1): tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1])
 	
 def draw_chi2_ndf(c,chi2,ndf):
 	c.cd()
@@ -392,6 +395,7 @@ def main(arguments):
 	hist_bg_unc_noempty.SetLineWidth(0)
 	
 	hist_sig_noempty    = noemptybins(hist_sig, binmapping); 
+	hist_sig_noempty.Scale(arguments.scale_signal)
 	hist_sig_noempty.SetLineColor(hatchColor); 
 	hist_sig_noempty.SetLineWidth(2)
         
@@ -407,7 +411,7 @@ def main(arguments):
 	hist_bg_prefit_unc_noempty.SetFillStyle(0); 
 	hist_bg_prefit_unc_noempty.GetXaxis().SetLabelSize(0); 
 	hist_bg_prefit_unc_noempty.GetYaxis().SetTitleSize(0.07); 
-	hist_bg_prefit_unc_noempty.GetYaxis().SetTitleOffset(0.7);  
+	hist_bg_prefit_unc_noempty.GetYaxis().SetTitleOffset(0.8);  
 	#hist_bg_prefit_unc_noempty.GetXaxis().SetTitleSize(0.07); 
 	hist_bg_prefit_unc_noempty.GetXaxis().SetTitleSize(0.0); 
 	hist_bg_prefit_unc_noempty.GetXaxis().SetTitleOffset(0.7)
@@ -428,15 +432,15 @@ def main(arguments):
 	c1.RedrawAxis()
 	c1.Print('hist1.png')
 
-	c = rt.TCanvas('c',"CMS",5,45,1000,950)
+	c = rt.TCanvas('c',"CMS",5,45,1000,750)
 	if arguments.is_ratio and gr_data:
 		c.Divide(1,3)
 		c.cd(3)
-		rt.gPad.SetPad(0.,0.,1.,0.2)
+		rt.gPad.SetPad(0.,0.,1.,0.1)
 		c.cd(2)
-		rt.gPad.SetPad(0.,0.2,1.,0.5)
+		rt.gPad.SetPad(0.,0.1,1.,0.375);rt.gPad.SetFillStyle(4000)
 		c.cd(1)
-		rt.gPad.SetPad(0.,0.5,1.,1.)
+		rt.gPad.SetPad(0.,0.3,1.,1.);rt.gPad.SetFillStyle(4000)
 	hist_bg_prefit_unc_noempty.Draw("E2")
 	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
 	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
@@ -470,13 +474,15 @@ def main(arguments):
 			motherhistxtitle = ';Bin id (%s);Data/Pred.' % re.sub(r' \(.*\)', '', motherhistxtitle)
 			hist_ratio_unity.SetTitle(motherhistxtitle)
 		hist_ratio_unity.GetXaxis().SetTitleSize(0.15)
-		hist_ratio_unity.GetXaxis().SetLabelSize(0.15)
-		hist_ratio_unity.GetYaxis().SetTitleSize(0.15)
-		hist_ratio_unity.GetYaxis().SetTitleOffset(0.3)
-		hist_ratio_unity.GetYaxis().SetLabelSize(0.10)
+		hist_ratio_unity.GetXaxis().SetLabelSize(0.0)
+		hist_ratio_unity.GetXaxis().SetTickLength(0.12)
+		hist_ratio_unity.GetYaxis().SetTitleSize(0.19)
+		hist_ratio_unity.GetYaxis().SetTitleOffset(0.26)
+		hist_ratio_unity.GetYaxis().SetLabelSize(0.13)
+		hist_ratio_unity.GetYaxis().SetLabelOffset(0.01)
 		#hist_ratio_unity.GetXaxis().CenterTitle()
 		hist_ratio_unity.GetYaxis().CenterTitle()
-		hist_ratio_unity.GetYaxis().SetNdivisions(10)
+		hist_ratio_unity.GetYaxis().SetNdivisions(5)
 		hist_ratio_unity.Divide(hist_ratio_unity)
 		gr_ratio_data = rt.TGraphAsymmErrors()
 		gr_ratio_data.SetMarkerStyle(20)
@@ -501,8 +507,11 @@ def main(arguments):
 		#hist_ratio_unity.GetYaxis().SetRangeUser(-2.,2.)
 		hist_ratio_unity.Draw("hist e2")
 		gr_ratio_data.Draw("same pe")
-		draw_chi2_ndf(rt.gPad,chi2,ndf)
-		print "chi2/ndf=", chi2,"/",ndf,"=",chi2/ndf
+		print "IUAYSFIUYASF: ", arguments.draw_chi2
+		if arguments.draw_chi2: draw_chi2_ndf(rt.gPad,chi2,ndf)
+		if ndf > 0:
+			print "chi2/ndf=", chi2,"/",ndf,"=",chi2/ndf
+		draw_subhist_separators(c.cd(2),stitch_edges,binmapping, None,jsondic['binlabels']['ypos'], hist_ratio_unity)
 		rt.gPad.RedrawAxis()
 			
 			
@@ -551,10 +560,12 @@ if __name__ == '__main__':
         parser.add_argument('-e', '--extension', help="Plot file extension (.C, .root, .png, .pdf)", default='png')
         parser.add_argument('--dir', help="Plots output directory", default='./')
         parser.add_argument('--blind', help="Blind datapoints from these categories [CAT1,CAT2]", default=None, type=str)
+        parser.add_argument('--scale-signal', help="Scale signal", default=10., type=float)
         parser.add_argument('--gof-toys', help="ROOT file with GOF toys for p-value calculation")
         parser.add_argument('--gof-data', help="ROOT file with observed p-value")
         parser.add_argument('--distrib-title', help="Histogram title settings", default=';;Events')
         parser.add_argument('--distrib-title-ratio', help="Ratio histogram title settings", default=None)
+        parser.add_argument('--draw-chi2', help="Plot chi2 on the plot", dest='draw_chi2', action='store_true', default=False)
         #parser.add_argument('--distrib-title-ratio', help="Ratio histogram title settings", default=';Bin id (D_{t#bar{t}t#bar{t}}^{lj});Rel. diff.')
         parser.add_argument('-b', help="ROOT batch mode", dest='isBatch', action='store_true')
 
