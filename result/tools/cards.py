@@ -18,8 +18,10 @@ import numpy as np
 import ROOT
 
 from cards_proc_list import proc_id
-from cards_syst_list_fsrisruenorm_jetsplit import systtypelist
-from cards_syst_list_fsrisruenorm_jetsplit import syst_norm_size_list, syst_shape_size_list
+from cards_syst_list_fsrisruenorm_jetsplit_v2 import systtypelist
+from cards_syst_list_fsrisruenorm_jetsplit_v2 import syst_norm_size, syst_shape_size_list
+#from cards_syst_list_fsrisruenorm_jetsplit import systtypelist
+#from cards_syst_list_fsrisruenorm_jetsplit import syst_norm_size_list, syst_shape_size_list
 #from cards_syst_list_fsrisruenorm import systtypelist
 #from cards_syst_list_fsrisruenorm import syst_norm_size_list, syst_shape_size_list
 #from cards_syst_list import systtypelist
@@ -117,6 +119,8 @@ def main(arguments):
                             )
             #Fill systematics desctiption for this process
             #Normalization
+	    syst_norm_size_list = syst_norm_size(files,arguments.channel)
+
             df_update = pd.DataFrame.from_dict(syst_norm_size_list[arguments.channel][proc], orient='index')
             df_update.columns = binlist[arguments.channel]
             s.update(df_update)
