@@ -304,9 +304,9 @@ card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/H
 	@echo "make HiggsCombine cards"
 	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
 
-datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
+$(BUILDDIR)/datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
 	@echo "Combining datacards $^"
-	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $(BUILDDIR)/$@
+	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $@
 
 $(BUILDDIR)/datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
 	@combine -M Asymptotic --run $(RUN) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit2 $^ >> temp.comb.1
