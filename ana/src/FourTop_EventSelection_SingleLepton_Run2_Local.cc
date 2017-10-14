@@ -706,7 +706,7 @@ int main (int argc, char *argv[])
 	    auto top16010_fidpscuts = [](TRootGenJet* jet){return ( jet->Pt()>20&&fabs(jet->Eta())<2.5); };
 	    ngenjets20Eta25 = std::count_if( std::begin(genjets), std::end(genjets), top16010_fidpscuts );   
 
-	    auto top16010b_fidpscuts = [](TRootGenJet* jet){cout << "T: " << jet->type()<<endl; return (jet->Pt()>20 && fabs(jet->Eta())<2.5 && fabs(jet->type()) == 5); };
+	    auto top16010b_fidpscuts = [](TRootGenJet* jet){return (jet->Pt()>20 && fabs(jet->Eta())<2.5 && fabs(jet->type()) == 5); };
 	    nbjetsfid = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fidpscuts); 
 	    //auto top16010b_fidpscuts = [](TRootMCParticle* p){return ( p->Pt()>20&&fabs(p->Eta())<2.5)&&fabs(p->type())==5&&p->isLastCopy();};
 	    //nbjetsfid = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fidpscuts); 
