@@ -585,6 +585,13 @@ int main (int argc, char *argv[])
 	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
         long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
         double    genweight = 0.;		booktup -> Branch("Genweight",&genweight,"Genweight/D");
+        long long genttxtype = -999;		booktup -> Branch("Genttxtype",&genttxtype,"Genttxtype/I");
+        long long nleptons = -999;		booktup -> Branch("nleptons",&nleptons,"nleptons/I");
+        long long ngenjets = -999;		booktup -> Branch("nGenjets",&ngenjets,"nGenjets/I");
+        long long nbjetsfid = -999;		booktup -> Branch("nbjetsfid",&nbjetsfid,"nbjetsfid/I");
+        long long nbjetsful = -999;		booktup -> Branch("nbjetsful",&nbjetsful,"nbjetsful/I");
+        long long ngenjets20 = -999;		booktup -> Branch("nGenjets20",&ngenjets20,"nGenjets20/I");
+        long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
 	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
 
@@ -671,6 +678,9 @@ int main (int argc, char *argv[])
                 genjets = treeLoader.LoadGenJet(ievt,false);
             }
 
+            vector<TRootMCParticle*> mcParticles_flav;
+            treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
+
             ///////////////////////////////////////////
             //      Set up for miniAOD weights       //
             ///////////////////////////////////////////
@@ -689,6 +699,25 @@ int main (int argc, char *argv[])
 		    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
 		    if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
 	    }
+            genttxtype = event->getgenTTX_id();
+	    ngenjets = genjets.size();   
+	    ngenjets20 = std::count_if( std::begin(genjets), std::end(genjets), [](TRootGenJet* jet){return (jet->Pt()>20);} );   
+	
+	    auto top16010_fidpscuts = [](TRootGenJet* jet){return ( jet->Pt()>20&&fabs(jet->Eta())<2.5); };
+	    ngenjets20Eta25 = std::count_if( std::begin(genjets), std::end(genjets), top16010_fidpscuts );   
+
+	    auto top16010b_fidpscuts = [](TRootGenJet* jet){cout << "T: " << jet->type()<<endl; return (jet->Pt()>20 && fabs(jet->Eta())<2.5 && fabs(jet->type()) == 5); };
+	    nbjetsfid = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fidpscuts); 
+	    //auto top16010b_fidpscuts = [](TRootMCParticle* p){return ( p->Pt()>20&&fabs(p->Eta())<2.5)&&fabs(p->type())==5&&p->isLastCopy();};
+	    //nbjetsfid = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fidpscuts); 
+	    auto top16010b_fulpscuts = [](TRootGenJet* jet){return jet->Pt()>20&&fabs(jet->type())==5;};
+	    nbjetsful = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fulpscuts); 
+	    //auto top16010b_fulpscuts = [](TRootMCParticle* p){return p->Pt()>20&&fabs(p->type())==5&&p->isLastCopy();};
+	    //nbjetsful = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fulpscuts); 
+
+	    auto top16010_fidleptons = [](TRootMCParticle* p){return (fabs(p->type())==11 || fabs(p->type())==13) && p->Pt()>20 && fabs(p->Eta())<2.4 &&
+								      p->isLastCopy() && fabs(p->grannyType())==6; };
+	    nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
 	    booktup -> Fill();
    
             int treenumber = datasets[d]->eventTree()->GetTreeNumber(); 
@@ -891,15 +920,18 @@ int main (int argc, char *argv[])
                 ttXtype = event->getgenTTX_id();
 		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
 			if (ttXtype % 100 > 50) {
-				ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
-                                ttXrew_up = (4.0 + 0.6 + 1.3) / (3.2 - 0.4);
-                                ttXrew_down = (4.0 - 0.6 - 1.3) / (3.2 + 0.4);
+				ttXrew  = 1.;	
+                                ttXrew_up = 1.5;
+                                ttXrew_down = 0.5;
+				//ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
+                        	//ttXrew_up = (4.0 + 0.6 + 1.3) / (3.2 - 0.4);
+                        	//ttXrew_down = (4.0 - 0.6 - 1.3) / (3.2 + 0.4);
 
 			}
 			if (ttXtype % 100 == 0) {	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
-				ttXrew  = 184./257.;				//0.716
-				ttXrew_up = (184. + 6. + 33.) / (257. - 26.);	//0.965
-				ttXrew_down = (184. - 6. - 33.) / (257. + 26.);	//0.512
+				//ttXrew  = 184./257.;				//0.716
+				//ttXrew_up = (184. + 6. + 33.) / (257. - 26.);	//0.965
+				//ttXrew_down = (184. - 6. - 33.) / (257. + 26.);	//0.512
 			}
 			scaleFactor *= ttXrew;
 		}
@@ -1179,11 +1211,10 @@ int main (int argc, char *argv[])
             double fTopPtReWeightsf = 1.;
             double fTopPtReWeightsfUp = 1.;
             double fTopPtReWeightsfDown = 1.;
-            vector<TRootMCParticle*> mcParticles_flav;
             // TRootGenEvent* genEvt_flav = 0;
             if(dataSetName.find("TTJets")!=string::npos){
                 // genEvt_flav = treeLoader.LoadGenEvent(ievt,false);
-                treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
+                // treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
                 
                 auto fAntitopPtsf = 1., fTopPtsf = 1.;
                 auto fAntitopPtsfUp = 1., fTopPtsfUp = 1.;
