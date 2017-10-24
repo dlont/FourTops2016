@@ -921,8 +921,8 @@ int main (int argc, char *argv[])
 		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
 			if (ttXtype % 100 > 50) {
 				ttXrew  = 1.;	
-                                ttXrew_up = 1.5;
-                                ttXrew_down = 0.5;
+                                ttXrew_up = 1.35;
+                                ttXrew_down = 0.65;
 				//ttXrew  = 4.0/3.2;	//see TOP-16-10 for cross sections
                         	//ttXrew_up = (4.0 + 0.6 + 1.3) / (3.2 - 0.4);
                         	//ttXrew_down = (4.0 - 0.6 - 1.3) / (3.2 + 0.4);
