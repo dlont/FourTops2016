@@ -588,3 +588,119 @@ Generate scripts for adding exta mvas on cluster
 cd /user/dlontkov/t2016/result/addfriend/Mu
 ../generate_jobs.sh -s ../submitSkeleton.sh ../../plots_mu_toppt/"Cran*".root
 for i in *.sh;do qsub $i;done
+
+
+
+Wed 02 Aug 2017 01:07:09 PM CEST
+
+for i in plots_mu_toppt/Cran*.root; do echo ln -s `readlink -f $i` plots_mu_toppt_LeptonPt/`basename $i`;done
+for i in plots_el_toppt/Cran*.root; do echo ln -s `readlink -f $i` plots_el_toppt_LeptonPt/`basename $i`;done
+
+
+
+# Wed Aug 23 07:46:41 CEST 2017
+resubmit crashed jobs
+for i in `grep -IirnL "End of" *.o*`;do ../../../../resubmit.sh  -o /user/dlontkov/t2016/output/Craneens_Mu/Craneens21_8_2017/ -s ../.. -f $i;done
+
+
+# Mon Aug 28 10:35:41 CEST 2017
+## Signal to background ratio tables
+
++ Make json files with signal and background rates
+```
+muons:
+python /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/SBratio.py -o SB.json --caption='pT>30 GeV' --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt
+electrons:
+python /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/SBratio.py -o SB.json --caption='pT>30 GeV' --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt
+```
++ Parse json output from previous steps into tables
+```
+python /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/parseSBratio.py -f tex SB_1.json SB_2.json
+```
+
+Example output:
+python /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/parseSBratio.py -f tex plots_el_topptnonjw_lowbpt/SB.json plots_el_topptnonjw/SB.json
+
+Search category     &        BG rate&    Signal rate&      S/B ratio&        BG rate&    Signal rate&      S/B ratio\\
+el8J2M              &        1485.82&           1.66&        0.00111&        1373.05&           1.68&        0.00123\\
+el8J3M              &         399.47&           1.26&        0.00316&         331.11&           1.17&        0.00354\\
+el8J4M              &          73.39&           0.47&        0.00643&          54.99&           0.41&        0.00753\\
+el9J2M              &         446.82&           1.25&        0.00280&         410.21&           1.23&        0.00299\\
+el9J3M              &         152.00&           0.98&        0.00647&         127.58&           0.89&        0.00701\\
+el9J4M              &          35.02&           0.44&        0.01263&          25.49&           0.38&        0.01495\\
+el10J2M             &         174.16&           1.10&        0.00631&         159.52&           1.08&        0.00680\\
+el10J3M             &          65.42&           0.94&        0.01444&          54.78&           0.82&        0.01501\\
+el10J4M             &          15.73&           0.55&        0.03528&          10.88&           0.47&        0.04332\\
+
+python /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/parseSBratio.py -f tex plots_mu_topptnonjw_lowbpt/SB.json plots_mu_topptnonjw/SB.json
+Search category     &        BG rate&    Signal rate&      S/B ratio&        BG rate&    Signal rate&      S/B ratio\\
+mu7J2M              &        6219.78&           2.51&        0.00040&        5732.48&           2.59&        0.00045\\
+mu7J3M              &        1357.77&           1.65&        0.00121&        1148.11&           1.57&        0.00137\\
+mu7J4M              &         205.71&           0.55&        0.00269&         162.67&           0.49&        0.00302\\
+mu8J2M              &        2276.40&           2.60&        0.00114&        2094.27&           2.60&        0.00124\\
+mu8J3M              &         614.91&           1.97&        0.00320&         510.56&           1.83&        0.00358\\
+mu8J4M              &         114.03&           0.73&        0.00640&          87.08&           0.63&        0.00723\\
+mu9J2M              &         708.68&           1.81&        0.00255&         643.86&           1.76&        0.00273\\
+mu9J3M              &         230.63&           1.56&        0.00675&         185.53&           1.44&        0.00778\\
+mu9J4M              &          47.46&           0.66&        0.01390&          33.99&           0.58&        0.01696\\
+mu10J2M             &         257.34&           1.63&        0.00635&         235.59&           1.56&        0.00660\\
+mu10J3M             &          88.94&           1.45&        0.01633&          72.58&           1.33&        0.01828\\
+mu10J4M             &          27.79&           0.81&        0.02931&          21.77&           0.67&        0.03070\\
+
+
+
+Tue Sep 19 18:57:39 CEST 2017
+Impacts
+combineTool.py -M Impacts -d combo_topptnonjw_v1/datacard_muel_nomcstat.root --doInitialFit -m 125 -t -1 --expectSignal=1 --robustFit=1
+combineTool.py -M Impacts -d combo_topptnonjw_v1/datacard_muel_nomcstat.root --doFits -m 125 --parallel 4 -t -1 --expectSignal=1 --robustFit=1 
+combineTool.py -M Impacts -d combo_topptnonjw_v1/datacard_muel_nomcstat.root -o impacts_combined_elmu.json -m 125 -t -1 --expectSignal=1 --robustFit=1 
+plotImpacts.py -i impacts_combined_elmu.json -o impacts_combined_elmu
+
+
+
+# Wed  Sep 27 23:20:21 CEST 2017
+mkdir plots_mu_topptnonjw_v1/png plots_mu_topptnonjw_v1/pdf
+make -j  plots_mu INPUTLOCATION=plots_mu_topptnonjw_v1 BUILDDIR=plots_mu_topptnonjw_v1 TREENAME=Craneen__Mu DATALABEL=Single\ \#mu FORMAT=png
+rm -rf plots_mu_topptnonjw_v1/png/l*; mv plots_mu_topptnonjw_v1/l* plots_mu_topptnonjw_v1/png
+make -j  plots_mu INPUTLOCATION=plots_mu_topptnonjw_v1 BUILDDIR=plots_mu_topptnonjw_v1 TREENAME=Craneen__Mu DATALABEL=Single\ \#mu FORMAT=pdf
+rm -rf plots_mu_topptnonjw_v1/pdf/l*; mv plots_mu_topptnonjw_v1/l* plots_mu_topptnonjw_v1/pdf
+make -j card_mu.txt INPUTLOCATION=plots_mu_topptnonjw_v1 BUILDDIR=plots_mu_topptnonjw_v1 TREENAME=Craneen__Mu DATALABEL=Single\ \#mu FORMAT=png
+make -j sysplots BUILDDIR=plots_mu_topptnonjw_v1 FORMAT=png
+make -j sysplotsnorm BUILDDIR=plots_mu_topptnonjw_v1 FORMAT=png
+make -j sysplots BUILDDIR=plots_mu_topptnonjw_v1 FORMAT=pdf
+make -j sysplotsnorm BUILDDIR=plots_mu_topptnonjw_v1 FORMAT=pdf
+
+mkdir plots_el_topptnonjw_v1/png plots_el_topptnonjw_v1/pdf
+make -j  plots_el INPUTLOCATION=plots_el_topptnonjw_v1 BUILDDIR=plots_el_topptnonjw_v1 TREENAME=Craneen__El DATALABEL=Single\ el FORMAT=png
+rm -rf plots_el_topptnonjw_v1/pdf/l*; mv plots_el_topptnonjw_v1/l* plots_el_topptnonjw_v1/png
+make -j  plots_el INPUTLOCATION=plots_el_topptnonjw_v1 BUILDDIR=plots_el_topptnonjw_v1 TREENAME=Craneen__El DATALABEL=Single\ el FORMAT=pdf
+mv plots_el_topptnonjw_v1/l* plots_el_topptnonjw_v1/pdf
+make -j card_el.txt INPUTLOCATION=plots_el_topptnonjw_v1 BUILDDIR=plots_el_topptnonjw_v1 TREENAME=Craneen__El DATALABEL=Single\ el FORMAT=png
+make -j sysplots BUILDDIR=plots_el_topptnonjw_v1 FORMAT=png
+make -j sysplots BUILDDIR=plots_el_topptnonjw_v1 FORMAT=pdf
+
+mkdir plots_topptnonjw_v1/png plots_topptnonjw_v1/pdf
+make -j mergechannelsplots BUILDDIR=plots_topptnonjw_v1 BUILDDIR_EL=plots_el_topptnonjw_v1 BUILDDIR_MU=plots_mu_topptnonjw_v1
+make -j  plots_mu INPUTLOCATION=plots_topptnonjw_v1 BUILDDIR=plots_topptnonjw_v1 DATALABEL=Single\ l FORMAT=png
+mv plots_topptnonjw_v1/l* plots_topptnonjw_v1/png
+make -j  plots_mu INPUTLOCATION=plots_topptnonjw_v1 BUILDDIR=plots_topptnonjw_v1 DATALABEL=Single\ l FORMAT=pdf
+mv plots_topptnonjw_v1/l* plots_topptnonjw_v1/pdf
+
+mkdir plots_topptnonjw_v1
+make -j datacard_elmu.txt BUILDDIR=plots_topptnonjw_v1 BUILDDIR_EL=plots_el_topptnonjw_v1 BUILDDIR_MU=plots_mu_topptnonjw_v1
+make -j plots_topptnonjw_v1/datacard_elmu.root BUILDDIR=plots_topptnonjw_v1 BUILDDIR_EL=plots_el_topptnonjw_v1 BUILDDIR_MU=plots_mu_topptnonjw_v1
+make -j impacts_combined_elmu_blind.pdf BUILDDIR=plots_topptnonjw_v1
+make -j limits BUILDDIR=plots_topptnonjw_v1 BUILDDIR_EL=plots_el_topptnonjw_v1 BUILDDIR_MU=plots_mu_topptnonjw_v1 FORMAT=txt
+make -j combinechecks BUILDDIR=plots_topptnonjw_v1 BUILDDIR_EL=plots_el_topptnonjw_v1 BUILDDIR_MU=plots_mu_topptnonjw_v1
+
+
+# Sun Oct  1 10:43:15 CEST 2017
+mkdir plots_mu_topptnonjw_v2
+mkdir plots_mu_topptnonjw_v2/png plots_mu_topptnonjw_v2/pdf
+make -j  plots_mu INPUTLOCATION=plots_mu_topptnonjw_v2/ BUILDDIR=plots_mu_topptnonjw_v2 TREENAME=Craneen__Mu DATALABEL=Single\ \#mu FORMAT=png
+
+
+# Sun Oct  1 23:17:33 CEST 2017
+################################### SUPERIMPORTANT ################################
+mybtag branch changes always have to be merged into master CMSSW_80X because master branch has different electron definition!!!!!
+################################### SUPERIMPORTANT ################################
