@@ -2,6 +2,9 @@ from centralweight import centralweight
 def getTTXCutSets(syst,cut_string):
     cut_sets = [
         #central
+	("allSF_{0}Up".format(syst), "inclusive",    "(1 {0})*{1}/ttxrew*Max$(abs(ttxw))".format(cut_string,centralweight)),
+	("allSF_{0}Down".format(syst), "inclusive",    "(1 {0})*{1}/ttxrew*Min$(abs(ttxw))".format(cut_string,centralweight)),
+
         ("6J2M_{0}Up".format(syst), "Njet=6, nMtags=2",    "(nJets==6 && nMtags==2 {0})*{1}/ttxrew*Max$(abs(ttxw))".format(cut_string,centralweight)),
         ("6J3M_{0}Up".format(syst), "Njet=6, nMtags=3",    "(nJets==6 && nMtags==3 {0})*{1}/ttxrew*Max$(abs(ttxw))".format(cut_string,centralweight)),
         ("6J4M_{0}Up".format(syst), "Njet=6, nMtags=4",    "(nJets==6 && nMtags>=4 {0})*{1}/ttxrew*Max$(abs(ttxw))".format(cut_string,centralweight)),

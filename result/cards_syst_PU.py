@@ -2,6 +2,8 @@ from centralweight import centralweight
 def cut_PU(cut_string):
 	cut_PU = [
 	#PU UP
+	("allSF_PUUp", "inclusive",  "(1 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
+
 	("6J2M_PUUp", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 	("6J3M_PUUp", "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 	("6J4M_PUUp", "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
@@ -18,6 +20,8 @@ def cut_PU(cut_string):
 	("10J3M_PUUp", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 	("10J4M_PUUp", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 	#PU DOWN
+	("allSF_PUDown", "inclusive",  "(1 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
+
 	("6J2M_PUDown", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
 	("6J3M_PUDown", "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
 	("6J4M_PUDown", "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),

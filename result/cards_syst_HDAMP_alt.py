@@ -7,6 +7,8 @@ def getHDAMPAltCutSets(syst,cut_string):
     else: 
         print 'Unrecognised systematic', systematic
     cut_sets = [
+        ("allSF_TTJets_HDAMP{1}".format(syst,var), "inclusive",  "(1 {0})*{1}".format(cut_string,centralweight)),
+
         ("6J2M_TTJets_HDAMP{1}".format(syst,var), "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}".format(cut_string,centralweight)),
         ("6J3M_TTJets_HDAMP{1}".format(syst,var), "Njet=6, nMtags=3",  "(nJets==6 && nMtags==3 {0})*{1}".format(cut_string,centralweight)),
         ("6J4M_TTJets_HDAMP{1}".format(syst,var), "Njet=6, nMtags=4",  "(nJets==6 && nMtags>=4 {0})*{1}".format(cut_string,centralweight)),
