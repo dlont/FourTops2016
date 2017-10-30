@@ -1,3 +1,9 @@
+
+#binlist = {
+#'mu':['allSF'],
+#'el':['allSF']
+#}
+
 binlist = {
 'mu':[
 #'mu6J2M',
