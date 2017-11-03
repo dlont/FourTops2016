@@ -403,6 +403,7 @@ int main (int argc, char *argv[])
     vector < TRootMuon* >     init_muons;
     vector < TRootElectron* > init_electrons;
     vector < TRootJet* >      init_jets;
+    vector < TRootJet* >      init_uncor_jets;
     vector < TRootMET* >      mets;
     vector < TRootGenJet* > genjets;
 
@@ -605,7 +606,9 @@ int main (int argc, char *argv[])
         int currentRun;           
         vector<TRootElectron*> selectedElectrons;
         vector<TRootPFJet*>    selectedOrigJets; //all original jets before jet lepton cleaning
+        vector<TRootPFJet*>    selectedOrigUncorJets; //all original jets before jet lepton cleaning
         vector<TRootPFJet*>    selectedJets; //all jets after jet lepton cleaning
+        vector<TRootPFJet*>    selectedUncorJets; //all jets after jet lepton cleaning
         vector<TRootPFJet*>    selectedJets2; //after removal of 2 highest CSVL btags
         vector<TRootPFJet*>    selectedpreJECJERJets;
 
@@ -652,6 +655,8 @@ int main (int argc, char *argv[])
         ////////////////////////////////////////////////////////////////////////////////
         //                                 Loop on events                             //
         ////////////////////////////////////////////////////////////////////////////////
+	
+        auto printjetdata = [](const TRootJet* j) {std::cout << j->Pt() << " " << j->Eta() << std::endl;};
 
         for (long long ievt = event_start; ievt < end_d; ievt++)
         {
@@ -674,6 +679,11 @@ int main (int argc, char *argv[])
             bool trigged = false;  // Disabling the HLT requirement
             LOG(INFO) <<"Load Event";
             event = treeLoader.LoadEvent (ievt, vertex, init_muons, init_electrons, init_jets, mets, debug);
+	    init_uncor_jets.clear();
+	    for( auto j: init_jets ) {
+		init_uncor_jets.push_back(new TRootPFJet(*(static_cast<TRootPFJet*>(j))));
+	    }
+	    
             if (!isData) {
                 genjets = treeLoader.LoadGenJet(ievt,false);
             }
@@ -731,15 +741,16 @@ int main (int argc, char *argv[])
             //////////////////////////////////////
             ///  Jet Energy Scale Corrections  ///
             //////////////////////////////////////
-	
-	    auto printjetdata = [](const TRootJet* j) {std::cout << j->Pt() << " " << j->Eta() << std::endl;};
 		//std::cout << "Before correction" << std::endl;
 		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
             if (applyJER && !isData)
             {
                 if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
                 else if(JERUp)   jetTools->correctJetJER(init_jets, genjets, mets[0], "plus", false);
-                else jetTools->correctJetJER(init_jets, genjets, mets[0], "nominal", false);
+                else {
+			jetTools->correctJetJER(init_jets, genjets, mets[0], "nominal", false);
+			jetTools->correctJetJER(init_uncor_jets, genjets, mets[0], "nominal", false);
+		}
                 /// Example how to apply JES systematics
             }
 
@@ -751,20 +762,25 @@ int main (int argc, char *argv[])
             if (applyJEC)   ///should this have  && dataSetName.find("Data")==string::npos
             {
                 jetTools->correctJets(init_jets, event->fixedGridRhoFastjetAll(), isData);
+                jetTools->correctJets(init_uncor_jets, event->fixedGridRhoFastjetAll(), isData);
             }
-		//std::cout << "After correction" << std::endl;
-		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
 
             ///////////////////////////////////////////////////////////
             //           Object definitions for selection            //
             ///////////////////////////////////////////////////////////
             Run2Selection r2selection(init_jets, init_muons, init_electrons, mets);
+            Run2Selection r2uncor_selection(init_uncor_jets, init_muons, init_electrons, mets);
+		//std::cout << "Init After correction" << std::endl;
+		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
+		//std::cout << "Init Before correction" << std::endl;
+		//for_each( std::begin(init_uncor_jets), std::end(init_uncor_jets), printjetdata);
 
             int nMu = 0, nEl = 0, nLooseMu = 0, nLooseEl = 0; //number of (loose) muons/electrons
 
             LOG(INFO) <<"Get jets";
             //selectedOrigJets                                    = r2selection.GetSelectedJets(25.,2.4,true,"Loose");                                        
             selectedOrigJets                                    = r2selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
+            selectedOrigUncorJets                                    = r2uncor_selection.GetSelectedJets(30.,2.4,true,"Loose");                                        
             if(Electron){
                 LOG(INFO) <<"Get Loose Muons";
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
@@ -815,11 +831,17 @@ int main (int argc, char *argv[])
             //            Jet lepton cleaning              //
             /////////////////////////////////////////////////
             selectedJets.clear();
+            selectedUncorJets.clear();
             //std::cout<<nMu<<"<--nmu  nEl-->"<<nEl<<std::endl;
             if(Muon && nMu>0){
                 for (int origJets=0; origJets<selectedOrigJets.size(); origJets++){
                     if(selectedOrigJets[origJets]->DeltaR(*selectedMuons[0])>0.4){
                         selectedJets.push_back(selectedOrigJets[origJets]);
+                    }                    
+                }
+                for (int origJets=0; origJets<selectedOrigUncorJets.size(); origJets++){
+                    if(selectedOrigUncorJets[origJets]->DeltaR(*selectedMuons[0])>0.4){
+                        selectedUncorJets.push_back(selectedOrigUncorJets[origJets]);
                     }                    
                 }
             }
@@ -829,8 +851,16 @@ int main (int argc, char *argv[])
                         selectedJets.push_back(selectedOrigJets[origJets]);
                     }                       
                 }
+                for (int origJets=0; origJets<selectedOrigUncorJets.size(); origJets++){
+                    if(selectedOrigUncorJets[origJets]->DeltaR(*selectedElectrons[0])>0.4){
+                        selectedUncorJets.push_back(selectedOrigUncorJets[origJets]);
+                    }                    
+                }
             }
-            else selectedJets = selectedOrigJets;
+            else {
+		selectedJets = selectedOrigJets;
+		selectedUncorJets = selectedOrigUncorJets;
+	    }
 
 	    //auto printPtBtag = [](const TRootPFJet* jet){
 	    //    cout << setw(10) << jet->Pt() << setw(10) << jet->btag_combinedInclusiveSecondaryVertexV2BJetTags() << endl;
@@ -1106,6 +1136,13 @@ int main (int argc, char *argv[])
             //get btag weight info
                 if(!fillingbTagHistos){
                     csvrsweights = csvrsw->getSFs(selectedJets);
+		    if (JESUp || JESDown) csvrsweights = csvrsw->getSFs(selectedUncorJets);
+		
+		    //std::cout << "Before correction" << std::endl;
+		    //for_each( std::begin(selectedUncorJets), std::end(selectedUncorJets), printjetdata);
+		    //std::cout << "After correction" << std::endl;
+		    //for_each( std::begin(selectedJets), std::end(selectedJets), printjetdata);
+
                     for(auto el: csvrsweights) DLOG(INFO) << "CSVRS:" << std::setw(10) << el.first << std::setw(10) << el.second ;
                 }      
             }
@@ -1551,6 +1588,8 @@ int main (int argc, char *argv[])
             myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
             tupfile->cd();
             tup->Fill();
+
+	for( auto j: init_uncor_jets ) delete j;
 
         } //End Loop on Events
         std::cout<<"Write files"<<std::endl;
