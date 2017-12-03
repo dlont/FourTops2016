@@ -347,7 +347,7 @@ def main(arguments):
 	#nbins
 	nbins=0; rangex=0.;
         for hname in jsondic['prefitbg']:
-		h = referencefile.Get(hname)
+		h = referencefile.Get(hname.encode('ascii','ignore'))
 		nbins += h.GetNbinsX()
 		rangex+= h.GetXaxis().GetXmax()
 	print nbins, rangex
@@ -358,7 +358,7 @@ def main(arguments):
 		longhist = rt.TH1D("reference_"+referencefile.GetName(),"",nbins,0.,rangex)
 		xmin = 0
 		for hname in jsondic['reference']:
-			h = referencefile.Get(hname)
+			h = referencefile.Get(hname.encode('ascii','ignore'))
 			for ibin in range(1,h.GetNbinsX()+1):
 				longhist.SetBinContent(xmin+ibin,h.GetBinContent(ibin))
 			xmin += h.GetNbinsX()
@@ -372,7 +372,7 @@ def main(arguments):
 		longhist.SetLineWidth(1)
 		xmin = 0
 		for hname in jsondic['prefitbg']:
-			h = f.Get(hname)
+			h = f.Get(hname.encode('ascii','ignore'))
 			for ibin in range(1,h.GetNbinsX()+1):
 				longhist.SetBinContent(xmin+ibin,h.GetBinContent(ibin))
 			xmin += h.GetNbinsX()
@@ -386,11 +386,12 @@ def main(arguments):
 		longhist.SetLineStyle(2)
 		longhist.SetLineWidth(1)
 		xmin = 0
-		for hname in jsondic['postfitbg']:
-			h = f.Get(hname)
-			for ibin in range(1,h.GetNbinsX()+1):
-				longhist.SetBinContent(xmin+ibin,h.GetBinContent(ibin))
-			xmin += h.GetNbinsX()
+		if 'postfitbg' in jsondic:
+			for hname in jsondic['postfitbg']:
+				h = f.Get(hname)
+				for ibin in range(1,h.GetNbinsX()+1):
+					longhist.SetBinContent(xmin+ibin,h.GetBinContent(ibin))
+				xmin += h.GetNbinsX()
 			
 		longhistfromfiles_post.append(longhist)
 
