@@ -704,3 +704,368 @@ make -j  plots_mu INPUTLOCATION=plots_mu_topptnonjw_v2/ BUILDDIR=plots_mu_topptn
 ################################### SUPERIMPORTANT ################################
 mybtag branch changes always have to be merged into master CMSSW_80X because master branch has different electron definition!!!!!
 ################################### SUPERIMPORTANT ################################
+
+
+# Tue Nov 14 04:16:29 CET 2017
+command to run limit with mc stats and limits without stepping 
+In order to reduce the number of Barlow-Beeston parameters do
+	*4M autoMCstats 1
+
+combine -M AsymptoticLimits final_unblinding/50bins/datacard_elmu.root --run both --rRelAcc=0.0000000001 --rAbsAcc=0.0000000001  --minosAlgo=bisection  --cminDefaultMinimizerType=Minuit2 --X-rtd MINIMIZER_analytic
+
+## Combine Long's and my datacards
+combineCards.py MU=final_unblinding/50bins/plots_mu/card_mu.txt EL=final_unblinding/50bins/plots_el/card_el.txt MUMU=final_unblinding/longs/datacardMuMu_BDT_MuMu18thSep2017_13TeVHadTop_JTS.txt ELEL=final_unblinding/longs/datacardElEl_BDT_ElEl18thSep2017_13TeVHadTop_JTS.txt MUEL=final_unblinding/longs/datacardMuEl_BDT_MuEl18thSep2017_13TeVHadTop_JTS.txt > final_unblinding/combo.txt
+
+
+## r scans
+combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL --algo grid -n _dl --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameter lumiscale --setParameters lumiscale=1. final_unblinding/longs/dilepton_lumiscale.txt --points 200
+
+combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL --algo grid -n _sl --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameter lumiscale --setParameters lumiscale=1. final_unblinding/50bins/datacard_elmu_lumiscale.txt --points 200
+
+combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL --algo grid -n _combo --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameter lumiscale --setParameters lumiscale=1. final_unblinding/combo_lumiscale.txt  --points 200
+
+python NLL_scans.py -f .pdf -j '{"sl":"higgsCombine_sl.MultiDimFit.mH120.root","dl":"higgsCombine_dl.MultiDimFit.mH120.root","combo":"higgsCombine_combo.MultiDimFit.mH120.root", "sl_fit":[1.0,2.47,-1.0],"dl_fit":[1.0,1.74,-1.0],"combo_fit":[1.0,1.34,-1.0]}' -b
+
+
+# Thu Nov 16 14:16:35 CET 2017
+## SL, OS, SS combination
+make -f Makefile_comb.mk final_combination/fullcombo.root BUILDDIR=final_combination BUILDDIR_EL=final_unblinding/50bins/plots_el BUILDDIR_MU=final_unblinding/50bins/plots_mu BUILDDIR_OS=final_unblinding/longs BUILDDIR_SS=~/CMSSW_7_4_7/src/SS_2017/uaf-8.t2.ucsd.edu/fourtop_combination_17Aug2017
+
+All systematics uncorrelated
+combine -M Asymptotic --run blind final_unblinding/full_combo.txt
+
+Expected  2.5%: r < 0.7819
+Expected 16.0%: r < 1.0972
+Expected 50.0%: r < 1.6406
+Expected 84.0%: r < 2.5104
+Expected 97.5%: r < 3.7206
+
+# JES correlated
+
+## OS combination
+make -n -f Makefile_comb.mk final_unblinding/longs/jes_total/datacard_os.txt  BUILDDIR=final_combination BUILDDIR_SL=final_unblinding/50bins/  BUILDDIR_EL=final_unblinding/50bins/plots_el BUILDDIR_MU=final_unblinding/50bins/plots_mu BUILDDIR_OS=final_unblinding/longs/jes_total BUILDDIR_SS=~/CMSSW_7_4_7/src/SS_2017/uaf-8.t2.ucsd.edu/fourtop_combination_17Aug2017
+
+make -f Makefile_comb.mk final_combination/fullcombo_cor.root BUILDDIR=final_combination BUILDDIR_SL=final_unblinding/50bins/  BUILDDIR_EL=final_unblinding/50bins/plots_el BUILDDIR_MU=final_unblinding/50bins/plots_mu BUILDDIR_OS=final_unblinding/longs/jes_total BUILDDIR_SS=~/CMSSW_7_4_7/src/SS_2017/uaf-8.t2.ucsd.edu/fourtop_combination_17Aug2017
+
+ -- AsymptoticLimits ( CLs ) --
+Expected  2.5%: r < 0.7670
+Expected 16.0%: r < 1.0829
+Expected 50.0%: r < 1.6094
+Expected 84.0%: r < 2.4433
+Expected 97.5%: r < 3.5633
+
+
+# Fri Nov 17 12:06:07 CET 2017
+individual systematics stack
+python tools/plot_stack_syst.py -b final_unblinding/50bins/plots_mu/Hists_TTTT_CARDS.root final_unblinding/50bins/unblinded
+
+# Sat Nov 18 17:00:09 CET 2017
+# Mountain range plots for all systematic sources
+
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters JER --setParameters JER=-1 -n _jer_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters JER --setParameters JER=+1 -n _jer_up --out final_unblinding/50bins/unblinded --saveShapes
+
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters PU --setParameters PU=-1 -n _PU_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters PU --setParameters PU=+1 -n _PU_up --out final_unblinding/50bins/unblinded --saveShapes
+
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTJets_PDF --setParameters TTJets_PDF=-1 -n _ttpdf_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTJets_PDF --setParameters TTJets_PDF=+1 -n _ttpdf_up --out final_unblinding/50bins/unblinded --saveShapes
+
+
+TTPT
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTPT --setParameters TTPT=-1 -n _ttpt_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTPT --setParameters TTPT=+1 -n _ttpt_up --out final_unblinding/50bins/unblinded --saveShapes
+
+heavyFlav
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters heavyFlav --setParameters heavyFlav=-1 -n _hf_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters heavyFlav --setParameters heavyFlav=+1 -n _hf_up --out final_unblinding/50bins/unblinded --saveShapes
+
+ttMEScale
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters ttMEScale --setParameters ttMEScale=-1 -n _ttme_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters ttMEScale --setParameters ttMEScale=+1 -n _ttme_up --out final_unblinding/50bins/unblinded --saveShapes
+
+ttttMEScale
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTTTMEScale --setParameters TTTTMEScale=-1 -n _ttttme_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters TTTTMEScale --setParameters TTTTMEScale=+1 -n _ttttme_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVCFErr1
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVCFErr1 --setParameters btagWeightCSVCFErr1=-1 -n _CFErr1_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVCFErr1 --setParameters btagWeightCSVCFErr1=+1 -n _CFErr1_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVCFErr2
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVCFErr2 --setParameters btagWeightCSVCFErr2=-1 -n _CFErr2_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVCFErr2 --setParameters btagWeightCSVCFErr2=+1 -n _CFErr2_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVHF
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHF --setParameters btagWeightCSVHF=-1 -n _CSVHF_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHF --setParameters btagWeightCSVHF=+1 -n _CSVHF_up --out final_unblinding/50bins/unblinded --saveShapes
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHF_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHF_down.root --outfile longhist_btCSVHF --sysname=CSVHF -b
+
+btagWeightCSVHFStats1
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHFStats1 --setParameters btagWeightCSVHFStats1=-1 -n _CSVHFStats1_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHFStats1 --setParameters btagWeightCSVHFStats1=+1 -n _CSVHFStats1_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVHFStats2
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHFStats2 --setParameters btagWeightCSVHFStats2=-1 -n _CSVHFStats2_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVHFStats2 --setParameters btagWeightCSVHFStats2=+1 -n _CSVHFStats2_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVJES
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVJES --setParameters btagWeightCSVJES=-1 -n _CSVJES_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVJES --setParameters btagWeightCSVJES=+1 -n _CSVJES_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVLF
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLF --setParameters btagWeightCSVLF=-1 -n _CSVLF_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLF --setParameters btagWeightCSVLF=+1 -n _CSVLF_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVLFStats1
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLFStats1 --setParameters btagWeightCSVLFStats1=-1 -n _CSVLFStats1_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLFStats1 --setParameters btagWeightCSVLFStats1=+1 -n _CSVLFStats1_up --out final_unblinding/50bins/unblinded --saveShapes
+
+btagWeightCSVLFStats2
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLFStats2 --setParameters btagWeightCSVLFStats2=-1 -n _CSVLFStats2_down --out final_unblinding/50bins/unblinded --saveShapes
+combine -M FitDiagnostics final_unblinding/50bins/datacard_elmu_total_jes.root --skipBOnlyFit --freezeParameters btagWeightCSVLFStats2 --setParameters btagWeightCSVLFStats2=+1 -n _CSVLFStats2_up --out final_unblinding/50bins/unblinded --saveShapes
+
+#python plotting Electron channel
+
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_up.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_down.root -b --sysname=JES --outfile=longhist_jes
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_up.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_down.root --outfile longhist_pu --sysname=PU -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpdf_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpdf_down.root --outfile longhist_ttpdf --sysname=ttPDF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpt_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpt_down.root --outfile longhist_ttpt --sysname=ttPT -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_hf_up.root final_unblinding/50bins/unblinded/fitDiagnostics_hf_down.root --outfile longhist_hf --sysname=HF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttme_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttme_down.root --outfile longhist_ttme --sysname=ttME -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_down.root --outfile longhist_btCFErr1 --sysname=CFErr1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_down.root --outfile longhist_btCFErr2 --sysname=CFErr2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_down.root --outfile longhist_CSVHFStats1 --sysname=CSVHFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_down.root --outfile longhist_CSVHFStats2 --sysname=CSVHFStats2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_down.root --outfile longhist_CSVJES --sysname=CSVJES -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_down.root --outfile longhist_CSVLF --sysname=CSVLF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_down.root --outfile longhist_CSVLFStats1 --sysname=CSVLFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_down.root --outfile longhist_CSVLFStats2 --sysname=CSVLFStats2 -b
+
+#python plotting Muon channel
+
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_up.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_down.root -b --sysname=JES --outfile=longhist_jes
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_up.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_down.root --outfile longhist_pu --sysname=PU -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpdf_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpdf_down.root --outfile longhist_ttpdf --sysname=ttPDF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpt_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttpt_down.root --outfile longhist_ttpt --sysname=ttPT -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_hf_up.root final_unblinding/50bins/unblinded/fitDiagnostics_hf_down.root --outfile longhist_hf --sysname=HF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttme_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttme_down.root --outfile longhist_ttme --sysname=ttME -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_down.root --outfile longhist_btCFErr1 --sysname=CFErr1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_down.root --outfile longhist_btCFErr2 --sysname=CFErr2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_down.root --outfile longhist_CSVHFStats1 --sysname=CSVHFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_down.root --outfile longhist_CSVHFStats2 --sysname=CSVHFStats2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_down.root --outfile longhist_CSVJES --sysname=CSVJES -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_down.root --outfile longhist_CSVLF --sysname=CSVLF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_down.root --outfile longhist_CSVLFStats1 --sysname=CSVLFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_down.root --outfile longhist_CSVLFStats2 --sysname=CSVLFStats2 -b
+
+#python plotting Electron channel
+
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_up.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_down.root -b --sysname=JES --outfile=longhist_signal_jes
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_up.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_down.root --outfile longhist_signal_pu --sysname=PU -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttttme_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttttme_down.root --outfile longhist_signal_ttttme --sysname=ttttME -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_down.root --outfile longhist_signal_btCFErr1 --sysname=CFErr1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_down.root --outfile longhist_signal_btCFErr2 --sysname=CFErr2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_down.root --outfile longhist_signal_CSVHFStats1 --sysname=CSVHFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_down.root --outfile longhist_signal_CSVHFStats2 --sysname=CSVHFStats2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_down.root --outfile longhist_signal_CSVJES --sysname=CSVJES -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_down.root --outfile longhist_signal_CSVLF --sysname=CSVLF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_down.root --outfile longhist_signal_CSVLFStats1 --sysname=CSVLFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_el.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_down.root --outfile longhist_signal_CSVLFStats2 --sysname=CSVLFStats2 -b
+
+#python plotting Muon channel
+
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_up.root final_unblinding/50bins/unblinded/fitDiagnostics_jes_down.root -b --sysname=JES --outfile=longhist_signal_jes
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_up.root final_unblinding/50bins/unblinded/fitDiagnostics_PU_down.root --outfile longhist_signal_pu --sysname=PU -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_ttttme_up.root final_unblinding/50bins/unblinded/fitDiagnostics_ttttme_down.root --outfile longhist_signal_ttttme --sysname=ttttME -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr1_down.root --outfile longhist_signal_btCFErr1 --sysname=CFErr1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CFErr2_down.root --outfile longhist_signal_btCFErr2 --sysname=CFErr2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats1_down.root --outfile longhist_signal_CSVHFStats1 --sysname=CSVHFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVHFStats2_down.root --outfile longhist_signal_CSVHFStats2 --sysname=CSVHFStats2 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVJES_down.root --outfile longhist_signal_CSVJES --sysname=CSVJES -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLF_down.root --outfile longhist_signal_CSVLF --sysname=CSVLF -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats1_down.root --outfile longhist_signal_CSVLFStats1 --sysname=CSVLFStats1 -b
+python tools/mountainrange_ratio_variant2.py -j tools/mountainrangeratio_configs/mountain_fitdiag_signal_mu.json -r final_unblinding/50bins/unblinded/fitDiagnostics_jes_central.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_up.root final_unblinding/50bins/unblinded/fitDiagnostics_CSVLFStats2_down.root --outfile longhist_signal_CSVLFStats2 --sysname=CSVLFStats2 -b
+
+
+#Mon Nov 20 07:20:04 CET 2017
+##Limits with different binning
+
+combine -M MaxLikelihoodFit -d final_unblinding/10bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=0  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+Best fit r: 9.99201e-14  -9.99201e-14/+100  (68% CL)
+nll S+B -> -99.7984  nll B -> -101.488
+
+combine -M MaxLikelihoodFit -d final_unblinding/10bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+Best fit r: 1.05476  -11.0548/+98.9452  (68% CL)
+nll S+B -> -114.824  nll B -> -116.482
+
+combine -M Asymptotic -d final_unblinding/10bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=0,mask_MU_mu10J3M=0,mask_MU_mu10J2M=0,mask_MU_mu9J4M=0,mask_MU_mu9J3M=0,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=0,mask_EL_el10J3M=0,mask_EL_el10J2M=0,mask_EL_el9J4M=0,mask_EL_el9J3M=0,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic
+
+ -- Asymptotic -- 
+Observed Limit: r < 14.2461
+Expected  2.5%: r < 4.8278
+Expected 16.0%: r < 6.5410
+Expected 50.0%: r < 9.2578
+Expected 84.0%: r < 13.1325
+Expected 97.5%: r < 18.1193
+
+*blind*
+ -- Asymptotic -- 
+Expected  2.5%: r < 4.4125
+Expected 16.0%: r < 5.9228
+Expected 50.0%: r < 8.3984
+Expected 84.0%: r < 11.9804
+Expected 97.5%: r < 16.6939
+
+combine -M MaxLikelihoodFit -d final_unblinding/25bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=0  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+Best fit r: 0.0463339  -0.0463339/+99.9537  (68% CL)
+nll S+B -> -99.3509  nll B -> -102.474
+
+combine -M MaxLikelihoodFit -d final_unblinding/25bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+
+combine -M Asymptotic -d final_unblinding/25bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=0,mask_MU_mu10J3M=0,mask_MU_mu10J2M=0,mask_MU_mu9J4M=0,mask_MU_mu9J3M=0,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=0,mask_EL_el10J3M=0,mask_EL_el10J2M=0,mask_EL_el9J4M=0,mask_EL_el9J3M=0,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic
+
+
+*blind*
+Expected  2.5%: r < 3.8111
+Expected 16.0%: r < 5.1570
+Expected 50.0%: r < 7.3633
+Expected 84.0%: r < 10.6212
+Expected 97.5%: r < 14.8968
+
+combine -M Asymptotic -d final_unblinding/25bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=0  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic
+*aposteriory* CR
+
+
+combine -M MaxLikelihoodFit -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+Best fit r: 15.0172  -25.0172/+84.9828  (68% CL)
+nll S+B -> -129.43  nll B -> -128.624
+*blind*
+ -- Asymptotic -- 
+Expected  2.5%: r < 6.9999
+Expected 16.0%: r < 9.5773
+Expected 50.0%: r < 13.9453
+Expected 84.0%: r < 20.5601
+Expected 97.5%: r < 28.6669
+*aposteriory*
+ -- Asymptotic -- 
+Observed Limit: r < 37.3739
+Expected  2.5%: r < 7.1619
+Expected 16.0%: r < 10.0282
+Expected 50.0%: r < 14.7266
+Expected 84.0%: r < 21.8293
+Expected 97.5%: r < 30.8846
+
+
+combine -M Asymptotic -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=0,mask_MU_mu10J3M=0,mask_MU_mu10J2M=0,mask_MU_mu9J4M=0,mask_MU_mu9J3M=0,mask_MU_mu9J2M=0,mask_MU_mu8J4M=0,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=0,mask_EL_el10J3M=0,mask_EL_el10J2M=0,mask_EL_el9J4M=0,mask_EL_el9J3M=0,mask_EL_el9J2M=0,mask_EL_el8J4M=0,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=100 --rMin=-10 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic
+
+ -- Asymptotic -- 
+Observed Limit: r < 18.2750
+Expected  2.5%: r < 3.7745
+Expected 16.0%: r < 5.2081
+Expected 50.0%: r < 7.5195
+Expected 84.0%: r < 10.9065
+Expected 97.5%: r < 15.2511
+
+*blind*
+ -- Asymptotic -- 
+Expected  2.5%: r < 3.1809
+Expected 16.0%: r < 4.4081
+Expected 50.0%: r < 6.3867
+Expected 84.0%: r < 9.4162
+Expected 97.5%: r < 13.2853
+
+
+combine -M Asymptotic -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=0  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic
+Observed Limit: r < 39.6393
+Expected  2.5%: r < 8.7062
+Expected 16.0%: r < 12.7191
+Expected 50.0%: r < 19.2969
+Expected 84.0%: r < 29.0655
+Expected 97.5%: r < 42.1371
+
+combine -M MaxLikelihoodFit -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=0  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --initFromBonly --robustFit=1
+Best fit r: 2.76754  -2.76754/+97.2325  (68% CL)
+
+
+
+
+
+
+
+############
+python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_mu_pub_tttt10_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png; python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_mu_pub_tttt9_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png; python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_mu_pub_tttt8_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png; python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_mu_pub_tttt7_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png;############
+python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_el_pub_tttt10_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png; python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_el_pub_tttt9_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png; python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_el_pub_tttt8_prefit_combo.json final_unblinding/50bins/unblinded_all/mlfit.root -r -b -e png;
+
+###################### Free floating normalization
+
+# Sun Nov 26 17:52:04 CET 2017
+## Prefit and postfit normalizations
+python tools/postfitnorm.py final_unblinding/50bins/unblinded_all/fitDiagnostics_no10j3m.root
+
+# Tue Nov 28 21:16:35 CET 2017
+combine -M MaxLikelihoodFit -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=0,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit1 --X-rtd MINIMIZER_analytic --freezeNuisances scale_nj6d8s,scale_nj6d9s,scale_nj7d10s,TTJets_norm,ttMEScale,TTJets_HDAMP,TTJets_PDF,heavyFlav,tttt_norm,TTTTMEScale,ST_tW_norm,EW_norm,TTRARE_norm,lumi,PU,JES,JER,leptonSFMu,leptonSFEl,TTISR,TTFSR,TTUE,TTPT,TTTTISR,TTTTFSR,btagWeightCSVJES,btagWeightCSVHF,btagWeightCSVLF,btagWeightCSVHFStats1,btagWeightCSVHFStats2,btagWeightCSVLFStats1,btagWeightCSVLFStats2,btagWeightCSVCFErr1,btagWeightCSVCFErr2,TTJets_norm10 -v2 -S0
+
+# Wed Nov 29 02:18:28 CET 2017
+combine -M FitDiagnostics -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=0,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit1 --X-rtd MINIMIZER_analytic --freezeParameters scale_nj6d9s,scale_nj7d10s
+
+# fixing MC stats parameters
+combine -M MaxLikelihoodFit -d final_unblinding/50bins/datacard_elmu_total_jes.root --setPhysicsModelParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=0,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=100 --rMin=0 --cminDefaultMinimizerType=Minuit2 --X-rtd MINIMIZER_analytic --freezeNuisances r,scale_nj6d9s,scale_nj7d10s,rgx{'prop.*'} --robustFit=1 --cminPreScan --cminSingleNuisFit --saveShapes --saveWithUncertainties --saveNormalizations -n _mu84_bg_only
+
+############################################################################################################################
+############################################################################################################################
+############################################################################################################################
+############################################################################################################################
+```
+combine -M Asymptotic -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj6d9s,scale_nj7d10s,rgx{'prop.*'} --picky
+```
+ -- AsymptoticLimits ( CLs ) --
+Observed Limit: r < 33.3652
+Expected  2.5%: r < 12.5418
+Expected 16.0%: r < 16.9820
+Expected 50.0%: r < 24.1406
+Expected 84.0%: r < 34.6292
+Expected 97.5%: r < 47.8080
+```
+combine -M FitDiagnostics -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj6d9s,scale_nj7d10s,rgx{'prop.*'}
+```
+ --- FitDiagnostics ---
+Best fit r: 12.3447  -12.3447/+10.4649  (68% CL)
+```
+combine -M Significance -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj6d9s,scale_nj7d10s,rgx{'prop.*'}
+```
+ -- Significance -- 
+Significance: 1.26143
+
+```
+combine -M Asymptotic -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj7d10s,rgx{'prop.*'}
+```
+ -- AsymptoticLimits ( CLs ) --
+Observed Limit: r < 26.5895
+Expected  2.5%: r < 10.0708
+Expected 16.0%: r < 13.6924
+Expected 50.0%: r < 19.5312
+Expected 84.0%: r < 28.0950
+Expected 97.5%: r < 38.8532
+
+### observed hybrid limit
+```
+combine -M HybridNew --LHCmode LHC-limits -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj7d10s,rgx{'prop.*'} --rAbsAcc=1 --rRelAcc=0.2
+```
+Limit: r < 28.0428 +/- 2.5 @ 95% CL
+
+### expected median limit (takes about 20 mins)
+```
+combine -M HybridNew --LHCmode LHC-limits -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=1,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=0,mask_MU_mu8J4M=1,mask_MU_mu8J3M=0,mask_MU_mu8J2M=0,mask_MU_mu7J4M=0,mask_MU_mu7J3M=0,mask_MU_mu7J2M=0,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=0,mask_EL_el8J4M=1,mask_EL_el8J3M=0,mask_EL_el8J2M=0  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --freezeParameters scale_nj7d10s,rgx{'prop.*'} --rAbsAcc=1 --rRelAcc=0.2 --expectedFromGrid=0.5
+```
+ -- Hybrid New -- 
+Limit: r < 19.664 +/- 1.61944 @ 95% CL
+
+
+#################### Hybrid significance ##########################
+step 1:
+combine -M HybridNew -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=0,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --LHCmode LHC-significance  --saveToys --fullBToys --saveHybridResult -T 500 -i 1 -s -1
+
+step 2:
+combine -M HybridNew -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=0,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --LHCmode LHC-significance  --readHybridResult --toysFile higgsCombineTest.HybridNew.mH120.-1302417571.roo
+
