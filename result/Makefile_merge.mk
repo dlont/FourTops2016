@@ -307,7 +307,7 @@ $(BUILDDIR)/Craneen_DY2Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCA
 $(BUILDDIR)/Craneen_DY3Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY3Jets_50MG*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
-$(BUILDDIR)/Craneen_DY4Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY1Jets_50MG*.root)
+$(BUILDDIR)/Craneen_DY4Jets_50MG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_DY4Jets_50MG*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
