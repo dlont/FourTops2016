@@ -4,6 +4,7 @@
 Script for mountain range plots with post-fit uncertainties from combine
 """
 
+import gc
 import re
 import os
 import sys
@@ -55,7 +56,7 @@ def fillsingle_data(gr_master, rootfile, graphs, hist_template, blind=None):
 	gr = None
 	for igr,name in enumerate(graphs):
 		gr = rootfile.Get(name.encode('ascii'))
-		if gr.InheritsFrom('TH1'): 
+		if isinstance(gr, rt.TH1): 
 			gr.SetBinErrorOption(rt.TH1.kPoisson)
 			gr = rt.TGraphAsymmErrors(gr)
 		nbins = gr.GetN()
@@ -203,7 +204,7 @@ def draw_legend(**kwargs):
 	if 'header' in kwargs['legend']:
 		#legend.SetHeader(kwargs['legend']['header'])
 		header = rt.TLatex()
-		header.DrawLatexNDC(0.2,0.8,kwargs['legend']['header'])
+		header.DrawLatexNDC(0.2,0.85,kwargs['legend']['header'])
 
 	if canvas is not None:
 		legend.SetNColumns(4)
@@ -226,7 +227,7 @@ def draw_legend(**kwargs):
                         legend.AddEntry(hist_rare,"Rare",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
-			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} #times 10",'lf')
+			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t}",'lf')
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
 			legend.AddEntry(hist_pre,"Prefit unc.","fe")
@@ -262,7 +263,7 @@ def draw_bin_labels(c,masterhist,labels,ycoord,edges=None):
 			xndc=(x - xmin)/(xmax - xmin)
 			tex.DrawLatexNDC(xndc,ycoord,label)
 
-def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_template):
+def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_template):
 
 	mappedbins = binmapping.keys()
 	mappedbins.sort()
@@ -283,6 +284,8 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 	logging.debug(pprint.pformat( separator_bins ) )
 
 	c.cd()
+
+        ycoord = conf['ypos']
 	
 	for item, isep in enumerate(separator_bins):
 		x = hist_template.GetBinLowEdge(isep)+hist_template.GetBinWidth(isep)
@@ -295,7 +298,8 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 	
 		if isinstance(labels,list):
 			tex = rt.TLatex()
-			tex.SetTextSize(0.045)
+                        if 'size' in conf: tex.SetTextSize(conf['size'])
+                        else: tex.SetTextSize(0.045)
 			tex.SetTextAlign(32)
 			#tex.SetTextAngle(45)
 			cxmin=c.GetLeftMargin()
@@ -303,11 +307,18 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,ycoord,hist_tem
 			cymin=c.GetXlowNDC()
 			xmax = hist_template.GetXaxis().GetXmax()
 			xmin = hist_template.GetXaxis().GetXmin()
+                        if isinstance(labels[item],list) and len(labels[item])>1: x = labels[item][1]
 			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
 			#xndc= c.GetLeftMargin()
-			print isep,xndc,ycoord,labels[item]
-			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item])
-			if (item == len(separator_bins)-1): tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1])
+			print isep,xndc,ycoord,labels[item][0]
+			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
+			if (item == len(separator_bins)-1): 
+                            if isinstance(labels[item+1],list) and len(labels[item+1])>1: 
+                                x = labels[item+1][1]
+			        xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+                                tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
+                            else: 
+                                tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
 	
 def draw_chi2_ndf(c,chi2,ndf):
 	c.cd()
@@ -342,6 +353,7 @@ def main(arguments):
 	nbins = 0
 	logging.debug( '%s: %s' % ('signal',jsondic['signal']) )
 	for hist_name in jsondic['signal']:
+		logging.debug( 'hist %s' % (hist_name) )
 		hist = inputrootfile.Get(hist_name.encode('ascii'))
 		nb = hist.GetNbinsX()
 		logging.debug( 'hist %s, nbins=%s' % (hist_name, nb) )
@@ -407,7 +419,8 @@ def main(arguments):
 		hist_st_noempty.Add(hist_noempty,'hist')
 	
 	hist_bg_prefit_unc_noempty = noemptybins(hist_bg_prefit_unc, binmapping); 
-	hist_bg_prefit_unc_noempty.SetMarkerSize(0); 
+	#hist_bg_prefit_unc_noempty.SetMarkerSize(0); 
+	hist_bg_prefit_unc_noempty.SetMarkerStyle(27); 
 	hist_bg_prefit_unc_noempty.SetFillStyle(0); 
 	hist_bg_prefit_unc_noempty.GetXaxis().SetLabelSize(0); 
 	hist_bg_prefit_unc_noempty.GetYaxis().SetTitleSize(0.07); 
@@ -430,7 +443,7 @@ def main(arguments):
 	if gr_data: gr_data.Draw("same pe")
 	#c1.SetLogy()
 	c1.RedrawAxis()
-	c1.Print('hist1.png')
+	#c1.Print('hist1.png')
 
 	c = rt.TCanvas('c',"CMS",5,45,1000,750)
 	if arguments.is_ratio and gr_data:
@@ -444,9 +457,13 @@ def main(arguments):
 	hist_bg_prefit_unc_noempty.Draw("E2")
 	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
 	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
+        ytitle = None
 	if "axes" in jsondic:
 		if "ymin" in jsondic['axes']: ymin = jsondic['axes']['ymin']
 		if "ymax" in jsondic['axes']: ymax = jsondic['axes']['ymax']
+                if "ytitle" in jsondic['axes']: 
+                    ytitle = jsondic['axes']['ytitle']
+	            hist_bg_prefit_unc_noempty.GetYaxis().SetTitle(ytitle)
 	hist_bg_prefit_unc_noempty.SetAxisRange(ymin, ymax, "Y")
 	hist_st_noempty.Draw("same")
 	hist_bg_prefit_unc_noempty.Draw("E2 same")
@@ -460,7 +477,7 @@ def main(arguments):
 			hist_st=hist_st_noempty.GetHists()[-3],
 			hist_ew=hist_st_noempty.GetHists()[-4])
 	#draw_bin_labels(c.cd(1),hist_bg_prefit_unc_noempty,jsondic['binlabels']['labels'],jsondic['binlabels']['ypos'],stitch_edges)
-	draw_subhist_separators(c.cd(1),stitch_edges,binmapping, jsondic['binlabels']['labels'],jsondic['binlabels']['ypos'], hist_bg_prefit_unc_noempty)
+	draw_subhist_separators(c.cd(1),stitch_edges,binmapping, jsondic['binlabels']['labels'],jsondic['binlabels'], hist_bg_prefit_unc_noempty)
 	rt.gPad.RedrawAxis()
 
 	if arguments.is_ratio and gr_data:
@@ -507,11 +524,10 @@ def main(arguments):
 		#hist_ratio_unity.GetYaxis().SetRangeUser(-2.,2.)
 		hist_ratio_unity.Draw("hist e2")
 		gr_ratio_data.Draw("same pe")
-		print "IUAYSFIUYASF: ", arguments.draw_chi2
 		if arguments.draw_chi2: draw_chi2_ndf(rt.gPad,chi2,ndf)
 		if ndf > 0:
 			print "chi2/ndf=", chi2,"/",ndf,"=",chi2/ndf
-		draw_subhist_separators(c.cd(2),stitch_edges,binmapping, None,jsondic['binlabels']['ypos'], hist_ratio_unity)
+		draw_subhist_separators(c.cd(2),stitch_edges,binmapping, None,jsondic['binlabels'], hist_ratio_unity)
 		rt.gPad.RedrawAxis()
 			
 			
@@ -560,9 +576,9 @@ if __name__ == '__main__':
         parser.add_argument('-e', '--extension', help="Plot file extension (.C, .root, .png, .pdf)", default='png')
         parser.add_argument('--dir', help="Plots output directory", default='./')
         parser.add_argument('--blind', help="Blind datapoints from these categories [CAT1,CAT2]", default=None, type=str)
-        parser.add_argument('--scale-signal', help="Scale signal", default=10., type=float)
-        parser.add_argument('--gof-toys', help="ROOT file with GOF toys for p-value calculation")
-        parser.add_argument('--gof-data', help="ROOT file with observed p-value")
+        parser.add_argument('--scale-signal', help="Scale signal", default=1., type=float)
+        parser.add_argument('--gof-toys', help="ROOT file with GOF toys for p-value calculation", default=None)
+        parser.add_argument('--gof-data', help="ROOT file with observed p-value", default=None)
         parser.add_argument('--distrib-title', help="Histogram title settings", default=';;Events')
         parser.add_argument('--distrib-title-ratio', help="Ratio histogram title settings", default=None)
         parser.add_argument('--draw-chi2', help="Plot chi2 on the plot", dest='draw_chi2', action='store_true', default=False)
