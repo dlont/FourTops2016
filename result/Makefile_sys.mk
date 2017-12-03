@@ -60,21 +60,21 @@ impacts_combined_elmu_bgregion.pdf: $(BUILDDIR)/datacard_elmu.root
 combinechecks: $(BUILDDIR_MU)/card_mu.root $(BUILDDIR_EL)/card_el.root $(BUILDDIR)/datacard_elmu.root
 	@echo "Asimov checks"
 	@echo "Asimov check: Single lepton combined"
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) $(BUILDDIR)/datacard_elmu.root -n _AsimovComb0 --out $(BUILDDIR)
-	@python $(DIFFNUIS) --absolute -a $(BUILDDIR)/fitDiagnostics_AsimovComb0.root -g $(BUILDDIR)/plots_AsimovComb0.root
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) $(BUILDDIR)/datacard_elmu.root -n _AsimovComb1 --out $(BUILDDIR)
-	@python $(DIFFNUIS) --absolute -a $(BUILDDIR)/mlfit_AsimovComb1.root -g $(BUILDDIR)/plots_AsimovComb1.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR)/datacard_elmu.root -n _AsimovComb0 --out $(BUILDDIR)
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR)/fitDiagnostics_AsimovComb0.root -g $(BUILDDIR)/plots_AsimovComb0.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR)/datacard_elmu.root -n _AsimovComb1 --out $(BUILDDIR)
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR)/mlfit_AsimovComb1.root -g $(BUILDDIR)/plots_AsimovComb1.root
 	@echo "Asimov check: Single muon"
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) $(BUILDDIR_MU)/card_mu.root -n _AsimovMu0 --out $(BUILDDIR_MU); \
-	python $(DIFFNUIS) --absolute -a $(BUILDDIR_MU)/fitDiagnostics_AsimovMu0.root -g $(BUILDDIR_MU)/plots_AsimovMu0.root
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) $(BUILDDIR_MU)/card_mu.root -n _AsimovMu1 --out $(BUILDDIR_MU); \
-	python $(DIFFNUIS) --absolute -a $(BUILDDIR_MU)/fitDiagnostics_AsimovMu1.root -g $(BUILDDIR_MU)/plots_AsimovMu1.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR_MU)/card_mu.root -n _AsimovMu0 --out $(BUILDDIR_MU); 
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR_MU)/fitDiagnostics_AsimovMu0.root -g $(BUILDDIR_MU)/plots_AsimovMu0.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR_MU)/card_mu.root -n _AsimovMu1 --out $(BUILDDIR_MU); 
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR_MU)/fitDiagnostics_AsimovMu1.root -g $(BUILDDIR_MU)/plots_AsimovMu1.root
 	@echo "Asimov check: Single electron"
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) $(BUILDDIR_EL)/card_el.root -n _AsimovEl0 --out $(BUILDDIR_EL); \
-	python $(DIFFNUIS) --absolute -a $(BUILDDIR_EL)/fitDiagnostics_AsimovEl0.root -g $(BUILDDIR_EL)/plots_AsimovEl0.root
-	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) $(BUILDDIR_EL)/card_el.root -n _AsimovEl1 --out $(BUILDDIR_EL); \
-	python $(DIFFNUIS) --absolute -a $(BUILDDIR_EL)/fitDiagnostics_AsimovEl1.root -g $(BUILDDIR_EL)/plots_AsimovEl1.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 0 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR_EL)/card_el.root -n _AsimovEl0 --out $(BUILDDIR_EL); 
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR_EL)/fitDiagnostics_AsimovEl0.root -g $(BUILDDIR_EL)/plots_AsimovEl0.root
+	@combine -M MaxLikelihoodFit -t -1 --expectSignal 1 --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(BUILDDIR_EL)/card_el.root -n _AsimovEl1 --out $(BUILDDIR_EL); 
+	-python $(DIFFNUIS) --absolute -a $(BUILDDIR_EL)/fitDiagnostics_AsimovEl1.root -g $(BUILDDIR_EL)/plots_AsimovEl1.root
 	#@echo "Pulls and correlations"
-	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --plots --saveShapes --out $(BUILDDIR)     $(BUILDDIR)/datacard_elmu.txt -n _CorrComb
-	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --plots --saveShapes --out $(BUILDDIR_MU)  $(BUILDDIR_MU)/card_mu.txt -n _CorrMu
-	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --plots --saveShapes --out $(BUILDDIR_EL)  $(BUILDDIR_EL)/card_el.txt -n _CorrEl
+	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) --plots --saveShapes --out $(BUILDDIR)     $(BUILDDIR)/datacard_elmu.txt -n _CorrComb
+	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) --plots --saveShapes --out $(BUILDDIR_MU)  $(BUILDDIR_MU)/card_mu.txt -n _CorrMu
+	#@combine -M MaxLikelihoodFit --robustFit=true $(MINOS) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) --plots --saveShapes --out $(BUILDDIR_EL)  $(BUILDDIR_EL)/card_el.txt -n _CorrEl

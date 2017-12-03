@@ -10,6 +10,9 @@ CARDGEN=/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrusse
 
 TARGETVAR=BDT
 
+MINIMIZER=Minuit
+STATONLY=
+
 #TTTT
 $(BUILDDIR)/Hists_TTTT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
@@ -309,25 +312,35 @@ $(BUILDDIR)/datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu
 	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $@
 
 $(BUILDDIR)/datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
-	@combine -M Asymptotic --run $(RUN) --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit2 $^ >> temp.comb.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --plots --out=$(BUILDDIR) >>temp.comb.2
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic  >>temp.comb.3
+	-combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(STATONLY) >> temp.comb.1
+	-combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) --plots --out=$(BUILDDIR) >>temp.comb.2
+	-combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) >>temp.comb.3
 	@cat temp.comb.* > $@
 	@rm temp.comb.*
 $(BUILDDIR_EL)/card_el.res: $(BUILDDIR_EL)/card_el.txt
-	@combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit2 >> temp.el.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --plots --out=$(BUILDDIR_EL) >>temp.el.2 
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic >>temp.el.3
+	-combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) >> temp.el.1
+	-combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) --plots --out=$(BUILDDIR_EL) >>temp.el.2 
+	-combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) >>temp.el.3
 	@cat temp.el.* > $@
 	@rm temp.el.*
 $(BUILDDIR_MU)/card_mu.res: $(BUILDDIR_MU)/card_mu.txt
-	@combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=Minuit2 >> temp.mu.1
-	@combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --plots --out=$(BUILDDIR_MU) >>temp.mu.2
-	@combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic >>temp.mu.3
+	-combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) >> temp.mu.1
+	-combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) --plots --out=$(BUILDDIR_MU) >>temp.mu.2
+	-combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic  --cminDefaultMinimizerType=$(MINIMIZER) $(STATONLY) >>temp.mu.3
 	@cat temp.mu.* > $@
 	@rm temp.mu.*
 limits: $(BUILDDIR)/datacard_elmu.res $(BUILDDIR_EL)/card_el.res $(BUILDDIR_MU)/card_mu.res
-	@python ./tools/parseLimits.py -i $(BUILDDIR_EL)/card_el.res -f $(FORMAT) | tail -n2
-	@python ./tools/parseLimits.py -i $(BUILDDIR_MU)/card_mu.res -f $(FORMAT) | tail -n2
-	@python ./tools/parseLimits.py -i $(BUILDDIR)/datacard_elmu.res -f $(FORMAT) | tail -n2
+	@python ./tools/parseLimits.py -i $(BUILDDIR_EL)/card_el.res -f $(FORMAT) | tail -n4
+	@python ./tools/parseLimits.py -i $(BUILDDIR_MU)/card_mu.res -f $(FORMAT) | tail -n4
+	@python ./tools/parseLimits.py -i $(BUILDDIR)/datacard_elmu.res -f $(FORMAT) | tail -n4
+
+#Likelihood scans
+#combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL combo.root --algo grid -n _combo
+#combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL sl.root --algo grid -n _sl
+#combine -M MultiDimFit --robustFit=1 --rMax=3 -t -1 --expectSignal=1 --saveNLL dl.root --algo grid -n _dl
+
+#
+#python NLL_scans.py -f .pdf -j '{"sl":"higgsCombine_sl.MultiDimFit.mH120.root","dl":"higgsCombine_dl.MultiDimFit.mH120.root","combo":"higgsCombine_combo.MultiDimFit.mH120.root", "sl_fit":[1.0,2.47,-1.0],"dl_fit":[1.0,1.74,-1.0],"combo_fit":[1.0,1.34,-1.0]}' -b
+#
+#
 
