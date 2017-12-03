@@ -38,11 +38,11 @@ class table:
 def main(arguments):
 
 	bins = ["10J4M","10J3M","10J2M","9J4M","9J3M","9J2M","8J4M","8J3M","8J2M","7J4M","7J3M","7J2M",]
-	#syst = ['SubTotalPileUpJES', 'SubTotalScaleJES', 'SubTotalPtJES', 'SubTotalRelativeJES']
+	syst = ['SubTotalPileUpJES', 'SubTotalScaleJES', 'SubTotalPtJES', 'SubTotalRelativeJES']
 	#syst = ['heavyFlav', 'PU', 'JER']
 	#syst = ['TTFSR', 'TTISR', 'TTUE','TTJets_HDAMP']
-	syst = ['btagWeightCSVCFErr1','btagWeightCSVCFErr2','btagWeightCSVHF','btagWeightCSVHFStats1',
-		'btagWeightCSVHFStats2','btagWeightCSVJES','btagWeightCSVLF','btagWeightCSVLFStats1','btagWeightCSVLFStats2']
+	#syst = ['btagWeightCSVCFErr1','btagWeightCSVCFErr2','btagWeightCSVHF','btagWeightCSVHFStats1',
+	#	'btagWeightCSVHFStats2','btagWeightCSVJES','btagWeightCSVLF','btagWeightCSVLFStats1','btagWeightCSVLFStats2']
 	var  = ['Up','Down']
 	
 	histname = 'bdt'
