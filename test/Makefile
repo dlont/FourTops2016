@@ -32,7 +32,7 @@ report_data_unbinned.pdf: ${CONFIGDATA} $(wildcard ${TARGET}/Craneen_Data_Run2_T
 	@echo "Test data"
 	${STATTEST} -g $@ $^
 
-report_TTJets_unbinned.pdf: ${configmcunbinned} $(wildcard ${TARGET}/Craneen_TTJets_powheg_central_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_central_Run2_TopTree_Study*.root)
+report_TTJets_unbinned.pdf: ${configmcunbinned} $(wildcard ${TARGET}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root) $(wildcard ${REFERENCE}/Craneen_TTJets_powheg_Run2_TopTree_Study*.root)
 	@echo "Test TT MC"
 	${STATTEST} -g $@ $^
 
