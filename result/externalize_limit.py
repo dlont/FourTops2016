@@ -74,10 +74,11 @@ syst_dic = {
 #'TTRARE_norm':'lnN',
 #'lumi':'lnN',
 #'PU':'shape',
-'SubTotalPileUpJES':'shape',
-'SubTotalScaleJES':'shape',
-'SubTotalPtJES':'shape',
-'SubTotalRelativeJES':'shape',
+'JES':'shape',
+#'SubTotalPileUpJES':'shape',
+#'SubTotalScaleJES':'shape',
+#'SubTotalPtJES':'shape',
+#'SubTotalRelativeJES':'shape',
 #'JER':'shape',
 #'leptonSFMu':'lnN',
 #'TTISR':'lnN',
@@ -103,7 +104,11 @@ mask_channels8  = ',mask_EL_el8J2M=1,mask_EL_el8J3M=1,mask_EL_el8J4M=1,mask_MU_m
 mask_channels7  = ',mask_MU_mu7J2M=0,mask_MU_mu7J3M=1,mask_MU_mu7J4M=1'
 mask_channels   = mask_channels7+mask_channels8+mask_channels9+mask_channels10
 
-card_file = "final_unblinding/datacard_elmu.root"
+card_file = "final_unblinding/50bins/datacard_elmu_total_jes.root"
+#card_file = "final_unblinding/50bins/datacard_elmu.root"
+#card_file = "final_unblinding/50bins/datacard_elmu_tttt_jes.root"
+#card_file = "final_unblinding/50bins/datacard_elmu_tt_jes.root"
+#card_file = "final_unblinding/datacard_elmu_mcstat.root"
 
 mask_flag = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 permutations = [list(mask_flag)]
@@ -135,21 +140,21 @@ for perm in permutations:
 			active_bin = elem.split('=')[0].split('_')[2]	
 	active_bin = 'all'
 	for systematic in syst_dic.keys():
+		print " ".join(["combine", "-M", "Asymptotic", card_file, "--run", "blind", \
+                                        "--setParameters", systematic+"=0.0"+mask_channels, "--freezeParameters", systematic, "--X-rtd", "MINIMIZER_analytic"])
 		print systematic, 'central'
 		out = subprocess.check_output(["combine", "-M", "Asymptotic", card_file, "--run", "blind", \
-					"--setParameters", systematic+"=0.0"+mask_channels, "--freezeParameters", systematic])
+					"--setParameters", systematic+"=0.0"+mask_channels, "--freezeParameters", systematic, "--X-rtd", "MINIMIZER_analytic"])
 		cen = get_lim(out, xsec_tttt, "TTTT", "txt")
 
 		print systematic, '-1.0 s.d.'
-		print " ".join(["combine", "-M", "Asymptotic", card_file, "--run", "blind", \
-                                        "--setParameters", systematic+"=-1.0"+mask_channels, "--freezeParameters", systematic])
 		out = subprocess.check_output(["combine", "-M", "Asymptotic", card_file, "--run", "blind", \
-					"--setParameters", systematic+"=-1.0"+mask_channels, "--freezeParameters", systematic])
+					"--setParameters", systematic+"=-1.0"+mask_channels, "--freezeParameters", systematic, "--X-rtd", "MINIMIZER_analytic"])
 		down = get_lim(out, xsec_tttt, "TTTT", "txt")
 
 		print systematic, '+1.0 s.d.'
 		out = subprocess.check_output(["combine", "-M", "Asymptotic", card_file, "--run", "blind", \
-					"--setParameters", systematic+"=1.0"+mask_channels, "--freezeParameters", systematic])
+					"--setParameters", systematic+"=1.0"+mask_channels, "--freezeParameters", systematic, "--X-rtd", "MINIMIZER_analytic"])
 		up = get_lim(out, xsec_tttt, "TTTT", "txt")
 		x.add_row( [active_bin,systematic, cen, up, down] )
 	
