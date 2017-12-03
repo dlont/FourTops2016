@@ -82,4 +82,5 @@ cut_sets = [
 
 print "Target variable: ", target
 from listofplots import lp
+#from listofplots_coarse import lp
 list_of_plots = lp(tree_name,inputfile,target)
