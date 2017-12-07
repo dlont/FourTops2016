@@ -20,6 +20,7 @@ DEFINE_string(fourtops_jer, "central", "Jet energy resolution variation");      
 DEFINE_bool(fourtops_btagregular,true,"Regular btagging SF");
 DEFINE_bool(fourtops_btagcsvrs,true,"CSV reshaping btagging SF");
 DEFINE_bool(fourtops_toprew,true,"Apply top reweighting");                      //Default apply
+DEFINE_bool(is_local_output,false,"Store outout in /user space or at /scratch/$PBS_JOBID");      //Default /scratch/$PBS_JOBID
 DEFINE_string(input_files, "", "List of input ROOT files to run over");
 DEFINE_string(jobid, "XYZ", "Job id signature");                                //Default "XYZ"
 DEFINE_int32(nevents, -1, "Number of events to run over");                      // Default: all
@@ -44,14 +45,15 @@ bool isJESUp() {
 
 std::string JESSource() {
     std::string source = "Total";
-    const std::array<const std::string,11> possible_options = 
+    const std::array<const std::string,17> possible_options = 
 	{
 	"central",
 	"Total_up",		"Total_down",
 	"SubTotalPileUp_up", 	"SubTotalPileUp_down",
 	"SubTotalRelative_up", 	"SubTotalRelative_down", 
 	"SubTotalPt_up", 	"SubTotalPt_down",
-	"SubTotalScale_up", 	"SubTotalScale_down"
+	"SubTotalScale_up", 	"SubTotalScale_down",
+	"SubTotalFlavor_up",	"SubTotalFlavor_down",
 	};
 
     if ( std::find( std::begin(possible_options), std::end(possible_options), FLAGS_fourtops_jes ) != std::end(possible_options) ) {

@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <utility>
 
 #include <boost/tokenizer.hpp>
 
@@ -94,6 +95,7 @@ int main (int argc, char *argv[])
     const std::string jobid             = FLAGS_jobid;
     const std::string dName             = FLAGS_dataset_name;
     const std::string dTitle            = FLAGS_dataset_title;
+    const bool is_local_out             = FLAGS_is_local_output;
     const int color                     = FLAGS_dataset_color;
     const int ls                        = FLAGS_dataset_linestyle;
     const int lw                        = FLAGS_dataset_linewidth;
@@ -439,7 +441,13 @@ int main (int argc, char *argv[])
     vector<JetCorrectorParameters> vCorrParam;
     string pathCalJEC = "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase/Calibrations/JECFiles/";
 
-    JetCorrectionUncertainty *jecUnc;
+    JetCorrectionUncertainty *jecUnc = nullptr;
+    
+    using sharedJetCorrectionUncertainty = shared_ptr<JetCorrectionUncertainty>;
+    sharedJetCorrectionUncertainty jecUnc_Gluon(nullptr);
+    sharedJetCorrectionUncertainty jecUnc_Quark(nullptr);
+    sharedJetCorrectionUncertainty jecUnc_Charm(nullptr);
+    sharedJetCorrectionUncertainty jecUnc_Bottom(nullptr);
 
     if(dName.find("Run2016B")!=string::npos || dName.find("Run2016C")!=string::npos || dName.find("Run2016D")!=string::npos)
     {
@@ -518,9 +526,23 @@ int main (int argc, char *argv[])
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPileUp");
                 jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
    		DLOG(INFO)<<"DEBUG:SubTotalPileUp";
+	} else if (uncSourceType.compare("SubTotalFlavor_up") == 0 || uncSourceType.compare("SubTotalFlavor_down") == 0) {
+		auto MCUncCorParG = make_shared<JetCorrectorParameters>(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","FlavorPureGluon");
+            	jecUnc_Gluon = make_shared<JetCorrectionUncertainty>(*MCUncCorParG);
+            	auto MCUncCorParQ = make_shared<JetCorrectorParameters>(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","FlavorPureQuark");
+            	jecUnc_Quark = make_shared<JetCorrectionUncertainty>(*MCUncCorParQ);
+            	auto MCUncCorParC = make_shared<JetCorrectorParameters>(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","FlavorPureCharm");
+            	jecUnc_Charm = make_shared<JetCorrectionUncertainty>(*MCUncCorParC);
+            	auto MCUncCorParB = make_shared<JetCorrectorParameters>(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","FlavorPureBottom");
+            	jecUnc_Bottom = make_shared<JetCorrectionUncertainty>(*MCUncCorParB);
+            	jecUnc = new JetCorrectionUncertainty(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_Uncertainty_AK4PFchs.txt");
 	}
     }
     JetTools *jetTools = new JetTools(vCorrParam, jecUnc, true); //true means redo also L1
+    auto jetTools_G = make_shared<JetTools>(vCorrParam, jecUnc_Gluon.get(), true); //true means redo also L1
+    auto jetTools_Q = make_shared<JetTools>(vCorrParam, jecUnc_Quark.get(), true); //true means redo also L1
+    auto jetTools_C = make_shared<JetTools>(vCorrParam, jecUnc_Charm.get(), true); //true means redo also L1
+    auto jetTools_B = make_shared<JetTools>(vCorrParam, jecUnc_Bottom.get(), true); //true means redo also L1
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -539,16 +561,19 @@ int main (int argc, char *argv[])
         /////////////////////////////////////////////////
         //               Craneen setup                 //
         /////////////////////////////////////////////////
-        string channel_dir = "output/Craneens"+channelpostfix;
-        string date_dir = channel_dir+"/Craneens" + date_str +"/";
-        int mkdirstatus = mkdir_p(channel_dir.c_str());
-        mkdirstatus = mkdir_p(date_dir.c_str());
-        LOG(INFO) << "created dirs";
-        string Ntuptitle   = "Craneen_" + channelpostfix;
         
-        string Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";     
+        string Ntupname    = "/scratch/$PBS_JOBID/Craneen_" + dataSetName + postfix + ".root";     
+	if (is_local_out) {
+        	string channel_dir = "output/Craneens"+channelpostfix;
+        	string date_dir = channel_dir+"/Craneens" + date_str +"/";
+        	int mkdirstatus = mkdir_p(channel_dir.c_str());			//make "output/Craneens_Mu(El) folder if does not exist 
+        	mkdirstatus = mkdir_p(date_dir.c_str());			//make output/Craneens_Mu(El)/Craneensdd_mm_yyyy/ folder if does not exist
+        	LOG(INFO) << "created dirs";					//
+		Ntupname    = "output/Craneens" + channelpostfix + "/Craneens" + date_str + "/Craneen_" + dataSetName + postfix + ".root";    //for /user output
+	}
         std::cout << "Output Craneens File: " << Ntupname << std::endl;
-        TFile * tupfile    = new TFile(Ntupname.c_str(),"RECREATE");
+        auto tupfile    = make_shared<TFile>(Ntupname.c_str(),"RECREATE");
+        const string Ntuptitle   = "Craneen_" + channelpostfix;
         TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());
         Event myEvent;
         myEvent.makeBranches(tup);
@@ -595,6 +620,20 @@ int main (int argc, char *argv[])
         long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
 	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
+	////////////////////////////////////////////////////////////////
+	//	Histograms for b fake and efficiency study	      //
+	////////////////////////////////////////////////////////////////
+	//
+	auto h_fakeb_jetmult = make_shared<TH1D>("h_fakeb_jetmult","N wrongly matched b genjets",4,6.5,10.5);
+	auto h_effb_jetmult = make_shared<TH1D>("h_effb_jetmult","N correctly matched b genjets",4,6.5,10.5);
+	auto h_totb_jetmult = make_shared<TH1D>("h_totb_jetmult","N total b genjets",4,6.5,10.5);
+	auto h_fakeb_jetmult_pt = make_shared<TH2D>("h_fakeb_jetmult_pt","N wrongly matched b genjets",4,6.5,10.5,50,30.,1000.);
+	auto h_effb_jetmult_pt = make_shared<TH2D>("h_effb_jetmult_pt","N correctly matched b genjets",4,6.5,10.5,50,30.,1000.);
+	auto h_totb_jetmult_pt = make_shared<TH2D>("h_totb_jetmult_pt","N total b genjets",4,6.5,10.5,50,30.,1000.);
+	auto h_fakeb_eta_pt = make_shared<TH2D>("h_fakeb_eta_pt","N wrongly matched b genjets",25,-2.5,2.5,50,30.,1000.);
+	auto h_effb_eta_pt = make_shared<TH2D>("h_effb_eta_pt","N correctly matched b genjets",25,-2.5,2.5,50,30.,1000.);
+	auto h_totb_eta_pt = make_shared<TH2D>("h_totb_eta_pt","N total b genjets",25,-2.5,2.5,50,30.,1000.);
+
 
         ////////////////////////////////////////////////////////////
         //       Define object containers and initalisations      //
@@ -656,7 +695,7 @@ int main (int argc, char *argv[])
         //                                 Loop on events                             //
         ////////////////////////////////////////////////////////////////////////////////
 	
-        auto printjetdata = [](const TRootJet* j) {std::cout << j->Pt() << " " << j->Eta() << std::endl;};
+        auto printjetdata = [](const TRootJet* j) {std::cout << j->Pt() << " " << j->Eta() << " " << j->partonFlavour() << std::endl;};
 
         for (long long ievt = event_start; ievt < end_d; ievt++)
         {
@@ -741,8 +780,6 @@ int main (int argc, char *argv[])
             //////////////////////////////////////
             ///  Jet Energy Scale Corrections  ///
             //////////////////////////////////////
-		//std::cout << "Before correction" << std::endl;
-		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
             if (applyJER && !isData)
             {
                 if(JERDown)      jetTools->correctJetJER(init_jets, genjets, mets[0], "minus", false);
@@ -753,10 +790,32 @@ int main (int argc, char *argv[])
 		}
                 /// Example how to apply JES systematics
             }
+		//std::cout << "Before correction" << std::endl;
+		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
 
-
-            if(JESDown) jetTools->correctJetJESUnc(init_jets, "minus", 1);
-            else if(JESUp) jetTools->correctJetJESUnc(init_jets, "plus", 1);
+	    if(JESSource().find("SubTotalFlavor")==string::npos){		//If regular jet correction
+            	if(JESDown) jetTools->correctJetJESUnc(init_jets, "minus", 1);
+            	if(JESUp) jetTools->correctJetJESUnc(init_jets, "plus", 1);
+	    } else {
+		if(JESDown) {
+		    for(auto jet: init_jets){
+                    	if(abs(jet->partonFlavour())==5) jetTools_B->correctJetJESUnc(jet, "minus", 1);
+                    	if(abs(jet->partonFlavour())==4) jetTools_C->correctJetJESUnc(jet, "minus", 1);
+                    	if(abs(jet->partonFlavour())==21 || jet->partonFlavour()==0) jetTools_G->correctJetJESUnc(jet, "minus", 1);
+                    	if(abs(jet->partonFlavour())>0 && abs(jet->partonFlavour())<4) jetTools_Q->correctJetJESUnc(jet, "minus", 1);
+		    }
+		}
+		if(JESUp) {
+		    for(auto jet: init_jets){
+                    	if(abs(jet->partonFlavour())==5) jetTools_B->correctJetJESUnc(jet, "plus", 1);
+                    	if(abs(jet->partonFlavour())==4) jetTools_C->correctJetJESUnc(jet, "plus", 1);
+                    	if(abs(jet->partonFlavour())==21 || jet->partonFlavour()==0) jetTools_G->correctJetJESUnc(jet, "plus", 1);
+                    	if(abs(jet->partonFlavour())>0 && abs(jet->partonFlavour())<4) jetTools_Q->correctJetJESUnc(jet, "plus", 1);
+		    }
+		}
+	    }
+		//std::cout << "After correction" << std::endl;
+		//for_each( std::begin(init_jets), std::end(init_jets), printjetdata);
 
 
             if (applyJEC)   ///should this have  && dataSetName.find("Data")==string::npos
@@ -1030,8 +1089,10 @@ int main (int argc, char *argv[])
             //       Primary vertex        //
             /////////////////////////////////
             //Filling Histogram of the number of vertices before Event Selection
-            if (!isGoodPV) continue; // Check that there is a good Primary Vertex
-
+            if (!isGoodPV) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue; // Check that there is a good Primary Vertex
+	    }
             /////////////////////////////////
             //        Trigger              //
             /////////////////////////////////            
@@ -1042,8 +1103,10 @@ int main (int argc, char *argv[])
                 negWeightsPretrig+=1.;
             }
             
-            if (!trigged)          continue;  //If an HLT condition is not present, skip this event in the loop.       
-
+            if (!trigged) {
+		 for( auto j: init_uncor_jets ) delete j;
+	         continue;  //If an HLT condition is not present, skip this event in the loop.       
+	    }
 	    triggers_container.fill(0);
 	    for(int iter_trig=0; iter_trig< ((isData?trigger->triggerListData.size():trigger->triggerListMC.size())) && iter_trig<200; iter_trig++){
 		    if (isData) triggers_container[iter_trig] = trigger->triggermapData.find(trigger->triggerListData[iter_trig])->second.second;
@@ -1215,19 +1278,43 @@ int main (int argc, char *argv[])
 	    auto EcalDead = event->getEcalDeadCellTriggerPrimitiveFilter();
 	    auto badchan   = event-> getBadChCandFilter();
 	    auto badmu = event-> getBadPFMuonFilter();
-	    if (!HBHEnoise) continue;
-	    if (!HBHEIso) continue;
-	    if (!CSCTight) continue;
-            if (!EcalDead) continue;
-	    if (!badchan) continue;
-	    if (!badmu) continue;
+	    if (!HBHEnoise) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
+	    if (!HBHEIso) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
+	    if (!CSCTight) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
+            if (!EcalDead) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
+	    if (!badchan) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
+	    if (!badmu) {
+		for( auto j: init_uncor_jets ) delete j;
+		continue;
+	    }
 
             if (Muon)
             {   
-                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2 && !bCrackVeto) )continue; // Muon Channel Selection
+                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && nJets>=6 && nMtags >=2 && !bCrackVeto) ) {
+			for( auto j: init_uncor_jets ) delete j;
+			continue; // Muon Channel Selection
+		}
             }
             else if(Electron){
-                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=2) ) continue; // Electron Channel Selection
+                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && nJets>=6 && nMtags >=2) ) {
+			for( auto j: init_uncor_jets ) delete j;
+			continue; // Electron Channel Selection
+		}
             }
             else{
                 cerr<<"Correct Channel not selected."<<std::endl;
@@ -1589,9 +1676,61 @@ int main (int argc, char *argv[])
             tupfile->cd();
             tup->Fill();
 
-	for( auto j: init_uncor_jets ) delete j;
+	    for( auto j: init_uncor_jets ) delete j;
+
+	    //////////////////////////////////////////////////////////////////////////////////////////////
+	    // Find matching pairs of jets for different kinds of efficiency histograms		   //
+	    //////////////////////////////////////////////////////////////////////////////////////////////
+	    int nCorMatch = 0;
+	    int nFakeMatch = 0;
+	    int nTotMatch = 0;
+
+	    using pair_genJetPFJet = pair<TRootGenJet*,TRootPFJet*>;
+	    vector< pair_genJetPFJet > matched_jets;
+	    auto dist_dR = [](TRootGenJet* g, TRootPFJet* j) {
+	    	return TMath::Sqrt(TMath::Power(g->Eta() - j->Eta(),2) + TMath::Power(g->Phi() - j->Phi(),2));
+	    };
+	    for(const auto& genjet: genjets) { 
+	    	for(const auto& selectedjet: selectedJets) {
+	    		auto dR = dist_dR(genjet,selectedjet);
+	    		if (dR < 0.4) {
+	    			matched_jets.emplace_back( make_pair(genjet,selectedjet) );
+	    			if (fabs(selectedjet->hadronFlavour())==5 && selectedjet->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535) nCorMatch++;
+	    			if (fabs(selectedjet->hadronFlavour())!=5 && selectedjet->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535) nFakeMatch++;
+	    			if (selectedjet->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535) nTotMatch++;
+	    		}
+	    	}
+	    }
+	    for (const auto& genjet_seljet_pair: matched_jets) {
+		if (abs(genjet_seljet_pair.second->hadronFlavour()) == 5 && genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535 ) {
+			h_effb_jetmult->Fill(nJets>10?10.:nJets);
+			h_effb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			h_effb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		}
+		if (abs(genjet_seljet_pair.second->hadronFlavour()) != 5 && genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535 ) {
+			h_fakeb_jetmult->Fill(nJets>10?10.:nJets);
+			h_fakeb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			h_fakeb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		}
+		if (genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535) {
+			h_totb_jetmult->Fill(nJets>10?10.:nJets); 
+			h_totb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			h_totb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		}
+	    }
 
         } //End Loop on Events
+
+	h_effb_jetmult->Write();
+	h_fakeb_jetmult->Write();
+	h_totb_jetmult->Write();
+	h_effb_jetmult_pt->Write();
+	h_fakeb_jetmult_pt->Write();
+	h_totb_jetmult_pt->Write();
+	h_effb_eta_pt->Write();
+	h_fakeb_eta_pt->Write();
+	h_totb_eta_pt->Write();
+
         std::cout<<"Write files"<<std::endl;
         tupfile->cd();
         tup->Write();
