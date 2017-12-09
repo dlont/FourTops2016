@@ -624,15 +624,33 @@ int main (int argc, char *argv[])
 	//	Histograms for b fake and efficiency study	      //
 	////////////////////////////////////////////////////////////////
 	//
-	auto h_fakeb_jetmult = make_shared<TH1D>("h_fakeb_jetmult","N wrongly matched b genjets",4,6.5,10.5);
-	auto h_effb_jetmult = make_shared<TH1D>("h_effb_jetmult","N correctly matched b genjets",4,6.5,10.5);
-	auto h_totb_jetmult = make_shared<TH1D>("h_totb_jetmult","N total b genjets",4,6.5,10.5);
-	auto h_fakeb_jetmult_pt = make_shared<TH2D>("h_fakeb_jetmult_pt","N wrongly matched b genjets",4,6.5,10.5,50,30.,1000.);
-	auto h_effb_jetmult_pt = make_shared<TH2D>("h_effb_jetmult_pt","N correctly matched b genjets",4,6.5,10.5,50,30.,1000.);
-	auto h_totb_jetmult_pt = make_shared<TH2D>("h_totb_jetmult_pt","N total b genjets",4,6.5,10.5,50,30.,1000.);
-	auto h_fakeb_eta_pt = make_shared<TH2D>("h_fakeb_eta_pt","N wrongly matched b genjets",25,-2.5,2.5,50,30.,1000.);
-	auto h_effb_eta_pt = make_shared<TH2D>("h_effb_eta_pt","N correctly matched b genjets",25,-2.5,2.5,50,30.,1000.);
-	auto h_totb_eta_pt = make_shared<TH2D>("h_totb_eta_pt","N total b genjets",25,-2.5,2.5,50,30.,1000.);
+	map<string,shared_ptr<TH1D>> histo1D_my;
+	histo1D_my["h_fakeb_jetmult"] 		= make_shared<TH1D>("h_fakeb_jetmult","N wrongly matched b genjets",4,6.5,10.5);
+	histo1D_my["h_effb_jetmult"] 		= make_shared<TH1D>("h_effb_jetmult","N correctly matched b genjets",4,6.5,10.5);
+	histo1D_my["h_totb_jetmult"] 		= make_shared<TH1D>("h_totb_jetmult","N total b genjets",4,6.5,10.5);
+
+	const int NofPtBins = 20;
+	const double PtMin = 30.;
+	const double PtMax = 500.;
+	const int NofEtaBins = 4;
+	map<string,shared_ptr<TH2D>> histo2D_my;
+	histo2D_my["h_fakeb_jetmult_pt"] 	= make_shared<TH2D>("h_fakeb_jetmult_pt","N wrongly matched b genjets",NofPtBins,PtMin,PtMax,4,6.5,10.5);
+	histo2D_my["h_effb_jetmult_pt"]		= make_shared<TH2D>("h_effb_jetmult_pt","N correctly matched b genjets",NofPtBins,PtMin,PtMax,4,6.5,10.5);
+	histo2D_my["h_totb_jetmult_pt"]		= make_shared<TH2D>("h_totb_jetmult_pt","N total b genjets",NofPtBins,PtMin,PtMax,4,6.5,10.5);
+	histo2D_my["h_fakeb_eta_pt"] 		= make_shared<TH2D>("h_fakeb_eta_pt","N wrongly matched b genjets",25,-2.5,2.5,NofPtBins,PtMin,PtMax);
+	histo2D_my["h_effb_eta_pt"] 		= make_shared<TH2D>("h_effb_eta_pt","N correctly matched b genjets",25,-2.5,2.5,NofPtBins,PtMin,PtMax);
+	histo2D_my["h_totb_eta_pt"] 		= make_shared<TH2D>("h_totb_eta_pt","N total b genjets",25,-2.5,2.5,NofPtBins,PtMin,PtMax);
+
+	//Like in Btag weight tools
+        map<string,shared_ptr<TH2F>> histo2D_btwt;
+	histo2D_btwt["BtaggedJets"] 		= make_shared<TH2F>("BtaggedJets", "Total number of btagged jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+  	histo2D_btwt["BtaggedBJets"] 		= make_shared<TH2F>("BtaggedBJets", "Total number of btagged b-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["BtaggedCJets"] 		= make_shared<TH2F>("BtaggedCJets", "Total number of btagged c-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["BtaggedLightJets"] = make_shared<TH2F>("BtaggedLightJets", "Total number of btagged light jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["TotalNofBJets"] 		= make_shared<TH2F>("TotalNofBJets", "Total number of b-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["TotalNofCJets"] 		= make_shared<TH2F>("TotalNofCJets", "Total number of c-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["TotalNofLightJets"] 	= make_shared<TH2F>("TotalNofLightJets", "Total number of light jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+
 
 
         ////////////////////////////////////////////////////////////
@@ -1702,34 +1720,50 @@ int main (int argc, char *argv[])
 	    	}
 	    }
 	    for (const auto& genjet_seljet_pair: matched_jets) {
-		if (abs(genjet_seljet_pair.second->hadronFlavour()) == 5 && genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535 ) {
-			h_effb_jetmult->Fill(nJets>10?10.:nJets);
-			h_effb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
-			h_effb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		auto flav = abs(genjet_seljet_pair.second->hadronFlavour());
+		auto btagValue = genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+		if (flav == 5 && btagValue>0.9535 ) {
+			histo1D_my["h_effb_jetmult"]->Fill(nJets>10?10.:nJets);
+			histo2D_my["h_effb_jetmult_pt"]->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			histo2D_my["h_effb_eta_pt"]->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
 		}
-		if (abs(genjet_seljet_pair.second->hadronFlavour()) != 5 && genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535 ) {
-			h_fakeb_jetmult->Fill(nJets>10?10.:nJets);
-			h_fakeb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
-			h_fakeb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		if (flav != 5 && btagValue>0.9535 ) {
+			histo1D_my["h_fakeb_jetmult"]->Fill(nJets>10?10.:nJets);
+			histo2D_my["h_fakeb_jetmult_pt"]->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			histo2D_my["h_fakeb_eta_pt"]->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
 		}
-		if (genjet_seljet_pair.second->btag_combinedInclusiveSecondaryVertexV2BJetTags()>0.9535) {
-			h_totb_jetmult->Fill(nJets>10?10.:nJets); 
-			h_totb_jetmult_pt->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
-			h_totb_eta_pt->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		if (btagValue>0.9535) {
+			histo1D_my["h_totb_jetmult"]->Fill(nJets>10?10.:nJets); 
+			histo2D_my["h_totb_jetmult_pt"]->Fill(nJets>10?10.:nJets, genjet_seljet_pair.second->Pt());
+			histo2D_my["h_totb_eta_pt"]->Fill(genjet_seljet_pair.second->Eta(), genjet_seljet_pair.second->Pt());
+		}
+	    }
+
+	    for(const auto& selectedjet: selectedJets) {
+		int  flav = abs(selectedjet->hadronFlavour());
+		auto btagValue = selectedjet->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+		auto localPt = selectedjet->Pt();
+                auto localEta = selectedjet->Eta();
+		if (localPt >= PtMax) localPt = PtMax-1;
+                if (localEta >= 2.4) localEta = 2.4-0.01;
+                if (flav == 5) 			histo2D_btwt["TotalNofBJets"]->Fill(localPt,localEta); //b-jet
+                else if (flav == 4) 		histo2D_btwt["TotalNofCJets"]->Fill(localPt,localEta); //c-jet
+                else if (flav == 0) 		histo2D_btwt["TotalNofLightJets"]->Fill(localPt,localEta); //light
+                else 				histo2D_btwt["TotalNofLightJets"]->Fill(localPt,localEta); //assume light
+		if (btagValue > 0.9535) {
+						histo2D_btwt["BtaggedJets"]->Fill(localPt,localEta);
+			if (flav == 5) 		histo2D_btwt["BtaggedBJets"]->Fill(localPt,localEta); //b-jet
+			else if (flav == 4) 	histo2D_btwt["BtaggedCJets"]->Fill(localPt,localEta); //c-jet
+			else if (flav == 0) 	histo2D_btwt["BtaggedLightJets"]->Fill(localPt,localEta);//light
+			else 			histo2D_btwt["BtaggedLightJets"]->Fill(localPt,localEta);//assume light
 		}
 	    }
 
         } //End Loop on Events
 
-	h_effb_jetmult->Write();
-	h_fakeb_jetmult->Write();
-	h_totb_jetmult->Write();
-	h_effb_jetmult_pt->Write();
-	h_fakeb_jetmult_pt->Write();
-	h_totb_jetmult_pt->Write();
-	h_effb_eta_pt->Write();
-	h_fakeb_eta_pt->Write();
-	h_totb_eta_pt->Write();
+	for (const auto& el: histo1D_my) el.second->Write();
+	for (const auto& el: histo2D_my) el.second->Write();
+	for (const auto& el: histo2D_btwt) el.second->Write();
 
         std::cout<<"Write files"<<std::endl;
         tupfile->cd();
