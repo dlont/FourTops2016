@@ -1,0 +1,36 @@
+{
+	"prefitbg":["shapes_prefit/MU_mu7J2M/total_signal",
+		    "shapes_prefit/MU_mu7J3M/total_signal",
+		    "shapes_prefit/MU_mu7J4M/total_signal",
+		    "shapes_prefit/MU_mu8J2M/total_signal",
+		    "shapes_prefit/MU_mu8J3M/total_signal",
+		    "shapes_prefit/MU_mu8J4M/total_signal",
+		    "shapes_prefit/MU_mu9J2M/total_signal",
+		    "shapes_prefit/MU_mu9J3M/total_signal",
+		    "shapes_prefit/MU_mu9J4M/total_signal",
+		    "shapes_prefit/MU_mu10J2M/total_signal",
+		    "shapes_prefit/MU_mu10J3M/total_signal",
+		    "shapes_prefit/MU_mu10J4M/total_signal"],
+	"reference":["shapes_prefit/MU_mu7J2M/total_signal",
+		     "shapes_prefit/MU_mu7J3M/total_signal",
+		     "shapes_prefit/MU_mu7J4M/total_signal",
+		     "shapes_prefit/MU_mu8J2M/total_signal",
+		     "shapes_prefit/MU_mu8J3M/total_signal",
+		     "shapes_prefit/MU_mu8J4M/total_signal",
+		     "shapes_prefit/MU_mu9J2M/total_signal",
+		     "shapes_prefit/MU_mu9J3M/total_signal",
+		     "shapes_prefit/MU_mu9J4M/total_signal",
+		     "shapes_prefit/MU_mu10J2M/total_signal",
+		     "shapes_prefit/MU_mu10J3M/total_signal",
+		     "shapes_prefit/MU_mu10J4M/total_signal"],
+		
+	"legend":{"header":"#mu+jets", "coord":[0.2,0.0,1.0,1.0]},
+	"binlabels":{"ypos":0.11,
+			"labels":["N_{j}=7,N_{b}=2", "N_{j}=7,N_{b}=3", "N_{j}=7,N_{b}=4", 
+				  "N_{j}=8,N_{b}=2", "N_{j}=8,N_{b}=3", "N_{j}=8,N_{b}=4",
+				  "N_{j}=9,N_{b}=2", "N_{j}=9,N_{b}=3", "N_{j}=9,N_{b}=4",
+				  "N_{j}=10,N_{b}=2","N_{j}=10,N_{b}=3", "N_{j}=10,N_{b}=4"]
+	},
+	"!filename":"longhist_jes"
+}
+

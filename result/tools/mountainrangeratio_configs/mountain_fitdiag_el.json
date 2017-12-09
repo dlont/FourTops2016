@@ -1,0 +1,30 @@
+{
+	"prefitbg":["shapes_prefit/EL_el8J2M/total_background",
+		    "shapes_prefit/EL_el8J3M/total_background",
+		    "shapes_prefit/EL_el8J4M/total_background",
+		    "shapes_prefit/EL_el9J2M/total_background",
+		    "shapes_prefit/EL_el9J3M/total_background",
+		    "shapes_prefit/EL_el9J4M/total_background",
+		    "shapes_prefit/EL_el10J2M/total_background",
+		    "shapes_prefit/EL_el10J3M/total_background",
+		    "shapes_prefit/EL_el10J4M/total_background"],
+	"reference":["shapes_prefit/EL_el8J2M/total_background",
+		     "shapes_prefit/EL_el8J3M/total_background",
+		     "shapes_prefit/EL_el8J4M/total_background",
+		     "shapes_prefit/EL_el9J2M/total_background",
+		     "shapes_prefit/EL_el9J3M/total_background",
+		     "shapes_prefit/EL_el9J4M/total_background",
+		     "shapes_prefit/EL_el10J2M/total_background",
+		     "shapes_prefit/EL_el10J3M/total_background",
+		     "shapes_prefit/EL_el10J4M/total_background"],
+		
+	"legend":{"header":"e+jets", "coord":[0.2,0.0,1.0,1.0]},
+	"binlabels":{"ypos":0.11,
+			"labels":[
+				  "N_{j}=8,N_{b}=2", "N_{j}=8,N_{b}=3", "N_{j}=8,N_{b}=4",
+				  "N_{j}=9,N_{b}=2", "N_{j}=9,N_{b}=3", "N_{j}=9,N_{b}=4",
+				  "N_{j}=10,N_{b}=2","N_{j}=10,N_{b}=3", "N_{j}=10,N_{b}=4"]
+	},
+	"!filename":"longhist_jes"
+}
+
