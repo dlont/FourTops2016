@@ -24,15 +24,16 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"]
+#channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"]
 #channels = ["Mu2016","Syst2016Mu"]
 #channels = ["El2016","Syst2016El"]
 #channels = ["Mu2016","El2016"] 
-#channels = ['Syst2016Mu','Syst2016El']
+channels = ['Syst2016Mu','Syst2016El']
 #channels = ["Dilep"]
 #channels = ["El2016"]
 #channels = ["Mu2016"]
 
+channel_outfolder_map = {'Mu2016':'Mu2016', 'El2016':'El2016', 'Syst2016Mu':'Mu2016', 'Syst2016El':'El2016'}
 
 # loop over channels
 for chan in channels:
@@ -112,6 +113,10 @@ for chan in channels:
 			jes = '--fourtops_jes=SubTotalScale_up'
 		elif 'SubTotalScale_jesdown' in str(d.attrib['name']):
 			jes = '--fourtops_jes=SubTotalScale_down'
+		elif 'SubTotalFlavor_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalFlavor_up'
+		elif 'SubTotalFlavor_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalFlavor_down'
 		
 		jer = ''
 		if 'jerup' in str(d.attrib['name']):
@@ -152,7 +157,12 @@ for chan in channels:
             outfileTest = open (filenameTest, 'a')
             if not len(topTrees) == 0:
 		print >> outfileTest, './FourTops --version '
-                print >> outfileTest, commandString, '--input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan), jes, jer 
+                print >> outfileTest, commandString, '--nevents=1000 --input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan), jes, jer 
+		# copy output of the ntupler to /pnfs
+		print >> outfileTest, 'export PNFS_OUTPUT_DIR=$PNFS_OUTPUT_DIR/{}'.format(channel_outfolder_map[chan])
+		print >> outfileTest, 'echo "$FOURTOPS_OUTFILE" -> "$PNFS_OUTPUT_DIR"'
+		print >> outfileTest, 'gfal-mkdir -p {}'.format('$PNFS_OUTPUT_DIR')
+		print >> outfileTest, 'gfal-copy $FOURTOPS_OUTFILE $PNFS_OUTPUT_DIR'
             N_job = 0
             N_file = 1
             remainder= len(topTrees)%FilePerJob
@@ -192,7 +202,11 @@ for chan in channels:
 		    print >> outfile, './FourTops --version '
                     print >> outfile, commandString, '--input_files="{}"'.format(''.join(listOfTmpDirFiles)) , ' ', '--fourtops_channel="{}"'.format(chan), \
 						     jes, jer, '--jobid="{}"'.format('$PBS_JOBID')
-                    # , " " , str(N_job+1) , " 0" , " 2000000" 
+		    # copy output of the ntupler to /pnfs
+		    print >> outfile, 'export PNFS_OUTPUT_DIR=$PNFS_OUTPUT_DIR/{}'.format(channel_outfolder_map[chan])
+		    print >> outfile, 'echo "$FOURTOPS_OUTFILE" -> "$PNFS_OUTPUT_DIR"'
+		    print >> outfile, 'gfal-mkdir -p {}'.format('$PNFS_OUTPUT_DIR')
+		    print >> outfile, 'gfal-copy $FOURTOPS_OUTFILE $PNFS_OUTPUT_DIR'
 
                     # cleaning
                     listOfFiles=[]
