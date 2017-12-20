@@ -22,6 +22,8 @@ def targetvar(name):
 
 	if name == "multitopness":
 		bdtplot = Plot("multitopness"   , TH1D("bdt"     , "; Topness;entries/bin", 105, -0.7, 0.35))
+	elif name == "HT":
+		bdtplot = Plot("HT"             , TH1D("bdt"    , ";HT (GeV);entries/bin", 25, 150., 2000.))
 	elif name == "HTb":
 		bdtplot = Plot("HTb"            , TH1D("bdt"     , ";HTB (GeV);entries/bin", 25, 0., 1000.))
 	elif name == "HTH":
