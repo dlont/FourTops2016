@@ -34,6 +34,7 @@ def fillsingle(hist_master, rootfile, list_hists_in_file):
 	previous_stitch_bin = 0
 	hist = None
 	for ihist,name in enumerate(list_hists_in_file):
+		logging.debug( 'Trying to read {} from {}'.format(name,rootfile.GetName()) )
 		hist = rootfile.Get(name.encode('ascii'))
 		nbins = hist.GetNbinsX()
 		logging.debug( '{} {} {}'.format(ihist,name,nbins) )
@@ -217,6 +218,10 @@ def noemptybins_data(gr, nonemptybin_map, hist_template):
 	return new_gr
 
 def fillnonemptysingle( arguments, rootfile, list_hists_in_file, name, nbins, nonemptybin_map):
+        #check that individual histograms exist in the file
+        root_keys = [ rootfile.Get(hname.encode('ascii')) != None for hname in list_hists_in_file ]
+        if not all(root_keys): return None
+        
         hist_master = rt.TH1F(name,arguments.distrib_title,nbins,0.5,float(nbins+0.5))
         fillsingle(hist_master, rootfile, list_hists_in_file)
         hist_noempty = noemptybins(hist_master, nonemptybin_map)        
@@ -256,66 +261,66 @@ def draw_legend(**kwargs):
 		if datagr: legend.AddEntry(datagr,"Data",'pe')
 		if 'hist_tt' in kwargs: 
 			hist_tt = kwargs['hist_tt']
-			legend.AddEntry(hist_tt,"t#bar{t}(stack)",'lf')
+			if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}(stack)",'lf')
 		if 'hist_st' in kwargs:
 			hist_st = kwargs['hist_st']
-                        legend.AddEntry(hist_st,"tX(stack)",'lf')
+                        if hist_st: legend.AddEntry(hist_st,"tX(stack)",'lf')
 		if 'hist_ew' in kwargs:
 			hist_ew = kwargs['hist_ew']
-                        legend.AddEntry(hist_ew,"EW(stack)",'lf')	#for slepton
-                        #legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
+                        if hist_ew: legend.AddEntry(hist_ew,"EW(stack)",'lf')	#for slepton
+                        #if : legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
 		if 'hist_rare' in kwargs:
 			hist_rare = kwargs['hist_rare']
-                        legend.AddEntry(hist_rare,"Rare",'lf')
+                        if hist_rare: legend.AddEntry(hist_rare,"Rare",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
-			legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} (postfit)",'lf') 
+			if hist_tttt: legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} (postfit)",'lf') 
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
-			legend.AddEntry(hist_pre,"Prefit unc.","fe")
+			if hist_pre: legend.AddEntry(hist_pre,"Prefit unc.","fe")
 		if 'hist_post' in kwargs:
 			hist_post = kwargs['hist_post']
-			legend.AddEntry(hist_post,"Postfit unc.","fe")
+			if hist_post: legend.AddEntry(hist_post,"Postfit unc.","fe")
                         
                 if 'hist_tth_pre' in kwargs:
-			hist_tth_pre = kwargs['hist_tth_pre']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}H (prefit)",'lf')
+			hist_tth = kwargs['hist_tth_pre']
+			if hist_tth: legend.AddEntry(hist_tth,"t#bar{t}H (prefit)",'lf')
                 if 'hist_tth_b' in kwargs:
-			hist_tth_pre = kwargs['hist_tth_b']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}H (b-only)",'lf')
+			hist_tth = kwargs['hist_tth_b']
+			if hist_tth: legend.AddEntry(hist_tth,"t#bar{t}H (b-only)",'lf')
                 if 'hist_tth_s' in kwargs:
-			hist_tth_pre = kwargs['hist_tth_s']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}H (s+b)",'lf')
+			hist_tth = kwargs['hist_tth_s']
+			if hist_tth: legend.AddEntry(hist_tth,"t#bar{t}H (s+b)",'lf')
                 
                 if 'hist_ttz_pre' in kwargs:
-			hist_tth_pre = kwargs['hist_ttz_pre']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}Z (prefit)",'lf')
+			hist_ttz = kwargs['hist_ttz_pre']
+			if hist_ttz: legend.AddEntry(hist_ttz,"t#bar{t}Z (prefit)",'lf')
                 if 'hist_ttz_b' in kwargs:
-			hist_tth_pre = kwargs['hist_ttz_b']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}Z (b-only)",'lf')
+			hist_ttz = kwargs['hist_ttz_b']
+			if hist_ttz: legend.AddEntry(hist_ttz,"t#bar{t}Z (b-only)",'lf')
                 if 'hist_ttz_s' in kwargs:
-			hist_tth_pre = kwargs['hist_ttz_s']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}Z (s+b)",'lf')
+			hist_ttz = kwargs['hist_ttz_s']
+			if hist_ttz: legend.AddEntry(hist_ttz,"t#bar{t}Z (s+b)",'lf')
                 
                 if 'hist_ttw_pre' in kwargs:
-			hist_tth_pre = kwargs['hist_ttw_pre']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}W (prefit)",'lf')
+			hist_ttw = kwargs['hist_ttw_pre']
+			if hist_ttw: legend.AddEntry(hist_ttw,"t#bar{t}W (prefit)",'lf')
                 if 'hist_ttw_b' in kwargs:
-			hist_tth_pre = kwargs['hist_ttw_b']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}W (b-only)",'lf')
+			hist_ttw = kwargs['hist_ttw_b']
+			if hist_ttw: legend.AddEntry(hist_ttw,"t#bar{t}W (b-only)",'lf')
                 if 'hist_ttw_s' in kwargs:
-			hist_tth_pre = kwargs['hist_ttw_s']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}W (s+b)",'lf')
+			hist_ttw = kwargs['hist_ttw_s']
+			if hist_ttw: legend.AddEntry(hist_ttw,"t#bar{t}W (s+b)",'lf')
                 
                 if 'hist_ttxy_pre' in kwargs:
-			hist_tth_pre = kwargs['hist_ttxy_pre']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}XY (prefit)",'lf')
+			hist_ttxy = kwargs['hist_ttxy_pre']
+			if hist_ttxy: legend.AddEntry(hist_ttxy,"t#bar{t}XY (prefit)",'lf')
                 if 'hist_ttxy_b' in kwargs:
-			hist_tth_pre = kwargs['hist_ttxy_b']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}XY (b-only)",'lf')
+			hist_ttxy = kwargs['hist_ttxy_b']
+			if hist_ttxy: legend.AddEntry(hist_ttxy,"t#bar{t}XY (b-only)",'lf')
                 if 'hist_ttxy_s' in kwargs:
-			hist_tth_pre = kwargs['hist_ttxy_s']
-			legend.AddEntry(hist_tth_pre,"t#bar{t}XY (s+b)",'lf')
+			hist_ttxy = kwargs['hist_ttxy_s']
+			if hist_ttxy: legend.AddEntry(hist_ttxy,"t#bar{t}XY (s+b)",'lf')
 
 		canvas.cd(3)
 		legend.Draw()
@@ -775,31 +780,31 @@ def main(arguments):
         style_hist_bg_prefit_unc_noempty(hist_bg_prefit_unc_noempty)
         
         hist_prefit_TTRARE_plus_noempty = fillnonemptysingle(arguments, inputrootfile, jsondic['prefit_TTRARE_plus'], 'hist_prefit_TTRARE_plus', nbins, binmapping)
-        set_line_color_style(hist_prefit_TTRARE_plus_noempty,Style.colors['TTXY'],3)
+        if hist_prefit_TTRARE_plus_noempty: set_line_color_style(hist_prefit_TTRARE_plus_noempty,Style.colors['TTXY'],3)
         hist_prefit_Rare1TTH_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['prefit_Rare1TTH'], 'hist_prefit_Rare1TTH', nbins, binmapping)
-        set_line_color_style(hist_prefit_Rare1TTH_noempty,Style.colors['TTH'],3)
+        if hist_prefit_Rare1TTH_noempty: set_line_color_style(hist_prefit_Rare1TTH_noempty,Style.colors['TTH'],3)
         hist_prefit_Rare1TTZ_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['prefit_Rare1TTZ'], 'hist_prefit_Rare1TTZ', nbins, binmapping)
-        set_line_color_style(hist_prefit_Rare1TTZ_noempty,Style.colors['TTZ'],3)
+        if hist_prefit_Rare1TTZ_noempty: set_line_color_style(hist_prefit_Rare1TTZ_noempty,Style.colors['TTZ'],3)
         hist_prefit_Rare1TTW_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['prefit_Rare1TTW'], 'hist_prefit_Rare1TTW', nbins, binmapping)    
-        set_line_color_style(hist_prefit_Rare1TTW_noempty,Style.colors['TTW'],3)
+        if hist_prefit_Rare1TTW_noempty: set_line_color_style(hist_prefit_Rare1TTW_noempty,Style.colors['TTW'],3)
         
         hist_fitb_TTRARE_plus_noempty = fillnonemptysingle(arguments, inputrootfile, jsondic['fitb_TTRARE_plus'], 'hist_fitb_TTRARE_plus', nbins, binmapping)
-        set_line_color_style(hist_fitb_TTRARE_plus_noempty,Style.colors['TTXY'],2)
+        if hist_fitb_TTRARE_plus_noempty: set_line_color_style(hist_fitb_TTRARE_plus_noempty,Style.colors['TTXY'],2)
         hist_fitb_Rare1TTH_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fitb_Rare1TTH'], 'hist_fitb_Rare1TTH', nbins, binmapping)
-        set_line_color_style(hist_fitb_Rare1TTH_noempty,Style.colors['TTH'],2)
+        if hist_fitb_Rare1TTH_noempty: set_line_color_style(hist_fitb_Rare1TTH_noempty,Style.colors['TTH'],2)
         hist_fitb_Rare1TTZ_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fitb_Rare1TTZ'], 'hist_fitb_Rare1TTZ', nbins, binmapping)
-        set_line_color_style(hist_fitb_Rare1TTZ_noempty,Style.colors['TTZ'],2)
+        if hist_fitb_Rare1TTZ_noempty: set_line_color_style(hist_fitb_Rare1TTZ_noempty,Style.colors['TTZ'],2)
         hist_fitb_Rare1TTW_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fitb_Rare1TTW'], 'hist_fitb_Rare1TTW', nbins, binmapping)    
-        set_line_color_style(hist_fitb_Rare1TTW_noempty,Style.colors['TTW'],2)
+        if hist_fitb_Rare1TTW_noempty: set_line_color_style(hist_fitb_Rare1TTW_noempty,Style.colors['TTW'],2)
 
         hist_fits_TTRARE_plus_noempty = fillnonemptysingle(arguments, inputrootfile, jsondic['fits_TTRARE_plus'], 'hist_fits_TTRARE_plus', nbins, binmapping)
-        set_line_color_style(hist_fits_TTRARE_plus_noempty,Style.colors['TTXY'],1)
+        if hist_fits_TTRARE_plus_noempty: set_line_color_style(hist_fits_TTRARE_plus_noempty,Style.colors['TTXY'],1)
         hist_fits_Rare1TTH_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fits_Rare1TTH'], 'hist_fits_Rare1TTH', nbins, binmapping)
-        set_line_color_style(hist_fits_Rare1TTH_noempty,Style.colors['TTH'],1)
+        if hist_fits_Rare1TTH_noempty: set_line_color_style(hist_fits_Rare1TTH_noempty,Style.colors['TTH'],1)
         hist_fits_Rare1TTZ_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fits_Rare1TTZ'], 'hist_fits_Rare1TTZ', nbins, binmapping)
-        set_line_color_style(hist_fits_Rare1TTZ_noempty,Style.colors['TTZ'],1)
+        if hist_fits_Rare1TTZ_noempty: set_line_color_style(hist_fits_Rare1TTZ_noempty,Style.colors['TTZ'],1)
         hist_fits_Rare1TTW_noempty    = fillnonemptysingle(arguments, inputrootfile, jsondic['fits_Rare1TTW'], 'hist_fits_Rare1TTW', nbins, binmapping)    
-        set_line_color_style(hist_fits_Rare1TTW_noempty,Style.colors['TTW'],1)
+        if hist_fits_Rare1TTW_noempty: set_line_color_style(hist_fits_Rare1TTW_noempty,Style.colors['TTW'],1)
 
 	gr_data_noempty = None
 	if gr_data: gr_data_noempty = noemptybins_data(gr_data, binmapping, hist_noempty) 
