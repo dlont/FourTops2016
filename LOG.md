@@ -1069,3 +1069,24 @@ combine -M HybridNew -d final_unblinding/50bins/datacard_elmu_total_jes.root --s
 step 2:
 combine -M HybridNew -d final_unblinding/50bins/datacard_elmu_total_jes.root --setParameters mask_MU_mu10J4M=1,mask_MU_mu10J3M=0,mask_MU_mu10J2M=1,mask_MU_mu9J4M=1,mask_MU_mu9J3M=1,mask_MU_mu9J2M=1,mask_MU_mu8J4M=1,mask_MU_mu8J3M=1,mask_MU_mu8J2M=1,mask_MU_mu7J4M=1,mask_MU_mu7J3M=1,mask_MU_mu7J2M=1,mask_EL_el10J4M=1,mask_EL_el10J3M=1,mask_EL_el10J2M=1,mask_EL_el9J4M=1,mask_EL_el9J3M=1,mask_EL_el9J2M=1,mask_EL_el8J4M=1,mask_EL_el8J3M=1,mask_EL_el8J2M=1  --rMax=50 --rMin=0 --cminDefaultMinimizerType=Minuit --X-rtd MINIMIZER_analytic --LHCmode LHC-significance  --readHybridResult --toysFile higgsCombineTest.HybridNew.mH120.-1302417571.roo
 
+
+
+# Sat Dec  9 23:27:38 CET 2017
+## Spliting tt+rare in ttz, ttw and tth
+
+
+python  ~/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/test/diffNuisances_denys.py final_unblinding/rare_split_50bins/fitDiagnostics_nominal.root -A -a -g final_unblinding/rare_split_50bins/pulls_nominal.root
+
+## free normalization
+combine -M FitDiagnostics final_unblinding/rare_split_50bins/datacard_elmu_allnorm_floating.root --saveShapes --saveWithUncertainties --saveNormalizations -n _freeNorm --X-rtd MINIMIZER_analytic --out final_unblinding/rare_split_50bins
+python tools/mountainrange_pub.py -j tools/mountainrange_configs/mountain_mu_pub_tttt10_prefit_combo.json final_unblinding/rare_split_50bins/fitDiagnostics_freeNorm.root -r -b -e png --outfile final_unblinding/rare_split_50bins/freeNorm_10j
+
+## Spliting tt+rare in ttz, ttw and tth with coarse binning
+
+
+# Sat Dec 16 05:50:26 CET 2017
+## Automated postfit plotting
+make -n postfit_plots COMBINESHAPESFILE=tools/mountainrange_pub_raresplit_test/fitDiagnostics_nominal.root PLOTCONFIGDIR=tools/mountainrange_configs_raresplit BUILDDIR=tools/mountainrange_pub_raresplit_test FORMAT=png
+
+make -n spectatorcards INPUTLOCATION=final_unblinding/rare_split_50bins BUILDDIR=final_unblinding/rare_split_50bins
+make spectatorpostfitshapes INPUTLOCATION=final_unblinding/rare_split_50bins BUILDDIR=final_unblinding/rare_split_50bins COMBINESHAPESFILE=tools/mountainrange_pub_raresplit_test/fitDiagnostics_nominal.root
