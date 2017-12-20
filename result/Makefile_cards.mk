@@ -1,4 +1,5 @@
 include Makefile_norm.mk
+include Makefile_sys.mk
 
 export TTCENTRAL
 export TARGETVAR
@@ -11,6 +12,7 @@ CARDGEN=/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrusse
 TARGETVAR=BDT
 
 MINIMIZER=Minuit
+AUTOMCSTAT=--automcstat
 STATONLY=
 
 #TTTT
@@ -80,11 +82,11 @@ $(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen
 
 $(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalFlavor_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPileJECUP  ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalFlavorJECUP   ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalFlavor_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalPileJECDOWN  ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} SubTotalFlavorJECDOWN   ${TARGETVAR} ${SUPPRESSOUT}
 ########################################################################################################################
 
 	
@@ -127,6 +129,7 @@ $(BUILDDIR)/Hists_TTTT_FSRDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_fsrdo
 $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_JERUP.root $(BUILDDIR)/Hists_TTTT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_JESUP.root $(BUILDDIR)/Hists_TTTT_JESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalScaleJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalPtJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalPtJESDOWN.root \
@@ -230,11 +233,11 @@ $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TT
 	
 $(BUILDDIR)/Hists_TT_SubTotalFlavorJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalFlavor_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEUPNORM} SubTotalScaleJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEUPNORM} SubTotalFlavorJECUP ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_SubTotalFlavorJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalFlavor_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
-	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEDOWNNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	@tree2hists $^ $@ ${TREENAME}  ${TTSUBSCALEDOWNNORM} SubTotalFlavorJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TT_BTAG.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -282,6 +285,7 @@ $(BUILDDIR)/Hists_TT_CARDS_OLDHDAMP.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_UEUP.root $(BUILDDIR)/Hists_TT_UEDOWN.root \
 	$(BUILDDIR)/Hists_TT_JERUP.root $(BUILDDIR)/Hists_TT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
+	$(BUILDDIR)/Hists_TT_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TT_SubTotalFlavorJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TT_SubTotalPileUpJESDOWN.root \
@@ -301,6 +305,7 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_UEUP.root $(BUILDDIR)/Hists_TT_UEDOWN.root \
 	$(BUILDDIR)/Hists_TT_JERUP.root $(BUILDDIR)/Hists_TT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
+	$(BUILDDIR)/Hists_TT_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TT_SubTotalFlavorJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TT_SubTotalPileUpJESDOWN.root \
@@ -315,13 +320,13 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	#@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP,TTPT
 
 
-card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
+card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTW.root
 	@echo "make HiggsCombine cards"
-	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTXY.root", "Rare1TTH":"Hists_TTH.root", "Rare1TTZ":"Hists_TTZ.root", "Rare1TTW":"Hists_TTW.root"}' --observable=bdt $(AUTOMCSTAT); cd -
 	
-card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root
+card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTW.root
 	@echo "make HiggsCombine cards"
-	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE":"Hists_TT_RARE.root"}' --observable=bdt; cd -
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTXY.root", "Rare1TTH":"Hists_TTH.root", "Rare1TTZ":"Hists_TTZ.root", "Rare1TTW":"Hists_TTW.root"}' --observable=bdt $(AUTOMCSTAT); cd -
 
 $(BUILDDIR)/datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
 	@echo "Combining datacards $^"

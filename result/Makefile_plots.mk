@@ -1,5 +1,5 @@
 .PHONY: plots_mu
-#Order of arguments matters (1 - data, 4 - reference for the ratio when multiple ratios are requested, last - excluded from that ratio stack hist referece)
+#Order of arguments matters (1 - data, --ratio-split arg - reference for the ratio when multiple ratios are requested, last - excluded from that ratio stack hist referece)
 plots_mu: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TTV.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTll.root $(BUILDDIR)/Hists_TTcc.root $(BUILDDIR)/Hists_TTbb.root $(BUILDDIR)/Hists_SYST.root $(BUILDDIR)/Hists_TTTT_SCALED.root
 	@echo "make muon plots"
 	@if [ -d "$(dir $(BUILDDIR))" ]; then echo "Muon dir exists" ; else mkdir $(BUILDDIR) ; fi

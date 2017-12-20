@@ -98,10 +98,10 @@ $(BUILDDIR)/Hists_TTXY.root: $(BUILDDIR)/Hists_TTTJ.root $(BUILDDIR)/Hists_TTTW.
 $(BUILDDIR)/Hists_TT_RARE.root: $(BUILDDIR)/Hists_TTW.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTXY.root
 	@echo "Merging TT RARE histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TTV.root: $(BUILDDIR)/Hists_TTW.root $(BUILDDIR)/Hists_TTZ.root
 	@echo "Merging TT RARE histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
-
 
 $(BUILDDIR)/Hists_WJets.root: ${CONFIG} $(BUILDDIR)/Craneen_WJets_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
