@@ -1,7 +1,7 @@
 import ROOT as rt
 
 rt.gStyle.SetOptStat(0)
-rt.gStyle.SetPaintTextFormat("4.1f")
+rt.gStyle.SetPaintTextFormat("4.2f")
 
 f_cran = rt.TFile.Open("../histos/Craneen_TTJets_powheg_Run2_TopTree_Study.root","READ")
 f_histo = rt.TFile.Open("../histos/Hist_powheg_80X.root","READ")
@@ -69,12 +69,13 @@ c_fake = rt.TCanvas("b_fake_histo_cran")
 c_fake.Divide(3,1)
 c_fake.cd(1)
 fake_histo.SetAxisRange(0.,1.,'Z')
-fake_histo.Draw("colz")
+fake_histo.Draw("colz text89")
 c_fake.cd(2)
 fake_cran.SetAxisRange(0.,1.,'Z')
-fake_cran.Draw("colz")
+fake_cran.Draw("colz text89")
 c_fake.cd(3)
 fake_histo_cran_rat.SetMarkerSize(2.3)
 fake_histo_cran_rat.Draw("colz text89")
 c_fake.Print(".png")
+c_fake.Print(".pdf")
 
