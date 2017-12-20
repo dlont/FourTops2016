@@ -162,10 +162,11 @@ def main(arguments):
         print >> arguments.outfile, 'scale_nj7d10s rateParam {}10J3M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj7d10s rateParam {}10J4M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
 
-        print >> arguments.outfile, '*9J4M autoMCStats 1'
-        print >> arguments.outfile, '*10J3M autoMCStats 1'
-        print >> arguments.outfile, '*10J4M autoMCStats 1'
-	print >> arguments.outfile, '#* autoMCStats 0'
+	if arguments.automcstat:
+        	print >> arguments.outfile, '*9J4M autoMCStats 1'
+        	print >> arguments.outfile, '*10J3M autoMCStats 1'
+        	print >> arguments.outfile, '*10J4M autoMCStats 1'
+		print >> arguments.outfile, '#* autoMCStats 0'
 
 
         return 0
@@ -180,6 +181,7 @@ if __name__ == '__main__':
         parser.add_argument("--source", type=json.loads, dest='sources',
                             help='json dictionary with input definition', required=True)
         parser.add_argument('--channel', help="channel",default='mu')
+        parser.add_argument('--automcstat', action="store_true", help="Add mc stat uncertainties",default=False)
         parser.add_argument('--observable', help="observable",default='allSF/bdt')
         parser.add_argument('-o', '--outfile', help="Output file",
                         default=sys.stdout, type=argparse.FileType('w'))

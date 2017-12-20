@@ -1,7 +1,14 @@
 from cards_bin_list import binlist
+from cards_constants import na, lumiunc, leptonsf
+from Rare1TTH_sys import mu_Rare1TTH_norm, mu_Rare1TTH_shape, el_Rare1TTH_norm, el_Rare1TTH_shape
+from Rare1TTZ_sys import mu_Rare1TTZ_norm, mu_Rare1TTZ_shape, el_Rare1TTZ_norm, el_Rare1TTZ_shape
+from Rare1TTW_sys import mu_Rare1TTW_norm, mu_Rare1TTW_shape, el_Rare1TTW_norm, el_Rare1TTW_shape
 
 systtypelist = {
 'mu':{
+'TTH_norm':'lnN',
+'TTZ_norm':'lnN',
+'TTW_norm':'lnN',
 'TTJets_norm':'lnN',
 #'TTJets_norm8':'lnN',
 #'TTJets_norm9':'lnN',
@@ -14,13 +21,14 @@ systtypelist = {
 'TTTTMEScale':'shape',
 'ST_tW_norm':'lnN',
 'EW_norm':'lnN',
-'TTRARE_norm':'lnN',
+'TTRARE_plus_norm':'lnN',
 'lumi':'lnN',
 'PU':'shape',
 'SubTotalPileUpJES':'shape',
 'SubTotalScaleJES':'shape',
 'SubTotalPtJES':'shape',
 'SubTotalRelativeJES':'shape',
+'SubTotalFlavorJES':'shape',
 'JER':'shape',
 'leptonSFMu':'lnN',
 #{'ScaleH',
@@ -42,6 +50,9 @@ systtypelist = {
 'btagWeightCSVCFErr2':'shape'
 },
 'el':{
+'TTH_norm':'lnN',
+'TTZ_norm':'lnN',
+'TTW_norm':'lnN',
 'TTJets_norm':'lnN',
 #'TTJets_norm8':'lnN',
 #'TTJets_norm9':'lnN',
@@ -53,7 +64,7 @@ systtypelist = {
 'tttt_norm':'lnN',
 'TTTTMEScale':'shape',
 'ST_tW_norm':'lnN',
-'TTRARE_norm':'lnN',
+'TTRARE_plus_norm':'lnN',
 'EW_norm':'lnN',
 'lumi':'lnN',
 'PU':'shape',
@@ -61,6 +72,7 @@ systtypelist = {
 'SubTotalScaleJES':'shape',
 'SubTotalPtJES':'shape',
 'SubTotalRelativeJES':'shape',
+'SubTotalFlavorJES':'shape',
 'JER':'shape',
 'leptonSFEl':'lnN',
 #{'ScaleH',
@@ -82,11 +94,6 @@ systtypelist = {
 'btagWeightCSVCFErr2':'shape'
 }}
 
-
-
-na = '-'
-lumiunc = 1.025
-leptonsf = 1.03
 
 tt7jetbinunc = lambda x: '0.95/1.05' if '7J' in x else '-'
 tt8jetbinunc = lambda x: '2.0' if '8J' in x else '-'
@@ -143,7 +150,14 @@ def syst_norm_size(rootfiles,ch):
 		sysdic[sys] = syslist
 
 	syst_norm_size_list_dict = {
-'mu':{ 'NP_overlay_ttttNLO' : {
+'mu':{ 
+	    mu_Rare1TTH_norm[0]:mu_Rare1TTH_norm[1],
+	    mu_Rare1TTZ_norm[0]:mu_Rare1TTZ_norm[1],
+	    mu_Rare1TTW_norm[0]:mu_Rare1TTW_norm[1],
+	    'NP_overlay_ttttNLO' : {
+	    'TTH_norm':[na         ]*len(binlist['mu']),
+	    'TTZ_norm':[na         ]*len(binlist['mu']),
+	    'TTW_norm':[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
             #'TTJets_norm8'      :[na         ]*len(binlist['mu']),
@@ -152,7 +166,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :['0.94/1.05']*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
-            'TTRARE_norm'          :[na         ]*len(binlist['mu']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['mu']),
             'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'TTISR'             :[na         ]*len(binlist['mu']),
             'TTFSR'             :[na         ]*len(binlist['mu']),
@@ -161,6 +175,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :sysdic['TTTTFSR'],
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
        'ttbarTTX' : {
+	    'TTH_norm':[na         ]*len(binlist['mu']),
+	    'TTZ_norm':[na         ]*len(binlist['mu']),
+	    'TTW_norm':[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :sysdic['TTJets_HDAMP'],
             'TTJets_norm'       :TTJets_norm7_mu_unc,
             #'TTJets_norm8'      :TTJets_norm8_mu_unc,
@@ -169,7 +186,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
-            'TTRARE_norm'       :[na         ]*len(binlist['mu']),
+            'TTRARE_plus_norm'       :[na         ]*len(binlist['mu']),
             'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'TTISR'             :sysdic['TTISR'],
             'TTFSR'             :sysdic['TTFSR'],
@@ -178,6 +195,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :[na         ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},
        'EW' : {
+	    'TTH_norm':[na         ]*len(binlist['mu']),
+	    'TTZ_norm':[na         ]*len(binlist['mu']),
+	    'TTW_norm':[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
             #'TTJets_norm8'      :[na         ]*len(binlist['mu']),
@@ -186,7 +206,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[1.04       ]*len(binlist['mu']),
-            'TTRARE_norm'          :[na         ]*len(binlist['mu']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['mu']),
             'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'TTISR'             :[na         ]*len(binlist['mu']),
             'TTFSR'             :[na         ]*len(binlist['mu']),
@@ -194,7 +214,10 @@ def syst_norm_size(rootfiles,ch):
             'TTTTISR'           :[na         ]*len(binlist['mu']),
             'TTTTFSR'           :[na         ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
-       'TTRARE' : {
+       'TTRARE_plus' : {
+	    'TTH_norm':[na         ]*len(binlist['mu']),
+	    'TTZ_norm':[na         ]*len(binlist['mu']),
+	    'TTW_norm':[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
             #'TTJets_norm8'      :[na         ]*len(binlist['mu']),
@@ -203,7 +226,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[na         ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
-            'TTRARE_norm'          :[1.5        ]*len(binlist['mu']),
+            'TTRARE_plus_norm'          :[1.5        ]*len(binlist['mu']),
             'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'TTISR'             :[na         ]*len(binlist['mu']),
             'TTFSR'             :[na         ]*len(binlist['mu']),
@@ -212,6 +235,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :[na         ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])},     
        'ST_tW' : {
+	    'TTH_norm':[na         ]*len(binlist['mu']),
+	    'TTZ_norm':[na         ]*len(binlist['mu']),
+	    'TTW_norm':[na         ]*len(binlist['mu']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
             'TTJets_norm'       :[na         ]*len(binlist['mu']),
             #'TTJets_norm8'      :[na         ]*len(binlist['mu']),
@@ -220,7 +246,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['mu']),
             'ST_tW_norm'        :[1.04       ]*len(binlist['mu']),
             'EW_norm'           :[na         ]*len(binlist['mu']),
-            'TTRARE_norm'          :[na         ]*len(binlist['mu']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['mu']),
             'lumi'              :[lumiunc    ]*len(binlist['mu']),
             'TTISR'             :[na         ]*len(binlist['mu']),
             'TTFSR'             :[na         ]*len(binlist['mu']),
@@ -229,7 +255,14 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :[na         ]*len(binlist['mu']),
             'leptonSFMu'        :[leptonsf   ]*len(binlist['mu'])}, 
 },
-'el':{ 'NP_overlay_ttttNLO' : {
+'el':{ 
+	    el_Rare1TTH_norm[0]:el_Rare1TTH_norm[1],
+	    el_Rare1TTZ_norm[0]:el_Rare1TTZ_norm[1],
+	    el_Rare1TTW_norm[0]:el_Rare1TTW_norm[1],
+	    'NP_overlay_ttttNLO' : {
+	    'TTH_norm':[na         ]*len(binlist['el']),
+	    'TTZ_norm':[na         ]*len(binlist['el']),
+	    'TTW_norm':[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_norm'       :[na         ]*len(binlist['el']),
             #'TTJets_norm8'      :[na         ]*len(binlist['el']),
@@ -238,7 +271,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :['0.94/1.05']*len(binlist['el']),
             'ST_tW_norm'        :[na         ]*len(binlist['el']),
             'EW_norm'           :[na         ]*len(binlist['el']),
-            'TTRARE_norm'          :[na         ]*len(binlist['el']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['el']),
             'lumi'              :[lumiunc    ]*len(binlist['el']),
             'TTISR'             :[na         ]*len(binlist['el']),
             'TTFSR'             :[na         ]*len(binlist['el']),
@@ -247,6 +280,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :sysdic['TTTTFSR'],
             'leptonSFEl'        :[leptonsf   ]*len(binlist['el'])},
        'ttbarTTX' : {
+	    'TTH_norm':[na         ]*len(binlist['el']),
+	    'TTZ_norm':[na         ]*len(binlist['el']),
+	    'TTW_norm':[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :sysdic['TTJets_HDAMP'],
             'TTJets_norm'       :TTJets_norm7_el_unc,
             #'TTJets_norm8'      :TTJets_norm8_el_unc,
@@ -255,7 +291,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['el']),
             'ST_tW_norm'        :[na         ]*len(binlist['el']),
             'EW_norm'           :[na         ]*len(binlist['el']),
-            'TTRARE_norm'          :[na         ]*len(binlist['el']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['el']),
             'lumi'              :[lumiunc    ]*len(binlist['el']),
             'TTISR'             :sysdic['TTISR'],
             'TTFSR'             :sysdic['TTFSR'],
@@ -264,6 +300,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :[na         ]*len(binlist['el']),
             'leptonSFEl'        :[leptonsf   ]*len(binlist['el'])},
        'EW' : {
+	    'TTH_norm':[na         ]*len(binlist['el']),
+	    'TTZ_norm':[na         ]*len(binlist['el']),
+	    'TTW_norm':[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_norm'       :[na         ]*len(binlist['el']),
             #'TTJets_norm8'      :[na         ]*len(binlist['el']),
@@ -272,7 +311,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['el']),
             'ST_tW_norm'        :[na         ]*len(binlist['el']),
             'EW_norm'           :[1.04       ]*len(binlist['el']),
-            'TTRARE_norm'          :[na         ]*len(binlist['el']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['el']),
             'lumi'              :[lumiunc    ]*len(binlist['el']),
             'TTISR'             :[na         ]*len(binlist['el']),
             'TTFSR'             :[na         ]*len(binlist['el']),
@@ -280,7 +319,10 @@ def syst_norm_size(rootfiles,ch):
             'TTTTISR'           :[na         ]*len(binlist['el']),
             'TTTTFSR'           :[na         ]*len(binlist['el']),
             'leptonSFEl'        :[leptonsf   ]*len(binlist['el'])},     
-       'TTRARE' : {
+       'TTRARE_plus' : {
+	    'TTH_norm':[na         ]*len(binlist['el']),
+	    'TTZ_norm':[na         ]*len(binlist['el']),
+	    'TTW_norm':[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_norm'       :[na         ]*len(binlist['el']),
             #'TTJets_norm8'      :[na         ]*len(binlist['el']),
@@ -289,7 +331,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['el']),
             'ST_tW_norm'        :[na         ]*len(binlist['el']),
             'EW_norm'           :[na         ]*len(binlist['el']),
-            'TTRARE_norm'          :[1.5        ]*len(binlist['el']),
+            'TTRARE_plus_norm'          :[1.5        ]*len(binlist['el']),
             'lumi'              :[lumiunc    ]*len(binlist['el']),
             'TTISR'             :[na         ]*len(binlist['el']),
             'TTFSR'             :[na         ]*len(binlist['el']),
@@ -298,6 +340,9 @@ def syst_norm_size(rootfiles,ch):
             'TTTTFSR'           :[na         ]*len(binlist['el']),
             'leptonSFEl'        :[leptonsf   ]*len(binlist['el'])},     
        'ST_tW' : {
+	    'TTH_norm':[na         ]*len(binlist['el']),
+	    'TTZ_norm':[na         ]*len(binlist['el']),
+	    'TTW_norm':[na         ]*len(binlist['el']),
             'TTJets_HDAMP'      :[na         ]*len(binlist['el']),
             'TTJets_norm'       :[na         ]*len(binlist['el']),
             #'TTJets_norm8'      :[na         ]*len(binlist['el']),
@@ -306,7 +351,7 @@ def syst_norm_size(rootfiles,ch):
             'tttt_norm'         :[na         ]*len(binlist['el']),
             'ST_tW_norm'        :[1.04       ]*len(binlist['el']),
             'EW_norm'           :[na         ]*len(binlist['el']),
-            'TTRARE_norm'          :[na         ]*len(binlist['el']),
+            'TTRARE_plus_norm'          :[na         ]*len(binlist['el']),
             'lumi'              :[lumiunc    ]*len(binlist['el']),
             'TTISR'             :[na         ]*len(binlist['el']),
             'TTFSR'             :[na         ]*len(binlist['el']),
@@ -320,7 +365,11 @@ def syst_norm_size(rootfiles,ch):
 
 
 syst_shape_size_list = {
-'mu':{ 'NP_overlay_ttttNLO' : {
+'mu':{ 
+	    mu_Rare1TTH_shape[0]:mu_Rare1TTH_shape[1],
+	    mu_Rare1TTZ_shape[0]:mu_Rare1TTZ_shape[1],
+	    mu_Rare1TTW_shape[0]:mu_Rare1TTW_shape[1],
+	    'NP_overlay_ttttNLO' : {
             'TTTTMEScale'      :[1.         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -331,6 +380,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['mu']),
+            'SubTotalFlavorJES'               :[1.         ]*len(binlist['mu']),
             'JER'               :[1.         ]*len(binlist['mu']),
             'btagWeightCSVJES'  :[1.         ]*len(binlist['mu']),
             'btagWeightCSVHF'   :[1.         ]*len(binlist['mu']),
@@ -353,6 +403,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['mu']),
+            'SubTotalFlavorJES'               :[1.         ]*len(binlist['mu']),
             'JER'               :[1.         ]*len(binlist['mu']),
             'btagWeightCSVJES'  :[1.         ]*len(binlist['mu']),
             'btagWeightCSVHF'   :[1.         ]*len(binlist['mu']),
@@ -375,6 +426,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['mu']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['mu']),
@@ -397,6 +449,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['mu']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['mu']),
@@ -408,7 +461,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[na        ]*len(binlist['mu']),
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
-      'TTRARE' : {
+      'TTRARE_plus' : {
             'TTTTMEScale'      :[na         ]*len(binlist['mu']),
             'ttMEScale'    :[na         ]*len(binlist['mu']),
             'TTJets_PDF'	:[na         ]*len(binlist['mu']),
@@ -419,6 +472,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['mu']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['mu']),
@@ -431,7 +485,11 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr2':[na         ]*len(binlist['mu'])
             },
 },
-'el':{ 'NP_overlay_ttttNLO' : {
+'el':{ 
+	    el_Rare1TTH_shape[0]:el_Rare1TTH_shape[1],
+	    el_Rare1TTZ_shape[0]:el_Rare1TTZ_shape[1],
+	    el_Rare1TTW_shape[0]:el_Rare1TTW_shape[1],
+            'NP_overlay_ttttNLO' : {
             'TTTTMEScale'      :[1.         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
@@ -442,6 +500,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[1.         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['el']),
+            'SubTotalFlavorJES'               :[1.         ]*len(binlist['el']),
             'JER'               :[1.         ]*len(binlist['el']),
             'btagWeightCSVJES'  :[1.         ]*len(binlist['el']),
             'btagWeightCSVHF'   :[1.         ]*len(binlist['el']),
@@ -464,6 +523,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[1.         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['el']),
+            'SubTotalFlavorJES'               :[1.         ]*len(binlist['el']),
             'JER'               :[1.         ]*len(binlist['el']),
             'btagWeightCSVJES'  :[1.         ]*len(binlist['el']),
             'btagWeightCSVHF'   :[1.         ]*len(binlist['el']),
@@ -486,6 +546,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['el']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['el']),
@@ -508,6 +569,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['el']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['el']),
@@ -519,7 +581,7 @@ syst_shape_size_list = {
             'btagWeightCSVCFErr1':[na        ]*len(binlist['el']),
             'btagWeightCSVCFErr2':[na         ]*len(binlist['el'])
             },
-      'TTRARE' : {
+      'TTRARE_plus' : {
             'TTTTMEScale'      :[na         ]*len(binlist['el']),
             'ttMEScale'    :[na         ]*len(binlist['el']),
             'TTJets_PDF'	:[na         ]*len(binlist['el']),
@@ -530,6 +592,7 @@ syst_shape_size_list = {
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
+            'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),
             'btagWeightCSVJES'  :[na         ]*len(binlist['el']),
             'btagWeightCSVHF'   :[na         ]*len(binlist['el']),
