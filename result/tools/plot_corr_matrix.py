@@ -100,7 +100,11 @@ def main(arguments):
 		matrix_builder.set_fit_object(fit_obj)
 		h = matrix_builder.get_histogram(fit_obj)
 		c = rt.TCanvas('c')
+		c.SetBottomMargin(0.3)
+		c.SetLeftMargin(0.3)
 		h.Draw('colz')
+		h.SetAxisRange(-1.,1.,"Z")
+		h.GetXaxis().LabelsOption("v")
 		c.Print('{0}_{1}.{2}'.format(arguments.outfile,fit_obj,arguments.extension))
         return 0
 
