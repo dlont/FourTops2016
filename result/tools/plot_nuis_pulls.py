@@ -29,7 +29,7 @@ def progress(current, total, status=''):
 
 
 def main(arguments):
-	
+
 	rt.gStyle.SetOptStat(0)
 
 	# input file with fit results objects
@@ -39,7 +39,23 @@ def main(arguments):
 	fit_results_names = ['fit_s', 'fit_b']
 
 	c = root_file.Get("nuisancs")
-	c.Print('{0}.{1}'.format(arguments.outfile,arguments.extension))
+
+	# move Legend
+	list_of_primitives = c.GetListOfPrimitives()
+	legend = list_of_primitives.FindObject("TPave")
+        # new_legend = rt.TLegend(0.,0.8,0.99,0.99)
+        # legend.Copy(new_legend)
+        print legend
+	if legend:
+	       legend.SetX1(0.7)
+	       legend.SetX2(0.99)
+	       legend.SetY1(0.9)
+	       legend.SetY2(0.99)
+               legend.Draw()
+               legend.SetNColumns(3)
+        c.Update()
+        c.Modified()
+	c.SaveAs('{0}.{1}'.format(arguments.outfile,arguments.extension))
         return 0
 
 
@@ -69,7 +85,7 @@ if __name__ == '__main__':
         args = parser.parse_args(sys.argv[1:])
 
         print(args)
-        
+
         logging.basicConfig(level=args.loglevel)
 
         logging.info( time.asctime() )
