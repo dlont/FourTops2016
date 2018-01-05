@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 """
-A simple python script template.
+Postfit normalization tables from combine output files.
+input: fitDiagnostics.root or mlfit.root file produced with --saveNormalizations
+flag
 """
 
 import os
@@ -47,7 +49,7 @@ class DataNormFromShape:
 			fold.ReadObj().cd()			#cd to this folder
 			gr = rt.gDirectory.Get(self.observation_name)	#retrieve graph with data observation
 			n_observed_events = 0
-			for ibin in range(0,gr.GetN()): n_observed_events += gr.GetY()[ibin]		
+			for ibin in range(0,gr.GetN()): n_observed_events += gr.GetY()[ibin]
 			logging.info( fold.GetName()+': '+str(n_observed_events) )
 			#create new RooFit object and add it to RooArgSet
 			datum = rt.RooRealVar( fold.GetName()+'/observation','observation', n_observed_events )
@@ -69,10 +71,10 @@ class OthersNorm:
 
 	def set_name(self,name):
 		self.name = name
-	
+
 	def discover_search_regions(self):
 		"""
-		Identify all search regions according to the name of 
+		Identify all search regions according to the name of
 		the normalization variable name, e.g.
 		MU_mu9J3M/ttbarTTX -> MU_mu9J3M
 
@@ -87,7 +89,7 @@ class OthersNorm:
 		while arg:
 			result.append(arg.GetName())
 			arg = siter.next()
-		
+
 		# save search regions names in a new list
 		# remove part to the string after '/', i.e.
 		# MU_mu9J3M/ttbarTTX -> MU_mu9J3M
@@ -103,7 +105,7 @@ class OthersNorm:
 		logging.debug(pformat(result))
 
 		return result
-		
+
 
 	def fill_missing_search_categories(self, bckg_roo_args_set, all_search_regions):
 		"""
@@ -114,7 +116,7 @@ class OthersNorm:
 		:param bckg_roo_args_set: RooAbsSet with existing background normalizations
 		:returns: modified bckg_roo_args_set, where missing zero elements are added
 		"""
-		
+
 		background_name = None
 		existing_search_regions = []
 		siter = bckg_roo_args_set.fwdIterator()
@@ -156,7 +158,7 @@ class OthersNorm:
 			#roo_bckg_collection.Print()
 			#clone updated list to the dictionary entry
 			other_backgrounds_norm_dic[bck_name] = rt.RooArgSet(roo_bckg_collection)
-		
+
 		#sum up all other backgrounds together
 		others_backgrounds = rt.RooArgSet(self.name)
 		for search_region in search_regions_list:
@@ -169,7 +171,7 @@ class OthersNorm:
 			others_backgrounds.add(others_entry)
 		others_backgrounds.sort()
 		others_backgrounds.Print()
-			
+
 		return others_backgrounds
 
 	def get_prefit(self):
@@ -179,7 +181,7 @@ class OthersNorm:
 		return self.get(self.postfit_norm)
 
 def main(arguments):
-	
+
 	# Enforce no garbage collection
 	rt.TH1.__init__._creates = False
 	rt.TH2.__init__._creates = False
@@ -214,7 +216,7 @@ def main(arguments):
 	#make prefit normalizations of non tt background
 	norm_prefit_others = creator_others.get_prefit()
 	norm_prefit_total = creator_total.get_prefit()
-	
+
 
 	#retrieve postfit normalizations
 	postfit_norm_name = 'norm_fit_s'
@@ -227,9 +229,9 @@ def main(arguments):
 	norm_postfit_total = creator_total.get_postfit()
 
 	#make latex table
-	data.printLatex(rt.RooFit.Sibling(norm_postfit_total), 
+	data.printLatex(rt.RooFit.Sibling(norm_postfit_total),
 			rt.RooFit.Sibling(norm_postfit_ttbar),rt.RooFit.Sibling(norm_postfit_others),rt.RooFit.Sibling(norm_postfit_tttt),
-			rt.RooFit.Sibling(norm_prefit_total), 
+			rt.RooFit.Sibling(norm_prefit_total),
 			rt.RooFit.Sibling(norm_prefit_ttbar), rt.RooFit.Sibling(norm_prefit_others), rt.RooFit.Sibling(norm_prefit_tttt))
 	#data.printLatex(rt.RooFit.Sibling(norm_postfit_ttbar),rt.RooFit.Sibling(norm_postfit_others), rt.RooFit.Sibling(norm_postfit_tttt),
 	#		rt.RooFit.Sibling(norm_prefit_ttbar), rt.RooFit.Sibling(norm_prefit_others), rt.RooFit.Sibling(norm_prefit_tttt))
@@ -266,7 +268,7 @@ if __name__ == '__main__':
         args = parser.parse_args(sys.argv[1:])
 
         print(args)
-        
+
         logging.basicConfig(level=args.loglevel)
 
         logging.info( time.asctime() )
