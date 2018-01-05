@@ -64,6 +64,11 @@
 
 <!-- Others (EWK, TTH, TTW, TTZ) -->
 
+<!-- WZ inclusive -->
+<d EqLumi="1." PreselEff="0.0" add="1" color="413" filenames="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v8/TTP-CMSSW_80X_v8--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/WZ_TuneCUETP8M1_13TeV-pythia8/crab_TuneCUETP8M113TeVpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab138/170415_152814/0000/TOPTREE_*.root" ls="1" lw="2" name="WZ" normf="1" title="WZ" xsection="1." />
+<d EqLumi="1." PreselEff="0.0" add="1" color="413" filenames="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v8/TTP-CMSSW_80X_v8--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/WZ_TuneCUETP8M1_13TeV-pythia8/crab_CUETP8M113TeVpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6ext1v1crab137/170415_201204/0000/TOPTREE_*.root" ls="1" lw="2" name="WZp1" normf="1" title="WZ" xsection="1." />
+
+<!-- WJets inclusive -->
 <d EqLumi="1." PreselEff="0.0" add="1" color="413" filenames="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v8/TTP-CMSSW_80X_v8--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8//WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*/170506_110110/*/TOPTREE_*.root" ls="1" lw="2" name="WJets" normf="1" title="WJets" xsection="61526" />
 <d EqLumi="1." PreselEff="0.0" add="1" color="413" filenames="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v8/TTP-CMSSW_80X_v8--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_113TeVmadgraphMLMpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab9/170506_105604/*/TOPTREE_*.root" ls="1" lw="2" name="W1Jets" normf="1" title="WJets" xsection="61526" />
 <d EqLumi="1." PreselEff="0.0" add="1" color="413" filenames="/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v8/TTP-CMSSW_80X_v8--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_113TeVmadgraphMLMpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab8/170506_105650/*/TOPTREE_*.root" ls="1" lw="2" name="W2Jets" normf="1" title="WJets" xsection="61526" />
