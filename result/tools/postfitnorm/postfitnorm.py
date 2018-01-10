@@ -163,11 +163,14 @@ class OthersNorm:
 		others_backgrounds = rt.RooArgSet(self.name)
 		for search_region in search_regions_list:
 			others_backgrounds_sum = 0
+			others_backgrounds_error2 = 0
 			for bck_name in other_backgrounds_norm_dic.keys():
 				entry_name = '{}/{}'.format(search_region,bck_name)
 				others_backgrounds_sum += other_backgrounds_norm_dic[bck_name].getRealValue(entry_name)
+				error = other_backgrounds_norm_dic[bck_name].find(entry_name).getError()
+				others_backgrounds_error2 += error*error
 			others_entry = rt.RooRealVar( search_region+'/'+self.name, self.name, others_backgrounds_sum )
-			others_entry.setError(rt.TMath.Sqrt(others_backgrounds_sum))
+			others_entry.setError(rt.TMath.Sqrt(others_backgrounds_error2))
 			others_backgrounds.add(others_entry)
 		others_backgrounds.sort()
 		others_backgrounds.Print()
