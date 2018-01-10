@@ -1,0 +1,6 @@
+# Example usage
+python ../postfitnorm.py fitDiagnostics_nominal.root
+
+# To run tests use the following command
+
+python -m unittest discover -s ..
