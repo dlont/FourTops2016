@@ -66,8 +66,11 @@ class MVADistributions(object):
                 #        'BDTA500','BDTA20',\
                 #        'BDTG500','BDTG20']
                 self._histconfig = {"nbins":25,	"xmin":-1.0, "xmax":1.0}
-                if 'histconfig' in jsondic:
-                        self._histconfig=jsondic['histconfig']
+                if 'histconfig' in self._jsondic:
+                        self._histconfig = self._jsondic['histconfig']
+                self._annotation = 'Performance comparision of different MVA discriminants'
+                if 'annotation' in self._jsondic:
+                        self._annotation = self._jsondic['annotation']
                 self.Initialize()
 
         @log_with()
@@ -181,37 +184,6 @@ class MVADistributions(object):
                 if hist:
                         hist.Scale(1./hist.Integral())
                         return hist
-
-        @log_with()
-        def fill_tmvadistributions(self,tree,idname,mvaname):
-                min = tree.GetMinimum(mvaname)
-                max = tree.GetMaximum(mvaname)
-                # rescale to [-1.,1.] range
-                # mva' = (mva-min)/(max-min)*(max'-min') + min'
-                rescaled_mva = '(({}-{})/({}-{})*({} - {}) + {})'.format(mvaname,min,max,min,\
-                                                                self._histconfig['xmax'],self._histconfig['xmin'],self._histconfig['xmin'])
-                #background histograms
-                histname = "h_ttmix_{}".format(mvaname)
-                drawhistconfig = "({},{},{})".format(self._histconfig['nbins'],self._histconfig['xmin'],self._histconfig['xmax'])
-                histexpression = "{}{}".format(histname,drawhistconfig) #e.g h_ttmix_BDTA20(25,-1.,1.)
-                bg_cuts = "classID==0"  #background events from tmva tree
-                tree.Draw("{}>>{}".format(rescaled_mva,histexpression),bg_cuts)
-                hist = rt.gDirectory.Get(histname)
-                rt.SetOwnership( hist, False )
-                if hist:
-                        hist.Scale(1./hist.Integral())
-                        self._mvadistributions[idname].AddLast(hist)
-
-                #signal histograms
-                histname = "h_tttt_{}".format(mvaname)
-                histexpression = "{}{}".format(histname,drawhistconfig) #e.g h_tttt_BDTA20(25,-1.,1.)
-                sg_cuts = "classID==1"  #signal events from tmva tree
-                tree.Draw("{}>>{}".format(rescaled_mva,histexpression),sg_cuts)
-                hist = rt.gDirectory.Get(histname)
-                rt.SetOwnership( hist, False )
-                if hist:
-                        hist.Scale(1./hist.Integral())
-                        self._mvadistributions[idname].AddLast(hist)
 
         @log_with()
         def fill_craneendistributions(self,tree,idname,mvaname):
@@ -331,23 +303,28 @@ class Style(object):
                 canvas.Update()
 
 class View(object):
+        @log_with()
         def __init__(self):
                 self._model = None
                 self._style = None
                 self._outfilename = 'out'
                 self._outfileextension = 'png'
-
+        @log_with()
         def set_style(self,style):
                 self._style = style
-
+        @log_with()
         def set_model(self,model):
                 self._model = model
+        @log_with()
         def set_outfilename(self,filename):
                 if filename: self._outfilename = filename
+        @log_with()
         def set_extension(self,extension):
                 self._outfileextension = extension
+        @log_with()
         def get_outfile_name(self):
                 return '{}.{}'.format(self._outfilename,self._outfileextension)
+        @log_with()
         def draw(self):
                 c = rt.TCanvas('c','cms',5,45,800,400)
                 c.Divide(2,1)
@@ -368,6 +345,16 @@ class View(object):
 
                 if self._style: self._style.decorate_canvas(c)
                 c.SaveAs(self.get_outfile_name())
+        @log_with()
+        def annotate(self,type):
+                if type == "screen":
+                        pp.pprint(self._model._annotation)
+                elif type == "tex":
+                        logging.warning("Annotation format: {}. Not implemented yet!".format(type))
+                elif type == ".md":
+                        logging.warning("Annotation format: {}. Not implemented yet!".format(type))
+                else:
+                        logging.error("Annotation format not recognized: {}".format(type))
 
 def main(arguments):
 
@@ -396,6 +383,8 @@ def main(arguments):
         view.set_outfilename(arguments.outfile)
         view.set_extension(arguments.extension)
         view.draw()
+        if arguments.annotation_format:
+                view.annotate(arguments.annotation_format)
 
         return 0
 
@@ -409,6 +398,8 @@ if __name__ == '__main__':
         parser.add_argument('-o', '--outfile', help="Output file")
         parser.add_argument('-e', '--extension', help="Plot file extension (.C, .root, .png, .pdf)", default='png')
         parser.add_argument('-j', '--config-json', help="JSON configuration file", required=True)
+        parser.add_argument('-a', '--annotation_format', default=None,\
+                            help="Print annotation in given format (sceen, tex, md). Disabled if None")
         parser.add_argument('-b', help="ROOT batch mode", dest='isBatch', action='store_true')
         parser.add_argument(
                         '-d', '--debug',

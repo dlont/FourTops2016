@@ -1,4 +1,5 @@
 {
+	"annotation":"Default annotation.",
 	"histconfig":{
 		"nbins":25,
 		"xmin":-1.0,
