@@ -7,15 +7,27 @@ A simple python script template.
 import os
 import sys
 import time
+import shutil
 import argparse
 import logging
 import json
+import textwrap
 import pprint as pp
 from prettytable import  PrettyTable
 from prettytable import MSWORD_FRIENDLY
 import ROOT as rt
 
 import functools, logging
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -267,7 +279,7 @@ class Style(object):
 
         @log_with()
         def decorate_roc_mg(self,mg):
-                mg.SetTitle(';Signal efficiency; Background efficiency')
+                mg.SetTitle(';Signal efficiency;Background rejection')
                 mg.GetYaxis().SetTitleOffset(1.5)
 
         @log_with()
@@ -309,6 +321,7 @@ class View(object):
                 self._style = None
                 self._outfilename = 'out'
                 self._outfileextension = 'png'
+                self._outputfolder = '.'
         @log_with()
         def set_style(self,style):
                 self._style = style
@@ -322,8 +335,13 @@ class View(object):
         def set_extension(self,extension):
                 self._outfileextension = extension
         @log_with()
+        def set_outputfolder(self,folder):
+                self._outputfolder = folder
+                if not os.path.exists(folder):
+                        os.makedirs(folder)
+        @log_with()
         def get_outfile_name(self):
-                return '{}.{}'.format(self._outfilename,self._outfileextension)
+                return '{}/{}.{}'.format(self._outputfolder,self._outfilename,self._outfileextension)
         @log_with()
         def draw(self):
                 c = rt.TCanvas('c','cms',5,45,800,400)
@@ -346,12 +364,18 @@ class View(object):
                 if self._style: self._style.decorate_canvas(c)
                 c.SaveAs(self.get_outfile_name())
         @log_with()
-        def annotate(self,type):
+        def annotate(self,type,config):
                 if type == "screen":
-                        pp.pprint(self._model._annotation)
+                        bright_green_text = "\033[1;32;40m"
+                        normal_text = "\033[0;37;40m"
+                        print "\n".join(textwrap.wrap(bcolors.OKGREEN+
+                                  self._model._annotation.encode('ascii')+
+                                  bcolors.ENDC, 120))
+                        if os.path.exists(self._outputfolder):
+                                shutil.copy2(config,self._outputfolder)
                 elif type == "tex":
                         logging.warning("Annotation format: {}. Not implemented yet!".format(type))
-                elif type == ".md":
+                elif type == "md":
                         logging.warning("Annotation format: {}. Not implemented yet!".format(type))
                 else:
                         logging.error("Annotation format not recognized: {}".format(type))
@@ -380,11 +404,12 @@ def main(arguments):
         view = View()
         view.set_model(model)
         view.set_style(style)
+        view.set_outputfolder(arguments.dir)
         view.set_outfilename(arguments.outfile)
         view.set_extension(arguments.extension)
         view.draw()
         if arguments.annotation_format:
-                view.annotate(arguments.annotation_format)
+                view.annotate(arguments.annotation_format,arguments.config_json)
 
         return 0
 
@@ -397,9 +422,12 @@ if __name__ == '__main__':
         formatter_class=argparse.RawDescriptionHelpFormatter)
         parser.add_argument('-o', '--outfile', help="Output file")
         parser.add_argument('-e', '--extension', help="Plot file extension (.C, .root, .png, .pdf)", default='png')
+        parser.add_argument('--dir', help="Result output directory", default='.')
         parser.add_argument('-j', '--config-json', help="JSON configuration file", required=True)
-        parser.add_argument('-a', '--annotation_format', default=None,\
-                            help="Print annotation in given format (sceen, tex, md). Disabled if None")
+        parser.add_argument('-a', '--annotation_format', default="screen",\
+                            help="Print annotation in given format (screen, tex, md)")
+        parser.add_argument('--no-annotation', dest='annotation_format', action='store_false',\
+                                                help="Disable annotating")
         parser.add_argument('-b', help="ROOT batch mode", dest='isBatch', action='store_true')
         parser.add_argument(
                         '-d', '--debug',
