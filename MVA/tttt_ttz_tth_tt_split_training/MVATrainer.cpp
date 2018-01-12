@@ -300,10 +300,15 @@ factory->AddSpectator( "nMtags := nMtags",  "b tags multiplicity", "units", 'F' 
    if(!noAnnotate && !jsonconfigName.empty()) {
      //copy config file if any
      if(fs::exists(jsonconfigName)) {
-        fs::copy(jsonconfigName,outputdirName+"/"+jsonconfigName);
+        try {
+          fs::copy(jsonconfigName,outputdirName+"/"+jsonconfigName);
+        } catch (const std::exception &ex) {
+          std::cerr << ex.what() << '\n' << endl;
+        }
         std::string msg = bcolors::OKGREEN +
                           root.get<std::string>("annotation") +
                           bcolors::ENDC;
+        std::cout << msg << std::endl;
      }
    }
 
