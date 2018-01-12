@@ -11,11 +11,11 @@
  * Created on May 9, 2016, 11:37 PM
  */
 
-#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "TChain.h"
 #include "TFile.h"
@@ -26,8 +26,11 @@
 #include "TROOT.h"
 #include "TPluginManager.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tokenizer.hpp>
+#include <boost/filesystem.hpp>
 
 //Changing to these include paths for compatibility with ROOT v5.34
 #include "TMVA/Factory.h"
@@ -36,67 +39,48 @@
 
 #include "BookMethods.hpp"
 
+namespace pt = boost::property_tree;
+namespace fs = boost::filesystem;
+
 using namespace boost::program_options;
 using namespace std;
 
-//---------------------------------------------------------------
-  // default MVA methods to be trained + tested
+namespace bcolors{
+    string HEADER =     "\033[95m";
+    string OKBLUE =     "\033[94m";
+    string OKGREEN =    "\033[92m";
+    string WARNING =    "\033[93m";
+    string FAIL =       "\033[91m";
+    string ENDC =       "\033[0m";
+    string BOLD =       "\033[1m";
+    string UNDERLINE =  "\033[4m";
+};
 
-  std::map<std::string,bool> Use;
-  void SwitchTrainMethods()
-  {
-      Use["BDTA10"]            = true;
-      Use["BDTA20"]            = true;
-      Use["BDTA30"]            = true;
-      Use["BDTA40"]            = true;
-      Use["BDTA50"]            = true;
-      Use["BDTA100"]           = true;
-      Use["BDTA200"]           = true;
-      Use["BDTA500"]           = true;
-      // ------------------------------
-      Use["BDTASIG10"]            = true;
-      Use["BDTASIG20"]            = true;
-      Use["BDTASIG30"]            = true;
-      Use["BDTASIG40"]            = true;
-      Use["BDTASIG50"]            = true;
-      Use["BDTASIG100"]           = true;
-      Use["BDTASIG200"]           = true;
-      Use["BDTASIG500"]           = true;
-      // ------------------------------
-      Use["BDTG10"]            = true;
-      Use["BDTG20"]            = true;
-      Use["BDTG30"]            = true;
-      Use["BDTG40"]            = true;
-      Use["BDTG50"]            = true;
-      Use["BDTG100"]           = true;
-      Use["BDTG200"]           = true;
-      Use["BDTG500"]           = true;
-      // ------------------------------
-      Use["BDTGSIG10"]            = true;
-      Use["BDTGSIG20"]            = true;
-      Use["BDTGSIG30"]            = true;
-      Use["BDTGSIG40"]            = true;
-      Use["BDTGSIG50"]            = true;
-      Use["BDTGSIG100"]           = true;
-      Use["BDTGSIG200"]           = true;
-      Use["BDTGSIG500"]           = true;
-      // ------------------------------
-      return;
-  }
-/*
- *
- */
+// JSON root
+pt::ptree root;
+
+//Global map for different TMVA Methods
+extern "C" std::map<std::string,bool> Use; //definde in BookMethod.cpp
+
 // For more info on the options used for preparing the Train and Testsamples, see section 3.1.4 of the TMVA manual
 int main(int argc, char** argv) {
-    std::vector<std::string> vBckgFileNames;
-    std::vector<std::string> vSigFileNames;
+    std::vector<std::pair<const std::string,double>> vBckgFileNames;
+    std::vector<std::pair<const std::string,double>> vSigFileNames;
     std::string treeName;
+    std::string outputdirName;
+    std::string jsonconfigName;
+    bool noAnnotate;
+
+    // Parse command line arguments
     try {
       options_description desc{"Options",160};
       desc.add_options()
         ("help,h", "Help screen")
-        ("background_craneens", value<string>()->default_value("Craneen_TTJets_powheg_Run2_TopTree_Study.root"), "List of coma separated background craneen files")
-        ("signal_craneens", value<string>()->default_value("Craneen_ttttNLO_Run2_TopTree_Study.root"), "List of coma separated signal craneen files")
+        ("dir", value<string>()->default_value("."),"Output directory")
+        ("no-annotate", value<bool>()->default_value(false),"Disable annotation")
+        ("json,j", value<string>(),"JSON configuration file")
+        ("background_craneens", value<string>(), "List of coma separated background craneen files")
+        ("signal_craneens", value<string>(), "List of coma separated signal craneen files")
         ("tree_name", value<string>()->default_value("Craneen__Mu"),"Input tree name");
 
       variables_map vm;
@@ -107,6 +91,10 @@ int main(int argc, char** argv) {
         std::cout << desc << '\n';
         exit(0);
       }
+      if (vm.count("no-annotate")) {
+        noAnnotate = vm["no-annotate"].as<bool>();
+        if (!noAnnotate) std::cout << "Annotation switched on" << endl;
+      }
       if (vm.count("background_craneens")) {
         const boost::char_separator<char> sep(",");
         boost::tokenizer<boost::char_separator<char>> tokens(vm["background_craneens"].as<string>(), sep);
@@ -115,7 +103,7 @@ int main(int argc, char** argv) {
         cout << "Background craneens:" << endl;
         for (const auto& t : tokens) {
             cout << i++ << ":\t" << t << endl;
-            vBckgFileNames.push_back(t);
+            vBckgFileNames.push_back(std::make_pair<const std::string&, double>(t,1.));
         }
       }
       if (vm.count("signal_craneens")) {
@@ -126,11 +114,36 @@ int main(int argc, char** argv) {
         cout << "Signal craneens:" << endl;
         for (const auto& t : tokens) {
             cout << i++ << ":\t" << t << endl;
-            vSigFileNames.push_back(t);
+            vSigFileNames.push_back(std::make_pair<const std::string&, double>(t,1.));
         }
       }
       if (vm.count("tree_name")) {
         treeName = vm["tree_name"].as<string>();
+      }
+      if (vm.count("dir")) {
+        outputdirName = vm["dir"].as<string>();
+      }
+      if (vm.count("json")) {
+        // Load the json file in this ptree
+        jsonconfigName = vm["json"].as<string>();
+        cout << "Config file: " << jsonconfigName << endl;
+        pt::read_json(vm["json"].as<string>(), root);
+        unsigned int i = 0;
+        for (pt::ptree::value_type &element : root.get_child("background")) {
+                auto fName = element.second.get<std::string>("filename");
+                auto w = element.second.get<double>("weight");
+                auto p = std::pair<const std::string,double>(fName,w);
+                cout << i <<":\t" << fName << "\t" << w << endl;
+                vSigFileNames.push_back(p);
+        }
+        i = 0;
+        for (pt::ptree::value_type &element : root.get_child("signal")) {
+                auto fName = element.second.get<std::string>("filename");
+                auto w = element.second.get<double>("weight");
+                auto p = std::pair<const std::string,double>(fName,w);
+                cout << i <<":\t" << fName << "\t" << w << endl;
+                vBckgFileNames.push_back(p);
+        }
       }
     }
     catch (const error &ex)
@@ -140,13 +153,17 @@ int main(int argc, char** argv) {
 
     SwitchTrainMethods();
 
-  std::string dirname = "MVA/weights";
+  std::string dirname = outputdirName+"/"+"MVA/weights";
+  if (!fs::exists(dirname)) {
+    std::cout << "Creating output folder: " << dirname << endl;
+    fs::create_directories(dirname);
+  }
 	(TMVA::gConfig().GetIONames()).fWeightFileDir = dirname.c_str();
 
 	//std::cout << "dirname changed?" << std::endl;
 
   std::string OutputMVAWeights = "TMVA";
-  std::string OutputRootFile = "TMVA.root";
+  std::string OutputRootFile = outputdirName+"/"+"TMVA.root";
   TFile *outFile = new TFile(OutputRootFile.c_str(),"RECREATE");
 //  std::string factoryOptions( "!V:!Silent:Transformations=I;D;P;G,D:!Color:!DrawProgressBar");
   std::string factoryOptions( "!V:!Silent:Transformations=I:Color:DrawProgressBar");
@@ -159,31 +176,33 @@ int main(int argc, char** argv) {
 
   // ====== register trees ====================================================
 
-  for(const auto& bgckFileName: vBckgFileNames) {
-    auto inFile = TFile::Open(bgckFileName.c_str(), "READ");
+  for(const auto& bgckFile: vBckgFileNames) {
+    auto inFile = TFile::Open(bgckFile.first.c_str(), "READ");
     if (!inFile) {
-        std::cerr << "Can't read input file: " << bgckFileName.c_str() << endl;
+        std::cerr << "Can't read input file: " << bgckFile.first.c_str() << endl;
         std::exit(1);
     }
     auto TreeB = static_cast<TTree*>(inFile->Get(treeName.c_str()));
     if (!TreeB) {
-        std::cerr << "There is no tree : " << bgckFileName.c_str() << endl;
+        std::cerr << "There is no tree : " << bgckFile.first.c_str() << endl;
         std::exit(1);
     }
+    backgroundWeight = bgckFile.second;
     factory->AddBackgroundTree( TreeB, backgroundWeight );
   }
 
-  for(const auto& sigFileName: vSigFileNames) {
-    auto inFile = TFile::Open(sigFileName.c_str(), "READ");
+  for(const auto& sigFile: vSigFileNames) {
+    auto inFile = TFile::Open(sigFile.first.c_str(), "READ");
     if (!inFile) {
-        std::cerr << "Can't read input file: " << sigFileName.c_str() << endl;
+        std::cerr << "Can't read input file: " << sigFile.first.c_str() << endl;
         std::exit(1);
     }
     auto TreeS = static_cast<TTree*>(inFile->Get(treeName.c_str()));
     if (!TreeS) {
-        std::cerr << "There is no tree : " << sigFileName.c_str() << endl;
+        std::cerr << "There is no tree : " << sigFile.first.c_str() << endl;
         std::exit(1);
     }
+    signalWeight = sigFile.second;
     factory->AddSignalTree    ( TreeS,     signalWeight     );
   }
 
@@ -191,6 +210,9 @@ int main(int argc, char** argv) {
   // expression need to exist in the original TTree)
   //    for signal    : factory->SetSignalWeightExpression("weight1*weight2");
   //    for background: factory->SetBackgroundWeightExpression("weight1*weight2");
+
+factory->SetSignalWeightExpression("GenWeight");
+factory->SetBackgroundWeightExpression("GenWeight");
 
 factory->AddVariable( "multitopness", "Multitopness", "units", 'F' );
 factory->AddVariable( "HTb", "HT of selected b jets", "units", 'F' );
@@ -273,6 +295,17 @@ factory->AddSpectator( "nMtags := nMtags",  "b tags multiplicity", "units", 'F' 
    // --------------------------------------------------------------
 
    delete factory;
+
+   //Write annotation
+   if(!noAnnotate && !jsonconfigName.empty()) {
+     //copy config file if any
+     if(fs::exists(jsonconfigName)) {
+        fs::copy(jsonconfigName,outputdirName+"/"+jsonconfigName);
+        std::string msg = bcolors::OKGREEN +
+                          root.get<std::string>("annotation") +
+                          bcolors::ENDC;
+     }
+   }
 
   cout << "done!" << endl;
 

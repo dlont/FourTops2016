@@ -7,6 +7,7 @@
 
 class map;
 
+void SwitchTrainMethods();
 void bookMethods(TMVA::Factory *factory, const std::map<std::string,bool>& Use);
 
 #endif
