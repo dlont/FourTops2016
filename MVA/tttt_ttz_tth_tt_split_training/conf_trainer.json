@@ -1,0 +1,24 @@
+{
+  "treename":"",
+  "background":[
+    {
+      "filename":"/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
+      "weight":0.195388757626
+    },
+    {
+      "filename":"/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTH_Run2_TopTree_Study.root",
+      "weight":0.00272978266924
+    },
+    {
+      "filename":"/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTZ_Run2_TopTree_Study.root",
+      "weight":0.00253236390951
+    }
+  ],
+  "signal":[
+    {
+      "filename":"/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root",
+      "weight":1.0
+    }
+  ],
+  "annotation":"Training on 10 jet category only with luminosity weighted tt, ttz, tth and tttt samples. Ignore Negative weights in training."
+}

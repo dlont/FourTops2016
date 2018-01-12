@@ -1,12 +1,11 @@
 {
-	"annotation":"Default annotation.",
 	"histconfig":{
 		"nbins":25,
 		"xmin":-1.0,
 		"xmax":1.0
 	},
 	"tmva_b":{
-		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/TMVA.root",
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-12-1545/TMVA.root",
 		"treename":"TestTree",
 		"mvaname":"BDTA20",
 		"linecolor":634,
@@ -17,7 +16,7 @@
 		}
 	},
 	"tmva_s":{
-		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/TMVA.root",
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-12-1545/TMVA.root",
 		"treename":"TestTree",
 		"mvaname":"BDTA20",
 		"linecolor":634,
@@ -82,5 +81,6 @@
 			"name":"Old MVA",
 			"style":"l"
 		}
-	}
+	},
+	"annotation":"Comparison of MVA discriminants: new trained on background sample including tt, ttz and tth weighted according to their luminosity and old baseline MVA trained using SciKit package. Events from only 10 jet category are used in the training. Negative weights are not taken into account in the training"
 }
