@@ -20,3 +20,8 @@ make; make install
 ```
 ./MVATrainer --background_craneens /user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root,/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTH_Run2_TopTree_Study.root,/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTZ_Run2_TopTree_Study.root --signal_craneens=/user/dlontkov/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root
 ```
+alternatively
+
+```
+out=results/`date +%Y-%m-%d-%H%M`; ./MVATrainer --json conf.json --dir=$out; unset out;
+```
