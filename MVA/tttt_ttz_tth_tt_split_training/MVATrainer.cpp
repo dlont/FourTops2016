@@ -64,9 +64,8 @@ extern "C" std::map<std::string,bool> Use; //definde in BookMethod.cpp
 
 // For more info on the options used for preparing the Train and Testsamples, see section 3.1.4 of the TMVA manual
 int main(int argc, char** argv) {
-    std::vector<std::pair<const std::string,double>> vBckgFileNames;
-    std::vector<std::pair<const std::string,double>> vSigFileNames;
-    std::string treeName;
+    std::vector<std::tuple<const std::string,const std::string,double>> vBckgFiles;
+    std::vector<std::tuple<const std::string,const std::string,double>> vSigFiles;
     std::string outputdirName;
     std::string jsonconfigName;
     bool noAnnotate;
@@ -81,7 +80,7 @@ int main(int argc, char** argv) {
         ("json,j", value<string>(),"JSON configuration file")
         ("background_craneens", value<string>(), "List of coma separated background craneen files")
         ("signal_craneens", value<string>(), "List of coma separated signal craneen files")
-        ("tree_name", value<string>()->default_value("Craneen__Mu"),"Input tree name");
+        ("tree_name", value<string>(),"Input tree name");
 
       variables_map vm;
       store(parse_command_line(argc, argv, desc), vm);
@@ -103,7 +102,7 @@ int main(int argc, char** argv) {
         cout << "Background craneens:" << endl;
         for (const auto& t : tokens) {
             cout << i++ << ":\t" << t << endl;
-            vBckgFileNames.push_back(std::make_pair<const std::string&, double>(t,1.));
+            vBckgFiles.push_back(std::make_tuple(t,"Craneen__Mu",1.));
         }
       }
       if (vm.count("signal_craneens")) {
@@ -114,11 +113,8 @@ int main(int argc, char** argv) {
         cout << "Signal craneens:" << endl;
         for (const auto& t : tokens) {
             cout << i++ << ":\t" << t << endl;
-            vSigFileNames.push_back(std::make_pair<const std::string&, double>(t,1.));
+            vSigFiles.push_back(std::make_tuple(t,"Craneen__Mu",1.));
         }
-      }
-      if (vm.count("tree_name")) {
-        treeName = vm["tree_name"].as<string>();
       }
       if (vm.count("dir")) {
         outputdirName = vm["dir"].as<string>();
@@ -131,18 +127,20 @@ int main(int argc, char** argv) {
         unsigned int i = 0;
         for (pt::ptree::value_type &element : root.get_child("background")) {
                 auto fName = element.second.get<std::string>("filename");
+                auto tName = element.second.get<std::string>("treename");
                 auto w = element.second.get<double>("weight");
-                auto p = std::pair<const std::string,double>(fName,w);
+                auto p = std::make_tuple(fName,tName,w);
                 cout << i <<":\t" << fName << "\t" << w << endl;
-                vSigFileNames.push_back(p);
+                vBckgFiles.push_back(p);
         }
         i = 0;
         for (pt::ptree::value_type &element : root.get_child("signal")) {
                 auto fName = element.second.get<std::string>("filename");
+                auto tName = element.second.get<std::string>("treename");
                 auto w = element.second.get<double>("weight");
-                auto p = std::pair<const std::string,double>(fName,w);
+                auto p = std::make_tuple(fName,tName,w);
                 cout << i <<":\t" << fName << "\t" << w << endl;
-                vBckgFileNames.push_back(p);
+                vSigFiles.push_back(p);
         }
       }
     }
@@ -176,33 +174,33 @@ int main(int argc, char** argv) {
 
   // ====== register trees ====================================================
 
-  for(const auto& bgckFile: vBckgFileNames) {
-    auto inFile = TFile::Open(bgckFile.first.c_str(), "READ");
+  for(const auto& bgFile: vBckgFiles) {
+    auto inFile = TFile::Open(std::get<0>(bgFile).c_str(), "READ");
     if (!inFile) {
-        std::cerr << "Can't read input file: " << bgckFile.first.c_str() << endl;
+        std::cerr << "Can't read input file: " << std::get<0>(bgFile) << endl;
         std::exit(1);
     }
-    auto TreeB = static_cast<TTree*>(inFile->Get(treeName.c_str()));
+    auto TreeB = static_cast<TTree*>(inFile->Get(std::get<1>(bgFile).c_str()));
     if (!TreeB) {
-        std::cerr << "There is no tree : " << bgckFile.first.c_str() << endl;
+        std::cerr << "There is no tree : " << std::get<1>(bgFile) << endl;
         std::exit(1);
     }
-    backgroundWeight = bgckFile.second;
+    backgroundWeight = std::get<2>(bgFile);
     factory->AddBackgroundTree( TreeB, backgroundWeight );
   }
 
-  for(const auto& sigFile: vSigFileNames) {
-    auto inFile = TFile::Open(sigFile.first.c_str(), "READ");
+  for(const auto& sigFile: vSigFiles) {
+    auto inFile = TFile::Open(std::get<0>(sigFile).c_str(), "READ");
     if (!inFile) {
-        std::cerr << "Can't read input file: " << sigFile.first.c_str() << endl;
+        std::cerr << "Can't read input file: " << std::get<0>(sigFile) << endl;
         std::exit(1);
     }
-    auto TreeS = static_cast<TTree*>(inFile->Get(treeName.c_str()));
+    auto TreeS = static_cast<TTree*>(inFile->Get(std::get<1>(sigFile).c_str()));
     if (!TreeS) {
-        std::cerr << "There is no tree : " << sigFile.first.c_str() << endl;
+        std::cerr << "There is no tree : " << std::get<1>(sigFile) << endl;
         std::exit(1);
     }
-    signalWeight = sigFile.second;
+    signalWeight = std::get<2>(sigFile);
     factory->AddSignalTree    ( TreeS,     signalWeight     );
   }
 
@@ -214,14 +212,21 @@ int main(int argc, char** argv) {
 factory->SetSignalWeightExpression("GenWeight");
 factory->SetBackgroundWeightExpression("GenWeight");
 
+factory->AddVariable( "nMtags", "nMtags", "units", 'I' );
+factory->AddVariable( "nJets", "nJets", "units", 'I' );
 factory->AddVariable( "multitopness", "Multitopness", "units", 'F' );
 factory->AddVariable( "HTb", "HT of selected b jets", "units", 'F' );
 factory->AddVariable( "HTH", "HT/H", "units", 'F' );
+factory->AddVariable( "jetvec[9][0]", "lepton p_T", "units", 'F' );
 factory->AddVariable( "LeptonPt", "lepton p_T", "units", 'F' );
 factory->AddVariable( "SumJetMassX", "Inv. mass of reduced hadronic system", "units", 'F' );
 factory->AddVariable( "HTX", "HTX", "units", 'F' );
+factory->AddVariable( "csvJetcsv1", "1st highest csv", "units", 'F' );
+factory->AddVariable( "csvJetcsv2", "2nd highest csv", "units", 'F' );
 factory->AddVariable( "csvJetcsv3", "third highest csv", "units", 'F' );
 factory->AddVariable( "csvJetcsv4", "fourth highest csv", "units", 'F' );
+factory->AddVariable( "csvJetpt1", "highest p_T jet csv", "units", 'F' );
+factory->AddVariable( "csvJetpt2", "2nd highest p_T jet csv", "units", 'F' );
 factory->AddVariable( "csvJetpt3", "third highest p_T jet csv", "units", 'F' );
 factory->AddVariable( "csvJetpt4", "fourth highest p_T jet csv", "units", 'F' );
 factory->AddVariable( "1stjetpt", "leading jet p_T", "units", 'F' );
@@ -236,6 +241,7 @@ factory->AddVariable( "6thjetpt", "sixth leading jet p_T", "units", 'F' );
 // input variables, the response values of all trained MVAs, and the spectator variables
 factory->AddSpectator( "nJets := nJets",  "jet multiplicity", "units", 'F' );
 factory->AddSpectator( "nMtags := nMtags",  "b tags multiplicity", "units", 'F' );
+factory->AddSpectator( "GenWeight := GenWeight",  "ME weight", "units", 'F' );
 
   int nTrainS=50000, nTestS=50000, nTrainB=150000, nTestB=150000;
 
@@ -305,7 +311,7 @@ factory->AddSpectator( "nMtags := nMtags",  "b tags multiplicity", "units", 'F' 
         } catch (const std::exception &ex) {
           std::cerr << ex.what() << '\n' << endl;
         }
-        std::string msg = bcolors::OKGREEN +
+        std::string msg = bcolors::OKBLUE +
                           root.get<std::string>("annotation") +
                           bcolors::ENDC;
         std::cout << msg << std::endl;
