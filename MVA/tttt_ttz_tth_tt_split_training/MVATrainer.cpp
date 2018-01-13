@@ -217,7 +217,7 @@ factory->AddVariable( "nJets", "nJets", "units", 'I' );
 factory->AddVariable( "multitopness", "Multitopness", "units", 'F' );
 factory->AddVariable( "HTb", "HT of selected b jets", "units", 'F' );
 factory->AddVariable( "HTH", "HT/H", "units", 'F' );
-factory->AddVariable( "jetvec[9][0]", "lepton p_T", "units", 'F' );
+// factory->AddVariable( "jetvec[9][0]", "lepton p_T", "units", 'F' );
 factory->AddVariable( "LeptonPt", "lepton p_T", "units", 'F' );
 factory->AddVariable( "SumJetMassX", "Inv. mass of reduced hadronic system", "units", 'F' );
 factory->AddVariable( "HTX", "HTX", "units", 'F' );
@@ -245,8 +245,8 @@ factory->AddSpectator( "GenWeight := GenWeight",  "ME weight", "units", 'F' );
 
   int nTrainS=50000, nTestS=50000, nTrainB=150000, nTestB=150000;
 
-  std::string CutsS{"nJets>=10"};
-  std::string CutsB{"nJets>=10"};            //Example cut => "abs(var1)<0.5 && abs(var2-0.5)<1";
+  std::string CutsS{"nJets>=9&&nMtags>=4"};
+  std::string CutsB{"nJets>=9&&nMtags>=4"};            //Example cut => "abs(var1)<0.5 && abs(var2-0.5)<1";
 
   std::string SplitMode;        //SplitMode: Random, Alternate and Block
 
