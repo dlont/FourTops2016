@@ -5,9 +5,10 @@
 		"xmax":1.0
 	},
 	"tmva_b":{
-		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-12-1545/TMVA.root",
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
 		"treename":"TestTree",
-		"mvaname":"BDTA20",
+		"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==0&&nMtags==2)*GenWeight",
 		"linecolor":634,
 		"linestyle":2,
 		"legend":{
@@ -16,9 +17,10 @@
 		}
 	},
 	"tmva_s":{
-		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-12-1545/TMVA.root",
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
 		"treename":"TestTree",
-		"mvaname":"BDTA20",
+		"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==1&&nMtags==2)*GenWeight",
 		"linecolor":634,
 		"linestyle":1,
 		"legend":{
@@ -31,18 +33,21 @@
 			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
 			"treename":"Craneen__Mu",
 			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==2)*GenWeight*0.195388757626",
 			"idname":"tt"
 		},
 		"ttz":{
 			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTZ_Run2_TopTree_Study.root",
 			"treename":"Craneen__Mu",
 			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==2)*GenWeight*0.00253236390951",
 			"idname":"ttz"
 		},
 		"tth":{
 			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTH_Run2_TopTree_Study.root",
 			"treename":"Craneen__Mu",
 			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==2)*GenWeight*0.00272978266924",
 			"idname":"tth"
 		},
 		"linecolor":600,
@@ -57,6 +62,7 @@
 			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root",
 			"treename":"Craneen__Mu",
 			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==2)*GenWeight",
 			"idname":"tttt"
 		},
 		"linecolor":600,
@@ -67,6 +73,8 @@
 		}
 	},
 	"roc_tmva":{
+		"histbgname":"tmva_b",
+		"histsgname":"tmva_s",
 		"linecolor":634,
 		"linestyle":1,
 		"legend":{
@@ -75,6 +83,8 @@
 		}
 	},
 	"roc_oldmva":{
+		"histbgname":"old_b",
+		"histsgname":"old_s",
 		"linecolor":600,
 		"linestyle":1,
 		"legend":{
@@ -82,5 +92,181 @@
 			"style":"l"
 		}
 	},
-	"annotation":"Comparison of MVA discriminants: new trained on background sample including tt, ttz and tth weighted according to their luminosity and old baseline MVA trained using SciKit package. Events from only 10 jet category are used in the training. Negative weights are not taken into account in the training"
+	"2tmva_b":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
+		"treename":"TrainTree",
+		"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==0&&nMtags==3)*GenWeight",
+		"linecolor":634,
+		"linestyle":2,
+		"legend":{
+			"name":"New MVA (t#bar{t}+t#bar{t}Z+t#bar{t}H)",
+			"style":"l"
+		}
+	},
+	"2tmva_s":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
+		"treename":"TrainTree",
+		"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==1&&nMtags==3)*GenWeight",
+		"linecolor":634,
+		"linestyle":1,
+		"legend":{
+			"name":"New MVA (t#bar{t}t#bar{t})",
+			"style":"l"
+		}
+	},
+	"2old_b":{
+		"tt":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Stuy.root",
+			"treename":"Craneen__Mu",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==3)*GenWeight*0.195388757626",
+			"idname":"tt"
+		},
+		"ttz":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTZ_Run2_TopTree_Study.root",
+			"treename":"Craneen__Mu",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==3)*GenWeight*0.00253236390951",
+			"idname":"ttz"
+		},
+		"tth":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_TTH_Run2_TopTree_Study.root",
+			"treename":"Craneen__Mu",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==3)*GenWeight*0.00272978266924",
+			"idname":"tth"
+		},
+		"linecolor":600,
+		"linestyle":2,
+		"legend":{
+			"name":"Old MVA (t#bar{t}+t#bar{t}Z+t#bar{t}H)",
+			"style":"l"
+		}
+	},
+	"2old_s":{
+		"tttt":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_mu/Craneen_ttttNLO_Run2_TopTree_Study.root",
+			"treename":"Craneen__Mu",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags==3)*GenWeight",
+			"idname":"tttt"
+		},
+		"linecolor":600,
+		"linestyle":1,
+		"legend":{
+			"name":"Old MVA (t#bar{t}t#bar{t})",
+			"style":"l"
+		}
+	},
+	"2roc_tmva":{
+		"histbgname":"2tmva_b",
+		"histsgname":"2tmva_s",
+		"linecolor":634,
+		"linestyle":1,
+		"legend":{
+			"name":"New MVA",
+			"style":"l"
+		}
+	},
+	"2roc_oldmva":{
+		"histbgname":"2old_b",
+		"histsgname":"2old_s",
+		"linecolor":600,
+		"linestyle":1,
+		"legend":{
+			"name":"Old MVA",
+			"style":"l"
+		}
+	},
+	"3tmva_b":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
+		"treename":"TestTree",
+		"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==0&&nMtags>3)*GenWeight",
+		"linecolor":634,
+		"linestyle":2,
+		"legend":{
+			"name":"New MVA (t#bar{t}+t#bar{t}Z+t#bar{t}H)",
+			"style":"l"
+		}
+	},
+	"3tmva_s":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/tttt_ttz_tth_tt_split_training/results/2018-01-13-0217/TMVA.root",
+		"treename":"TestTree",
+			"mvaname":"BDTGPRAY100",
+		"cuts":"(classID==1&&nMtags>3)*GenWeight",
+		"linecolor":634,
+		"linestyle":1,
+		"legend":{
+			"name":"New MVA (t#bar{t}t#bar{t})",
+			"style":"l"
+		}
+	},
+	"3old_b":{
+		"tt":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_el/Craneen_TTJets_powheg_Run2_TopTree_Stuy.root",
+			"treename":"Craneen__El",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags>3)*GenWeight*0.195388757626",
+			"idname":"tt"
+		},
+		"ttz":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_el/Craneen_TTZ_Run2_TopTree_Study.root",
+			"treename":"Craneen__El",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags>3)*GenWeight*0.00253236390951",
+			"idname":"ttz"
+		},
+		"tth":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_el/Craneen_TTH_Run2_TopTree_Study.root",
+			"treename":"Craneen__El",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags>3)*GenWeight*0.00272978266924",
+			"idname":"tth"
+		},
+		"linecolor":600,
+		"linestyle":2,
+		"legend":{
+			"name":"Old MVA (t#bar{t}+t#bar{t}Z+t#bar{t}H)",
+			"style":"l"
+		}
+	},
+	"3old_s":{
+		"tttt":{
+			"inputfile":"~/t2016/result/final_unblinding/rare_tthz_ttwxy_merge_50bins/plots_el/Craneen_ttttNLO_Run2_TopTree_Study.root",
+			"treename":"Craneen__El",
+			"mvaname":"BDT9and10jetsplitNoNjw",
+			"cuts":"(nJets==10&&nMtags>3)*GenWeight",
+			"idname":"tttt"
+		},
+		"linecolor":600,
+		"linestyle":1,
+		"legend":{
+			"name":"Old MVA (t#bar{t}t#bar{t})",
+			"style":"l"
+		}
+	},
+	"3roc_tmva":{
+		"histbgname":"3tmva_b",
+		"histsgname":"3tmva_s",
+		"linecolor":634,
+		"linestyle":1,
+		"legend":{
+			"name":"New MVA",
+			"style":"l"
+		}
+	},
+	"3roc_oldmva":{
+		"histbgname":"3old_b",
+		"histsgname":"3old_s",
+		"linecolor":600,
+		"linestyle":1,
+		"legend":{
+			"name":"Old MVA",
+			"style":"l"
+		}
+	},
+	"annotation":"Comparison of MVA discriminants: new trained on background sample including tt, ttz and tth weighted according to their luminosity and old baseline MVA trained using SciKit package. Events from only **>=9/>=4** jet category are used in the training. Negative weights **are** taken into account in the training (\"pray\" option). The best new discriminant (traid-off overtaining and ROC-integral) was obtained using **Gradient** boosting with 20 trees in the forrest. b tag and jet multiplicity are included in the list of inputs. Extra variables e.g. pT jet9 are added. NB: Unlike on older plots, MVAs and ROC curvers are built from lumi weighted background mixture. NOTE:Second pannel shows the same as third but from training tmva sample in case of NEW MVA. In the third pannel OLD MVA performance is evaluated using electron sample."
 }
