@@ -1,0 +1,145 @@
+{
+    "annotation": "Comparison of MC statistical uncertainties on after optimized rebinning signal (red), background (blue), tth (magenta), ttz (green)", 
+    "command": "mcstat.py -j conf_rebin.json -b", 
+    "labels": [
+        [
+            "7J2M"
+        ], 
+        [
+            "7J3M"
+        ], 
+        [
+            "7J4M"
+        ], 
+        [
+            "8J2M"
+        ], 
+        [
+            "8J3M"
+        ], 
+        [
+            "8J4M"
+        ], 
+        [
+            "9J2M"
+        ], 
+        [
+            "9J3M"
+        ], 
+        [
+            "9J4M"
+        ], 
+        [
+            "10J2M"
+        ], 
+        [
+            "10J3M"
+        ], 
+        [
+            "10J4M"
+        ]
+    ], 
+    "stack": [
+        [
+            "tttt", 
+            "E1"
+        ], 
+        [
+            "tth", 
+            "E1"
+        ],
+        [
+            "ttz", 
+            "E1"
+        ], 
+        [
+            "tt", 
+            "E1"
+        ]
+    ], 
+    "tt": {
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/rare_split_freyasbins/new_plots_mu/Hists_TT_CARDS.root", 
+        "legend": {
+            "name": "t#bar{t}"
+        }, 
+        "linecolor": 601, 
+        "list_of_histograms": [
+            "7J2M/bdt_rebinned", 
+            "7J3M/bdt_rebinned", 
+            "7J4M/bdt_rebinned", 
+            "8J2M/bdt_rebinned", 
+            "8J3M/bdt_rebinned", 
+            "8J4M/bdt_rebinned", 
+            "9J2M/bdt_rebinned", 
+            "9J3M/bdt_rebinned", 
+            "9J4M/bdt_rebinned", 
+            "10J2M/bdt_rebinned", 
+            "10J3M/bdt_rebinned", 
+            "10J4M/bdt_rebinned"
+        ]
+    }, 
+    "tth": {
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/rare_split_freyasbins/new_plots_mu/Hists_TTH.root", 
+        "legend": {
+            "name": "t#bar{t}H"
+        }, 
+        "linecolor": 616, 
+        "list_of_histograms": [
+            "7J2M/bdt_rebinned", 
+            "7J3M/bdt_rebinned", 
+            "7J4M/bdt_rebinned", 
+            "8J2M/bdt_rebinned", 
+            "8J3M/bdt_rebinned", 
+            "8J4M/bdt_rebinned", 
+            "9J2M/bdt_rebinned", 
+            "9J3M/bdt_rebinned", 
+            "9J4M/bdt_rebinned", 
+            "10J2M/bdt_rebinned", 
+            "10J3M/bdt_rebinned", 
+            "10J4M/bdt_rebinned"
+        ]
+    }, 
+    "tttt": {
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/rare_split_freyasbins/new_plots_mu/Hists_TTTT_CARDS.root", 
+        "legend": {
+            "name": "t#bar{t}t#bar{t}"
+        }, 
+        "linecolor": 633, 
+        "list_of_histograms": [
+            "7J2M/bdt_rebinned", 
+            "7J3M/bdt_rebinned", 
+            "7J4M/bdt_rebinned", 
+            "8J2M/bdt_rebinned", 
+            "8J3M/bdt_rebinned", 
+            "8J4M/bdt_rebinned", 
+            "9J2M/bdt_rebinned", 
+            "9J3M/bdt_rebinned", 
+            "9J4M/bdt_rebinned", 
+            "10J2M/bdt_rebinned", 
+            "10J3M/bdt_rebinned", 
+            "10J4M/bdt_rebinned"
+        ]
+    }, 
+    "ttz": {
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/rare_split_freyasbins/new_plots_mu/Hists_TTZ.root", 
+        "legend": {
+            "name": "t#bar{t}Z"
+        }, 
+        "linecolor": 414, 
+        "list_of_histograms": [
+            "7J2M/bdt_rebinned", 
+            "7J3M/bdt_rebinned", 
+            "7J4M/bdt_rebinned", 
+            "8J2M/bdt_rebinned", 
+            "8J3M/bdt_rebinned", 
+            "8J4M/bdt_rebinned", 
+            "9J2M/bdt_rebinned", 
+            "9J3M/bdt_rebinned", 
+            "9J4M/bdt_rebinned", 
+            "10J2M/bdt_rebinned", 
+            "10J3M/bdt_rebinned", 
+            "10J4M/bdt_rebinned"
+        ]
+    }, 
+    "ypos": 0.8
+}
