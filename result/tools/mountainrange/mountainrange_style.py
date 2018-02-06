@@ -7,7 +7,7 @@ class Style:
 	hatchStyle = 3013
 	hatchColor = rt.kBlack
         colors = {'EW':413,'ST':7,'TTH':610,'TTXY':rt.kOrange+1,
-                  'TTZ':rt.kMagenta,'TTW':615,'TTBAR':633}
+                  'TTZ':rt.kMagenta,'TTW':615,'TTBAR':633, 'TTRARE':610}
 
 def set_line_color_style(drawable,lc=1,ls=1):
         drawable.SetLineWidth(3)

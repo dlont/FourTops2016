@@ -13,6 +13,8 @@ import argparse
 import logging
 import json
 import pprint
+import shutil
+import textwrap
 
 import ROOT as rt
 import array
@@ -56,17 +58,20 @@ def draw_legend(**kwargs):
 		if datagr: legend.AddEntry(datagr,"Data",'pe')
 		if 'hist_tt' in kwargs:
 			hist_tt = kwargs['hist_tt']
-			if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}(stack)",'lf')
+			# if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}",'lf') 
+			if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}(stack)",'lf') # for rare split
 		if 'hist_st' in kwargs:
 			hist_st = kwargs['hist_st']
-                        if hist_st: legend.AddEntry(hist_st,"tX(stack)",'lf')
+                        # if hist_st: legend.AddEntry(hist_st,"tX",'lf') 
+                        if hist_st: legend.AddEntry(hist_st,"tX(stack)",'lf') # for rare split
 		if 'hist_ew' in kwargs:
 			hist_ew = kwargs['hist_ew']
-                        if hist_ew: legend.AddEntry(hist_ew,"EW(stack)",'lf')	#for slepton
+                        # if hist_ew: legend.AddEntry(hist_ew,"EW",'lf')	#for slepton
+                        if hist_ew: legend.AddEntry(hist_ew,"EW(stack)",'lf')	#for rare split; for slepton 
                         #if : legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
 		if 'hist_rare' in kwargs:
 			hist_rare = kwargs['hist_rare']
-                        if hist_rare: legend.AddEntry(hist_rare,"Rare",'lf')
+                        if hist_rare: legend.AddEntry(hist_rare,"Rare:tt+H,Z,W,XY(stack)",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
 			if hist_tttt: legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} (postfit)",'lf')
@@ -117,7 +122,8 @@ def draw_legend(**kwargs):
 			hist_ttxy = kwargs['hist_ttxy_s']
 			if hist_ttxy: legend.AddEntry(hist_ttxy,kwargs['legend']['fits_TTRARE_plus'],'lf')
 
-		canvas.cd(3)
+		if kwargs.get('is_ratio',False): canvas.cd(3)
+		else:  canvas.cd(2)
 		legend.Draw()
 
 def draw_bin_labels(c,masterhist,labels,ycoord,edges=None):
@@ -261,16 +267,25 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 		rt.gPad.SetPad(0.,0.1,1.,0.375);rt.gPad.SetFillStyle(4000)
 		c.cd(1)
 		rt.gPad.SetPad(0.,0.3,1.,1.);rt.gPad.SetFillStyle(4000)
+	elif not arguments.is_ratio and gr_data_noempty:
+		c.Divide(1,2)
+		c.cd(2)
+		rt.gPad.SetPad(0.,0.,1.,0.1)
+		c.cd(1)
+		rt.gPad.SetPad(0.,0.1,1.,1.);rt.gPad.SetFillStyle(4000)
 	hist_bg_prefit_unc_noempty.Draw("E2")
 	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
 	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
-        ytitle = None
+	logymin = ymin
+	logymax = ymax
+	ytitle = ''
 	if "axes" in jsondic:
-		if "ymin" in jsondic['axes']: ymin = jsondic['axes']['ymin']
-		if "ymax" in jsondic['axes']: ymax = jsondic['axes']['ymax']
-                if "ytitle" in jsondic['axes']:
-                    ytitle = jsondic['axes']['ytitle']
-	            hist_bg_prefit_unc_noempty.GetYaxis().SetTitle(ytitle)
+		ymin = jsondic['axes'].get('ymin',hist_bg_prefit_unc_noempty.GetMinimum())
+		ymax = jsondic['axes'].get('ymax',10.*hist_bg_prefit_unc_noempty.GetMaximum())
+		logymin = jsondic['axes'].get('logymin',ymin)
+		logymax = jsondic['axes'].get('logymax',ymax)
+        ytitle = jsondic['axes'].get('ytitle','')
+	hist_bg_prefit_unc_noempty.GetYaxis().SetTitle(ytitle)
 	hist_bg_prefit_unc_noempty.SetAxisRange(ymin, ymax, "Y")
 
         #Signal
@@ -296,15 +311,19 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 	if gr_data_noempty: gr_data_noempty.Draw("same pe")
 
         #Legend
-	draw_legend(canvas=c,legend=jsondic['legend'],
+	draw_legend(canvas=c,legend=jsondic['legend'],is_ratio=arguments.is_ratio,
                         data=gr_data_noempty,
                         hist_pre=hist_bg_prefit_unc_noempty,
                         hist_post=hist_bg_unc_noempty,
 			hist_tttt=hist_sig_noempty,
-			hist_tt=hist_st_noempty.GetHists()[0],
-			hist_st=hist_st_noempty.GetHists()[1],
-			hist_ew=hist_st_noempty.GetHists()[2],
-#			hist_rare=hist_st_noempty.GetHists()[6],
+			# hist_ew=hist_st_noempty.GetHists()[0],	# for ttrare combined
+			# hist_st=hist_st_noempty.GetHists()[1],	# for ttrare combined
+			# hist_rare=hist_st_noempty.GetHists()[2],# for ttrare combined
+			# hist_tt=hist_st_noempty.GetHists()[3],	# for ttrare combined
+			hist_tt=hist_st_noempty.GetHists()[0],	# for ttrare split tthz
+			hist_st=hist_st_noempty.GetHists()[1],	# for ttrare split tthz
+			hist_ew=hist_st_noempty.GetHists()[2],	# for ttrare split tthz
+			hist_rare=hist_st_noempty.GetHists()[3],# for ttrare combined
                         #
                         hist_ttxy_pre = hist_prefit_TTRARE_plus_noempty,
                         hist_tth_pre  = hist_prefit_Rare1TTH_noempty,
@@ -349,12 +368,16 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 	CMS_lumi.CMS_lumi(c.cd(1),4,0)
 	if arguments.outfile:
 		c.Print(arguments.outfile+'_lin.'+arguments.extension)
+		hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")
 		c.cd(1); rt.gPad.SetLogy();
 		c.Print(arguments.outfile+'_log.'+arguments.extension)
 	else:
 		if 'filename' in jsondic:
+			if not os.path.exists(arguments.dir):
+				os.makedirs(arguments.dir)
 			c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+arguments.extension)
 			c.cd(1); rt.gPad.SetLogy();
+			hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")			
 			c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+arguments.extension)
 
 def print_toys_pval(arguments):
@@ -372,6 +395,31 @@ def print_toys_pval(arguments):
             pval /= t_toys.GetEntries()
             print "Data: ", stat_data
             print "p-value: ", pval
+
+def annotate(type,config,outputfolder,annotation):
+	class bcolors:
+		HEADER = '\033[95m'
+		OKBLUE = '\033[94m'
+		OKGREEN = '\033[92m'
+		WARNING = '\033[93m'
+		FAIL = '\033[91m'
+		ENDC = '\033[0m'
+		BOLD = '\033[1m'
+		UNDERLINE = '\033[4m'
+
+	if type == "screen":
+			print "\n".join(textwrap.wrap(bcolors.OKBLUE+
+						annotation.encode('ascii')+
+						bcolors.ENDC, 120))
+			if os.path.exists(outputfolder):
+					shutil.copy2(config,outputfolder)
+	elif type == "tex":
+			logging.warning("Annotation format: {}. Not implemented yet!".format(type))
+	elif type == "md":
+			logging.warning("Annotation format: {}. Not implemented yet!".format(type))
+	else:
+			logging.error("Annotation format not recognized: {}".format(type))
+
 
 def main(arguments):
 
@@ -509,8 +557,12 @@ def main(arguments):
 	# Extracting p-values from files
         print_toys_pval(arguments)
 
-        return 0
+        annotation = jsondic.get('annotation','EMPTY')
+        if arguments.annotation_format:
+                annotate(arguments.annotation_format,arguments.config_json,\
+						 arguments.dir,annotation)
 
+        return 0
 
 if __name__ == '__main__':
         start_time = time.time()
@@ -533,7 +585,10 @@ if __name__ == '__main__':
         parser.add_argument('--draw-chi2', help="Plot chi2 on the plot", dest='draw_chi2', action='store_true', default=False)
         #parser.add_argument('--distrib-title-ratio', help="Ratio histogram title settings", default=';Bin id (D_{t#bar{t}t#bar{t}}^{lj});Rel. diff.')
         parser.add_argument('-b', help="ROOT batch mode", dest='isBatch', action='store_true')
-
+        parser.add_argument('-a', '--annotation_format', default="screen",\
+                            help="Print annotation in given format (screen, tex, md)")
+        parser.add_argument('--no-annotation', dest='annotation_format', action='store_false',\
+                                                help="Disable annotating")
         parser.add_argument(
                         '-d', '--debug',
                         help="Print lots of debugging statements",
