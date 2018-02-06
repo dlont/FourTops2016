@@ -1,15 +1,17 @@
-PLOTCONFIGDIR=tools/mountainrange_configs_raresplit
-PLOTMACRO=tools/mountainrange_pub_raresplit.py
+# PLOTCONFIGDIR=tools/mountainrange/mountainrange_configs_raresplit
+PLOTCONFIGDIR=tools/mountainrange/mountainrange_configs_tthz_ttwxy
+PLOTMACRO=tools/mountainrange/mountainrange_pub_raresplit.py
 CORRMATRMACRO=tools/plot_corr_matrix.py
 PULLSMACRO=tools/plot_nuis_pulls.py
 DIFFNUISDENYS=~/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/test/diffNuisances_denys.py
 POSTFITSHAPES=PostFitShapesFromWorkspaceDenys
-SPECTATORMOUNTAINRANGEMAKECOMMAND=mountainrangefourbtagbins
+SPECTATORMOUNTAINRANGEMAKECOMMAND=mountainrangefourbtagbinsrebin
+# SPECTATORMOUNTAINRANGEMAKECOMMAND=mountainrangefourbtagbins
 # SPECTATORMOUNTAINRANGEMAKECOMMAND=mountainrangeallbinsrebin
 
 .PHONY: postfit_plots pulls correlations mountainrange spectatorcards spectatorcards_HT spectatorcards_multitopness spectatorcards_HTb spectatorcards_HTH spectatorcards_SumJetMassX spectatorcards_HTX spectatorcards_csvJetcsv3 spectatorcards_csvJetcsv4 spectatorcards_csvJetpt3 spectatorcards_csvJetpt4 spectatorcards_1stjetpt spectatorcards_2ndjetpt spectatorcards_5thjetpt spectatorcards_6thjetpt
 
-postfit_plots: mountainrangeallbins pulls correlations
+postfit_plots: mountainrangeallbins mountainrangefourbtagbins pulls correlations
 
 pulls: $(COMBINESHAPESFILE)
 	python $(DIFFNUISDENYS) $(COMBINESHAPESFILE) -a -A -g $(BUILDDIR)/pulls_out.root
@@ -21,6 +23,10 @@ correlations: $(COMBINESHAPESFILE)
 mountainrangefourbtagbins: $(COMBINESHAPESFILE)
 	python $(PLOTMACRO) $(COMBINESHAPESFILE) -j $(PLOTCONFIGDIR)/mountain_mu_tttt4btag_prefit.json -b -e $(FORMAT) -r --dir $(BUILDDIR)
 	python $(PLOTMACRO) $(COMBINESHAPESFILE) -j $(PLOTCONFIGDIR)/mountain_el_tttt4btag_prefit.json -b -e $(FORMAT) -r --dir $(BUILDDIR)
+
+mountainrangefourbtagbinsrebin: $(COMBINESHAPESFILE)
+		python $(PLOTMACRO) $(COMBINESHAPESFILE) -j $(PLOTCONFIGDIR)/mountain_mu_tttt4btag_prefit_rebin.json -b -e $(FORMAT) -r --dir $(BUILDDIR)
+		python $(PLOTMACRO) $(COMBINESHAPESFILE) -j $(PLOTCONFIGDIR)/mountain_el_tttt4btag_prefit_rebin.json -b -e $(FORMAT) -r --dir $(BUILDDIR)
 
 mountainrangeallbins: $(COMBINESHAPESFILE)
 	python $(PLOTMACRO) $(COMBINESHAPESFILE) -j $(PLOTCONFIGDIR)/mountain_mu_ttttall_prefit.json -b -e $(FORMAT) -r --dir $(BUILDDIR)
@@ -43,7 +49,7 @@ spectatormountainrange: mountainrange_HT mountainrange_multitopness mountainrang
                 mountainrange_csvJetcsv3 mountainrange_csvJetcsv4 mountainrange_csvJetpt3 mountainrange_csvJetpt4 \
                 mountainrange_1stjetpt mountainrange_2ndjetpt mountainrange_5thjetpt mountainrange_6thjetpt
 
-spectatorcards: spectatorcards_multitopness spectatorcards_HTb spectatorcards_HTH spectatorcards_SumJetMassX spectatorcards_HTX \
+spectatorcards: spectatorcards_HT spectatorcards_multitopness spectatorcards_HTb spectatorcards_HTH spectatorcards_SumJetMassX spectatorcards_HTX \
 		spectatorcards_csvJetcsv3 spectatorcards_csvJetcsv4 spectatorcards_csvJetpt3 spectatorcards_csvJetpt4 \
 		spectatorcards_1stjetpt spectatorcards_2ndjetpt spectatorcards_5thjetpt spectatorcards_6thjetpt
 
@@ -142,7 +148,7 @@ spectatorcards_HTX:
 	&& cp -P $(BUILDDIR)/plots_el/Cran*.root $(BUILDDIR)/HTX/plots_el \
 	&& $(MAKE) card_el.txt AUTOMCSTAT= BUILDDIR=$(BUILDDIR)/HTX/plots_el INPUTLOCATION=$(INPUTLOCATION)/plots_el DATALABEL="Single\ e" TREENAME=Craneen__El TARGETVAR=HTX
 	$(MAKE) $(BUILDDIR)/HTX/datacard_elmu.root BUILDDIR_EL=$(BUILDDIR)/HTX/plots_el BUILDDIR_MU=$(BUILDDIR)/HTX/plots_mu BUILDDIR=$(BUILDDIR)/HTX
-postfitshapes_HTX: $(BUILDDIR)/HTX/shapes_HTX.root
+postfitshapes_HTX: $(BUILDDIR)/HTX/datacard_elmu.root
 	$(POSTFITSHAPES) -w $(BUILDDIR)/HTX/datacard_elmu.root -o $(BUILDDIR)/HTX/shapes_HTX.root -f $(COMBINESHAPESFILE):fit_s --postfit --sampling
 mountainrange_HTX: $(BUILDDIR)/HTX/shapes_HTX.root
 	if [ -d "$(BUILDDIR)/HTX/postfit_nominal" ]; then echo "$(BUILDDIR)/HTX/postfit_nominal dir exists" ; else mkdir -p $(BUILDDIR)/HTX/postfit_nominal ; fi && $(MAKE) $(SPECTATORMOUNTAINRANGEMAKECOMMAND) COMBINESHAPESFILE=$(BUILDDIR)/HTX/shapes_HTX.root BUILDDIR=$(BUILDDIR)/HTX/postfit_nominal
@@ -162,7 +168,7 @@ mountainrange_csvJetcsv3: $(BUILDDIR)/csvJetcsv3/shapes_csvJetcsv3.root
 	if [ -d "$(BUILDDIR)/csvJetcsv3/postfit_nominal" ]; then echo "$(BUILDDIR)/csvJetcsv3/postfit_nominal dir exists" ; else mkdir -p $(BUILDDIR)/csvJetcsv3/postfit_nominal ; fi && $(MAKE) $(SPECTATORMOUNTAINRANGEMAKECOMMAND) COMBINESHAPESFILE=$(BUILDDIR)/csvJetcsv3/shapes_csvJetcsv3.root BUILDDIR=$(BUILDDIR)/csvJetcsv3/postfit_nominal
 
 
-spectatorcards_csvJetcsv4: $(BUILDDIR)/csvJetcsv4/shapes_csvJetcsv4.root
+spectatorcards_csvJetcsv4:
 	if [ -d "$(BUILDDIR)/csvJetcsv4/plots_mu" ]; then echo "$(BUILDDIR)/csvJetcsv4/plots_mu dir exists" ; else mkdir -p $(BUILDDIR)/csvJetcsv4/plots_mu ; fi \
 	&& cp -P $(BUILDDIR)/plots_mu/Cran*.root $(BUILDDIR)/csvJetcsv4/plots_mu \
 	&& $(MAKE) card_mu.txt AUTOMCSTAT= BUILDDIR=$(BUILDDIR)/csvJetcsv4/plots_mu INPUTLOCATION=$(INPUTLOCATION)/plots_mu DATALABEL="Single\ \#mu" TREENAME=Craneen__Mu TARGETVAR=csvJetcsv4
