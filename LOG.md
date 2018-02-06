@@ -1090,3 +1090,7 @@ make -n postfit_plots COMBINESHAPESFILE=tools/mountainrange_pub_raresplit_test/f
 
 make -n spectatorcards INPUTLOCATION=final_unblinding/rare_split_50bins BUILDDIR=final_unblinding/rare_split_50bins
 make spectatorpostfitshapes INPUTLOCATION=final_unblinding/rare_split_50bins BUILDDIR=final_unblinding/rare_split_50bins COMBINESHAPESFILE=tools/mountainrange_pub_raresplit_test/fitDiagnostics_nominal.root
+
+######################################
+make -n spectatorcards INPUTLOCATION=final_unblinding/rare_tthz_ttwxy_merge_50bins BUILDDIR=final_unblinding/rare_tthz_ttwxy_merge_50bins
+make spectatorpostfitshapes INPUTLOCATION=final_unblinding/rare_tthz_ttwxy_merge_50bins BUILDDIR=final_unblinding/rare_tthz_ttwxy_merge_50bins COMBINESHAPESFILE=final_unblinding/rare_tthz_ttwxy_merge_50bins/nominal/fitDiagnostics_nominal.root
