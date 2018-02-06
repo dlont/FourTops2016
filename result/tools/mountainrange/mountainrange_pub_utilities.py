@@ -12,11 +12,47 @@ import time
 import logging
 import json
 import pprint
+import shutil
 
 import ROOT as rt
 import array
 
 from mountainrange_style import Style
+
+def get_total_nbins_from_list(list_of_histograms):
+	"""
+        Calculate total number of bins in signal histgrams from json config
+
+        :param list_of_histograms: list of histogram to sum up total number of bins
+        :return: sum of number of bins in histograms
+
+        the routine returns sum of number of bins in all histograms in the list
+        """
+        nbins = 0
+	for hist in list_of_histograms:
+		logging.debug( 'hist %s' % (hist.GetName()) )
+		nb = hist.GetNbinsX()
+		logging.debug( 'hist %s, nbins=%s' % (hist.GetName(), nb) )
+		nbins += nb
+	logging.info('Mountain range plot nbins: ' + str(nbins))
+        return nbins
+
+def fillsingle_from_list(hist_master,list_of_histograms):
+	stitch_edge_bins = []
+	previous_stitch_bin = 0
+	hist = None
+	for ihist,hist in enumerate(list_of_histograms):
+		name = hist.GetName()
+		nbins = hist.GetNbinsX()
+		logging.debug( '{} {} {}'.format(ihist,name,nbins) )
+		stitch_edge_bins.append(previous_stitch_bin + nbins)
+		for ibin in range(1,nbins+1):   #range(1,nbins+1) returns 1..nbins
+			#print name, nbins, ihist, ibin, previous_stitch_bin+ibin
+			hist_master.SetBinContent(previous_stitch_bin+ibin,hist.GetBinContent(ibin))
+			hist_master.SetBinError(previous_stitch_bin+ibin,hist.GetBinError(ibin))
+		previous_stitch_bin+=nbins
+
+	return hist_master,stitch_edge_bins
 
 def fillsingle(hist_master, rootfile, list_hists_in_file):
         """
@@ -97,6 +133,7 @@ def guess_process_by_hist_name(hist_name):
     if 'TTZ' in hist_name: return 'TTZ'
     if 'TTW' in hist_name: return 'TTW'
     if 'TTRARE_plus' in hist_name: return 'TTXY'
+    if 'TTRARE' in hist_name[-6:len(hist_name)]: return 'TTRARE'
 
 def fillstack(stack, hist_template, rootfile, histograms):
         """
