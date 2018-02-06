@@ -37,7 +37,7 @@
 					"fitb_TTRARE_plus":"t#bar{t}W+XY (b-only)",
 					"fitb_Rare1TTH":"t#bar{t}H+Z (b-only)"
 				},
-        "axes":{"ymin":0.0002,"ymax":200},
+        "axes":{"ymax":20.0,"logymin":0.0002,"logymax":200},
         "binlabels":{"ypos":0.8,
                         "labels":[["N_{j}=7,N_{b}=4"], ["N_{j}=8,N_{b}=4"], ["N_{j}=9,N_{b}=4"], ["N_{j}=10,N_{b}=4"]]
 
