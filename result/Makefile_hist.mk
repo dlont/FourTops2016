@@ -18,81 +18,89 @@ define calcEntries
 endef
 
 $(BUILDDIR)/Hists_dataB.root: ${CONFIG} $(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataC.root: ${CONFIG} $(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataD.root: ${CONFIG} $(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataE.root: ${CONFIG} $(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataF.root: ${CONFIG} $(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataG.root: ${CONFIG} $(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_dataH.root: ${CONFIG} $(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME} ${DATANORM} ${TARGETVAR} ${SUPPRESSOUT}
 $(BUILDDIR)/Hists_data.root: $(BUILDDIR)/Hists_dataB.root $(BUILDDIR)/Hists_dataC.root $(BUILDDIR)/Hists_dataD.root $(BUILDDIR)/Hists_dataE.root $(BUILDDIR)/Hists_dataF.root $(BUILDDIR)/Hists_dataG.root $(BUILDDIR)/Hists_dataH.root
-	@echo "Merge data histograms $@ ($^)" 
+	@echo "Merge data histograms $@ ($^)"
 	@hadd -f $@ $^
 
 $(BUILDDIR)/Hists_TTTT_SCALED.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORMSCALED} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTT.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTTTNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
-#$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY50.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root 
-$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root 
+#$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_WJets.root $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY50.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root
+$(BUILDDIR)/Hists_EW.root: $(BUILDDIR)/Hists_W1Jets.root $(BUILDDIR)/Hists_W2Jets.root $(BUILDDIR)/Hists_W3Jets.root $(BUILDDIR)/Hists_W4Jets.root $(BUILDDIR)/Hists_DY1J50.root $(BUILDDIR)/Hists_DY2J50.root  $(BUILDDIR)/Hists_DY3J50.root  $(BUILDDIR)/Hists_DY4J50.root
 	@echo "Merging EW histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTW.root: ${CONFIG} $(BUILDDIR)/Craneen_TTW_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTWNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZ_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTZNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTH_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTHNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTJ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTTJ_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTTJNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTTW.root: ${CONFIG} $(BUILDDIR)/Craneen_TTTW_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTTWNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTWZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTWZ_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTWZNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTZZ.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZZ_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTZZNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTZH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTZH_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTZHNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTHH.root: ${CONFIG} $(BUILDDIR)/Craneen_TTHH_Run2_TopTree_Study.root
-	@echo "Convert tree to hist $@ ($^)" 
+	@echo "Convert tree to hist $@ ($^)"
 	@tree2hists $^ $@ ${TREENAME}  ${TTHHNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TTXY.root: $(BUILDDIR)/Hists_TTTJ.root $(BUILDDIR)/Hists_TTTW.root $(BUILDDIR)/Hists_TTWZ.root $(BUILDDIR)/Hists_TTZZ.root $(BUILDDIR)/Hists_TTZH.root $(BUILDDIR)/Hists_TTHH.root 
+$(BUILDDIR)/Hists_TTXY.root: $(BUILDDIR)/Hists_TTTJ.root $(BUILDDIR)/Hists_TTTW.root $(BUILDDIR)/Hists_TTWZ.root $(BUILDDIR)/Hists_TTZZ.root $(BUILDDIR)/Hists_TTZH.root $(BUILDDIR)/Hists_TTHH.root
 	@echo "Merging TTXY histograms"
+	@hadd -f $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTWXY.root: $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTW.root
+	@echo "Merging TTWXY histograms"
+	@hadd -f $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TT_HZmerged.root: $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTH.root
+	@echo "Merging TTH and TTZ histograms"
 	@hadd -f $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TT_RARE.root: $(BUILDDIR)/Hists_TTW.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTXY.root
