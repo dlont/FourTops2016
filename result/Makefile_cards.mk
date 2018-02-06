@@ -320,13 +320,13 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	#@python tools/renormsysshapes.py $@ -r $(BUILDDIR)/Hists_TT.root -t bdt -s MEScale,UE,FSR,ISR,PDF,HDAMP,TTPT
 
 
-card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTW.root
+card_mu.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TTWXY.root $(BUILDDIR)/Hists_TT_HZmerged.root
 	@echo "make HiggsCombine cards"
-	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTXY.root", "Rare1TTH":"Hists_TTH.root", "Rare1TTZ":"Hists_TTZ.root", "Rare1TTW":"Hists_TTW.root"}' --observable=bdt $(AUTOMCSTAT); cd -
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=mu --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTWXY.root", "Rare1TTHZ":"Hists_TT_HZmerged.root"}' --observable=bdt $(AUTOMCSTAT); cd -
 	
-card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TT_RARE.root $(BUILDDIR)/Hists_TTXY.root $(BUILDDIR)/Hists_TTH.root $(BUILDDIR)/Hists_TTZ.root $(BUILDDIR)/Hists_TTW.root
+card_el.txt: $(BUILDDIR)/Hists_data.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_CARDS.root $(BUILDDIR)/Hists_TTTT_CARDS.root $(BUILDDIR)/Hists_TTWXY.root $(BUILDDIR)/Hists_TT_HZmerged.root
 	@echo "make HiggsCombine cards"
-	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTXY.root", "Rare1TTH":"Hists_TTH.root", "Rare1TTZ":"Hists_TTZ.root", "Rare1TTW":"Hists_TTW.root"}' --observable=bdt $(AUTOMCSTAT); cd -
+	@cd $(BUILDDIR); python $(CARDGEN) -o $@ --channel=el --data Hists_data.root  --source '{"NP_overlay_ttttNLO":"Hists_TTTT_CARDS.root", "ttbarTTX":"Hists_TT_CARDS.root", "EW":"Hists_EW.root", "ST_tW":"Hists_T.root", "TTRARE_plus":"Hists_TTWXY.root", "Rare1TTHZ":"Hists_TT_HZmerged.root"}' --observable=bdt $(AUTOMCSTAT); cd -
 
 $(BUILDDIR)/datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu.txt
 	@echo "Combining datacards $^"
