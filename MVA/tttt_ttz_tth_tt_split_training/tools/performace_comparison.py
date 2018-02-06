@@ -95,9 +95,9 @@ class MVADistributions(object):
                         return self._objects[name]
                 else:
                         if 'tmva_b' in name:
-                                self._objects[name] = self.build_tmva_b(name)
+                                self._objects[name] = self.build_tmva(name)
                         elif 'tmva_s' in name:
-                                self._objects[name] = self.build_tmva_s(name)
+                                self._objects[name] = self.build_tmva(name)
                         elif 'old_b' in name:
                                 self._objects[name] = self.build_old_b(name)
                         elif 'old_s' in name:
@@ -122,12 +122,15 @@ class MVADistributions(object):
         @log_with()
         def build_roc(self,name):
                 #default mva
+                logging.debug("ROC name: {}".format(name))
                 self._mva_roc_curves[name] = rt.TGraph()
                 self._mva_roc_curves[name].SetName(name)
                 hist_bg_name = self._jsondic[name]['histbgname']
                 hist_sg_name = self._jsondic[name]['histsgname']
                 hb = self.get(hist_bg_name)
+                logging.debug("hist_bg_name: {}\n{}".format(self._jsondic[name]['histbgname'],hb))
                 hs = self.get(hist_sg_name)
+                logging.debug("hist_sg_name: {}\n{}".format(self._jsondic[name]['histsgname'],hs))
                 nbins = hb.GetNbinsX()
                 for iBin in range(1,nbins+1):
                         esp_sig = (hs.Integral(iBin,nbins)/hs.Integral(1,nbins))
@@ -136,7 +139,7 @@ class MVADistributions(object):
                 return self._mva_roc_curves[name]
 
         @log_with()
-        def build_tmva_b(self,histname):
+        def build_tmva(self,histname):
                 idname = 'tmva'
                 filename = self._jsondic[histname]['inputfile']
                 if not filename:
@@ -146,41 +149,14 @@ class MVADistributions(object):
                 rt.SetOwnership(rootfile,False)
                 # tree = rootfile.Get(self._tmva_tree_name)
                 tree = rootfile.Get(str(self._jsondic[histname]['treename']))
-                #for each MVA discriminant in the list
-                mvaname = self._jsondic[histname]['mvaname']
-                min = tree.GetMinimum(mvaname)
-                max = tree.GetMaximum(mvaname)
-                # rescale to [-1.,1.] range
-                # mva' = (mva-min)/(max-min)*(max'-min') + min'
-                rescaled_mva = '(({}-{})/({}-{})*({} - {}) + {})'.format(mvaname,min,max,min,\
-                self._histconfig['xmax'],self._histconfig['xmin'],self._histconfig['xmin'])
-                #background histograms
-                # histname = 'tmva_b'
-                drawhistconfig = "({},{},{})".format(self._histconfig['nbins'],self._histconfig['xmin'],self._histconfig['xmax'])
-                histexpression = "{}{}".format(histname,drawhistconfig) #e.g h_ttmix_BDTA20(25,-1.,1.)
-                bg_cuts = self._jsondic[histname]['cuts']  #background events from tmva tree
-                tree.Draw("{}>>{}".format(rescaled_mva,histexpression),bg_cuts)
-                hist = rt.gDirectory.Get(histname)
-                rt.SetOwnership( hist, False )
-                if hist:
-                        hist.Scale(1./hist.Integral())
-                        return hist
-
-        @log_with()
-        def build_tmva_s(self,histname):
-                idname = 'tmva'
-                filename = self._jsondic[histname]['inputfile']
-                if not filename:
-                        logging.error("File name is wrong: {}".format(filename))
+                if not tree:
+                        logging.error("Tree does not exist: {}".format(tree))
                         sys.exit(1)
-                rootfile = rt.TFile.Open(filename,"READ")
-                rt.SetOwnership(rootfile,False)
-                # tree = rootfile.Get(self._tmva_tree_name)
-                tree = rootfile.Get(str(self._jsondic[histname]['treename']))
                 #for each MVA discriminant in the list
                 mvaname = self._jsondic[histname]['mvaname']
                 min = tree.GetMinimum(mvaname)
                 max = tree.GetMaximum(mvaname)
+                logging.debug("MIN/MAX {}: {}/{}".format(mvaname,min,max))
                 # rescale to [-1.,1.] range
                 # mva' = (mva-min)/(max-min)*(max'-min') + min'
                 rescaled_mva = '(({}-{})/({}-{})*({} - {}) + {})'.format(mvaname,min,max,min,\
@@ -190,8 +166,10 @@ class MVADistributions(object):
                 drawhistconfig = "({},{},{})".format(self._histconfig['nbins'],self._histconfig['xmin'],self._histconfig['xmax'])
                 histexpression = "{}{}".format(histname,drawhistconfig) #e.g h_tttt_BDTA20(25,-1.,1.)
                 sg_cuts = self._jsondic[histname]['cuts']  #signal events from tmva tree
+                logging.debug("Tree draw command: {}".format(histexpression))
+                logging.debug("Tree cuts: {}".format(sg_cuts))
                 tree.Draw("{}>>{}".format(rescaled_mva,histexpression),sg_cuts)
-                hist = rt.gDirectory.Get(histname)
+                hist = rt.gDirectory.Get(str(histname))
                 rt.SetOwnership( hist, False )
                 if hist:
                         hist.Scale(1./hist.Integral())
@@ -293,7 +271,7 @@ class Style(object):
         @log_with()
         def make_legend(self,c,objlist,**kwargs):
                 header=kwargs.get('header',None)
-                pos=kwargs.get('pos',(0.11,0.11,0.5,0.5))
+                pos=kwargs.get('pos',(0.25,0.23,0.55,0.6))
                 legend = rt.TLegend(*pos)
                 legend.SetName("TLeg_"+c.GetName())
                 rt.SetOwnership(legend,False)
@@ -306,9 +284,9 @@ class Style(object):
 
         @log_with()
         def decorate_pad(self, pad):
-                pad.SetTopMargin(0.1)
-                pad.SetLeftMargin(1.1)
-                pad.SetRightMargin(0.1)
+                pad.SetBottomMargin(0.2)
+                pad.SetLeftMargin(0.2)
+                pad.SetRightMargin(0.05)
                 # pad.SetLogy()
                 pad.Update()
 
@@ -350,28 +328,28 @@ class View(object):
         @log_with()
         def draw(self):
                 c = rt.TCanvas('c','cms',5,45,800,800)
-                c.Divide(2,3)
+                c.Divide(2,3,0.,0.)
 
                 c.cd(1)
                 h_stack = rt.THStack("MVAs1","")
-                objlist = ['3tmva_b','3tmva_s','3old_b','3old_s']
+                objlist = ['tmva_b','tmva_s','old_b','old_s']
                 for el in objlist:
                         h_stack.Add(self._style.decorate(self._model.get(el)),"hist")
                 h_stack.Draw("nostack")
                 if self._style:
                         self._style.decorate_stack(h_stack)
-                        self._style.make_legend(c.GetPad(1),objlist,pos=(0.11,0.65,0.45,0.89))
                         self._style.decorate_pad(c.GetPad(1))
 
                 c.cd(2)
                 mg = rt.TMultiGraph("ROCs1","")
-                objlist = ['3roc_tmva','3roc_oldmva']
+                objlist = ['roc_tmva','roc_tmva_train','roc_oldmva_mu','roc_oldmva_el']
                 for el in objlist:
                         mg.Add(self._style.decorate(self._model.get(el)),"c")
                 mg.Draw("A")
                 if self._style:
                         self._style.decorate_roc_mg(mg)
                         self._style.make_legend(c.GetPad(2),objlist,header='nMtag = 2')
+                        self._style.decorate_pad(c.GetPad(2))
 
                 c.cd(3)
                 h_stack = rt.THStack("MVAs2","")
@@ -385,13 +363,14 @@ class View(object):
 
                 c.cd(4)
                 mg = rt.TMultiGraph("ROCs2","")
-                objlist = ['2roc_tmva','2roc_oldmva']
+                objlist = ['2roc_tmva','2roc_tmva_train','2roc_oldmva_mu','2roc_oldmva_el']
                 for el in objlist:
                         mg.Add(self._style.decorate(self._model.get(el)),"c")
                 mg.Draw("A")
                 if self._style:
                         self._style.decorate_roc_mg(mg)
                         self._style.make_legend(c.GetPad(4),objlist,header='nMtag = 3')
+                        self._style.decorate_pad(c.GetPad(4))
 
                 c.cd(5)
                 h_stack = rt.THStack("MVAs3","")
@@ -402,16 +381,18 @@ class View(object):
                 if self._style:
                         self._style.decorate_stack(h_stack)
                         self._style.decorate_pad(c.GetPad(5))
+                        self._style.make_legend(c.GetPad(5),objlist,pos=(0.25,0.65,0.65,0.89))
 
                 c.cd(6)
                 mg = rt.TMultiGraph("ROCs3","")
-                objlist = ['3roc_tmva','3roc_oldmva']
+                objlist = ['3roc_tmva','3roc_tmva_train','3roc_oldmva_mu','3roc_oldmva_el']
                 for el in objlist:
                         mg.Add(self._style.decorate(self._model.get(el)),"c")
                 mg.Draw("A")
                 if self._style:
                         self._style.decorate_roc_mg(mg)
                         self._style.make_legend(c.GetPad(6),objlist,header='nMtag #geq 4')
+                        self._style.decorate_pad(c.GetPad(6))                        
 
                 if self._style: self._style.decorate_canvas(c)
                 c.SaveAs(self.get_outfile_name())

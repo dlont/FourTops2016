@@ -43,5 +43,5 @@
       "weight":1.0
     }
   ],
-  "annotation":"Training on **>=9/>=4** jet category only with luminosity weighted tt, ttz, tth and tttt samples. Ignore Negative weights in training. Number of b tags and jet multiplicity are included as training variables. Extra variables e.g. pT jet9 are added. Both electon and muon samples are used for training."
+  "annotation":"Training on **>=10** jet category only with luminosity weighted tt, ttz, tth and tttt samples. Ignore Negative weights in training. Number of b tags and jet multiplicity are included as training variables. Extra variables e.g. pT jet9 are added. Both electon and muon samples are used for training."
 }

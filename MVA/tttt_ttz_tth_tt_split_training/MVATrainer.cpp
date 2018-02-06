@@ -245,8 +245,8 @@ factory->AddSpectator( "GenWeight := GenWeight",  "ME weight", "units", 'F' );
 
   int nTrainS=50000, nTestS=50000, nTrainB=150000, nTestB=150000;
 
-  std::string CutsS{"nJets>=9&&nMtags>=4"};
-  std::string CutsB{"nJets>=9&&nMtags>=4"};            //Example cut => "abs(var1)<0.5 && abs(var2-0.5)<1";
+  std::string CutsS{"nJets>=10"};
+  std::string CutsB{"nJets>=10"};            //Example cut => "abs(var1)<0.5 && abs(var2-0.5)<1";
 
   std::string SplitMode;        //SplitMode: Random, Alternate and Block
 

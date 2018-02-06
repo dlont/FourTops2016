@@ -23,5 +23,6 @@ make; make install
 alternatively
 
 ```
-out=results/`date +%Y-%m-%d-%H%M`; ./MVATrainer --json conf.json --dir=$out; unset out;
+out=results/`date +%Y-%m-%d-%H%M`; ./MVATrainer --json conf.json --dir=$out
+pyton tools/performace_comparison.py -b -v -j tools/conf_perf_comp.json  -o NoNegativeWeights_LumiWeighted_wnMtags_9J4M --dir=$out
 ```
