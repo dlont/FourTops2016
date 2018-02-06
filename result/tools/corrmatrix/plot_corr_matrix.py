@@ -82,7 +82,9 @@ class CorrMatrixWithoutBins(CorrelationMatrixBuilder):
 			new_j = 0
 
 		return new_corr_hist
-	
+
+def get_outfile_name(arguments,substring=''):
+		return '{}/{}{}.{}'.format(arguments.dir,arguments.outfile,substring,arguments.extension)
 
 def main(arguments):
 	
@@ -105,7 +107,7 @@ def main(arguments):
 		h.Draw('colz')
 		h.SetAxisRange(-1.,1.,"Z")
 		h.GetXaxis().LabelsOption("v")
-		c.Print('{0}_{1}.{2}'.format(arguments.outfile,fit_obj,arguments.extension))
+		c.SaveAs(get_outfile_name(arguments,fit_obj))
         return 0
 
 
@@ -116,6 +118,7 @@ if __name__ == '__main__':
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
         parser.add_argument('infile', help="Input file")
+        parser.add_argument('--dir', help="Result output directory", default='.')
         parser.add_argument('-o', '--outfile', help="Output file",default='corr')
         parser.add_argument('-e', '--extension', help="Output file extension", default='png')
         parser.add_argument('-j', '--config-json', type=json.loads, help="JSON configuration file")
