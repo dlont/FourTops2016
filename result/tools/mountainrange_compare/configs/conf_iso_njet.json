@@ -1,0 +1,151 @@
+{
+    "canvas":
+    [   
+        {"name":"c_chargedHIso",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["chargedHIso_zeroIso_longhist","chargedHIso_anaIso_longhist"],"islog":true},
+                {"objects":["chargedHIso_anaIso_longhist","chargedHIso_anaIso_longhist"],"islog":false,"ratio_to":"chargedHIso_anaIso_longhist"}
+            ]
+        },
+        {"name":"c_neutralHIso",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["neutralHIso_zeroIso_longhist","neutralHIso_anaIso_longhist"],"islog":true},
+                {"objects":["neutralHIso_zeroIso_longhist","neutralHIso_anaIso_longhist"],"islog":false,"ratio_to":"neutralHIso_anaIso_longhist"}
+            ]
+        },
+        {"name":"c_photonIso",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["photonIso_zeroIso_longhist","photonIso_anaIso_longhist"],"islog":true},
+                {"objects":["photonIso_anaIso_longhist","photonIso_anaIso_longhist"],"islog":false,"ratio_to":"photonIso_anaIso_longhist"}
+            ]
+        },
+        {"name":"c_PUIso",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["PUIso_zeroIso_longhist","PUIso_anaIso_longhist"],"islog":true},
+                {"objects":["PUIso_zeroIso_longhist","PUIso_anaIso_longhist"],"islog":false,"ratio_to":"PUIso_anaIso_longhist"}
+            ]
+        }
+    ],
+
+    "chargedHIso_zeroIso_longhist":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"chargedHIso",
+		"cut":"(leptonIso<1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":";#sum E_{T}^{CH};1/N dN/d #sum E_{T}^{CH}",
+		"legend":{
+			"name":"rel Iso=0",
+			"style":"l"
+		}
+    },
+    "chargedHIso_anaIso_longhist":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"chargedHIso",
+		"cut":"(leptonIso>=1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":";#sum E_{T}^{CH};1/N dN/d #sum E_{T}^{CH}",
+		"legend":{
+			"name":"rel Iso>0",
+			"style":"l"
+		}
+    },
+    "neutralHIso_zeroIso_longhist":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"neutralHIso",
+		"cut":"(leptonIso<1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":";#sum E_{T}^{N};1/N dN/d #sum E_{T}^{N}",
+		"legend":{
+			"name":"rel Iso=0",
+			"style":"l"
+		}
+    },
+    "neutralHIso_anaIso_longhist":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"neutralHIso",
+		"cut":"(leptonIso>=1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":";#sum E_{T}^{N};1/N dN/d #sum E_{T}^{N}",
+		"legend":{
+			"name":"rel Iso>0",
+			"style":"l"
+		}
+    },
+    "photonIso_zeroIso_longhist":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"photonIso",
+		"cut":"(leptonIso<1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":";#sum E_{T}^{#gamma};1/N dN/d #sum E_{T}^{#gamma}",
+		"legend":{
+			"name":"rel Iso=0",
+			"style":"l"
+		}
+    },
+    "photonIso_anaIso_longhist":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"photonIso",
+		"cut":"(leptonIso>=1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":";#sum E_{T}^{#gamma};1/N dN/d #sum E_{T}^{#gamma}",
+		"legend":{
+			"name":"rel Iso>0",
+			"style":"l"
+		}
+    },
+    "PUIso_zeroIso_longhist":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"PUIso",
+		"cut":"(leptonIso<1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":";#sum E_{T,sub}^{PU};1/N dN/d #sum E_{T,sub}^{PU}",
+		"legend":{
+			"name":"rel Iso=0",
+			"style":"l"
+		}
+    },
+    "PUIso_anaIso_longhist":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_Data*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"PUIso",
+		"cut":"(leptonIso>=1E-05 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>9"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":";#sum E_{T}^{N};1/N dN/d #sum E_{T}^{N}",
+		"legend":{
+			"name":"rel Iso>0",
+			"style":"l"
+		}
+    },
+    "annotation":"Comparison of input variables entering relative isolation formula **(d\\beta corrected)**\nfloat reliso = (muons[i]->chargedHadronIso(4) + max( 0.0, muons[i]->neutralHadronIso(4) + muons[i]->photonIso(4) - 0.5*muons[i]->puChargedHadronIso(4) ) ) / muons[i]->Pt(); \n Comparison performed for two different regions of relative Iso: relIso==0 and 0<relIso<0.15 as a function of jet multiplicity. Small histograms are normalized to unit area."
+}
