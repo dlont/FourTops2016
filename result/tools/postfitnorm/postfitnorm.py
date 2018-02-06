@@ -203,10 +203,12 @@ def main(arguments):
 	#data.Print()
 
 	#create others backgrounds normalization RooFit Object
-	creator_others = OthersNorm(root_file, ['EW','TTRARE_plus','ST_tW','Rare1TTHZ'])
+	creator_others = OthersNorm(root_file, ['EW','TTRARE','ST_tW'])
+	# creator_others = OthersNorm(root_file, ['EW','TTRARE_plus','ST_tW','Rare1TTHZ']) # for rare split
 	creator_others.set_name('other')
 	#create others backgrounds normalization RooFit Object
-	creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE_plus','ST_tW', 'Rare1TTHZ'])
+	creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE','ST_tW'])
+	# creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE_plus','ST_tW', 'Rare1TTHZ']) #for rare split
 	creator_total.set_name('total')
 
 	#retrieve prefit normalizations
