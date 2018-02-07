@@ -92,6 +92,7 @@ struct Event {
     double csvJetpt2; 
     double csvJetpt3; 
     double csvJetpt4;
+    bool electronVFIDflag;      //electron VF ID for isolation studies
     double electronparams[20]; // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double muonparams[20];  // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double jetvec[30][5];   // jet properties (pT,eta,phi,csv)
@@ -181,6 +182,7 @@ void Event::clear() {
       csvJetpt2 = 0.; 
       csvJetpt3 = 0.; 
       csvJetpt4 = 0.;
+      electronVFIDflag = false;
       std::fill_n( electronparams, 20, -10.);
       std::fill_n( muonparams, 20, -10.);
       std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec)/sizeof(jetvec[0]), -1.);
@@ -217,6 +219,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
       tree -> Branch("6thjetpt", &jet6Pt   ,"6thjetpt/D"); 
       
+      tree -> Branch("ElectronVFid", electronVFIDflag, "ElectronVFid/O")
       tree -> Branch("Electronparam", electronparams, "Electronparam[20]/D");
       tree -> Branch("Muonparam", muonparams, "Muonparam[20]/D");
       tree -> Branch("LeptonPt", &LeptonPt    ,"LeptonPt/D"); 
@@ -383,6 +386,7 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     mw1 = vals[70];
     mw2 = vals[71];
     mw3 = vals[72];
+    electronVFIDflag = vals[73];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }

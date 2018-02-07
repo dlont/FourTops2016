@@ -1648,7 +1648,8 @@ int main (int argc, char *argv[])
             }
             float nOrigJets = (float)selectedOrigJets.size();
             float jet5and6Pt = jet5Pt+jet6Pt;
-            double vals[73] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
+            bool electronVFIDflag = false; //TODO: fill correct VF ID information in
+            double vals[74] = {BDTScore,nJets,nOrigJets,nLtags,nMtags,nTtags,
             HT,selectedLeptonPt,leptoneta,bjetpt,HT2M,HTb,HTH,HTRat,HTX,
             SumJetMassX,diTopness,numOfbb,numOfcc,numOfll,ttbar_flav,
             scaleFactor,fleptonSF,btagWeight,btagWeightUp,btagWeightDown,
@@ -1657,7 +1658,7 @@ int main (int argc, char *argv[])
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
-	    trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3};
+	        trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3, electronVFIDflag};
 
 //		std::cout << "Interesting event: " << setw(20) << runId << ":" << lumBlkId << ":" << evId << " " << BDTScore << setw(20) << nJets 
 //			  << " " << nMtags << " " << HT << " " << fnjetW << std::endl;
