@@ -68,6 +68,8 @@
 #include "FillLeptonArrays.h"
 #include "Event.h"
 
+#include "TLorentzVector.h"
+
 using namespace std;
 using namespace TopTree;
 using namespace reweight;
@@ -602,6 +604,8 @@ int main (int argc, char *argv[])
 		std::cout << "adding trigger to trees " << trigname << " mapped to element " << iter_trig << " " << branchname << std::endl;
 		tup->Branch(trigname,&(triggers_container[iter_trig]),branchname);
 	}
+	std::vector<TLorentzVector> tup_genJets;
+	tup -> Branch("genJets",&tup_genJets);
 
         LOG(INFO) << "Output Craneens File: " << Ntupname ;
 
@@ -618,6 +622,7 @@ int main (int argc, char *argv[])
         long long nbjetsful = -999;		booktup -> Branch("nbjetsful",&nbjetsful,"nbjetsful/I");
         long long ngenjets20 = -999;		booktup -> Branch("nGenjets20",&ngenjets20,"nGenjets20/I");
         long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
+
 	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
 	////////////////////////////////////////////////////////////////
@@ -766,6 +771,7 @@ int main (int argc, char *argv[])
 		    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
 		    if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
 	    }
+
             genttxtype = event->getgenTTX_id();
 	    ngenjets = genjets.size();   
 	    ngenjets20 = std::count_if( std::begin(genjets), std::end(genjets), [](TRootGenJet* jet){return (jet->Pt()>20);} );   
@@ -1658,7 +1664,7 @@ int main (int argc, char *argv[])
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
-	        trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3, electronVFIDflag};
+	        trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3};
 
 //		std::cout << "Interesting event: " << setw(20) << runId << ":" << lumBlkId << ":" << evId << " " << BDTScore << setw(20) << nJets 
 //			  << " " << nMtags << " " << HT << " " << fnjetW << std::endl;
@@ -1691,9 +1697,17 @@ int main (int argc, char *argv[])
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
+            myEvent.fill_electronVFID(electronVFIDflag);
             myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
+
+	    auto push_genjet2lorentz = [&tup_genJets](TRootGenJet* jet){
+		tup_genJets.emplace_back(TLorentzVector(jet->Px(),jet->Py(),jet->Pz(),jet->E()));
+	    };
+	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
+
             tupfile->cd();
             tup->Fill();
+	    tup_genJets.clear();
 
 	    for( auto j: init_uncor_jets ) delete j;
 
