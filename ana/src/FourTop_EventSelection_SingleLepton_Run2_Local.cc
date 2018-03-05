@@ -622,6 +622,7 @@ int main (int argc, char *argv[])
         long long nbjetsful = -999;		booktup -> Branch("nbjetsful",&nbjetsful,"nbjetsful/I");
         long long ngenjets20 = -999;		booktup -> Branch("nGenjets20",&ngenjets20,"nGenjets20/I");
         long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
+	booktup -> Branch("genJets",&tup_genJets);
 
 	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
@@ -791,7 +792,14 @@ int main (int argc, char *argv[])
 	    auto top16010_fidleptons = [](TRootMCParticle* p){return (fabs(p->type())==11 || fabs(p->type())==13) && p->Pt()>20 && fabs(p->Eta())<2.4 &&
 								      p->isLastCopy() && fabs(p->grannyType())==6; };
 	    nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
+
+	    auto push_genjet2lorentz = [&tup_genJets](TRootGenJet* jet){
+		tup_genJets.emplace_back(TLorentzVector(jet->Px(),jet->Py(),jet->Pz(),jet->E()));
+	    };
+	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
+
 	    booktup -> Fill();
+	    tup_genJets.clear();
    
             int treenumber = datasets[d]->eventTree()->GetTreeNumber(); 
             currentfilename2 = datasets[d]->eventTree()->GetFile()->GetName();
@@ -1700,9 +1708,7 @@ int main (int argc, char *argv[])
             myEvent.fill_electronVFID(electronVFIDflag);
             myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
 
-	    auto push_genjet2lorentz = [&tup_genJets](TRootGenJet* jet){
-		tup_genJets.emplace_back(TLorentzVector(jet->Px(),jet->Py(),jet->Pz(),jet->E()));
-	    };
+	    tup_genJets.clear();
 	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
 
             tupfile->cd();
