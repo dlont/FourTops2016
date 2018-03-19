@@ -48,7 +48,7 @@ define calcEqLumi
 endef
 
 define calcEqLumiMCNLO
-	$(shell echo "import ROOT;a=ROOT.TChain(\"bookkeeping\");a.Add(\"$(1)\");h=ROOT.TH1D(\"h\",\"\",1,-1.,1.);a.Draw(\"0.>>h\",\"Genweight\");nMC=h.Integral();print ${DATALUMI}/(nMC/$(2))"|python - -b)
+	$(shell echo "import ROOT;a=ROOT.TChain(\"bookkeeping\");a.Add(\"$(1)\");h=ROOT.TH1D(\"h\",\"\",1,-1.,1.);a.Draw(\"0.>>h\",\"Genweight\",\"goff\");nMC=h.Integral();print ${DATALUMI}/(nMC/$(2))"|python - -b)
 endef
 
 DATANORM=1.
@@ -78,7 +78,19 @@ DY2J50XS=33140. # fb				checked
 DY3J50XS=9640. # fb				checked
 DY4J50XS=5140. # fb				checked
 #SingleMuon reprov3
-TTNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root, ${TTNNLOXS})
+TTNORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_MIXTURE_NORM=$(call calcEqLumi, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mixture_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1665_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1665_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1695_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1695_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1715_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1715_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1735_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1735_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1755_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1755_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_M1785_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_mass1785_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_W02_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_width02_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_W05_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_width05_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_W2_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_width2_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_W4_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_width4_Run2_TopTree_Study.root, ${TTNNLOXS})
+TT_W8_NORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_width8_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTSUBPUUPNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_SubTotalPileUp_jesup_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTSUBPUDOWNNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_SubTotalPileUp_jesdown_Run2_TopTree_Study.root, ${TTNNLOXS})
 TTSUBPTUPNORM=$(call calcEqLumiMCNLO, ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_SubTotalPt_jesup_Run2_TopTree_Study.root, ${TTNNLOXS})

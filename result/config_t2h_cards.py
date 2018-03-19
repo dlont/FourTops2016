@@ -45,9 +45,30 @@ elif 'TTPT' in systematic:
 elif 'TTPAGPT' in systematic:
     from cards_syst_PAGPT import cut_PAGPT
     cut_sets = cut_PAGPT('&&'+trigger_cuts)  
-elif 'BTAG' in systematic:
-    from cards_syst_BTAG import cut_BTAG
-    cut_sets = cut_BTAG('&&'+trigger_cuts)  
+elif 'BTAG1' in systematic:
+    from cards_syst_BTAG import cut_BTAG1
+    cut_sets = cut_BTAG1('&&'+trigger_cuts)
+elif 'BTAG2' in systematic:
+    from cards_syst_BTAG import cut_BTAG2
+    cut_sets = cut_BTAG2('&&'+trigger_cuts)
+elif 'BTAG3' in systematic:
+    from cards_syst_BTAG import cut_BTAG3
+    cut_sets = cut_BTAG3('&&'+trigger_cuts)
+elif 'BTAG4' in systematic:
+    from cards_syst_BTAG import cut_BTAG4
+    cut_sets = cut_BTAG4('&&'+trigger_cuts) 
+elif 'BTAG5' in systematic:
+    from cards_syst_BTAG import cut_BTAG5
+    cut_sets = cut_BTAG5('&&'+trigger_cuts) 
+elif 'BTAG6' in systematic:
+    from cards_syst_BTAG import cut_BTAG6
+    cut_sets = cut_BTAG6('&&'+trigger_cuts) 
+elif 'BTAG7' in systematic:
+    from cards_syst_BTAG import cut_BTAG7
+    cut_sets = cut_BTAG7('&&'+trigger_cuts)
+elif 'BTAG8' in systematic:
+    from cards_syst_BTAG import cut_BTAG8
+    cut_sets = cut_BTAG8('&&'+trigger_cuts) 
 elif 'BJCOR' in systematic:
     from cards_syst_BTAG_JES import cut_BTAG_JES
     cut_sets = cut_BTAG_JES(systematic, '&&'+trigger_cuts)  
@@ -88,3 +109,5 @@ elif 'heavyFlav' in systematic:
 bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom bins
 from listofplots_cards import targetvar
 list_of_plots = [targetvar(target)]
+
+from custombinning import custom_binning

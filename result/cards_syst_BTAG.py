@@ -1,7 +1,7 @@
 from centralweight import centralweight
-def cut_BTAG(cut_string):
+def cut_BTAG1(cut_string):
 	cut_BTAG = [
-	#btagWeightCSVLF UP,
+			#btagWeightCSVLF UP,
 	("allSF_btagWeightCSVLFUp", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[3]".format(cut_string,centralweight)),
 
 	("6J2M_btagWeightCSVLFUp", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[3]".format(cut_string,centralweight)),
@@ -36,7 +36,11 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVLFDown", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[4]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVLFDown", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[4]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVLFDown", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[4]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVLFDown", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[4]".format(cut_string,centralweight)),
+	("10J4M_btagWeightCSVLFDown", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[4]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG2(cut_string):
+	cut_BTAG = [
 	#btagWeightCSVHF UP,
 	("allSF_btagWeightCSVHFUp", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[5]".format(cut_string,centralweight)),
 
@@ -72,8 +76,12 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVHFDown", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[6]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVHFDown", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[6]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVHFDown", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[6]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVHFDown", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[6]".format(cut_string,centralweight)),
-	#btagWeightCSVHFStats1 UP,
+	("10J4M_btagWeightCSVHFDown", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[6]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG3(cut_string):
+	cut_BTAG = [
+		#btagWeightCSVHFStats1 UP,
 	("allSF_btagWeightCSVHFStats1Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[7]".format(cut_string,centralweight)),
 
 	("6J2M_btagWeightCSVHFStats1Up", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[7]".format(cut_string,centralweight)),
@@ -108,7 +116,11 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVHFStats1Down", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[8]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVHFStats1Down", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[8]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVHFStats1Down", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[8]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVHFStats1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[8]".format(cut_string,centralweight)),
+	("10J4M_btagWeightCSVHFStats1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[8]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG4(cut_string):
+	cut_BTAG = [
 	#btagWeightCSVHFStats2 UP,
 	("allSF_btagWeightCSVHFStats2Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[9]".format(cut_string,centralweight)),
 
@@ -144,8 +156,12 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVHFStats2Down", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[10]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVHFStats2Down", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[10]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVHFStats2Down", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[10]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVHFStats2Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[10]".format(cut_string,centralweight)),
-	#btagWeightCSVLFStats1 UP,
+	("10J4M_btagWeightCSVHFStats2Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[10]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG5(cut_string):
+	cut_BTAG = [
+		#btagWeightCSVLFStats1 UP,
 	("allSF_btagWeightCSVLFStats1Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[11]".format(cut_string,centralweight)),
 
 	("6J2M_btagWeightCSVLFStats1Up", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[11]".format(cut_string,centralweight)),
@@ -180,7 +196,11 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVLFStats1Down", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[12]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVLFStats1Down", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[12]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVLFStats1Down", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[12]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVLFStats1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[12]".format(cut_string,centralweight)),
+	("10J4M_btagWeightCSVLFStats1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[12]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG6(cut_string):
+	cut_BTAG = [
 	#btagWeightCSVLFStats2 UP,
 	("allSF_btagWeightCSVLFStats2Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[13]".format(cut_string,centralweight)),
 
@@ -216,8 +236,12 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVLFStats2Down", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[14]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVLFStats2Down", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[14]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVLFStats2Down", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[14]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVLFStats2Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[14]".format(cut_string,centralweight)),
-	#btagWeightCSVCFErr1 UP,
+	("10J4M_btagWeightCSVLFStats2Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[14]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG7(cut_string):
+	cut_BTAG = [
+		#btagWeightCSVCFErr1 UP,
 	("allSF_btagWeightCSVCFErr1Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[15]".format(cut_string,centralweight)),
 
 	("6J2M_btagWeightCSVCFErr1Up", "Njet=6, nMtags=2",  "(nJets==6 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[15]".format(cut_string,centralweight)),
@@ -252,7 +276,11 @@ def cut_BTAG(cut_string):
 	("9J4M_btagWeightCSVCFErr1Down", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[16]".format(cut_string,centralweight)),
 	("10J2M_btagWeightCSVCFErr1Down", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[16]".format(cut_string,centralweight)),
 	("10J3M_btagWeightCSVCFErr1Down", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[16]".format(cut_string,centralweight)),
-	("10J4M_btagWeightCSVCFErr1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[16]".format(cut_string,centralweight)),
+	("10J4M_btagWeightCSVCFErr1Down", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[16]".format(cut_string,centralweight))
+	]
+	return cut_BTAG
+def cut_BTAG8(cut_string):
+	cut_BTAG = [
 	#btagWeightCSVCFErr2 UP,
 	("allSF_btagWeightCSVCFErr2Up", "inclusive",  "(1 {0})*{1}/csvrsw[0]*csvrsw[17]".format(cut_string,centralweight)),
 
