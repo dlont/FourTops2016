@@ -4,6 +4,7 @@ string(STRIP ${CMAKE_CXX_FLAGS_TEMP} CMAKE_CXX_FLAGS)
 string(STRIP ${CMAKE_LD_FLAGS_TEMP} CMAKE_LD_FLAGS)
 
 set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_LD_FLAGS_TEMP "${CMAKE_LD_FLAGS_TEMP} -lTMVA")
 
 # get git meta information
 configure_file(
@@ -19,6 +20,11 @@ include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/ana/inc)
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/glog/include)
 include_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/gflags/include)
 
+# include Python.h paths
+include_directories(/cvmfs/cms.cern.ch/slc6_amd64_gcc530/external/python/2.7.11-ikhhed2/include/python2.7)
+link_directories(/cvmfs/cms.cern.ch/slc6_amd64_gcc530/external/python/2.7.11-ikhhed2/lib)
+
+
 # add FourTopSingleLep lib search path
 link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/glog/lib)
 link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/gflags/lib)
@@ -30,11 +36,16 @@ link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/src)
 link_directories(~/lib)
 
 # define output target
-#add_executable(FourTops FourTops.cc)
-add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local.cc BTagSF.cc)
-#add_executable(FourTops FourTop_EventSelection_SingleLepton_Run2_Local_sync.cc BTagSF.cc)
+set(EXECFILE "FourTopsX")
+#add_executable(${EXECFILE} FourTops.cc)
+add_executable(${EXECFILE} FourTop_EventSelection_SingleLepton_Run2_Local.cc BTagSF.cc VecTLorentzVector.cpp)
+#add_executable(${EXECFILE} FourTop_EventSelection_SingleLepton_Run2_Local_sync.cc BTagSF.cc)
 
 # link against root and FourTopSingleLep TopTreeAna80 TopTreeAnaContent80
-target_link_libraries(FourTops PUBLIC glog gflags FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 PRIVATE ${CMAKE_LD_FLAGS})
-install(TARGETS FourTops DESTINATION ${CMAKE_INSTALL_PREFIX})
-add_custom_command(TARGET FourTops PRE_BUILD COMMAND cmake -P git_meta_info.cmake)
+target_link_libraries(${EXECFILE} PUBLIC glog gflags FourTopSingleLep TopTreeAna80 TopTreeAnaContent80 TMVA python2.7 PRIVATE ${CMAKE_LD_FLAGS})
+install(TARGETS ${EXECFILE} DESTINATION ${CMAKE_INSTALL_PREFIX})
+add_custom_command(TARGET ${EXECFILE} PRE_BUILD COMMAND cmake -P git_meta_info.cmake)
+set(ROOT_VECTLORENTZVEC_LINKDEF "${TopBrussels_SOURCE_DIR}/FourTops2016/ana/inc/VecTLorentzVector_LinkDef.h")
+add_custom_command(OUTPUT ${TopBrussels_SOURCE_DIR}/FourTops2016/ana/src/VecTLorentzVector.cpp DEPENDS ${ROOT_VECTLORENTZVEC_LINKDEF} 
+ COMMAND rootcint -f ${TopBrussels_SOURCE_DIR}/FourTops2016/ana/src/VecTLorentzVector.cpp -c -p TLorentzVector.h ${ROOT_VECTLORENTZVEC_LINKDEF}
+ COMMENT "Generating dictionary")

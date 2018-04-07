@@ -67,6 +67,7 @@
 
 #include "FillLeptonArrays.h"
 #include "Event.h"
+#include "PyAdaBoost.h"
 
 #include "TLorentzVector.h"
 
@@ -240,6 +241,18 @@ int main (int argc, char *argv[])
     anaEnv.loadMCParticles = true;
     anaEnv.JetType = 2;
     anaEnv.METType = 2;
+
+    //////////////////////////////////////////////////
+    //            PyMVA initialization              //
+    //////////////////////////////////////////////////
+    std::string path7="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets7_40_2.p";
+    std::string path8="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets8_400_2.p";
+    std::string path9="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets9_400_2.p";
+    std::string path10="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets10_400_2.p";
+    PyAdaBoost pyada7(path7);
+    PyAdaBoost pyada8(path8);
+    PyAdaBoost pyada9(path9);
+    PyAdaBoost pyada10(path10);
 
     ///////////////////////////////////////////
     //            Load datasets              //
@@ -604,27 +617,35 @@ int main (int argc, char *argv[])
 		std::cout << "adding trigger to trees " << trigname << " mapped to element " << iter_trig << " " << branchname << std::endl;
 		tup->Branch(trigname,&(triggers_container[iter_trig]),branchname);
 	}
-	std::vector<TLorentzVector> tup_genJets;
-	tup -> Branch("genJets",&tup_genJets);
+    long long runId = 0;			tup -> Branch("Runnr",&runId,"Runnr/I");
+	long long evId  = 0;			tup -> Branch("Eventnr",&evId,"Evnr/I");
+	long long lumBlkId = 0;			tup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
 
-        LOG(INFO) << "Output Craneens File: " << Ntupname ;
+	std::vector<TLorentzVector> tup_genJets;
+	std::vector<TLorentzVector> tup_genLeptons;
+	tup -> Branch("genJets",&tup_genJets);
+	tup -> Branch("genLeptons",&tup_genLeptons);
+
+    LOG(INFO) << "Output Craneens File: " << Ntupname ;
+
+    auto sh_tagtup = std::make_shared<TTree>("tag", "tag");
+	std::string tag = META_INFO; 		sh_tagtup -> Branch("Tag",&tag);
+    sh_tagtup->Fill();
+    sh_tagtup->Write();
 
 	TTree * booktup = new TTree("bookkeeping", "bookkeeping");
-	long long runId = 0;			booktup -> Branch("Runnr",&runId,"Runnr/I");
-	long long evId  = 0;			booktup -> Branch("Eventnr",&evId,"Evnr/I");
-	long long lumBlkId = 0;			booktup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
-        long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
-        double    genweight = 0.;		booktup -> Branch("Genweight",&genweight,"Genweight/D");
-        long long genttxtype = -999;		booktup -> Branch("Genttxtype",&genttxtype,"Genttxtype/I");
-        long long nleptons = -999;		booktup -> Branch("nleptons",&nleptons,"nleptons/I");
-        long long ngenjets = -999;		booktup -> Branch("nGenjets",&ngenjets,"nGenjets/I");
-        long long nbjetsfid = -999;		booktup -> Branch("nbjetsfid",&nbjetsfid,"nbjetsfid/I");
-        long long nbjetsful = -999;		booktup -> Branch("nbjetsful",&nbjetsful,"nbjetsful/I");
-        long long ngenjets20 = -999;		booktup -> Branch("nGenjets20",&ngenjets20,"nGenjets20/I");
-        long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
-	booktup -> Branch("genJets",&tup_genJets);
+    long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
+    double    genweight = 0.;	booktup -> Branch("Genweight",&genweight,"Genweight/D");
+        // long long genttxtype = -999;		booktup -> Branch("Genttxtype",&genttxtype,"Genttxtype/I");
+        // long long nleptons = -999;		booktup -> Branch("nleptons",&nleptons,"nleptons/I");
+        // long long ngenjets = -999;		booktup -> Branch("nGenjets",&ngenjets,"nGenjets/I");
+        // long long nbjetsfid = -999;		booktup -> Branch("nbjetsfid",&nbjetsfid,"nbjetsfid/I");
+        // long long nbjetsful = -999;		booktup -> Branch("nbjetsful",&nbjetsful,"nbjetsful/I");
+        // long long ngenjets20 = -999;		booktup -> Branch("nGenjets20",&ngenjets20,"nGenjets20/I");
+        // long long ngenjets20Eta25 = -999;	booktup -> Branch("nGenjets20Eta25",&ngenjets20Eta25,"nGenjets20Eta25/I");
+	//booktup -> Branch("genJets",&tup_genJets);
+	//booktup -> Branch("genLeptons",&tup_genLeptons);
 
-	std::string tag = META_INFO; 		booktup -> Branch("Tag",&tag);
   
 	////////////////////////////////////////////////////////////////
 	//	Histograms for b fake and efficiency study	      //
@@ -652,7 +673,7 @@ int main (int argc, char *argv[])
 	histo2D_btwt["BtaggedJets"] 		= make_shared<TH2F>("BtaggedJets", "Total number of btagged jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
   	histo2D_btwt["BtaggedBJets"] 		= make_shared<TH2F>("BtaggedBJets", "Total number of btagged b-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
 	histo2D_btwt["BtaggedCJets"] 		= make_shared<TH2F>("BtaggedCJets", "Total number of btagged c-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
-	histo2D_btwt["BtaggedLightJets"] = make_shared<TH2F>("BtaggedLightJets", "Total number of btagged light jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
+	histo2D_btwt["BtaggedLightJets"]    = make_shared<TH2F>("BtaggedLightJets", "Total number of btagged light jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
 	histo2D_btwt["TotalNofBJets"] 		= make_shared<TH2F>("TotalNofBJets", "Total number of b-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
 	histo2D_btwt["TotalNofCJets"] 		= make_shared<TH2F>("TotalNofCJets", "Total number of c-jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
 	histo2D_btwt["TotalNofLightJets"] 	= make_shared<TH2F>("TotalNofLightJets", "Total number of light jets", NofPtBins, PtMin, PtMax, NofEtaBins, 0, 2.4);
@@ -663,7 +684,7 @@ int main (int argc, char *argv[])
         //       Define object containers and initalisations      //
         ////////////////////////////////////////////////////////////
 
-        float BDTScore, MHT, MHTSig, STJet, leptonvalidhits, leptoneta, leptonpt, leptonphi, electronpt, electroneta, bjetpt, EventMass, EventMassX, SumJetMass, SumJetMassX, H, HX;
+        float BDTScore, BDTScore1, MHT, MHTSig, STJet, leptonvalidhits, leptoneta, leptonpt, leptonphi, electronpt, electroneta, bjetpt, EventMass, EventMassX, SumJetMass, SumJetMassX, H, HX;
         float HTHi, HTRat, HT, HTX, HTH, HTXHX, sumpx_X, sumpy_X, sumpz_X, sume_X, sumpx, sumpy, sumpz, sume, jetpt, PTBalTopEventX, PTBalTopSumJetX, PTBalTopMuMet;     
         int itrigger = -1, previousRun = -1;
         int currentRun;           
@@ -725,7 +746,7 @@ int main (int argc, char *argv[])
         {
             LOG(INFO) <<"START OF EVENT LOOP";
 
-            BDTScore= -99999.0, MHT = 0., MHTSig = 0., leptonvalidhits = 0., leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
+            BDTScore= -99999.0, BDTScore1=-99999.0, MHT = 0., MHTSig = 0., leptonvalidhits = 0., leptoneta = 0., leptonpt =0., electronpt=0., electroneta=0., bjetpt =0., STJet = 0.;
             EventMass =0., EventMassX =0., SumJetMass = 0., SumJetMassX=0., HTHi =0., HTRat = 0;  H = 0., HX =0., HT = 0., HTX = 0.;
             HTH=0.,HTXHX=0., sumpx_X = 0., sumpy_X= 0., sumpz_X =0., sume_X= 0. , sumpx =0., sumpy=0., sumpz=0., sume=0., jetpt =0.;
             PTBalTopEventX = 0., PTBalTopSumJetX =0.;
@@ -765,41 +786,56 @@ int main (int argc, char *argv[])
             LOG(INFO) <<"got run ID";
 
             runId    = event->runId(); 
-	    evId     = event->eventId();
-	    lumBlkId = event->lumiBlockId();
+            evId     = event->eventId();
+            lumBlkId = event->lumiBlockId();
             nPV      = event->nTruePU();
             if(!isData){
 		    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
 		    if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
 	    }
 
-            genttxtype = event->getgenTTX_id();
-	    ngenjets = genjets.size();   
-	    ngenjets20 = std::count_if( std::begin(genjets), std::end(genjets), [](TRootGenJet* jet){return (jet->Pt()>20);} );   
+        // genttxtype = event->getgenTTX_id();
+	    // ngenjets = genjets.size();   
+	    // ngenjets20 = std::count_if( std::begin(genjets), std::end(genjets), [](TRootGenJet* jet){return (jet->Pt()>20);} );   
 	
-	    auto top16010_fidpscuts = [](TRootGenJet* jet){return ( jet->Pt()>20&&fabs(jet->Eta())<2.5); };
-	    ngenjets20Eta25 = std::count_if( std::begin(genjets), std::end(genjets), top16010_fidpscuts );   
+	    // auto top16010_fidpscuts = [](TRootGenJet* jet){return ( jet->Pt()>20&&fabs(jet->Eta())<2.5); };
+	    // ngenjets20Eta25 = std::count_if( std::begin(genjets), std::end(genjets), top16010_fidpscuts );   
 
-	    auto top16010b_fidpscuts = [](TRootGenJet* jet){return (jet->Pt()>20 && fabs(jet->Eta())<2.5 && fabs(jet->type()) == 5); };
-	    nbjetsfid = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fidpscuts); 
-	    //auto top16010b_fidpscuts = [](TRootMCParticle* p){return ( p->Pt()>20&&fabs(p->Eta())<2.5)&&fabs(p->type())==5&&p->isLastCopy();};
-	    //nbjetsfid = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fidpscuts); 
-	    auto top16010b_fulpscuts = [](TRootGenJet* jet){return jet->Pt()>20&&fabs(jet->type())==5;};
-	    nbjetsful = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fulpscuts); 
+	    // auto top16010b_fidpscuts = [](TRootGenJet* jet){return (jet->Pt()>20 && fabs(jet->Eta())<2.5 && fabs(jet->type()) == 5); };
+	    // nbjetsfid = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fidpscuts); 
+	    //// auto top16010b_fidpscuts = [](TRootMCParticle* p){return ( p->Pt()>20&&fabs(p->Eta())<2.5)&&fabs(p->type())==5&&p->isLastCopy();};
+	    ////nbjetsfid = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fidpscuts); 
+	    // auto top16010b_fulpscuts = [](TRootGenJet* jet){return jet->Pt()>20&&fabs(jet->type())==5;};
+	    // nbjetsful = std::count_if( std::begin(genjets), std::end(genjets), top16010b_fulpscuts); 
 	    //auto top16010b_fulpscuts = [](TRootMCParticle* p){return p->Pt()>20&&fabs(p->type())==5&&p->isLastCopy();};
 	    //nbjetsful = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010b_fulpscuts); 
 
-	    auto top16010_fidleptons = [](TRootMCParticle* p){return (fabs(p->type())==11 || fabs(p->type())==13) && p->Pt()>20 && fabs(p->Eta())<2.4 &&
-								      p->isLastCopy() && fabs(p->grannyType())==6; };
-	    nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
+	    // auto top16010_fidleptons = [](TRootMCParticle* p){return (fabs(p->type())==11 || fabs(p->type())==13) && p->Pt()>20 && fabs(p->Eta())<2.4 &&
+								    //   p->isLastCopy() && fabs(p->grannyType())==6; };
+		    // nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
+
+	    auto push_genlepton2lorentz = [&tup_genLeptons](TRootMCParticle* p){
+		if ((p->status()==1) && ( fabs(p->type())==11 || fabs(p->type())==13 || fabs(p->type())==15 ) && fabs(p->grannyType())==6) 
+			tup_genLeptons.emplace_back(p->Px(),p->Py(),p->Pz(),p->E());
+		else ;
+	    };
+	    tup_genLeptons.clear();
+	    //std::for_each( std::begin(mcParticles_flav), std::end(mcParticles_flav), push_genlepton2lorentz);
 
 	    auto push_genjet2lorentz = [&tup_genJets](TRootGenJet* jet){
 		tup_genJets.emplace_back(TLorentzVector(jet->Px(),jet->Py(),jet->Pz(),jet->E()));
 	    };
-	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
+	    //std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
+
+	    //double HT=0.;
+	    //for (auto genjet: genjets ) {
+	    //    if (genjet->Pt()>30 && abs(genjet->Eta())<2.4) HT+=genjet->Pt();
+	    //}
+	    //cout << "EventID: " << event->eventId() << " genHT: " << HT << endl;
 
 	    booktup -> Fill();
 	    tup_genJets.clear();
+	    tup_genLeptons.clear();
    
             int treenumber = datasets[d]->eventTree()->GetTreeNumber(); 
             currentfilename2 = datasets[d]->eventTree()->GetFile()->GetName();
@@ -1638,11 +1674,22 @@ int main (int argc, char *argv[])
                 eventBDT->fillVariables(diTopness, selectedLeptonPt, leptoneta, HTH, HTRat, HTb, nLtags, nMtags, nTtags, nJets, jet5Pt, jet6Pt);
             }           
 
+            float firstjetpt = selectedJets[0]->Pt();
+            float secondjetpt = selectedJets[1]->Pt();
 
             BDTScore = 0 ;
+            BDTScore1 = 0 ;
             if(EventBDTOn){
                 eventBDT->computeBDTScore();
                 BDTScore = eventBDT->returnBDTScore();
+                std::vector<float> input{diTopness, HTb, HTH, selectedLeptonPt, SumJetMassX, HTX, 
+                          	      csvJetcsv3, csvJetcsv4, firstjetpt, secondjetpt,
+                          	      jet5Pt, jet6Pt, 0.0, 0.0, 
+                                  csvJetpt3, csvJetpt4};
+                if (nJets<=7) BDTScore1 = pyada7.getMVA(input);
+                if (nJets==8) BDTScore1 = pyada8.getMVA(input);
+                if (nJets==9) BDTScore1 = pyada9.getMVA(input);
+                if (nJets>=10) BDTScore1 = pyada10.getMVA(input);
             }
 
             ////////////////////////////////////////////
@@ -1651,8 +1698,6 @@ int main (int argc, char *argv[])
             if (selectedMBJets.size()>0){
                 bjetpt = selectedMBJets[0]->Pt();
             }
-            float firstjetpt = selectedJets[0]->Pt();
-            float secondjetpt = selectedJets[1]->Pt();
             float nvertices = vertex.size();
             float angletoplep = 0;
             float angletop1top2 = 0;
@@ -1672,7 +1717,7 @@ int main (int argc, char *argv[])
             met,angletop1top2,angletoplep,firstjetpt,secondjetpt,leptonIso,leptonphi,
             chargedHIso,neutralHIso,photonIso,PUIso,jet5Pt,jet6Pt,jet5and6Pt, 
             csvJetcsv1,csvJetcsv2,csvJetcsv3,csvJetcsv4,csvJetpt1,csvJetpt2,csvJetpt3,csvJetpt4,fTopPtReWeightsf,ttXtype,ttXrew,
-	        trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3};
+	        trigSFTot,fnjetW, MT1, MT2, MT3, MW1, MW2, MW3, BDTScore1};
 
 //		std::cout << "Interesting event: " << setw(20) << runId << ":" << lumBlkId << ":" << evId << " " << BDTScore << setw(20) << nJets 
 //			  << " " << nMtags << " " << HT << " " << fnjetW << std::endl;
@@ -1708,12 +1753,16 @@ int main (int argc, char *argv[])
             myEvent.fill_electronVFID(electronVFIDflag);
             myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
 
+	    tup_genLeptons.clear();
+	    std::for_each( std::begin(mcParticles_flav), std::end(mcParticles_flav), push_genlepton2lorentz);
+
 	    tup_genJets.clear();
 	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
 
             tupfile->cd();
             tup->Fill();
 	    tup_genJets.clear();
+	    tup_genLeptons.clear();
 
 	    for( auto j: init_uncor_jets ) delete j;
 

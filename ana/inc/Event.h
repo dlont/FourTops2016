@@ -21,9 +21,11 @@
 struct Event {
     void clear();
     void makeBranches(TTree* tree);
+    void fill_electronVFID(bool);
     void fill(double [], double [][5], double [], double[], int , double [], double [], double [], double [], double [], double []);
     
-    double BDT;
+    double BDT; // baseline tmva from top-16-016
+    float  BDT1;// scikitlearn jet-split training
     int nJets; 
     int NOrigJets; 
     int nLtags; 
@@ -115,6 +117,7 @@ struct Event {
  */
 void Event::clear() {
       BDT = 0.;
+      BDT1 = 0.;
       nJets = 0.; 
       NOrigJets = 0.; 
       nLtags = 0.; 
@@ -210,6 +213,7 @@ void Event::makeBranches(TTree* tree) {
     }
     
       tree -> Branch("BDT", &BDT    ,"BDT/D");
+      tree -> Branch("BDT1", &BDT1    ,"BDT1/F");
       
       tree -> Branch("NOrigJets", &NOrigJets    ,"NOrigJets/I"); 
       tree -> Branch("nJets", &nJets    ,"nJets/I"); 
@@ -219,7 +223,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
       tree -> Branch("6thjetpt", &jet6Pt   ,"6thjetpt/D"); 
       
-      tree -> Branch("ElectronVFid", electronVFIDflag, "ElectronVFid/O")
+      tree -> Branch("ElectronVFid", electronVFIDflag, "ElectronVFid/O");
       tree -> Branch("Electronparam", electronparams, "Electronparam[20]/D");
       tree -> Branch("Muonparam", muonparams, "Muonparam[20]/D");
       tree -> Branch("LeptonPt", &LeptonPt    ,"LeptonPt/D"); 
@@ -299,6 +303,10 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("csvJetpt3", &csvJetpt3    ,"csvJetpt3/D"); 
       tree -> Branch("csvJetpt4", &csvJetpt4    ,"csvJetpt4/D");
 } // end Event::makeBranches()
+
+void Event::fill_electronVFID(bool flag) {
+    electronVFIDflag = flag;
+}
 
 /**
  * Fill ROOT ntuple with event variables
@@ -386,7 +394,7 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     mw1 = vals[70];
     mw2 = vals[71];
     mw3 = vals[72];
-    electronVFIDflag = vals[73];
+    BDT1 = vals[73];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
     }
