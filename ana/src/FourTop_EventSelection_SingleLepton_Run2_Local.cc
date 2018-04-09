@@ -617,9 +617,10 @@ int main (int argc, char *argv[])
 		std::cout << "adding trigger to trees " << trigname << " mapped to element " << iter_trig << " " << branchname << std::endl;
 		tup->Branch(trigname,&(triggers_container[iter_trig]),branchname);
 	}
-    long long runId = 0;			tup -> Branch("Runnr",&runId,"Runnr/I");
-	long long evId  = 0;			tup -> Branch("Eventnr",&evId,"Evnr/I");
-	long long lumBlkId = 0;			tup -> Branch("Lumisec",&lumBlkId,"Lumisec/I");
+    	long long runId = 0;			tup -> Branch("Runnr",&runId,"Runnr/L");
+	long long evId  = 0;			tup -> Branch("Eventnr",&evId,"Evnr/L");
+	long long lumBlkId = 0;			tup -> Branch("Lumisec",&lumBlkId,"Lumisec/L");
+	Char_t genFilter = 0;			tup -> Branch("GenFilter",&genFilter,"GenFilter/B");
 
 	std::vector<TLorentzVector> tup_genJets;
 	std::vector<TLorentzVector> tup_genLeptons;
@@ -815,7 +816,7 @@ int main (int argc, char *argv[])
 		    // nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
 
 	    auto push_genlepton2lorentz = [&tup_genLeptons](TRootMCParticle* p){
-		if ((p->status()==1) && ( fabs(p->type())==11 || fabs(p->type())==13 || fabs(p->type())==15 ) && fabs(p->grannyType())==6) 
+		if ( ((p->status()==1) && ( fabs(p->type())==11 || fabs(p->type())==13) || ( p->status()==2 && fabs(p->type())==15 )) && fabs(p->grannyType())==6) 
 			tup_genLeptons.emplace_back(p->Px(),p->Py(),p->Pz(),p->E());
 		else ;
 	    };
@@ -1758,6 +1759,14 @@ int main (int argc, char *argv[])
 
 	    tup_genJets.clear();
 	    std::for_each( std::begin(genjets), std::end(genjets), push_genjet2lorentz );
+
+	    auto genHT=0.;
+	    auto NgenJets=0;
+	    for ( auto jet: genjets ) {
+		if ( jet->Pt()>30. && fabs(jet->Eta())<2.4 ) genHT += jet->Pt();
+		if ( jet->Pt()>30. ) ++NgenJets;
+	    }
+	    if ( tup_genLeptons.size() >= 1 && genHT>500 && NgenJets>=9) genFilter = 1;
 
             tupfile->cd();
             tup->Fill();
