@@ -50,7 +50,7 @@ submitscript=$submitscriptpath/${outfile%.*}	#${outfile%.*} removes .oXXXXXXX ex
 if [ -f $submitscript ]; then
     	echo "Submit script has been found!"
     	echo "qsub $submitscript"
-    	qsub $submitscript
+    	echo "qsub $submitscript" >> bigsub-resubmit.txt 
 
 	if [ -d resubmit ]; then
 		mv $outfile resubmit
