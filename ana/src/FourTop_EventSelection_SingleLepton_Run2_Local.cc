@@ -620,7 +620,7 @@ int main (int argc, char *argv[])
     	long long runId = 0;			tup -> Branch("Runnr",&runId,"Runnr/L");
 	long long evId  = 0;			tup -> Branch("Eventnr",&evId,"Evnr/L");
 	long long lumBlkId = 0;			tup -> Branch("Lumisec",&lumBlkId,"Lumisec/L");
-	Char_t genFilter = 0;			tup -> Branch("GenFilter",&genFilter,"GenFilter/B");
+	int genFilter = 0;			tup -> Branch("GenFilter",&genFilter,"GenFilter/I");
 
 	std::vector<TLorentzVector> tup_genJets;
 	std::vector<TLorentzVector> tup_genLeptons;
@@ -816,7 +816,7 @@ int main (int argc, char *argv[])
 		    // nleptons = std::count_if( std::begin(mcParticles_flav), std::end(mcParticles_flav), top16010_fidleptons );
 
 	    auto push_genlepton2lorentz = [&tup_genLeptons](TRootMCParticle* p){
-		if ( ((p->status()==1) && ( fabs(p->type())==11 || fabs(p->type())==13) || ( p->status()==2 && fabs(p->type())==15 )) && fabs(p->grannyType())==6) 
+		if ( (((p->status()==1) && ( fabs(p->type())==11 || fabs(p->type())==13)) || ( p->status()==2 && fabs(p->type())==15 )) && fabs(p->grannyType())==6) 
 			tup_genLeptons.emplace_back(p->Px(),p->Py(),p->Pz(),p->E());
 		else ;
 	    };
@@ -1762,9 +1762,10 @@ int main (int argc, char *argv[])
 
 	    auto genHT=0.;
 	    auto NgenJets=0;
-	    for ( auto jet: genjets ) {
-		if ( jet->Pt()>30. && fabs(jet->Eta())<2.4 ) genHT += jet->Pt();
-		if ( jet->Pt()>30. ) ++NgenJets;
+	    genFilter = 0;
+	    for ( const auto& jet: tup_genJets ) {
+		if ( jet.Pt()>30. && fabs(jet.Eta())<2.4 ) genHT += jet.Pt();
+		if ( jet.Pt()>30. ) ++NgenJets;
 	    }
 	    if ( tup_genLeptons.size() >= 1 && genHT>500 && NgenJets>=9) genFilter = 1;
 
