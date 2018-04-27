@@ -1,0 +1,79 @@
+{
+    "canvas":
+    [   
+        {"name":"c_BDT_filter_lowmult",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDT_nominal_longhist_lowmult","BDT_filter_longhist_lowmult"],"islog":true},
+                {"objects":["BDT_nominal_longhist_lowmult","BDT_filter_longhist_lowmult"],"islog":false,"ratio_to":"BDT_nominal_longhist_lowmult"}
+            ]
+        },
+        {"name":"c_BDT_filter_highmult",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDT_nominal_longhist_highmult","BDT_filter_longhist_highmult"],"islog":true},
+                {"objects":["BDT_nominal_longhist_highmult","BDT_filter_longhist_highmult"],"islog":false,"ratio_to":"BDT_nominal_longhist_highmult"}
+            ]
+        }
+    ],
+
+    "BDT_nominal_longhist_lowmult":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"HT",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7&&nMtags==2","nJets==7&&nMtags==3","nJets==7&&nMtags>=4","nJets==8&&nMtags==2","nJets==8&&nMtags==3","nJets==8&&nMtags>=4"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDT_filter_longhist_lowmult":{
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"HT",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7&&nMtags==2","nJets==7&&nMtags==3","nJets==7&&nMtags>=4","nJets==8&&nMtags==2","nJets==8&&nMtags==3","nJets==8&&nMtags>=4"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":"filter;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"filter",
+			"style":"l"
+		}
+    },
+    "BDT_nominal_longhist_highmult":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"HT",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==9&&nMtags==2","nJets==9&&nMtags==3","nJets==9&&nMtags>=4","nJets>9&&nMtags==2","nJets>9&&nMtags==3","nJets>9&&nMtags>=4"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDT_filter_longhist_highmult":{
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"HT",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==9&&nMtags==2","nJets==9&&nMtags==3","nJets==9&&nMtags>=4","nJets>9&&nMtags==2","nJets>9&&nMtags==3","nJets>9&&nMtags>=4"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":"filter;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"filter",
+			"style":"l"
+		}
+    },
+    "annotation":"Comparison of MVA in inclusive and filtered samples."
+}

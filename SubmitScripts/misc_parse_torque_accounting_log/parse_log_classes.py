@@ -147,6 +147,7 @@ class user_class:
     self.walltime=mean_class()
     self.efficiency=mean_class()
     self.exit={} 
+    self.jobs={}  #dictionary of user jobs
 
   def f_Print( self , total_walltime=0. , print_ec=True ):  
     print("%10s[%s]\t%6.0f\t" % (self.user,self.group[:1],self.n_jobs) , end='')
@@ -182,6 +183,9 @@ class user_class:
         self.exit[j.exit]+=1
       else:
         self.exit[j.exit]=1
+
+    #dictionary of user jobs by name
+    self.jobs[j.job_id]={'name':j.jobname,'exit_code':int(j.exit)}
 
 
 class error_class:

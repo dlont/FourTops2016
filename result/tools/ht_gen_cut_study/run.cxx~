@@ -1,0 +1,78 @@
+TH1* style(TH1* h){
+	auto a = ;
+	if(h->GetName())
+	return h
+}
+
+int run() {
+
+	TH1D* hJetEt = new TH1D("hJetEt","jet ET", 10, 0., 1000.);
+	//make new histogram for sum jet ET HERE
+	TH1D* hJetSumEt = new TH1D("hJetSumEt","Sum of jets ET", 35, 0., 3500.);
+	TH1D* hJetSumEtinEtaRange = new TH1D("hJetSumEtinEtaRange","Sum of jets ET for |ETA| < 2.4", 35, 0., 3500.);
+	TH1D* hJetSumEtinEtaRange7 = new TH1D("hJetSumEtinEtaRange7","Sum of jets(7) ET for |ETA| < 2.4", 35, 0., 3500.);
+	TH1D* hJetSumEtinEtaRange8 = new TH1D("hJetSumEtinEtaRange8","Sum of jets(8) ET for |ETA| < 2.4", 35, 0., 3500.);
+	TH1D* hJetSumEtinEtaRange9 = new TH1D("hJetSumEtinEtaRange9","Sum of jets(9) ET for |ETA| < 2.4", 35, 0., 3500.);
+	TH1D* hJetSumEtinEtaRange10 = new TH1D("hJetSumEtinEtaRange10","Sum of jets(10) ET for |ETA| < 2.4", 35, 0., 3500.);
+	const auto fileName = "output/Craneens_Mu/Craneens24_2_2018/Craneen_ttttNLO_Run2_TopTree_Study_XYZ.root";
+	const auto file = TFile::Open(fileName,"OPEN");
+	TTreeReader reader("Craneen__Mu", file);
+
+	TTreeReaderArray<TLorentzVector> jets(reader, "genJets");
+ 	TTreeReaderValue<Int_t> nJets(reader, "nJets");
+
+	while (reader.Next()) {
+                double JetSumEt = 0.; 
+		double JetSumEtinEtaRange = 0;
+		double JetSumEtinEtaRange7 = 0;
+		double JetSumEtinEtaRange8 = 0;
+		double JetSumEtinEtaRange9 = 0;
+		double JetSumEtinEtaRange10 = 0;
+    		for (auto jet: jets) {
+			hJetEt->Fill(jet.Pt());
+			//sum jet ET here
+                        JetSumEt += jet.Pt();
+			if (abs(jet.Eta()) < 2.4) {
+				JetSumEtinEtaRange += jet.Pt();
+				if (*nJets == 7) {JetSumEtinEtaRange7 += jet.Pt();}
+				if (*nJets == 8) {JetSumEtinEtaRange8 += jet.Pt();}
+				if (*nJets == 9) {JetSumEtinEtaRange9 += jet.Pt();}
+				if (*nJets >= 10 ) {JetSumEtinEtaRange10 += jet.Pt();}
+			}
+
+    		}
+		//fill new histogram with sum jet ET here
+			hJetSumEt->Fill(JetSumEt);
+			hJetSumEtinEtaRange->Fill(JetSumEtinEtaRange);
+			if (*nJets == 7) {hJetSumEtinEtaRange7->Fill(JetSumEtinEtaRange7);}
+			if (*nJets == 8) {hJetSumEtinEtaRange8->Fill(JetSumEtinEtaRange8);}
+			if (*nJets == 9) {hJetSumEtinEtaRange9->Fill(JetSumEtinEtaRange9);}
+			if (*nJets == 10) {hJetSumEtinEtaRange10->Fill(JetSumEtinEtaRange10);}
+  	}
+ 
+	auto c = new TCanvas("CMS");
+	c->Divide(3,1);
+	c->cd(1);
+	hJetEt->Draw();
+	c->cd(2);
+	hJetSumEt->Draw();
+	c->cd(3);
+	hJetSumEtinEtaRange->Draw();
+	//Draw new histogram instead of old here
+	for (auto ext: {".png", ".pdf"}) c->SaveAs(ext);
+
+	auto d = new TCanvas("CMS");
+	d->Divide(2,2);
+	d->cd(1);
+	hJetSumEtinEtaRange7->Draw();
+	d->cd(2);
+	hJetSumEtinEtaRange8->Draw();
+	d->cd(3);
+	hJetSumEtinEtaRange9->Draw();
+	d->cd(4);
+	hJetSumEtinEtaRange10->Draw();
+	//Draw new histogram instead of old here
+	for (auto ext: {".png", ".pdf"}) d->SaveAs(ext);
+
+	return 0;
+}

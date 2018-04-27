@@ -1,0 +1,79 @@
+{
+    "canvas":
+    [   
+        {"name":"c_BDT_lowmult",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDT_nominal_longhist_lowmult","BDT_m1665_longhist_lowmult"],"islog":true},
+                {"objects":["BDT_nominal_longhist_lowmult","BDT_m1665_longhist_lowmult"],"islog":false,"ratio_to":"BDT_nominal_longhist_lowmult"}
+            ]
+        },
+        {"name":"c_BDT_highmult",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDT_nominal_longhist_highmult","BDT_m1665_longhist_highmult"],"islog":true},
+                {"objects":["BDT_nominal_longhist_highmult","BDT_m1665_longhist_highmult"],"islog":false,"ratio_to":"BDT_nominal_longhist_highmult"}
+            ]
+        }
+    ],
+
+    "BDT_nominal_longhist_lowmult":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7&&nMtags==2","nJets==7&&nMtags==3","nJets==7&&nMtags>=4","nJets==8&&nMtags==2","nJets==8&&nMtags==3","nJets==8&&nMtags>=4"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDT_m1665_longhist_lowmult":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_TTJets_powheg_mass*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7&&nMtags==2","nJets==7&&nMtags==3","nJets==7&&nMtags>=4","nJets==8&&nMtags==2","nJets==8&&nMtags==3","nJets==8&&nMtags>=4"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":"m=166.5;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"mass mixture",
+			"style":"l"
+		}
+    },
+    "BDT_nominal_longhist_highmult":{
+        "inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==9&&nMtags==2","nJets==9&&nMtags==3","nJets==9&&nMtags>=4","nJets>9&&nMtags==2","nJets>9&&nMtags==3","nJets>9&&nMtags>=4"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDT_m1665_longhist_highmult":{
+		"inputfile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/JES_tests_before_unblinding/plots_mu/Craneen_TTJets_powheg_mass*_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==9&&nMtags==2","nJets==9&&nMtags==3","nJets==9&&nMtags>=4","nJets>9&&nMtags==2","nJets>9&&nMtags==3","nJets>9&&nMtags>=4"],
+        "linecolor":417,
+        "linestyle":1,
+        "title":"m=166.5;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"mass mixture",
+			"style":"l"
+		}
+    },
+    "annotation":"Comparison of MVA in different mass samples."
+}

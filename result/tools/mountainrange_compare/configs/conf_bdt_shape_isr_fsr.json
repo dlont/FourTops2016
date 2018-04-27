@@ -1,0 +1,112 @@
+{
+    "canvas":
+    [   
+        {"name":"c_BDT",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDT_longhistnominal","BDT_longhistisrup","BDT_longhistisrdown","BDT_longhistfsrup","BDT_longhistfsrdown","BDT_longhistueup","BDT_longhistuedown"],"islog":true},
+                {"objects":["BDT_longhistnominal","BDT_longhistisrup","BDT_longhistisrdown","BDT_longhistfsrup","BDT_longhistfsrdown","BDT_longhistueup","BDT_longhistuedown"],"islog":false,"ratio_to":"BDT_longhistnominal"}
+            ]
+        }
+    ],
+    "BDT_longhistnominal":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDT_longhistisrup":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":417,
+        "linestyle":2,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"ISR up",
+			"style":"l"
+		}
+    },
+    "BDT_longhistisrdown":{
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":417,
+        "linestyle":3,
+        "title":"m=166.5;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"ISR down",
+			"style":"l"
+		}
+    },
+    "BDT_longhistfsrup":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":601,
+        "linestyle":2,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"FSR up",
+			"style":"l"
+		}
+    },
+    "BDT_longhistfsrdown":{
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTFSRScaledown_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":601,
+        "linestyle":3,
+        "title":"m=166.5;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"FSR down",
+			"style":"l"
+		}
+    },
+    "BDT_longhistueup":{
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":402,
+        "linestyle":2,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"UE up",
+			"style":"l"
+		}
+    },
+    "BDT_longhistuedown":{
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root",
+		"treename":"Craneen__Mu",
+		"varname":"BDT9and10jetsplitNoNjw",
+		"cut":"(leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))",
+        "mrcuts":["nJets==7","nJets==8","nJets==9","nJets>=10"],
+        "linecolor":402,
+        "linestyle":3,
+        "title":"m=166.5;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"UE down",
+			"style":"l"
+		}
+    },
+    "annotation":"Comparison of MVA in different shower/UE variations."
+}

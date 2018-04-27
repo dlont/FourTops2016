@@ -9,7 +9,7 @@ from misc_parse_torque_accounting_log.parse_log_functions import *
 
 USER=os.environ.get('USER','none')
 PRINT_JOBS=True
-N_DAYS=30
+N_DAYS=2
 
 LOG_DIR="/group/log/torque/"
 

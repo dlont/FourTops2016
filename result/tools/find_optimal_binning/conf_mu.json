@@ -1,0 +1,585 @@
+{
+    "BDT2_10_optimized": {
+        "binning": "optimal_binning_BDT2_10", 
+        "cut": "(nJets>9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_10_uniform": {
+        "cut": "(nJets>9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_7_optimized": {
+        "binning": "optimal_binning_BDT2_7", 
+        "cut": "(nJets==7&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_7_uniform": {
+        "cut": "(nJets==7&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_8_optimized": {
+        "binning": "optimal_binning_BDT2_8", 
+        "cut": "(nJets==8&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_8_uniform": {
+        "cut": "(nJets==8&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_9_optimized": {
+        "binning": "optimal_binning_BDT2_9", 
+        "cut": "(nJets==9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT2_9_uniform": {
+        "cut": "(nJets==9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_10_optimized": {
+        "binning": "optimal_binning_BDT3_10", 
+        "cut": "(nJets>9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_10_uniform": {
+        "cut": "(nJets>9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_7_optimized": {
+        "binning": "optimal_binning_BDT3_7", 
+        "cut": "(nJets==7&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_7_uniform": {
+        "cut": "(nJets==7&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_8_optimized": {
+        "binning": "optimal_binning_BDT3_8", 
+        "cut": "(nJets==8&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_8_uniform": {
+        "cut": "(nJets==8&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_9_optimized": {
+        "binning": "optimal_binning_BDT3_9", 
+        "cut": "(nJets==9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT3_9_uniform": {
+        "cut": "(nJets==9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_10_optimized": {
+        "binning": "optimal_binning_BDT4_10", 
+        "cut": "(nJets>9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_10_uniform": {
+        "cut": "(nJets>9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_7_optimized": {
+        "binning": "optimal_binning_BDT4_7", 
+        "cut": "(nJets==7&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_7_uniform": {
+        "cut": "(nJets==7&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_8_optimized": {
+        "binning": "optimal_binning_BDT4_8", 
+        "cut": "(nJets==8&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_8_uniform": {
+        "cut": "(nJets==8&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_9_optimized": {
+        "binning": "optimal_binning_BDT4_9", 
+        "cut": "(nJets==9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "optimized", 
+            "style": "l"
+        }, 
+        "linecolor": 417, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "BDT4_9_uniform": {
+        "cut": "(nJets==9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+        "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+        "legend": {
+            "name": "uniform", 
+            "style": "l"
+        }, 
+        "linecolor": 631, 
+        "linestyle": 1, 
+        "title": "uniform binning;D_{t#bar{t}t#bar{t}};1/N dN/D_{t#bar{t}t#bar{t}}", 
+        "treename": "Craneen__Mu", 
+        "varname": "BDT9and10jetsplitNoNjw"
+    }, 
+    "annotation": "Binning comparison for Muon channel", 
+    "binning": {
+        "optimal_binning_BDT2_10": {
+            "cut": "(nJets>9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT2_10", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT2_7": {
+            "cut": "(nJets==7&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT2_7", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT2_8": {
+            "cut": "(nJets==8&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT2_8", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT2_9": {
+            "cut": "(nJets==9&&nMtags==2 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT2_9", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT3_10": {
+            "cut": "(nJets>9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT3_10", 
+            "nbins": 7, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT3_7": {
+            "cut": "(nJets==7&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT3_7", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT3_8": {
+            "cut": "(nJets==8&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT3_8", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT3_9": {
+            "cut": "(nJets==9&&nMtags==3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT3_9", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT4_10": {
+            "cut": "(nJets>9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT4_10", 
+            "nbins": 4, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT4_7": {
+            "cut": "(nJets==7&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT4_7", 
+            "nbins": 10, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT4_8": {
+            "cut": "(nJets==8&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT4_8", 
+            "nbins": 7, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }, 
+        "optimal_binning_BDT4_9": {
+            "cut": "(nJets==9&&nMtags>3 && leptonIso<0.15 && ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 ))", 
+            "inputfile": "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/50bins_large_stat/plots_mu/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root", 
+            "name": "optimal_binning_BDT4_9", 
+            "nbins": 5, 
+            "treename": "Craneen__Mu", 
+            "varname": "BDT9and10jetsplitNoNjw"
+        }
+    }, 
+    "canvas": [
+        {
+            "name": "c_BDT7", 
+            "nx": 2, 
+            "ny": 2, 
+            "pads": [
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT2_7_uniform", 
+                        "BDT2_7_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT3_7_uniform", 
+                        "BDT3_7_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT4_7_uniform", 
+                        "BDT4_7_optimized"
+                    ]
+                }
+            ]
+        }, 
+        {
+            "name": "c_BDT7_ratio", 
+            "nx": 2, 
+            "ny": 2, 
+            "pads": [
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT2_7_uniform", 
+                        "BDT2_7_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT3_7_uniform", 
+                        "BDT3_7_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT4_7_uniform", 
+                        "BDT4_7_optimized"
+                    ]
+                }
+            ]
+        }, 
+        {
+            "name": "c_BDT8", 
+            "nx": 2, 
+            "ny": 2, 
+            "pads": [
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT2_8_uniform", 
+                        "BDT2_8_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT3_8_uniform", 
+                        "BDT3_8_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT4_8_uniform", 
+                        "BDT4_8_optimized"
+                    ]
+                }
+            ]
+        }, 
+        {
+            "name": "c_BDT9", 
+            "nx": 2, 
+            "ny": 2, 
+            "pads": [
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT2_9_uniform", 
+                        "BDT2_9_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT3_9_uniform", 
+                        "BDT3_9_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT4_9_uniform", 
+                        "BDT4_9_optimized"
+                    ]
+                }
+            ]
+        }, 
+        {
+            "name": "c_BDT10", 
+            "nx": 2, 
+            "ny": 2, 
+            "pads": [
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT2_10_uniform", 
+                        "BDT2_10_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT3_10_uniform", 
+                        "BDT3_10_optimized"
+                    ]
+                }, 
+                {
+                    "islog": false, 
+                    "objects": [
+                        "BDT4_10_uniform", 
+                        "BDT4_10_optimized"
+                    ]
+                }
+            ]
+        }
+    ], 
+    "tables":{
+        "columns_names":["N_j=7","N_j=8","N_j=9","N_j>=10"],
+        "rows_names":["N_b=2","N_b=3","N_b=4"],
+        "N_b=2":{
+            "nentries":["BDT2_7_uniform","BDT2_8_uniform","BDT2_9_uniform","BDT2_10_uniform"],
+            "nbins":["optimal_binning_BDT2_7","optimal_binning_BDT2_8","optimal_binning_BDT2_9","optimal_binning_BDT2_10"]
+        },        
+        "N_b=3":{
+            "nentries":["BDT3_7_uniform","BDT3_8_uniform","BDT3_9_uniform","BDT3_10_uniform"],
+            "nbins":["optimal_binning_BDT3_7","optimal_binning_BDT3_8","optimal_binning_BDT3_9","optimal_binning_BDT3_10"]
+        },        
+        "N_b=4":{
+            "nentries":["BDT4_7_uniform","BDT4_8_uniform","BDT4_9_uniform","BDT4_10_uniform"],
+            "nbins":["optimal_binning_BDT4_7","optimal_binning_BDT4_8","optimal_binning_BDT4_9","optimal_binning_BDT4_10"]
+        }
+    },
+    "command": "binning_comparison.py -j conf.json -b", 
+    "eff_lumi_tt": 0.068126848555
+}
