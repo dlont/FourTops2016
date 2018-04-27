@@ -31,7 +31,10 @@ if 'TTcc' in output_filename:
 	tthftype = '&& ((ttxType%100) >= 41 && (ttxType%100) < 50)'
 print 'tthftype cut=',tthftype
 
-trigger_cuts = trgcuts(tree_name)
+trigger_cuts = None
+add_filter_flag = True if '_TTJets_' in inputfile else False
+if add_filter_flag: trigger_cuts = trgcuts(tree_name) + '&&(GenFilter==0)'
+else: trigger_cuts = trgcuts(tree_name)
 
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 
@@ -53,11 +56,9 @@ cut_sets = [
     ("8J3M", "Njet=8, nMtags=3",   "(nJets==8 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("8J4M", "Njet=8, nMtags=4",   "(nJets==8 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("9J2M", "Njet=9, nMtags=2",   "(nJets==9 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("9J4M", "Njet=9, nMtags=4",   "(nJets==9 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+    ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("10J2M", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("10J4M", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+    ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     #("PU", "", "SFPU"),
     #("PUup", "", "SFPU_up"),
     #("PUdown", "", "SFPU_down"),
@@ -65,7 +66,9 @@ cut_sets = [
     #("leptonSF", "", "SFlepton"),
     #("toprew", "", "toprew"),
     #("csvrs", "", "csvrsw[0]"),
-    #("noSF", "", ""),
+    ("noSF", "", "{1}{0} ".format(tthftype,trigger_cuts)),
+    ("PuLepSF", "", "ScaleFactor*GenWeight*({1}{0})".format(tthftype,trigger_cuts)),
+    ("PuLepTrigSF", "", "ScaleFactor*GenWeight*SFtrig*({1}{0})".format(tthftype,trigger_cuts)),
     ("weight1", "", "(abs(weight1)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("weight2", "", "(abs(weight2)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("weight3", "", "(abs(weight3)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)),
@@ -74,10 +77,6 @@ cut_sets = [
     ("weight6", "", "(abs(weight6)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)), 
     #("weight7", "", "(abs(weight7)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts,centralweight), 
     ("weight8", "", "(abs(weight8)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)), 
-#    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
-#    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
-#    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
-#    ("endcap20to30", "(1.7<|#eta|<2.5, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)>1.7&&abs(eta)<2.5")
     ]
 
 print "Target variable: ", target

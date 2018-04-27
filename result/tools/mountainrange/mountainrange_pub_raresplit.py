@@ -77,7 +77,7 @@ def draw_legend(**kwargs):
 			if hist_tttt: legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} (postfit)",'lf')
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
-			if hist_pre: legend.AddEntry(hist_pre,"Prefit unc.","fe")
+			#if hist_pre: legend.AddEntry(hist_pre,"Prefit unc.","fe")
 		if 'hist_post' in kwargs:
 			hist_post = kwargs['hist_post']
 			if hist_post: legend.AddEntry(hist_post,"Postfit unc.","fe")
@@ -202,14 +202,15 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_templ
 			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
 			#xndc= c.GetLeftMargin()
 			logging.debug('Separator|Label: {} | {} {} {}'.format( isep,xndc,ycoord,labels[item][0] ) )
-			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
+			#tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
 			if (item == len(separator_bins)-1):
                             if isinstance(labels[item+1],list) and len(labels[item+1])>1:
                                 x = labels[item+1][1]
 			        xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
-                                tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
+                                #tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
                             else: #last search region
-                                tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
+                                #tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
+				pass
         rt.gPad.RedrawAxis()
 
 def draw_chi2_ndf(c,chi2,ndf):
@@ -273,7 +274,9 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 		rt.gPad.SetPad(0.,0.,1.,0.1)
 		c.cd(1)
 		rt.gPad.SetPad(0.,0.1,1.,1.);rt.gPad.SetFillStyle(4000)
-	hist_bg_prefit_unc_noempty.Draw("E2")
+	hist_bg_prefit_unc_noempty.SetMarkerSize(0)
+	for ibin in range(1,hist_bg_prefit_unc_noempty.GetNbinsX()+1): hist_bg_prefit_unc_noempty.SetBinError(ibin,0.)
+	hist_bg_prefit_unc_noempty.Draw('P')
 	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
 	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
 	logymin = ymin
@@ -367,18 +370,20 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 
 	CMS_lumi.CMS_lumi(c.cd(1),4,0)
 	if arguments.outfile:
-		c.Print(arguments.outfile+'_lin.'+arguments.extension)
-		hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")
-		c.cd(1); rt.gPad.SetLogy();
-		c.Print(arguments.outfile+'_log.'+arguments.extension)
+		for ext in arguments.extension.split(','):
+			c.Print(arguments.outfile+'_lin.'+ext)
+			hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")
+			c.cd(1); rt.gPad.SetLogy();
+			c.Print(arguments.outfile+'_log.'+ext)
 	else:
 		if 'filename' in jsondic:
 			if not os.path.exists(arguments.dir):
 				os.makedirs(arguments.dir)
-			c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+arguments.extension)
-			c.cd(1); rt.gPad.SetLogy();
-			hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")			
-			c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+arguments.extension)
+			for ext in arguments.extension.split(','):
+				c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+ext)
+				c.cd(1); rt.gPad.SetLogy();
+				hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")			
+				c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+ext)
 
 def print_toys_pval(arguments):
     	if arguments.gof_data is not None and arguments.gof_toys is not None:

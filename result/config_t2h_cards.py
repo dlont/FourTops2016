@@ -25,7 +25,9 @@ print 'Input tree name: ' + tree_name
 print 'Systematic source: ' + systematic
 print 'Target variable: ' + target
 
-trigger_cuts = trgcuts(tree_name)
+add_filter_flag = True if '_TTJets_' in inputfile else False
+if add_filter_flag: trigger_cuts = trgcuts(tree_name) + '&&(GenFilter==0)'
+else: trigger_cuts = trgcuts(tree_name)
 
 list_of_files = [RootTree(str(tree_name), fileName=inputfile, scale=scalefactor, cuts="")]
 

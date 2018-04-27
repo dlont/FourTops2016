@@ -60,7 +60,8 @@ def targetvar(name):
 		#bdtplot =  Plot("BDT"           , TH1D("bdt"    , ";BDT;entries/bin", 32, -0.6, 1.))
 		#bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw>0.6?-10.:BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-		bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+		bdtplot = Plot("BDT1"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 25, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 10, -1., 1.))
 	lp_cards = bdtplot

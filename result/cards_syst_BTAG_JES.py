@@ -17,11 +17,9 @@ def cut_BTAG_JES(systematic,cut_string):
 	       ("8J3M_{0}{1}".format(syst,var), "Njet=8, nMtags=3",  "(nJets==8 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
 	       ("8J4M_{0}{1}".format(syst,var), "Njet=8, nMtags=4",  "(nJets==8 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
 	       ("9J2M_{0}{1}".format(syst,var), "Njet=9, nMtags=2",  "(nJets==9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
-	       ("9J3M_{0}{1}".format(syst,var), "Njet=9, nMtags=3",  "(nJets==9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
-	       ("9J4M_{0}{1}".format(syst,var), "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
+	       ("9J3M_{0}{1}".format(syst,var), "Njet=9, nMtags=3",  "(nJets==9 && nMtags>=3 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
 	       ("10J2M_{0}{1}".format(syst,var), "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
-	       ("10J3M_{0}{1}".format(syst,var), "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
-	       ("10J4M_{0}{1}".format(syst,var), "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight))
+	       ("10J3M_{0}{1}".format(syst,var), "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}/csvrsw[0]*csvrsw[1]".format(cut_string,centralweight)),
 	]
     elif 'DOWN' in systematic.upper():
         var = 'Down'
@@ -38,11 +36,9 @@ def cut_BTAG_JES(systematic,cut_string):
 	       ("8J3M_{0}{1}".format(syst,var), "Njet=8, nMtags=3",  "(nJets==8 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
 	       ("8J4M_{0}{1}".format(syst,var), "Njet=8, nMtags=4",  "(nJets==8 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
 	       ("9J2M_{0}{1}".format(syst,var), "Njet=9, nMtags=2",  "(nJets==9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
-	       ("9J3M_{0}{1}".format(syst,var), "Njet=9, nMtags=3",  "(nJets==9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
-	       ("9J4M_{0}{1}".format(syst,var), "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
+	       ("9J3M_{0}{1}".format(syst,var), "Njet=9, nMtags=3",  "(nJets==9 && nMtags>=3 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
 	       ("10J2M_{0}{1}".format(syst,var), "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
-	       ("10J3M_{0}{1}".format(syst,var), "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
-	       ("10J4M_{0}{1}".format(syst,var), "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight))
+	       ("10J3M_{0}{1}".format(syst,var), "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}/csvrsw[0]*csvrsw[2]".format(cut_string,centralweight)),
 	]
     else:
         print 'Unrecognised systematic', systematic

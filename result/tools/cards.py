@@ -18,8 +18,8 @@ import numpy as np
 import ROOT
 
 from cards_proc_list import proc_id
-from cards_syst_list_fsrisruenorm_jetsplit_v2 import systtypelist
-from cards_syst_list_fsrisruenorm_jetsplit_v2 import syst_norm_size, syst_shape_size_list
+from cards_syst_list_fsrisruenorm_jetsplit_v3 import systtypelist
+from cards_syst_list_fsrisruenorm_jetsplit_v3 import syst_norm_size, syst_shape_size_list
 #from cards_syst_list_fsrisruenorm_jetsplit import systtypelist
 #from cards_syst_list_fsrisruenorm_jetsplit import syst_norm_size_list, syst_shape_size_list
 #from cards_syst_list_fsrisruenorm import systtypelist
@@ -97,7 +97,7 @@ def main(arguments):
         printShapeFilesBlock(arguments)
         #Get observations
         datafile = ROOT.TFile.Open(arguments.data,"READ")
-        obs = getObservation(arguments.channel, datafile,arguments.observable)
+        obs = getObservation(arguments.channel, datafile, arguments.observable)
         logging.debug( obs )
         #Printout observation block to file
         obsline = pd.DataFrame(obs[arguments.channel], columns=binlist[arguments.channel], index=['observation'])

@@ -36,7 +36,7 @@ link_directories(${TopBrussels_SOURCE_DIR}/FourTops2016/SingleLepAnalysis/src)
 link_directories(~/lib)
 
 # define output target
-set(EXECFILE "FourTopsX")
+set(EXECFILE "FourTops")
 #add_executable(${EXECFILE} FourTops.cc)
 add_executable(${EXECFILE} FourTop_EventSelection_SingleLepton_Run2_Local.cc BTagSF.cc VecTLorentzVector.cpp)
 #add_executable(${EXECFILE} FourTop_EventSelection_SingleLepton_Run2_Local_sync.cc BTagSF.cc)

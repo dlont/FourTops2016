@@ -67,6 +67,8 @@ for i in range(fpf_s.getSize()):
     nuis_b = fpf_b.find(name)
     nuis_p = prefit.find(name)
 
+    if 'scale' in name:
+	continue
     if 'stat' in name:
 	continue
     if 'prop' in name:
@@ -122,8 +124,8 @@ for i in range(fpf_s.getSize()):
         else:
             row += [ "%+.2f +/- %.2f" % (nuis_x.getVal(), nuis_x.getError()) ]
 	
-            #if nuis_p != None:		#add rate parameters 
-            if True:
+            if nuis_p != None:		#add rate parameters 
+            #if True:
 	        if options.plotfile: 
 	          if fit_name=='b':
 	    	    nuis_p_i+=1
@@ -307,7 +309,7 @@ if options.plotfile:
     #canvas.SaveAs(options.plotfile)
     fout.WriteTObject(canvas)
 
-    canvas_nuis = ROOT.TCanvas("nuisancs", "nuisances", 900, 600)
+    canvas_nuis = ROOT.TCanvas("nuisances", "nuisances", 900, 600)
     hist_fit_e_s = hist_fit_s.Clone("errors_s")
     hist_fit_e_b = hist_fit_b.Clone("errors_b")
     gr_fit_s = getGraph(hist_fit_s,-0.1)

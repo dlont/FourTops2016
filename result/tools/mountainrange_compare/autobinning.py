@@ -30,6 +30,61 @@ class UniformBinning1D(HistogramBinning):
     def get_histogram(self):
         return rt.TH1D("sample_hist","",self._nbins,self._xmin,self._xmax)
 
+class EquiProbableBinning(HistogramBinning):
+    """
+    Provider of binning with equal probability per bin.
+    """
+    def __init__(self):
+        self._bin_edges = []
+        self._vec = None
+        self._nbins = None
+        self._xmin = None
+        self._xmax = None
+
+    @property
+    def nbins(self): return self._nbins
+    @nbins.setter
+    def nbins(self, nbins):
+        self._nbins=nbins
+    @property
+    def xmin(self): return self._xmin
+    @xmin.setter
+    def xmin(self, xmin): self._xmin=xmin
+    @property
+    def xmax(self): return self._xmax
+    @xmax.setter
+    def xmax(self, xmax): self._xmax=xmax
+
+    @property
+    def vec(self):
+        return self._vec
+    @vec.setter
+    def vec(self, vec):
+        self._vec=vec
+
+    def binning(self):
+        n_entries = len(self._vec)
+        n_entries_per_bin = int(n_entries/self._nbins)
+        current_entry = 0
+        bin_edges_set = set()
+        if self._xmax: bin_edges_set.add(self._xmax)
+        bin_edges_set.add(self._vec[-1]+self._vec[-1]*0.001)
+        for el in reversed(self._vec):
+            current_entry+=1
+            if current_entry > n_entries_per_bin:
+                bin_edges_set.add(el)
+                current_entry=0
+        if self._xmin: bin_edges_set.add(self._xmin)
+        bin_edges_set.add(self._vec[0]-self._vec[0]*0.001)
+        self._bin_edges = list(bin_edges_set)
+        self._bin_edges.sort()
+        print "bins:", self._bin_edges
+
+    def get_histogram(self,name='sample_hist'):
+        self.binning()
+        bin_edges = ar.array('d',self._bin_edges)
+        return rt.TH1D(name,"",len(self._bin_edges)-1,bin_edges)
+
 class OprimizedBinning(HistogramBinning):
     """
     Optimized binning provider.
@@ -53,6 +108,13 @@ class OprimizedBinning(HistogramBinning):
         self._lambda_false_positive = 0.84
         #b parameter can be between 2 and 4 (b=4 for simple hypothesis, i.e. no free parameters)
         self._b = 2
+
+    @property
+    def vec(self):
+        return self._vec
+    @vec.setter
+    def vec(self, vec):
+        self._vec=vec
 
     def get_n_bins_fd(self):
         self._lowstat_algo='fd'

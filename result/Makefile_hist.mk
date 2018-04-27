@@ -163,10 +163,13 @@ $(BUILDDIR)/Hists_Tbar_tch.root: ${CONFIG} $(BUILDDIR)/Craneen_Tbar_tch_Run2_Top
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}   ${TBARTCHNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_SYST.root: $(BUILDDIR)/Hists_TT.root $(BUILDDIR)/Hists_tuneup.root $(BUILDDIR)/Hists_tunedown.root $(BUILDDIR)/Hists_isrscaleup.root $(BUILDDIR)/Hists_isrscaledown.root $(BUILDDIR)/Hists_fsrscaleup.root $(BUILDDIR)/Hists_fsrscaledown.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_RARE.root
+$(BUILDDIR)/Hists_SYST_temp.root: $(BUILDDIR)/Hists_TT.root $(BUILDDIR)/Hists_tuneup.root $(BUILDDIR)/Hists_tunedown.root $(BUILDDIR)/Hists_isrscaleup.root $(BUILDDIR)/Hists_isrscaledown.root $(BUILDDIR)/Hists_fsrscaleup.root $(BUILDDIR)/Hists_fsrscaledown.root
 	@echo "Preparing TT scale systematic histograms"
-	@tools/scalehist.py -o $(BUILDDIR)/Hists_SYST_temp.root --nominal=$(BUILDDIR)/Hists_TT.root --isrscaleup=$(BUILDDIR)/Hists_isrscaleup.root --isrscaledown=$(BUILDDIR)/Hists_isrscaledown.root
-	@hadd $@ $(BUILDDIR)/Hists_SYST_temp.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_RARE.root
+	@tools/scalehist.py -o $@ --nominal=$(BUILDDIR)/Hists_TT.root --isrscaleup=$(BUILDDIR)/Hists_isrscaleup.root --isrscaledown=$(BUILDDIR)/Hists_isrscaledown.root
+
+$(BUILDDIR)/Hists_SYST.root: $(BUILDDIR)/Hists_SYST_temp.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_RARE.root
+	@echo "Preparing TT scale systematic histograms"
+	@hadd -f $@ $(BUILDDIR)/Hists_SYST_temp.root $(BUILDDIR)/Hists_EW.root $(BUILDDIR)/Hists_T.root $(BUILDDIR)/Hists_TT_RARE.root
 
 $(BUILDDIR)/Hists_TT_central.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
@@ -180,15 +183,37 @@ $(BUILDDIR)/Hists_TT_central.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENT
 #$(BUILDDIR)/Hists_TTcc.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 #	@echo "Convert tree to hist $@ ($^)"
 #	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} ${TARGETVAR} ${SUPPRESSOUT}
-$(BUILDDIR)/Hists_TTll.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
+#$(BUILDDIR)/Hists_TTll.root: $(BUILDDIR)/Hists_TTllIncl.root
+$(BUILDDIR)/Hists_TTll.root: $(BUILDDIR)/Hists_TTllIncl.root $(BUILDDIR)/Hists_TTllFilt.root
+	@echo "Merge Inclusive and filtered samples $@ ($^)"
+	@hadd -f $@ $^
+#$(BUILDDIR)/Hists_TTbb.root: $(BUILDDIR)/Hists_TTbbIncl.root
+$(BUILDDIR)/Hists_TTbb.root: $(BUILDDIR)/Hists_TTbbIncl.root $(BUILDDIR)/Hists_TTbbFilt.root
+	@echo "Merge Inclusive and filtered samples $@ ($^)"
+	@hadd -f $@ $^
+#$(BUILDDIR)/Hists_TTcc.root: $(BUILDDIR)/Hists_TTccIncl.root
+$(BUILDDIR)/Hists_TTcc.root: $(BUILDDIR)/Hists_TTccIncl.root $(BUILDDIR)/Hists_TTccFilt.root
+	@echo "Merge Inclusive and filtered samples $@ ($^)"
+	@hadd -f $@ $^
+#########################################################################################################
+$(BUILDDIR)/Hists_TTllIncl.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TT_MIXTURE_NORM} ${TARGETVAR} ${SUPPRESSOUT}
-$(BUILDDIR)/Hists_TTbb.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TTbbIncl.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TT_MIXTURE_NORM} ${TARGETVAR} ${SUPPRESSOUT}
-$(BUILDDIR)/Hists_TTcc.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
+$(BUILDDIR)/Hists_TTccIncl.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TT_MIXTURE_NORM} ${TARGETVAR} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_TTllFilt.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)"
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} ${TARGETVAR} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_TTbbFilt.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)"
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} ${TARGETVAR} ${SUPPRESSOUT}
+$(BUILDDIR)/Hists_TTccFilt.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root
+	@echo "Convert tree to hist $@ ($^)"
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_tuneup.root: ${CONFIG} $(BUILDDIR)/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root
 	@echo "Convert tree to hist $@ ($^)"
@@ -258,10 +283,21 @@ $(BUILDDIR)/Hists_TT_width8.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTR
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TT_W8_NORM} ${TARGETVAR} ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
+#$(BUILDDIR)/Hists_TT.root:  $(BUILDDIR)/Hists_TTFilt.root
+#$(BUILDDIR)/Hists_TT.root:  $(BUILDDIR)/Hists_TTinclus.root
+$(BUILDDIR)/Hists_TT.root:  $(BUILDDIR)/Hists_TTinclus.root $(BUILDDIR)/Hists_TTFilt.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+
+$(BUILDDIR)/Hists_TTinclus.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root
 	@echo "Merge nominal, mass variation and width variation samples"
 	@echo "Convert tree to hist $@ ($^)"
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TT_MIXTURE_NORM} ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTFilt.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root
+	@echo "Fill histograms from filtered samples"
+	@echo "Convert tree to hist $@ ($^)"
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} ${TARGETVAR} ${SUPPRESSOUT}
 
 mergechannelsplots:
 	@echo "Combining Electron and Muon histograms"

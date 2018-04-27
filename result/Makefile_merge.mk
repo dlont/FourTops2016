@@ -35,31 +35,31 @@ HADD_DATA=hadd
 
 
 ##################################### SINGLE LEPTON ##############################################
-$(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016B*.root)
+$(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016B-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016C*.root)
+$(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016C-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016D*.root)
+$(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016D-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016E*.root)
+$(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016E-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016F*.root)
+$(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016F-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016G*.root)
+$(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016G-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016H*.root)
+$(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016H-ReReco*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
@@ -68,17 +68,17 @@ $(BUILDDIR)/Craneen_Data_Run2_TopTree_Study.root: $(BUILDDIR)/Craneen_DataH_Run2
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
 
-$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study$(DATASUFFIX).root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016$(DATASUFFIX).root)
+$(BUILDDIR)/Craneen_Data_Run2_TopTree_Study$(DATASUFFIX).root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016$(DATASUFFIX)_Run2_TopTree_Study_*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^ 
 ##################################### JETHT ##############################################
-$(BUILDDIR)/Craneen_dataJETHT_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_JetHt_Run_2016$(DATASUFFIX).root)
+$(BUILDDIR)/Craneen_dataJETHT_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_JetHt_Run_2016$(DATASUFFIX)_Run2_TopTree_Study_*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^ 
 ##################################### MET ##############################################
-$(BUILDDIR)/Craneen_dataMET_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_MET_Run_2016$(DATASUFFIX).root)
+$(BUILDDIR)/Craneen_dataMET_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_data_MET_Run_2016$(DATASUFFIX)_Run2_TopTree_Study_*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^ 
@@ -283,6 +283,84 @@ $(BUILDDIR)/Craneen_TTJets_powheg_herwig_jesup_Run2_TopTree_Study.root: $(wildca
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Craneen_TTJets_powheg_herwig_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_herwig_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+################################ Filtered samples ####################################################
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_jerup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_jerup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_jerdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_jerdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_totaljesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_totaljesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalRelative_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalRelative_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalRelative_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalRelative_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalPt_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalPt_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalPt_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalPt_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalPileUp_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalPileUp_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalPileUp_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalPileUp_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalFlavor_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalFlavor_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalFlavor_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalFlavor_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_herwig_jerup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_herwig_jerup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_herwig_jerdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_herwig_jerdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_herwig_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_herwig_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_herwig_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_herwig_jesdown_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 

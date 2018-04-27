@@ -13,11 +13,9 @@ def cut_PAGPT(cut_string):
 	("8J3M_TTPAGPTUp", "Njet=8, nMtags=3",  "(nJets==8 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
 	("8J4M_TTPAGPTUp", "Njet=8, nMtags=4",  "(nJets==8 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
 	("9J2M_TTPAGPTUp", "Njet=9, nMtags=2",  "(nJets==9 && nMtags==2 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
-	("9J3M_TTPAGPTUp", "Njet=9, nMtags=3",  "(nJets==9 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
-	("9J4M_TTPAGPTUp", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
+	("9J3M_TTPAGPTUp", "Njet=9, nMtags=3",  "(nJets==9 && nMtags>=3 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
 	("10J2M_TTPAGPTUp", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
-	("10J3M_TTPAGPTUp", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
-	("10J4M_TTPAGPTUp", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
+	("10J3M_TTPAGPTUp", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
 	#PT DOWN
 	("allSF_TTPAGPTDown", "inclusive",  "(1 {})*ScaleFactor*GenWeight*SFtrig".format(cut_string)),
 
@@ -31,10 +29,8 @@ def cut_PAGPT(cut_string):
 	("8J3M_TTPAGPTDown", "Njet=8, nMtags=3",  "(nJets==8 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
 	("8J4M_TTPAGPTDown", "Njet=8, nMtags=4",  "(nJets==8 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
 	("9J2M_TTPAGPTDown", "Njet=9, nMtags=2",  "(nJets==9 && nMtags==2 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
-	("9J3M_TTPAGPTDown", "Njet=9, nMtags=3",  "(nJets==9 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
-	("9J4M_TTPAGPTDown", "Njet=9, nMtags=4",  "(nJets==9 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
+	("9J3M_TTPAGPTDown", "Njet=9, nMtags=3",  "(nJets==9 && nMtags>=3 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
 	("10J2M_TTPAGPTDown", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
-	("10J3M_TTPAGPTDown", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
-	("10J4M_TTPAGPTDown", "Njet=9+, nMtags=4", "(nJets>9 && nMtags>=4 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string))
+	("10J3M_TTPAGPTDown", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {})*ScaleFactor*GenWeight*SFtrig/toprewunc[0]".format(cut_string)),
 	]
 	return cut_PT

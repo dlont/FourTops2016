@@ -30,6 +30,18 @@ def progress(current, total, status=''):
 
 def main(arguments):
 
+        # Disable garbage collection for this list of objects
+        rt.TCanvas.__init__._creates = False
+        rt.TFile.__init__._creates = False
+	rt.TH1.__init__._creates = False
+	rt.TH2.__init__._creates = False
+        rt.THStack.__init__._creates = False
+        rt.TGraph.__init__._creates = False
+        rt.TMultiGraph.__init__._creates = False
+        rt.TList.__init__._creates = False
+        rt.TCollection.__init__._creates = False
+        rt.TIter.__init__._creates = False
+
 	rt.gStyle.SetOptStat(0)
 
 	# input file with fit results objects
@@ -38,7 +50,7 @@ def main(arguments):
 	# fit results objects names
 	fit_results_names = ['fit_s', 'fit_b']
 
-	c = root_file.Get("nuisancs")
+	c = root_file.Get("nuisances")
 
 	# move Legend
 	list_of_primitives = c.GetListOfPrimitives()
@@ -56,6 +68,7 @@ def main(arguments):
         c.Update()
         c.Modified()
 	c.SaveAs('{0}.{1}'.format(arguments.outfile,arguments.extension))
+	c.Print('{0}.{1}'.format(arguments.outfile,arguments.extension))
         return 0
 
 

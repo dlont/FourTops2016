@@ -127,7 +127,7 @@ class Model(object):
             logging.debug("list of short histograms: {}".format(pp.pformat(list_of_short_histograms)))
             nbins = mr.get_total_nbins_from_list(list_of_short_histograms) #modify function interface
             hist_master = rt.TH1F(objname,"",nbins,0.5,float(nbins+0.5))
-            hist_master = mr.fillsingle_from_list(hist_master,list_of_short_histograms)  #modify function interface
+            hist_master, ignore = mr.fillsingle_from_list(hist_master,list_of_short_histograms)  #modify function interface
             hist_master.Scale(1./hist_master.Integral())
             return hist_master
 
