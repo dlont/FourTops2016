@@ -75,7 +75,7 @@ cd -
 git clone https://github.com/dlont/FourTops2016.git --single-branch -b split_tthz_ttwxy_combined TopBrussels/FourTops2016
 cd TopBrussels/FourTops2016
 git fetch --tags
-git checkout tags/v0.0.38patch1 -b v0.0.38patch1
+git checkout tags/v0.0.38patch2 -b v0.0.38patch2
 
 git clone https://github.com/gflags/gflags.git gflags-install
 cd gflags-install
