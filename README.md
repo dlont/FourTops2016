@@ -34,7 +34,7 @@ cp -a -f ~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  
 #make -j
 cd -
 
-git clone https://github.com/dlont/FourTops2016.git --single-branch -b split_tthz_ttwxy_combined TopBrussels/FourTops2016
+git clone https://github.com/dlont/FourTops2016.git --single-branch -b master TopBrussels/FourTops2016
 cd TopBrussels/FourTops2016
 
 git clone https://github.com/gflags/gflags.git gflags-install
