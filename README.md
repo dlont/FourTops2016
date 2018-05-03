@@ -3,7 +3,8 @@
 ## Prerequisites 
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
-3. There should exist  ~/lib folder for common (```mkdir ~/lib```)
+3. There should exist  ~/lib folder for files from different packages (```mkdir ~/lib```)
+3.1 ~/lib should be added to $LD_LIBRARY_PATH (```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib```)
 
 ## Installation outline
 0. a) Create CMSSW development area
@@ -35,6 +36,10 @@ cd -
 git clone https://github.com/dlont/FourTops2016.git --single-branch -b master TopBrussels/FourTops2016
 cd TopBrussels/FourTops2016
 
+cd rootplot
+python setup.py develop --prefix=$CMSSW_BASE/src/TopBrussels/FourTops2016/rootplot
+cd -
+
 git clone https://github.com/gflags/gflags.git gflags-install
 cd gflags-install
 git checkout tags/v2.2.0
@@ -52,6 +57,7 @@ git checkout tags/v0.3.3
 ./configure --prefix=$CMSSW_BASE/src/TopBrussels/FourTops2016/glog
 make
 make install
+cp -d $CMSSW_BASE/src/TopBrussels/FourTops2016/glog/lib/*.so* ~/lib
 cd -
 
 mkdir build; cd build
@@ -63,15 +69,18 @@ cd -
 ```
 mkdir output
 
-./FourTops --dataset_name="TTJetsFilt_powheg_central" --dataset_title="t\bar{t}+jets_powheg" --dataset_color=633 --dataset_linestyle=0 --dataset_linewidth=2 --dataset_norm_factor=1 --dataset_eq_lumi=1. --dataset_cross_section=831.76 --dataset_preselection_eff=1.0 --nevents=1000 --input_files="dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v12/TTP-CMSSW_80X_v12--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/TTToSemiLepton_HT500Njet9_TuneCUETP8M2T4_13TeV-powheg-pythia8/crab_P8M2T413TeVpowhegpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab292/180403_190034/0000/TOPTREE_100.root "  --fourtops_channel="Mu2016" -is_local_output
+./FourTops --dataset_name="TTJetsFilt_powheg_central" --dataset_title="t\bar{t}+jets_powheg" --dataset_color=633 --dataset_linestyle=0 --dataset_linewidth=2 --dataset_norm_factor=1 --dataset_eq_lumi=1. --dataset_cross_section=831.76 --dataset_preselection_eff=1.0 --nevents=10000 --input_files="dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v12/TTP-CMSSW_80X_v12--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/TTToSemiLepton_HT500Njet9_TuneCUETP8M2T4_13TeV-powheg-pythia8/crab_P8M2T413TeVpowhegpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab292/180403_190034/0000/TOPTREE_100.root "  --fourtops_channel="Mu2016" -is_local_output
 ```
 ### This should make small output craneen in the output folder
 
 ## Using existing craneens for datacards and fits
 ```
-cp -a /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_el_filt result
-cp -a /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt result
+mkdir result/plots_el_filt
+mkdir result/plots_mu_filt
+cp -s /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_el_filt/Cran* result/plots_el_filt
+cp -s /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Cran* result/plots_mu_filt
 cd result
+#alternatively one can make soft link
 ```
 ### Make datacards
 ```
