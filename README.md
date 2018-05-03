@@ -26,7 +26,7 @@ cd TopBrussels/TopTreeProducer/src
 make
 cd -
 
-mkdir TopBrussels/TopTreeAnalysisBase
+mkdir TopBrussels
 cp -a -f ~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels/TopTreeAnalysisBase
 #git clone http://github.com/TopBrussels/TopTreeAnalysisBase --branch CMSSW_80X --single-branch TopBrussels/TopTreeAnalysisBase
 cd TopBrussels/TopTreeAnalysisBase
