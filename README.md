@@ -3,7 +3,7 @@
 ## Prerequisites 
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
-3. There should be 
+3. There should exist  ~/lib folder for common (```mkdir ~/lib```)
 
 ## Installation outline
 0. a) Create CMSSW development area
