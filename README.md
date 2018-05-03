@@ -3,6 +3,7 @@
 ## Prerequisites 
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
+3. There should be 
 
 ## Installation outline
 0. a) Create CMSSW development area
@@ -35,8 +36,6 @@ cd -
 
 git clone https://github.com/dlont/FourTops2016.git --single-branch -b split_tthz_ttwxy_combined TopBrussels/FourTops2016
 cd TopBrussels/FourTops2016
-git fetch --tags
-git checkout tags/v0.0.38patch2 -b v0.0.38patch2
 
 git clone https://github.com/gflags/gflags.git gflags-install
 cd gflags-install
