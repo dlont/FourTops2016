@@ -29,9 +29,8 @@ cd -
 cd TopBrussels
 cp -a -f ~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  .
 #git clone http://github.com/TopBrussels/TopTreeAnalysisBase --branch CMSSW_80X --single-branch TopBrussels/TopTreeAnalysisBase
-#cd TopBrussels/TopTreeAnalysisBase/
-##Repalace Tools/*/BTagWeigtTools*
-#make -j
+cd TopBrussels/TopTreeAnalysisBase/
+make -j
 cd -
 
 git clone https://github.com/dlont/FourTops2016.git --single-branch -b master TopBrussels/FourTops2016
