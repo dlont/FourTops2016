@@ -37,6 +37,7 @@ git clone https://github.com/dlont/FourTops2016.git --single-branch -b master To
 cd TopBrussels/FourTops2016
 
 cd rootplot
+export PYTHONPATH=$PYTHONPATH:$CMSSW_BASE/src/TopBrussels/FourTops2016/rootplot/lib/python2.7/site-packages
 python setup.py develop --prefix=$CMSSW_BASE/src/TopBrussels/FourTops2016/rootplot
 cd -
 
