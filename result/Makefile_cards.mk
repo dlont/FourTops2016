@@ -7,7 +7,7 @@ export TARGETVAR
 CONFIG:=config_t2h_cards.py
 SUPPRESSOUT=>/dev/null
 
-CARDGEN=/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/tools/cards.py
+CARDGEN=tools/cards.py
 
 TARGETVAR=BDT
 

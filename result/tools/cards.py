@@ -157,16 +157,16 @@ def main(arguments):
         print >> arguments.outfile, 'scale_nj6d8s rateParam {}8J4M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J2M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J3M ttbarTTX 1.'.format(arguments.channel)
-        print >> arguments.outfile, 'scale_nj6d9s rateParam {}9J4M ttbarTTX 1.'.format(arguments.channel)
+        print >> arguments.outfile, '#scale_nj6d9s rateParam {}9J4M ttbarTTX 1.'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj7d10s rateParam {}10J2M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
         print >> arguments.outfile, 'scale_nj7d10s rateParam {}10J3M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
-        print >> arguments.outfile, 'scale_nj7d10s rateParam {}10J4M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
+        print >> arguments.outfile, '#scale_nj7d10s rateParam {}10J4M ttbarTTX (@0) scale_nj6d9s'.format(arguments.channel)
 
 	if arguments.automcstat:
-        	print >> arguments.outfile, '*9J4M autoMCStats 1'
+        	print >> arguments.outfile, '#*9J4M autoMCStats 1'
         	print >> arguments.outfile, '*10J3M autoMCStats 1'
-        	print >> arguments.outfile, '*10J4M autoMCStats 1'
-		print >> arguments.outfile, '#* autoMCStats 0'
+        	print >> arguments.outfile, '#*10J4M autoMCStats 1'
+		print >> arguments.outfile, '* autoMCStats 0'
 
 
         return 0
