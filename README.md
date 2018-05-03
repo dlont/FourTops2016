@@ -81,8 +81,17 @@ mkdir result/plots_mu_filt
 cp -s /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_el_filt/Cran* result/plots_el_filt
 cp -s /user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Cran* result/plots_mu_filt
 cd result
-#alternatively one can make soft link
 ```
+
+### Compare data and systematic templates histogram
+```
+#short help command
+python $CMSSW_BASE/src/TopBrussels/FourTops2016/result/tools/compare_hist_files/compare.py  --usage
+
+#example usage for comparison of btag templates. Input path for histogram files in the _cff.py has to be modified accordingly
+python $CMSSW_BASE/src/TopBrussels/FourTops2016/result/tools/compare_hist_files/compare.py -c $CMSSW_BASE/src/TopBrussels/FourTops2016/result/tools/compare_hist_files/config/conf_btag_JES_cff.py -b --dir ./ -o btag_jes -e png,pdf
+```
+
 ### Make datacards
 ```
 make -j card_el.txt INPUTLOCATION=plots_el_filt BUILDDIR=plots_el_filt TREENAME=Craneen__El DATALABEL=Single\ e
