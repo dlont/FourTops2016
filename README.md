@@ -1,10 +1,14 @@
 # FourTops2016
 2016 data analysis repository
 ## Prerequisites 
+
+Let's call the root folder where the codes will be installed, i.e. 
+
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
 3. There should exist  ~/lib folder for files from different packages (```mkdir ~/lib```)
 3.1 ~/lib should be added to $LD_LIBRARY_PATH (```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib```)
+4. CMSSW environment has to be 
 
 ## Installation outline
 0. a) Create CMSSW development area
@@ -127,3 +131,15 @@ python tools/corrmatrix/plot_corr_matrix.py fitDiagnostics.root -e pdf
 ```
 python tools/mountainrange/mountainrange_pub_raresplit.py fitDiagnostics.root conf.json -b -r -e pdf,png --dir ./
 ```
+
+### Adding friend tree with new MVA python discriminator to existing craneen
+One need a disciminator that is stored in a pickle (.p) file. This .p file will be read by the python script which creates the friend branch.
+Short usage information
+```
+python ../../tools/addfriend_freya_njets_nonjetsw.py --usage
+```
+Example processing of existing craneen file named ../../final_unblinding/50bins/plots_mu/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root. Since the improved dicriminants were trained independently in different jet multiplicity categories, the pickle files that have to be used in different jet categories are provided via .json dictionary **(-j flag)**.
+```
+python ../../tools/addfriend_freya_njets_nonjetsw.py -j '{"10j":"../../../MVA/Freyas/noNjetsW/BDTAdaBoost_njets10_400_2.p", "9j":"../../../MVA/Freyas/noNjetsW/BDTAdaBoost_njets9_400_2.p", "8j":"../../../MVA/Freyas/noNjetsW/BDTAdaBoost_njets8_400_2.p", "7j":"../../../MVA/Freyas/noNjetsW/BDTAdaBoost_njets7_40_2.p"}' -s Craneen__Mu -f BDT9and10jetsplitNoNjw ../../final_unblinding/50bins/plots_mu/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root
+```
+
