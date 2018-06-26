@@ -78,7 +78,7 @@ LeptonPt 10 0. 800. Lepton p_{T} (GeV)
 Where `NAME` is the name of systematic variation, `CENTRAL_WEIGHT`, `UPPER_WEIGHT`, and `LOWER_WEIGHT` represent the scale factor at central, upper, and lower values.
 
 # `chef_plot.py`
-This python script helps you merge several histogram files into a nicely-formatted plot, along with ratio plots and systematic uncertainties. In order to function properly, `chef_histogram.py` must generate the histograms first before running this script.
+This python script helps you merge several histogram files into a nicely-formatted plot, along with ratio plots and systematic uncertainties. In order to function properly, `chef_histogram.py` must generate the histograms first before running this script. **This script requires [`tdrstyle` python script from @cbernet](https://github.com/cbernet/tdr-style) in order to work, as it gives CMS style to the plots.**
 
 ## Usage
 ```
