@@ -14,6 +14,7 @@
 #include <iostream>
 #include <map>
 #include <utility>
+#include <iterator>
 
 #include <boost/tokenizer.hpp>
 
@@ -170,34 +171,40 @@ int main (int argc, char *argv[])
     //      Configuration                //
     ///////////////////////////////////////
 
-    bool HadTopOn          = true;
-    bool EventBDTOn        = true;
+    bool HadTopOn          = true;		// Enable hadronic top decay finder (trijet bdt)
+    bool EventBDTOn        = true;		// Enable event-level tttt discriminant
     bool TrainMVA          = false; // If false, the previously trained MVA will be used to calculate stuff
-    bool bTagReweight      = FLAGS_fourtops_btagregular;
-    bool bTagCSVReweight   = FLAGS_fourtops_btagcsvrs;
-    bool bTopPt            = FLAGS_fourtops_toprew;
-    bool bLeptonSF         = true; //! apply lepton SFs
-    bool debug             = false;
-    bool applyJER          = true;
-    bool applyJEC          = true;
-    bool JERUp             = isJERUp();
-    bool JERDown           = isJERDown();
-    bool JESUp             = isJESUp();
-    bool JESDown           = isJESDown();
-    bool fillingbTagHistos = false;
-    std::string MVAmethod       = "BDT";
+    bool bTagReweight      = FLAGS_fourtops_btagregular;	// Enable btag SF. btagging reweighting approach: regular btag reweighting
+    bool bTagCSVReweight   = FLAGS_fourtops_btagcsvrs;		// Enable btag SF. btagging reweighting approach: csv discriminant reshaping
+    bool bTopPt            = FLAGS_fourtops_toprew;		// Enable top transverse momentum reweighting
+    bool bLeptonSF         = true;				// Enable lepton SF
+    bool debug             = false;				// Verbosity flags used in some classes
+    bool applyJER          = true;				// Enable jet energy resolution stochastic smearing
+    bool applyJEC          = true;				// Enable jet energy correction
+    bool JERUp             = isJERUp();				// JER systematics variation
+    bool JERDown           = isJERDown();			// JER systematics variation
+    bool JESUp             = isJESUp();				// JES systematics variation
+    bool JESDown           = isJESDown();			// JES systematics variation
+    bool fillingbTagHistos = false;				// Enable filling of btagging efficiency histograms required for btagging reweighting
+
+    auto electron_id = electronID();				// Switch from VID to cutbased electron ID for e.g. QCD bg estimation
+    std::string MVAmethod       = "BDT";			// Top hadronic decays reconstruction MVA method (only "BDT" is supported)
 
 
-    std::transform(dataSetName.begin(), dataSetName.end(), dataSetName.begin(), ::tolower);
+    std::transform(dataSetName.begin(), dataSetName.end(), dataSetName.begin(), ::tolower); // make dataset name lowecase
 
-
+    // Data VS MC switch (used for corrections/reweighting)
     bool isData = false;
     if(dataSetName.find("data")!=string::npos){
         isData = true;
     }
-    bool SingleLepton      = true;
-    bool Muon              = false;
-    bool Electron          = false;
+
+    // Channel ID flags
+    const bool SingleLepton      = true;		// Always true in single lepton analysis
+
+    // Mutually exclusive channel flags
+    bool Muon              = false;			// Single electon channel
+    bool Electron          = false;			// Single muon channel
     if (batch && inputChannel.find("Mu")!=string::npos){
         Muon = true;
         Electron = false;
@@ -363,6 +370,11 @@ int main (int argc, char *argv[])
     ElectronSFWeight* electronSFWeightTrig_GH;
     ElectronSFWeight* electronSFWeightTrig;
     
+
+    // Set up lepton scale factors if lepton corrections are switched on
+    // Different datataking periods in 2016 have different correction factors
+    // Since MC doesn't know about run dependence of detector performance 
+    // luminosity weighted average is used as the correction factor applied to MC
     if(bLeptonSF){
         if(Muon){
             muonSFWeightID_BCDEF = new MuonSFWeight("../TopTreeAnalysisBase/Calibrations/LeptonSF/MuonSF/MuonID_EfficienciesAndSF_BCDEF.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio", true, false, false);
@@ -445,19 +457,25 @@ int main (int argc, char *argv[])
     LumiReWeighting LumiWeights_up;
     LumiReWeighting LumiWeights_down;
 
-    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "pileup", "pileup");    
-    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysPlus.root", "pileup", "pileup");    
-    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysMinus.root", "pileup", "pileup");    
+    LumiWeights = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet.root", "pileup", "pileup");    // nominal SF
+    LumiWeights_up = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysPlus.root", "pileup", "pileup");    // upward variation
+    LumiWeights_down = LumiReWeighting("../TopTreeAnalysisBase/Calibrations/PileUpReweighting/MCPileup_Summer16.root", "../TopTreeAnalysisBase/Calibrations/PileUpReweighting/pileup_2016Data80X_Run271036-284044Cert__Full2016DataSet_sysMinus.root", "pileup", "pileup");    //downward variation
      
     ///////////////////////////////////////////
     ///  Initialise Jet Energy Corrections  ///
     ///////////////////////////////////////////
     
+    //////////////////////////////////////////////////
+    // Jet corrections are run dependent
+    // In addition there are flavour dependent jet correction uncertainties
+    // Since 2016 doesn't have dedicated flavour dependent uncertainties, 
+    // Run 1 values were used
+    ///////////////////////////////////////////////
     vector<JetCorrectorParameters> vCorrParam;
     string pathCalJEC = "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase/Calibrations/JECFiles/";
 
     JetCorrectionUncertainty *jecUnc = nullptr;
-    
+
     using sharedJetCorrectionUncertainty = shared_ptr<JetCorrectionUncertainty>;
     sharedJetCorrectionUncertainty jecUnc_Gluon(nullptr);
     sharedJetCorrectionUncertainty jecUnc_Quark(nullptr);
@@ -576,9 +594,13 @@ int main (int argc, char *argv[])
         /////////////////////////////////////////////////
         //               Craneen setup                 //
         /////////////////////////////////////////////////
-        
-        string Ntupname    = "/scratch/$PBS_JOBID/Craneen_" + dataSetName + postfix + ".root";     
-	if (is_local_out) {
+
+	// By default batch processing at T2_BE_IIHE localgrid is assumed,
+	// therefore output craneens are saved to /scratch space of the worker node
+	// and transfered to /pnfs upon completion
+
+        string Ntupname    = "/scratch/$PBS_JOBID/Craneen_" + dataSetName + postfix + ".root"; 
+	if (is_local_out) {	// if output to the user home folder is requested (typically for tests)
         	string channel_dir = "output/Craneens"+channelpostfix;
         	string date_dir = channel_dir+"/Craneens" + date_str +"/";
         	int mkdirstatus = mkdir_p(channel_dir.c_str());			//make "output/Craneens_Mu(El) folder if does not exist 
@@ -589,10 +611,11 @@ int main (int argc, char *argv[])
         std::cout << "Output Craneens File: " << Ntupname << std::endl;
         auto tupfile    = make_shared<TFile>(Ntupname.c_str(),"RECREATE");
         const string Ntuptitle   = "Craneen_" + channelpostfix;
-        TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());
-        Event myEvent;
-        myEvent.makeBranches(tup);
+        TTree * tup        = new TTree(Ntuptitle.c_str(), Ntuptitle.c_str());	// Craneen__* tree
+        Event myEvent;								// Structure aggregating Craneen leaves
+        myEvent.makeBranches(tup);						// Book Craneen branches
 
+	// Book trigger leaves
 	cout << "checking triggers: " << endl;
 	// trigger variables
 	std::array<Int_t,200> triggers_container;
@@ -629,10 +652,17 @@ int main (int argc, char *argv[])
 
     LOG(INFO) << "Output Craneens File: " << Ntupname ;
 
+    ///////////////////////////////////////////////////////////
+    // tag tree with code version info
+    ///////////////////////////////////////////////////////////
     auto sh_tagtup = std::make_shared<TTree>("tag", "tag");
 	std::string tag = META_INFO; 		sh_tagtup -> Branch("Tag",&tag);
     sh_tagtup->Fill();
     sh_tagtup->Write();
+
+    //////////////////////////////////////////////////////////
+    // bookkeeping tree for mc luminosity normalization
+    //////////////////////////////////////////////////////////
 
 	TTree * booktup = new TTree("bookkeeping", "bookkeeping");
     long long nPV = 0;			booktup -> Branch("nPV",&nPV,"nPV/I");
@@ -914,7 +944,16 @@ int main (int argc, char *argv[])
                 selectedMuons                                       = r2selection.GetSelectedMuons(10, 2.5, 0.25, "Loose", "Summer16"); 
                 nMu = selectedMuons.size();
                 LOG(INFO) <<"Get Tight Electrons";                                                                                          
-                selectedOrigElectrons                               = r2selection.GetSelectedElectrons(35, 2.4, "Tight", "Spring16_80X", true, true); 
+		switch (electron_id) {
+			case ElectronID::VIDbased: selectedOrigElectrons = r2selection.GetSelectedElectrons(35, 2.4, "Tight", "Spring16_80X", true, true); 
+						   break;
+			case ElectronID::CUTbased: selectedOrigElectrons = r2selection.GetSelectedElectrons(35, 2.4, "Tight", "Spring16_80X", true, false);
+        					   vector<TRootElectron*> selectedFakeTightOrigElectrons = r2selection.GetSelectedElectrons(35, 2.4, "FakeTight", "Spring16_80X", true, false);
+						   selectedOrigElectrons.insert(selectedOrigElectrons.end(),
+										std::make_move_iterator(selectedFakeTightOrigElectrons.begin()),
+										std::make_move_iterator(selectedFakeTightOrigElectrons.end()));
+						   break;
+		}
                 LOG(INFO) <<"Get Loose Electrons";
                 selectedOrigExtraElectrons                          = r2selection.GetSelectedElectrons(15, 2.5, "Veto", "Spring16_80X", true, true); 
             }

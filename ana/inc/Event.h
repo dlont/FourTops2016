@@ -108,7 +108,11 @@ struct Event {
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
     double ttxrew;          // Heavy flavour fraction reweighting
     double SFtrig;	    // Trigger scale factor
-    double NjetsW; // Number of lepton valid hits
+    double NjetsW; 	    // Transverse momentum weighted jet multiplicity
+    long long runID;	    // run number
+    long long eventID;	    // event number
+    long long lumiID;	    // lumiblock number
+   
 }; //end Event
 
 //______________________________________________________________________________
