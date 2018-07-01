@@ -7,6 +7,7 @@ A simple python script template.
 import os
 import sys
 import time
+import datetime
 import shutil
 import argparse
 import logging
@@ -296,12 +297,15 @@ class View(object):
                 self._outfileextension = extension
         @log_with()
         def set_outputfolder(self,folder):
+                if not folder: folder = datetime.datetime.now().strftime("%Y-%m-%d-%H%M")
                 self._outputfolder = folder
                 if not os.path.exists(folder):
                         os.makedirs(folder)
         @log_with()
         def get_outfile_name(self,substring=''):
-                return '{}/{}{}.{}'.format(self._outputfolder,self._outfilename,substring,self._outfileextension)
+                for ext in self._outfileextension.split(","):
+                        yield '{}/{}{}.{}'.format(self._outputfolder,self._outfilename,substring,ext)
+
         @log_with()
         def decorate(self,obj):
                 if self._style: return self._style.decorate(obj)
@@ -371,7 +375,8 @@ class View(object):
                                         ratio_hist_name = canv['pads'][ipad]['ratio_to']
                                         self.build_ratio_pad(c,ipad,pad,ratio_hist_name)
                         if self._style: self._style.decorate_canvas(c)
-                        c.SaveAs(self.get_outfile_name('_{}'.format(name)))
+                        for outfilename in self.get_outfile_name('_{}'.format(name)):
+                                c.SaveAs(outfilename)
 			
 def main(arguments):
 
