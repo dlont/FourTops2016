@@ -132,7 +132,7 @@ if __name__ == '__main__':
         parser.add_argument('-o', '--outfile', help="Output file")
         parser.add_argument('-s', '--source-tree-name', help="Source tree name")
         parser.add_argument('-f', '--friend-tree-name', help="Friend tree and branch name")
-        parser.add_argument('-w', '--weight-file-name', help="TMVA weights file (.xml)")
+        parser.add_argument('-w', '--weight-file-name', help="TMVA weights file (.xml). Not implemented.")
         parser.add_argument('-j', '--config-json', help="JSON configuration file")
         parser.add_argument(
                         '-d', '--debug',
