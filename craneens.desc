@@ -1,4 +1,5 @@
-*Br    0 :BDT       : BDT/D                                                  *	vanilla event level discriminant
+*Br    0 :BDT       : BDT/D                                                  *	vanilla event level discriminant from 2015 analysis
+*Br    0 :BDT1      : BDT1/D                                                 *  event level discriminant trained using 2016 MC using sci-kit machine learning package
 *Br    1 :NOrigJets : NOrigJets/I                                            *  Number of all pf ak4 jets in the event
 *Br    2 :nJets     : nJets/I                                                *	Number of selected jets (pt>30, |eta| < 2.4)
 *Br    3 :jetvec    : jetvec[nJets][5]/D                                     *	array of parameters (pt, eta, phi, csvv2) of selected jets 
