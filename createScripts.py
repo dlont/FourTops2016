@@ -24,33 +24,33 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-#channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"]
-#channels = ["Mu2016","Syst2016Mu"]
-#channels = ["El2016","Syst2016El"]
-channels = ["Mu2016","El2016"] 
-#channels = ['Syst2016Mu','Syst2016El']
-#channels = ["Dilep"]
-#channels = ["El2016"]
-#channels = ["Mu2016"]
+#channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"] # muon and electron channels central and systematics files
+#channels = ["Mu2016","Syst2016Mu"]		# muon channel central and systematics files
+#channels = ["El2016","Syst2016El"]		# electron channel central and systematics files
+#channels = ["Mu2016","El2016"] 		# both electron and muon channel files
+#channels = ['Syst2016Mu','Syst2016El']		# Systematic MC electron and muon files
+#channels = ["El2016"]				# only electron files
+channels = ["CutBasedEl2016"]			# only electron files with cutbased selection
+#channels = ["Mu2016"]				# only muon files
 
-channel_outfolder_map = {'Mu2016':'Mu2016', 'El2016':'El2016', 'Syst2016Mu':'Mu2016', 'Syst2016El':'El2016'}
+channel_outfolder_map = {'Mu2016':'Mu2016', 'El2016':'El2016', 'CutBasedEl2016':'El2016', 'Syst2016Mu':'Mu2016', 'Syst2016El':'El2016'}
 
 # loop over channels
 for chan in channels:
     print "\nSearching list of sample used for ", chan, " channel!"
     # getting the appropriate xml file
-    if "Mu2016" in chan:
+    if chan == "Mu2016":
         #tree = ET.ElementTree(file='config/FullMuonTopTrees80_v12.xml')
         tree = ET.ElementTree(file='config/FullMuonTopTrees80_v12_nomasswidth.xml')
-    elif "El2016" in chan:
+    elif chan == "El2016":
         #tree = ET.ElementTree(file='config/FullElectronTopTrees80_v12.xml')
         tree = ET.ElementTree(file='config/FullElectronTopTrees80_v12_nomasswidth.xml')
-    elif "Syst2016Mu" in chan:
+    elif chan == "CutBasedEl2016":
+        tree = ET.ElementTree(file='config/FullElectronTopTrees80_v12_nomasswidth_cutbased.xml')
+    elif chan == "Syst2016Mu":
         tree = ET.ElementTree(file='config/SystMuonTopTrees80_v9.xml')
-    elif "Syst2016El" in chan:
+    elif chan == "Syst2016El":
         tree = ET.ElementTree(file='config/SystElectronTopTrees80_v9.xml')
-    elif "Dilep" in chan:
-        tree = ET.ElementTree(file='config/Run2DiLepton_TOPTREES.xml')
     else:
         print "Channel '", chan , "' is not a correct channel name. No tree has been loaded!"
         sys.exit()
@@ -137,6 +137,9 @@ for chan in channels:
 		+' --dataset_eq_lumi={}'.format(str(d.attrib['EqLumi']))\
 		+' --dataset_cross_section={}'.format(str(d.attrib['xsection']))\
 		+' --dataset_preselection_eff={}'.format(str(d.attrib['PreselEff']))
+
+		if 'CUTBASED' in str(d.attrib['name']):
+			commandString = commandString + ' --fourtops_eleid="CUT"'
             topTrees = glob.glob(d.attrib['filenames'])
 
 	    #print topTrees
