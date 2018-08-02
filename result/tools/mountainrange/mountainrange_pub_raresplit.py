@@ -401,7 +401,7 @@ def print_toys_pval(arguments):
             print "Data: ", stat_data
             print "p-value: ", pval
 
-def annotate(type,config,outputfolder,annotation):
+def annotate(type,config,outputfolder,annotation,jsondic):
 	class bcolors:
 		HEADER = '\033[95m'
 		OKBLUE = '\033[94m'
@@ -417,7 +417,9 @@ def annotate(type,config,outputfolder,annotation):
 						annotation.encode('ascii')+
 						bcolors.ENDC, 120))
 			if os.path.exists(outputfolder):
-					shutil.copy2(config,outputfolder)
+					# Writing JSON data
+				with open(outputfolder+'/'+os.path.basename(config), 'w') as f:
+					json.dump(jsondic, f, indent=4, sort_keys=True)
 	elif type == "tex":
 			logging.warning("Annotation format: {}. Not implemented yet!".format(type))
 	elif type == "md":
@@ -562,10 +564,12 @@ def main(arguments):
 	# Extracting p-values from files
         print_toys_pval(arguments)
 
+        jsondic['command']=' '.join(sys.argv)
+
         annotation = jsondic.get('annotation','EMPTY')
         if arguments.annotation_format:
                 annotate(arguments.annotation_format,arguments.config_json,\
-						 arguments.dir,annotation)
+						 arguments.dir,annotation,jsondic)
 
         return 0
 
