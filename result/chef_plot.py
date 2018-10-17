@@ -108,7 +108,7 @@ for line in plotlist_MC_list:
 print mc_colour_collection
 
 if not blind: histfile_data = pyr.TFile(args.DataHist)
-
+print "histfile_data: ",histfile_data
 preselection_list = []
 if args.preselection != None:
     if args.preselection != []:
@@ -143,7 +143,10 @@ draw_syst = False
 syst_list = []
 if args.systematics != None:
     with open(args.systematics) as systfile:
-        syst_list = [line.split()[0] for line in systfile.readlines()]
+        for line in systfile.readlines():
+            columns_entries = line.split()
+            name,sys_type = columns_entries[0],columns_entries[1]
+            if '#' not in name: syst_list.append(name)  # skip commented out systematics entries
     draw_syst = True
 
 if draw_syst:
@@ -161,6 +164,7 @@ for propline in plotprops_list:
             legend = pyr.TLegend(0.5, 0.75, 0.9, 0.9)
             legend.SetNColumns(2)
             if not blind:
+                print "Looking for hist: ", cat+'/'+"hist_Data_"+propName+'_'+weight+'_'+cat
                 hist_data = histfile_data.Get(cat+'/'+"hist_Data_"+propName+'_'+weight+'_'+cat).Clone()
                 if not args.noOverflow:
                     hist_data = drawOverflow(hist_data)
@@ -177,11 +181,11 @@ for propline in plotprops_list:
             hist_lower_unc = {}
             for mcfile, mcset, mcName, mc_colour in mc_colour_collection:
                 histfile_mc = pyr.TFile(mcfile)
-                #print mcfile
-                #print histfile_mc
-                #histfile_mc.ls(cat)
+                print mcfile
+                print histfile_mc
+                histfile_mc.ls(cat)
                 pyr.gROOT.cd()
-                #print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat
+                print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat
                 hist_mc = histfile_mc.Get(cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat).Clone(cat+'/'+"hist_"+mcName+'_'+propName+'_'+weight+'_'+cat)
                 if not args.noOverflow:
                     hist_mc = drawOverflow(hist_mc)

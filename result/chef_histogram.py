@@ -17,6 +17,47 @@ import ROOT as pyr
 import time
 pyr.gErrorIgnoreLevel = 0
 
+class Systematic:
+    def __init__(self,name):
+        self.name = name
+        self.rule = None
+        pass
+    def set_propName(self,propName):
+        self.propName = propName
+    def set_rule(self,rule):
+        self.rule = rule
+    def get_up_histogram(self):
+        pass
+    def get_down_histogram(self):
+        pass
+
+class WeightSystematicShapeOnly(WeightSystematic):
+    def __init__(self, name, central, upper, lower):
+        WeightSystematic.__init__(self, name, central, upper, lower)    
+    def get_up_histogram(self,hist_name):
+        self.tree.Draw(self.propName+">>+"+hist_name+"_up", self.rule+self.syst_mod_up, "goff")
+        pass
+    def get_down_histogram(self,hist_name):
+        self.tree.Draw(self.propName+">>+"+hist_name+"_down", self.rule+self.syst_mod_down, "goff")
+        pass
+        
+class WeightSystematic(Systematic):
+    def __init__(self, name, central, upper, lower):
+        Systematic.__init__(self, name)
+        self.tree = None
+        self.syst_mod_up = "/("+central+")*("+upper+")"
+        self.syst_mod_down = "/("+central+")*("+lower+")"
+        pass
+    def set_tree(self,tree):
+        self.tree = tree
+
+    def get_up_histogram(self,hist_name):
+        self.tree.Draw(self.propName+">>+"+hist_name+"_up", self.rule+self.syst_mod_up, "goff")
+        pass
+    def get_down_histogram(self,hist_name):
+        self.tree.Draw(self.propName+">>+"+hist_name+"_down", self.rule+self.syst_mod_down, "goff")
+        pass
+
 def checkOp(event, key, op, value):
     if op == "==":    return getattr(event, key) == value
     elif op == "!=":  return getattr(event, key) != value
@@ -114,11 +155,15 @@ systematic_list = []
 if args.systematics != None:
     systematic_file = open(args.systematics)
     for line in systematic_file.readlines():
-        name = line.split()[0]
-        central = line.split()[1]
-        upper = line.split()[2]
-        lower = line.split()[3]
-        systematic_list.append((name, central, upper, lower))
+        columns_entries = line.split()
+        name = columns_entries[0]
+        sys_type = columns_entries[1]
+        if '#' not in name: 
+            if sys_type.lower() == 'weight':
+                central = columns_entries[2]
+                upper = columns_entries[3]
+                lower = columns_entries[4]
+                systematic_list.append(WeightSystematic(name, central, upper, lower))
     #if len(systematic_list) > 1:
     #    all_central = "*".join([central for name, central, upper, lower in systematic_list])
     #    all_upper = "*".join([upper for name, central, upper, lower in systematic_list])
@@ -247,7 +292,7 @@ for line in plotlist_MC_list:
     if "###" in line or "##!" in line:
         if len(cachelist) != 0:
             mc_collection[mcName] = cachelist
-        mcName = " ".join(line.split()[1])
+        mcName = "".join(line.split()[1])
         cachelist = []
     elif "!!!" in line:
         mc_collection[mcName] = cachelist
@@ -279,7 +324,7 @@ for mcset in mc_collection.keys():
                 presel_histograms[preselName] = pyr.TH1D("hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName, "", propNBins, propLowerBound, propHigherBound)
                 presel_histograms[preselName].SetDirectory(pyr.gROOT)
                 for syst in systematic_list:
-                    syst_name = syst[0]
+                    syst_name = syst.name
                     presel_histograms[preselName+"_"+syst_name+"_up"] = pyr.TH1D("hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst_name+"_up", "", propNBins, propLowerBound, propHigherBound)
                     presel_histograms[preselName+"_"+syst_name+"_up"].SetDirectory(pyr.gROOT)
                     #print presel_histograms[preselName+"_"+syst_name+"_up"]
@@ -327,18 +372,24 @@ for mcset in mc_collection.keys():
                     #    outtreeweight.write("{}{:20.9f}{:20.9f}\n".format(i, treevalue[i], treeweight[i]))
                     #outtreeweight.close()
                     for syst in systematic_list:
-                        syst_mod_up = "/("+syst[1]+")*("+syst[2]+")"
-                        syst_mod_down = "/("+syst[1]+")*("+syst[3]+")"
-                        syst_factor = syst[1]
-                        syst_name = syst[0]
-                        print "Plotting " + syst_name + ", upper case"
-                        tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst_name+"_up", rule_cache+syst_mod_up, "goff")
+                        #resolve dependencies
+                        if isinstance(syst,WeightSystematic):
+                            syst.set_tree(tree)
+                        else: pass
+                        syst.set_propName(propName)
+                        syst.set_rule(rule_cache)
+                        hist_name = "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name
+                        syst.get_down_histogram(hist_name)
+                        syst.get_up_histogram(hist_name)
+                        # syst_factor = syst[1]
+                        # print "Plotting " + syst.name + ", upper case"
+                        # tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name+"_up", rule_cache+syst_mod_up, "goff")
                         #print collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_up"]
                         #collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_up"].Draw()
                         #pyr.gROOT.ls()
                         #raw_input()
-                        print "Plotting " + syst_name + ", lower case"
-                        tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst_name+"_down", rule_cache+syst_mod_down, "goff")
+                        # print "Plotting " + syst.name + ", lower case"
+                        # tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name+"_down", rule_cache+syst_mod_down, "goff")
                         #print collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_down"]
                         #collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_down"].Draw()
                         #raw_input()
@@ -401,7 +452,7 @@ for mcset in mc_collection.keys():
                 hist = collection_histograms[propName][weightName][preselName].Clone()
                 hist.Write()
                 for syst in systematic_list:
-                    syst_name = syst[0]
+                    syst_name = syst.name
                     hist = collection_histograms[propName][weightName][preselName+"_"+syst_name+"_up"].Clone()
                     hist.Write()
                     hist = collection_histograms[propName][weightName][preselName+"_"+syst_name+"_down"].Clone()
