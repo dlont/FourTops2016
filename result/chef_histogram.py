@@ -15,6 +15,7 @@ args = parser.parse_args()
 
 import ROOT as pyr
 import time
+import sys
 pyr.gErrorIgnoreLevel = 0
 
 class Systematic:
@@ -26,21 +27,13 @@ class Systematic:
         self.propName = propName
     def set_rule(self,rule):
         self.rule = rule
+    def get_baseline_name(self,hist_name):
+        return hist_name+"_"+self.name
     def get_up_histogram(self):
         pass
     def get_down_histogram(self):
         pass
 
-class WeightSystematicShapeOnly(WeightSystematic):
-    def __init__(self, name, central, upper, lower):
-        WeightSystematic.__init__(self, name, central, upper, lower)    
-    def get_up_histogram(self,hist_name):
-        self.tree.Draw(self.propName+">>+"+hist_name+"_up", self.rule+self.syst_mod_up, "goff")
-        pass
-    def get_down_histogram(self,hist_name):
-        self.tree.Draw(self.propName+">>+"+hist_name+"_down", self.rule+self.syst_mod_down, "goff")
-        pass
-        
 class WeightSystematic(Systematic):
     def __init__(self, name, central, upper, lower):
         Systematic.__init__(self, name)
@@ -52,10 +45,46 @@ class WeightSystematic(Systematic):
         self.tree = tree
 
     def get_up_histogram(self,hist_name):
-        self.tree.Draw(self.propName+">>+"+hist_name+"_up", self.rule+self.syst_mod_up, "goff")
+        syst_hist_name = self.get_baseline_name(hist_name)+"_up"
+        self.tree.Draw(self.propName+">>+"+syst_hist_name, self.rule+self.syst_mod_up, "goff")
         pass
     def get_down_histogram(self,hist_name):
-        self.tree.Draw(self.propName+">>+"+hist_name+"_down", self.rule+self.syst_mod_down, "goff")
+        syst_hist_name = self.get_baseline_name(hist_name)+"_down"
+        self.tree.Draw(self.propName+">>+"+syst_hist_name, self.rule+self.syst_mod_down, "goff")
+        pass
+
+class WeightSystematicShapeOnly(WeightSystematic):
+    def __init__(self, name, central, upper, lower):
+        WeightSystematic.__init__(self, name, central, upper, lower)    
+    def get_up_histogram(self,hist_name):
+        WeightSystematic.get_up_histogram(self,hist_name)
+        syst_hist_name = self.get_baseline_name(hist_name)+"_up"
+        hist = pyr.gDirectory.Get(syst_hist_name)
+        hist_central = pyr.gROOT.Get(hist_name)
+        # print "Looking for central histogram: ", hist_name
+        if hist_central != None:
+            # print hist, hist_central
+            # hist_central.Print()
+            numerator   = hist.Integral()
+            denominator = hist_central.Integral()
+            if denominator>0: hist.Scale(numerator/denominator)
+        else: 
+            raise RuntimeError('Cannot retrieve central histogram for systematics rescaling: {}'.format(hist_name))
+        pass
+    def get_down_histogram(self,hist_name):
+        WeightSystematic.get_up_histogram(self,hist_name)
+        syst_hist_name = self.get_baseline_name(hist_name)+"_down"
+        hist = pyr.gDirectory.Get(syst_hist_name)
+        hist_central = pyr.gROOT.Get(hist_name)
+        # print "Looking for central histogram: ", hist_name
+        if hist_central != None:
+            # print hist, hist_central
+            # hist_central.Print()
+            numerator   = hist.Integral()
+            denominator = hist_central.Integral()
+            if denominator>0: hist.Scale(numerator/denominator)
+        else: 
+            raise RuntimeError('Cannot retrieve central histogram for systematics rescaling: {}'.format(hist_name))
         pass
 
 def checkOp(event, key, op, value):
@@ -164,6 +193,11 @@ if args.systematics != None:
                 upper = columns_entries[3]
                 lower = columns_entries[4]
                 systematic_list.append(WeightSystematic(name, central, upper, lower))
+            elif sys_type.lower() == 'weightshapeonly':
+                central = columns_entries[2]
+                upper = columns_entries[3]
+                lower = columns_entries[4]
+                systematic_list.append(WeightSystematicShapeOnly(name, central, upper, lower))
     #if len(systematic_list) > 1:
     #    all_central = "*".join([central for name, central, upper, lower in systematic_list])
     #    all_upper = "*".join([upper for name, central, upper, lower in systematic_list])
@@ -363,6 +397,7 @@ for mcset in mc_collection.keys():
                     rule_cache = '(' + rule_cache + ")*(" + weightRule + ")*(" + str(targetLumi*xsect/bookEvents) + ')'
                     print "Plotting normal histograms"
                     tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName, rule_cache, "goff")
+                    print "Central histogram: ", "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
                     #print propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
                     #print rule_cache
                     #treeweight = tree.GetW()
@@ -378,21 +413,9 @@ for mcset in mc_collection.keys():
                         else: pass
                         syst.set_propName(propName)
                         syst.set_rule(rule_cache)
-                        hist_name = "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name
+                        hist_name = "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
                         syst.get_down_histogram(hist_name)
                         syst.get_up_histogram(hist_name)
-                        # syst_factor = syst[1]
-                        # print "Plotting " + syst.name + ", upper case"
-                        # tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name+"_up", rule_cache+syst_mod_up, "goff")
-                        #print collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_up"]
-                        #collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_up"].Draw()
-                        #pyr.gROOT.ls()
-                        #raw_input()
-                        # print "Plotting " + syst.name + ", lower case"
-                        # tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst.name+"_down", rule_cache+syst_mod_down, "goff")
-                        #print collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_down"]
-                        #collection_histograms[propName][weightName][preselName+"_"+syst_factor+"_down"].Draw()
-                        #raw_input()
 #         count = 1
 #         for event in tree:
 #             print "\rProcessing event " + str(count),
