@@ -1115,7 +1115,13 @@ int main (int argc, char *argv[])
 
             if(!isData){
                 ttXtype = event->getgenTTX_id();
-		if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
+		if(dataSetName.find("TTJets")!=string::npos || 
+           dataSetName.find("TTFSRS")!=string::npos || 
+           dataSetName.find("TTISR")!=string::npos || 
+           dataSetName.find("TTUE")!=string::npos || 
+           dataSetName.find("TTCR")!=string::npos || 
+           dataSetName.find("TTHdamp")!=string::npos || 
+           dataSetName.find("TTScale")!=string::npos){
 			if (ttXtype % 100 > 50) {
 				ttXrew  = 1.;	
                                 ttXrew_up = 1.35;
@@ -1170,7 +1176,13 @@ int main (int argc, char *argv[])
 		}
 		// pdf envelope variations (NNPDF30, CT10, MMHT14)
 		if (event->getWeight(1001)!= -9999) {
-			if(dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos){
+			if(dataSetName.find("TTJets")!=string::npos ||
+                dataSetName.find("TTFSRS")!=string::npos || 
+                dataSetName.find("TTISR")!=string::npos || 
+                dataSetName.find("TTUE")!=string::npos || 
+                dataSetName.find("TTCR")!=string::npos || 
+                dataSetName.find("TTHdamp")!=string::npos || 
+                dataSetName.find("TTScale")!=string::npos){
 				weight_ct10 = event->getWeight(3001)/fabs(event->originalXWGTUP());
 				weight_mmht14 = event->getWeight(4001)/fabs(event->originalXWGTUP());
 				DLOG(INFO) << "w(ct10)= " << weight_ct10 << "\t" << "w(mmht14)= " << weight_mmht14;
@@ -1444,7 +1456,13 @@ int main (int argc, char *argv[])
             double fTopPtReWeightsfUp = 1.;
             double fTopPtReWeightsfDown = 1.;
             // TRootGenEvent* genEvt_flav = 0;
-            if(dataSetName.find("TTJets")!=string::npos){
+            if(dataSetName.find("TTJets")!=string::npos ||
+                dataSetName.find("TTFSRS")!=string::npos || 
+                dataSetName.find("TTISR")!=string::npos || 
+                dataSetName.find("TTUE")!=string::npos || 
+                dataSetName.find("TTCR")!=string::npos || 
+                dataSetName.find("TTHdamp")!=string::npos || 
+                dataSetName.find("TTScale")!=string::npos){
                 // genEvt_flav = treeLoader.LoadGenEvent(ievt,false);
                 // treeLoader.LoadMCEvent(ievt, 0, mcParticles_flav,false);
                 
@@ -1453,7 +1471,7 @@ int main (int argc, char *argv[])
                 auto fAntitopPtsfDown = 1., fTopPtsfDown = 1.;
                 for(unsigned int p=0; p<mcParticles_flav.size(); p++) {
                     //Calculating event weight according to the TopPtReweighing: https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
-                    if(bTopPt && (dataSetName.find("TTJets")!=string::npos || dataSetName.find("TTScale")!=string::npos))
+                    if(bTopPt)
                     {
                         if(mcParticles_flav[p]->type() == 6 && mcParticles_flav[p]->isLastCopy() )
                         {
