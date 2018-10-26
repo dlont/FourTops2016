@@ -97,7 +97,10 @@ struct Event {
     bool electronVFIDflag;      //electron VF ID for isolation studies
     double electronparams[20]; // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double muonparams[20];  // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
-    double jetvec[30][5];   // jet properties (pT,eta,phi,csv)
+    double jetvec[30][5];   // jet properties (pT,eta,phi,csv,E)
+    double trijet1stpass[3][6] // jet properties of the highest multitopness triplet (pT,eta,phi,csv,E,topness)
+    double trijet2ndpass[3][6] // jet properties of the 2nd highest multitopness triplet (pT,eta,phi,csv,E,topness)
+    double trijet3rdpass[3][6] // jet properties of the 3rd highest multitopness triplet (pT,eta,phi,csv,E,topness)
     double weight[9];       // ME scale variation weights
     double csvrsw[20];      // CSVRS systematic weights
     double hdampw[2];       // POWHEG hdamp weight variation 
@@ -193,6 +196,9 @@ void Event::clear() {
       std::fill_n( electronparams, 20, -10.);
       std::fill_n( muonparams, 20, -10.);
       std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec)/sizeof(jetvec[0]), -1.);
+      std::fill( &trijet1stpass[0][0], &trijet1stpass[0][0]+sizeof(trijet1stpass)/sizeof(trijet1stpass[0]), -1.);
+      std::fill( &trijet2ndpass[0][0], &trijet2ndpass[0][0]+sizeof(trijet2ndpass)/sizeof(trijet2ndpass[0]), -1.);
+      std::fill( &trijet3rdpass[0][0], &trijet3rdpass[0][0]+sizeof(trijet3rdpass)/sizeof(trijet3rdpass[0]), -1.);
       std::fill_n( weight, 9, 0.);
       std::fill_n( csvrsw, 20, 0.);
       std::fill_n( hdampw, 2, 1.);
@@ -222,6 +228,9 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("NOrigJets", &NOrigJets    ,"NOrigJets/I"); 
       tree -> Branch("nJets", &nJets    ,"nJets/I"); 
       tree -> Branch("jetvec", jetvec    ,"jetvec[nJets][5]/D");
+      tree -> Branch("trijet1stpass", trijet1stpass    ,"trijet1stpass[3][6]/D");
+      tree -> Branch("trijet2ndpass", trijet2ndpass    ,"trijet2ndpass[3][6]/D");
+      tree -> Branch("trijet3rdpass", trijet3rdpass    ,"trijet3rdpass[3][6]/D");
       tree -> Branch("1stjetpt", &firstjetpt    ,"1stjetpt/D"); 
       tree -> Branch("2ndjetpt", &secondjetpt    ,"2ndjetpt/D"); 
       tree -> Branch("5thjetpt", &jet5Pt    ,"5thjetpt/D"); 
@@ -322,8 +331,13 @@ void Event::fill_electronVFID(bool flag) {
  * @param hdamp POWHEG hdamp weights
  * @param pdf   POWHEG CT10,MMHT14 weights
  * @param topr top reweighting event weight
+ * @param trj1st trijet combination with highest topness score
+ * @param trj2nd trijet combination with 2nd highest topness score
+ * @param trj3rd trijet combination with 3rd highest topness score
  */
-void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, double w[], double csvrs[], double hdamp[], double pdf[], double ttx[], double topptreww[]) {
+void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, 
+                 double w[], double csvrs[], double hdamp[], double pdf[], double ttx[], 
+                 double topptreww[], double trj1st[][6], double trj2nd[][6]), double trj3rd[][6]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
@@ -401,6 +415,15 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     BDT1 = vals[73];
     for (auto i = 0; i < njet; ++i) {
         for (auto par = 0; par < 5; ++par) this->jetvec[i][par]=jets[i][par];
+    }
+    for (auto i = 0; i < 3; ++i) {
+        for (auto par = 0; par < 6; ++par) this->trijet1stpass[i][par]=trj1st[i][par];
+    }
+    for (auto i = 0; i < 3; ++i) {
+        for (auto par = 0; par < 6; ++par) this->trijet2ndpass[i][par]=trj2nd[i][par];
+    }
+    for (auto i = 0; i < 3; ++i) {
+        for (auto par = 0; par < 6; ++par) this->trijet3rdpass[i][par]=trj3rd[i][par];
     }
     std::copy ( electron, electron+20, electronparams);
     std::copy ( muon, muon+20, muonparams);

@@ -1553,6 +1553,10 @@ int main (int argc, char *argv[])
             }
 
 	    double MT1 = 0., MW1 = 0.,  MT2 = 0., MW2 = 0., MT3 = 0., MW3 = 0.;
+        double trj1st[3][6], trj2nd[3][6], trj3rd[3][6];
+        std::fill( &trj1st[0][0], &trj1st[0][0]+sizeof(trj1st)/sizeof(trj1st[0]), -1.);
+        std::fill( &trj2nd[0][0], &trj2nd[0][0]+sizeof(trj2nd)/sizeof(trj2nd[0]), -1.);
+        std::fill( &trj3rd[0][0], &trj3rd[0][0]+sizeof(trj3rd)/sizeof(trj3rd[0]), -1.);
             if(HadTopOn){
                 if(!TrainMVA){ //if not training, but computing 
                     hadronicTopReco->Compute1st(d, selectedJets, datasets);
@@ -1569,6 +1573,18 @@ int main (int argc, char *argv[])
 		    MT1 = TLVTop1.M(); MW1 =  TLVW1.M();
 		    DLOG(INFO) << "MT1,MW1: " << setw(10) << MT1 << setw(10) << MW1;
 
+            // Fill first trijet combination
+            int ijet = 0;
+            for (auto jetId: {selectedTrijetIDs1st[0], selectedTrijetIDs1st[1], selectedTrijetIDs1st[2]}){
+                trj1st[ijet][0]=selectedJets[jetId]->Pt();
+                trj1st[ijet][1]=selectedJets[jetId]->Eta();
+                trj1st[ijet][2]=selectedJets[jetId]->Phi();
+                trj1st[ijet][3]=selectedJets[jetId]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+                trj1st[ijet][4]=selectedJets[jetId]->E();
+                trj1st[ijet][5]=hadronicTopReco->MVAvals1.first;
+                ijet++;
+            }
+
 		    std::vector<unsigned int> selectedTrijetIDs2nd = hadronicTopReco->MVAvals2ndPass.second;
 		    TLorentzVector TLVTop2(0.,0.,0.,0.);
 		    TLorentzVector TLVW2(0.,0.,0.,0.);
@@ -1579,17 +1595,40 @@ int main (int argc, char *argv[])
 		    MT2 = TLVTop2.M(); MW2 =  TLVW2.M();
 		    DLOG(INFO) << "MT2,MW2: " << setw(10) << MT2 << setw(10) << MW2;
 
-		    if (selectedJets.size()>=10) {
-			hadronicTopReco->Compute3rd(d, selectedJets, datasets);
-			triTopness = hadronicTopReco->ReturnTriTopness();
-			std::vector<unsigned int> selectedTrijetIDs3rd = hadronicTopReco->MVAvals3rdPass.second;
-			TLorentzVector TLVTop3(0.,0.,0.,0.);
-			TLorentzVector TLVW3(0.,0.,0.,0.);
-			for (auto jetId: selectedTrijetIDs2nd) TLVTop3 += (*selectedJets[jetId]);
-			for (auto jetId: {selectedTrijetIDs3rd[0], selectedTrijetIDs3rd[1]}) TLVW3 += (*selectedJets[jetId]); 
-			MT3 = TLVTop3.M(); MW3 =  TLVW3.M();
-			DLOG(INFO) << "tritopness,MT3,MW3: " << nJets << setw(20) << triTopness << setw(20) << MT3 << setw(20) << MW3;
+            // Fill second trijet combination
+            ijet = 0;
+            for (auto jetId: {selectedTrijetIDs2nd[0], selectedTrijetIDs2nd[1], selectedTrijetIDs2nd[2]}){
+                trj2nd[ijet][0]=selectedJets[jetId]->Pt();
+                trj2nd[ijet][1]=selectedJets[jetId]->Eta();
+                trj2nd[ijet][2]=selectedJets[jetId]->Phi();
+                trj2nd[ijet][3]=selectedJets[jetId]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+                trj2nd[ijet][4]=selectedJets[jetId]->E();
+                trj2nd[ijet][5]=hadronicTopReco->MVAvals2ndPass.first;
+                ijet++;
+            }
 
+		    if (selectedJets.size()>=10) {
+                hadronicTopReco->Compute3rd(d, selectedJets, datasets);
+                triTopness = hadronicTopReco->ReturnTriTopness();
+                std::vector<unsigned int> selectedTrijetIDs3rd = hadronicTopReco->MVAvals3rdPass.second;
+                TLorentzVector TLVTop3(0.,0.,0.,0.);
+                TLorentzVector TLVW3(0.,0.,0.,0.);
+                for (auto jetId: selectedTrijetIDs2nd) TLVTop3 += (*selectedJets[jetId]);
+                for (auto jetId: {selectedTrijetIDs3rd[0], selectedTrijetIDs3rd[1]}) TLVW3 += (*selectedJets[jetId]); 
+                MT3 = TLVTop3.M(); MW3 =  TLVW3.M();
+                DLOG(INFO) << "tritopness,MT3,MW3: " << nJets << setw(20) << triTopness << setw(20) << MT3 << setw(20) << MW3;
+
+                // Fill third trijet combination
+                ijet = 0;
+                for (auto jetId: {selectedTrijetIDs3rd[0], selectedTrijetIDs3rd[1], selectedTrijetIDs3rd[2]}){
+                    trj3rd[ijet][0]=selectedJets[jetId]->Pt();
+                    trj3rd[ijet][1]=selectedJets[jetId]->Eta();
+                    trj3rd[ijet][2]=selectedJets[jetId]->Phi();
+                    trj3rd[ijet][3]=selectedJets[jetId]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+                    trj3rd[ijet][4]=selectedJets[jetId]->E();
+                    trj3rd[ijet][5]=hadronicTopReco->MVAvals3rdPass.first;
+                    ijet++;
+                }
 		    }
                 } else { // if training hadronic top decay reconstruction
                     hadronicTopReco->SetMCParticles(mcParticles_flav);
@@ -1803,13 +1842,15 @@ int main (int argc, char *argv[])
                 jetvec[jet][1] = selectedJets[jet]->Eta();
                 jetvec[jet][2] = selectedJets[jet]->Phi();
                 jetvec[jet][3] = selectedJets[jet]->btag_combinedInclusiveSecondaryVertexV2BJetTags();
+                jetvec[jet][4] = selectedJets[jet]->E();
             }
 	    double electron[20]; std::fill_n( electron, 20, -10.);
 	    double muon[20];	 std::fill_n( muon, 20, -10.);
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
             myEvent.fill_electronVFID(electronVFIDflag);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew);
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew,
+                         trj1st, trj2nd, trj3rd);
 
 	    tup_genLeptons.clear();
 	    std::for_each( std::begin(mcParticles_flav), std::end(mcParticles_flav), push_genlepton2lorentz);
