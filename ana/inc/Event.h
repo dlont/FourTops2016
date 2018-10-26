@@ -22,7 +22,8 @@ struct Event {
     void clear();
     void makeBranches(TTree* tree);
     void fill_electronVFID(bool);
-    void fill(double [], double [][5], double [], double[], int , double [], double [], double [], double [], double [], double []);
+    void fill(double [], double [][5], double [], double[], int , double [], double [], double [], double [], double [], double [], 
+              double [][6], double [][6], double [][6]);
     
     double BDT; // baseline tmva from top-16-016
     float  BDT1;// scikitlearn jet-split training
@@ -98,9 +99,9 @@ struct Event {
     double electronparams[20]; // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double muonparams[20];  // lepton parameter like nHits, Chi2, etc. (different for electrons and muons)
     double jetvec[30][5];   // jet properties (pT,eta,phi,csv,E)
-    double trijet1stpass[3][6] // jet properties of the highest multitopness triplet (pT,eta,phi,csv,E,topness)
-    double trijet2ndpass[3][6] // jet properties of the 2nd highest multitopness triplet (pT,eta,phi,csv,E,topness)
-    double trijet3rdpass[3][6] // jet properties of the 3rd highest multitopness triplet (pT,eta,phi,csv,E,topness)
+    double trijet1stpass[3][6]; // jet properties of the highest multitopness triplet (pT,eta,phi,csv,E,topness)
+    double trijet2ndpass[3][6]; // jet properties of the 2nd highest multitopness triplet (pT,eta,phi,csv,E,topness)
+    double trijet3rdpass[3][6]; // jet properties of the 3rd highest multitopness triplet (pT,eta,phi,csv,E,topness)
     double weight[9];       // ME scale variation weights
     double csvrsw[20];      // CSVRS systematic weights
     double hdampw[2];       // POWHEG hdamp weight variation 
@@ -337,7 +338,7 @@ void Event::fill_electronVFID(bool flag) {
  */
 void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, 
                  double w[], double csvrs[], double hdamp[], double pdf[], double ttx[], 
-                 double topptreww[], double trj1st[][6], double trj2nd[][6]), double trj3rd[][6]) {
+                 double topptreww[], double trj1st[][6], double trj2nd[][6], double trj3rd[][6]) {
 
     BDT = vals[0];
     nJets = vals[1]; 
