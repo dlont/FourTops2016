@@ -1553,10 +1553,10 @@ int main (int argc, char *argv[])
             }
 
 	    double MT1 = 0., MW1 = 0.,  MT2 = 0., MW2 = 0., MT3 = 0., MW3 = 0.;
-        double trj1st[3][6], trj2nd[3][6], trj3rd[3][6];
-        std::fill( &trj1st[0][0], &trj1st[0][0]+sizeof(trj1st)/sizeof(trj1st[0]), -1.);
-        std::fill( &trj2nd[0][0], &trj2nd[0][0]+sizeof(trj2nd)/sizeof(trj2nd[0]), -1.);
-        std::fill( &trj3rd[0][0], &trj3rd[0][0]+sizeof(trj3rd)/sizeof(trj3rd[0]), -1.);
+        double trj1st[3][6]; std::fill( &trj1st[0][0], &trj1st[0][0]+sizeof(trj1st)/sizeof(trj1st[0][0]), -10.);
+        double trj2nd[3][6]; std::fill( &trj2nd[0][0], &trj2nd[0][0]+sizeof(trj2nd)/sizeof(trj2nd[0][0]), -10.);
+        double trj3rd[3][6]; std::fill( &trj3rd[0][0], &trj3rd[0][0]+sizeof(trj3rd)/sizeof(trj3rd[0][0]), -10.);
+        
             if(HadTopOn){
                 if(!TrainMVA){ //if not training, but computing 
                     hadronicTopReco->Compute1st(d, selectedJets, datasets);
@@ -1851,6 +1851,8 @@ int main (int argc, char *argv[])
             myEvent.fill_electronVFID(electronVFIDflag);
             myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew,
                          trj1st, trj2nd, trj3rd);
+        // if (nJets < 10)
+            // std::cout << trj3rd[0][4] << " " << trj3rd[1][4] << " " << trj3rd[2][4] << std::endl;
 
 	    tup_genLeptons.clear();
 	    std::for_each( std::begin(mcParticles_flav), std::end(mcParticles_flav), push_genlepton2lorentz);

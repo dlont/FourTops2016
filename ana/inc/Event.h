@@ -196,10 +196,10 @@ void Event::clear() {
       electronVFIDflag = false;
       std::fill_n( electronparams, 20, -10.);
       std::fill_n( muonparams, 20, -10.);
-      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec)/sizeof(jetvec[0]), -1.);
-      std::fill( &trijet1stpass[0][0], &trijet1stpass[0][0]+sizeof(trijet1stpass)/sizeof(trijet1stpass[0]), -1.);
-      std::fill( &trijet2ndpass[0][0], &trijet2ndpass[0][0]+sizeof(trijet2ndpass)/sizeof(trijet2ndpass[0]), -1.);
-      std::fill( &trijet3rdpass[0][0], &trijet3rdpass[0][0]+sizeof(trijet3rdpass)/sizeof(trijet3rdpass[0]), -1.);
+      std::fill( &jetvec[0][0], &jetvec[0][0]+sizeof(jetvec)/sizeof(jetvec[0][0]), -1.);
+      std::fill( &trijet1stpass[0][0], &trijet1stpass[0][0]+sizeof(trijet1stpass)/sizeof(trijet1stpass[0][0]), -10.);
+      std::fill( &trijet2ndpass[0][0], &trijet2ndpass[0][0]+sizeof(trijet2ndpass)/sizeof(trijet2ndpass[0][0]), -10.);
+      std::fill( &trijet3rdpass[0][0], &trijet3rdpass[0][0]+sizeof(trijet3rdpass)/sizeof(trijet3rdpass[0][0]), -10.);
       std::fill_n( weight, 9, 0.);
       std::fill_n( csvrsw, 20, 0.);
       std::fill_n( hdampw, 2, 1.);
