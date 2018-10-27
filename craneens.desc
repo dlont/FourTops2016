@@ -48,6 +48,19 @@
 *Br   43 :SFPU_down : SFPU_down/D                                            *	PU reweighting sf
 *Br   44 :SFtrig    : SFtrig/D                                               *	Trigger scale factor
 *Br   45 :csvrsw    : csvrsw[19]/D                                           *	CSVRS weights
+// double csvrs[] = {
+//                    csvrsweights.find("nominal")->second,
+//                    csvrsweights.find("JESUp")->second,          csvrsweights.find("JESDown")->second,
+//                    csvrsweights.find("LFUp")->second,           csvrsweights.find("LFDown")->second,
+//                    csvrsweights.find("HFUp")->second,           csvrsweights.find("HFDown")->second,
+//                    csvrsweights.find("CSVHFStats1Up")->second,  csvrsweights.find("CSVHFStats1Down")->second,
+//                    csvrsweights.find("CSVHFStats2Up")->second,  csvrsweights.find("CSVHFStats2Down")->second,
+//                    csvrsweights.find("CSVLFStats1Up")->second,  csvrsweights.find("CSVLFStats1Down")->second,
+//                    csvrsweights.find("CSVLFStats2Up")->second,  csvrsweights.find("CSVLFStats2Down")->second,
+//                    csvrsweights.find("CSVCFErr1Up")->second,    csvrsweights.find("CSVCFErr1Down")->second,
+//                    csvrsweights.find("CSVCFErr2Up")->second,    csvrsweights.find("CSVCFErr2Down")->second
+//};
+
 *Br   46 :toprew    : toprew/D                                               *	top pt reweighting
 *Br   47 :ttxrew    : ttxrew/D                                               *	HF fraction reweighting
 *Br   48 :NormFactor : NormFactor/D                                          *	should be always 1.
