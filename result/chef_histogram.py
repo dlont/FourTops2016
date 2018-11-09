@@ -16,7 +16,18 @@ args = parser.parse_args()
 import ROOT as pyr
 import time
 import sys
+import re
 pyr.gErrorIgnoreLevel = 0
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 class Systematic:
     def __init__(self,name):
@@ -34,25 +45,33 @@ class Systematic:
     def get_down_histogram(self):
         pass
 
-
 class TreeSystematic(Systematic):
-    def __init__(self, name, proc, tree_up=None, tree_down=None):
+    def __init__(self, name, proc, file_up=None, file_down=None, tree_up=None, tree_down=None,xsect_up=-1.,xsect_down=-1.):
         Systematic.__init__(self, name)
         self.syst_mod_up = ""
         self.syst_mod_down = ""
         self.proc = proc
+        self.file_up = file_up
         self.tree_up = tree_up
+        self.file_down = file_down
         self.tree_down = tree_down
+        self.xsect_up = xsect_up
+        self.xsect_down = xsect_down
+        self.weight_up = 1.
+        self.weight_down = 1.
         pass
+        
     def get_up_histogram_for_ObservableTH1DFromTree(self,observable):
         syst_hist_name = observable.hist.GetName()
-        print "Doing systematics: ", syst_hist_name
+        print "Doing systematics(get_up_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
         #fill observable.hist by name
         if self.tree_up != None:
-            # print self.proc, observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_up
             if self.proc in syst_hist_name:
                 # print self.tree_up
-                self.tree_up.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_up, "goff")
+                rule_with_tree_up_eqLumiWeight = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),'*({})'.format(self.weight_up))
+                rule_with_tree_up_eqLumiWeight += self.syst_mod_up
+                print self.proc, observable.tree_var+">>"+syst_hist_name, rule_with_tree_up_eqLumiWeight
+                self.tree_up.Draw(observable.tree_var+">>"+syst_hist_name, rule_with_tree_up_eqLumiWeight, "goff")
             else:
                 #observable.get_histogram()
                 pass
@@ -60,13 +79,15 @@ class TreeSystematic(Systematic):
         pass
     def get_down_histogram_for_ObservableTH1DFromTree(self,observable):
         syst_hist_name = observable.hist.GetName()
-        print "Doing systematics: ", syst_hist_name
+        print "Doing systematics(get_down_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
         #fill observable.hist by name
         if self.tree_down != None:
-            # print self.proc, observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_down
             if self.proc in syst_hist_name:
                 # print self.tree_down
-                self.tree_down.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_down, "goff")
+                rule_with_tree_down_eqLumiWeight = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),'*({})'.format(self.weight_down))
+                rule_with_tree_down_eqLumiWeight += self.syst_mod_down
+                print self.proc, observable.tree_var+">>"+syst_hist_name, rule_with_tree_down_eqLumiWeight
+                self.tree_down.Draw(observable.tree_var+">>"+syst_hist_name, rule_with_tree_down_eqLumiWeight, "goff")
             else:
                 #observable.get_histogram()
                 pass
@@ -74,12 +95,54 @@ class TreeSystematic(Systematic):
         pass
         # Calculation of systematics for composite object
     def get_up_histogram_for_ObservableTH1WeightedSum(self,observable):
-        print "Doing systematics: ", observable.name
+        print "Doing systematics(get_up_histogram_for_ObservableTH1WeightedSum): ", observable.name
+        observable.fill_hist()
+        pass
+    def get_down_histogram_for_ObservableTH1WeightedSum(self,observable):
+        print "Doing systematics(get_down_histogram_for_ObservableTH1WeightedSum): ", observable.name
+        observable.fill_hist()
+        pass
+
+class WeightProcCatSystematic(Systematic):
+    def  __init__(self, name, proc_cut, central, upper, lower):
+        Systematic.__init__(self, name)
+        process_and_cut = proc_cut.split(":")
+        process = process_and_cut[0]
+        cut = process_and_cut[1]
+        self.proc = process
+        self.syst_mod_up = "/("+central+")*("+"{}?{}:1.0".format(cut,upper)+")"
+        self.syst_mod_down = "/("+central+")*("+"{}?{}:1.0".format(cut,lower)+")"
+        pass
+
+    def get_up_histogram_for_ObservableTH1DFromTree(self,observable):
+        syst_hist_name = observable.hist.GetName()
+        if self.proc in syst_hist_name:
+            print "Doing systematics(WeightProcCatSystematic:get_up_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
+            #fill observable.hist by name
+            rule_including_weight_and_sysup = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_up)
+            observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysup, "goff")
+        else:
+            pass
+        observable.hist_ready=True
+    def get_down_histogram_for_ObservableTH1DFromTree(self,observable):
+        syst_hist_name = observable.hist.GetName()
+        if self.proc in syst_hist_name:
+            print "Doing systematics(WeightProcCatSystematic:get_down_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
+            #fill observable.hist by name
+            rule_including_weight_and_sysdw = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_down)
+            observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysdw, "goff")
+        else:
+            pass
+        observable.hist_ready=True
+        pass
+        # Calculation of systematics for composite object
+    def get_up_histogram_for_ObservableTH1WeightedSum(self,observable):
+        print "Doing systematics(WeightProcCatSystematic:get_up_histogram_for_ObservableTH1WeightedSum): ", observable.name
         observable.fill_hist()
     def get_down_histogram_for_ObservableTH1WeightedSum(self,observable):
-        print "Doing systematics: ", observable.name
+        print "Doing systematics(WeightProcCatSystematic:get_down_histogram_for_ObservableTH1WeightedSum): ", observable.name
         observable.fill_hist()
-
+        
 class WeightSystematic(Systematic):
     def __init__(self, name, central, upper, lower):
         Systematic.__init__(self, name)
@@ -89,58 +152,32 @@ class WeightSystematic(Systematic):
 
     def get_up_histogram_for_ObservableTH1DFromTree(self,observable):
         syst_hist_name = observable.hist.GetName()
-        print "Doing systematics: ", syst_hist_name
+        print "Doing systematics(WeightSystematic:get_up_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
         #fill observable.hist by name
-        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_up, "goff")
+        rule_including_weight_and_sysup = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_up)
+        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysup, "goff")
+        observable.hist_ready=True
         pass
     def get_down_histogram_for_ObservableTH1DFromTree(self,observable):
         syst_hist_name = observable.hist.GetName()
-        print "Doing systematics: ", syst_hist_name
+        print "Doing systematics(WeightSystematic:get_up_histogram_for_ObservableTH1DFromTree): ", syst_hist_name
         #fill observable.hist by name
-        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_down, "goff")
+        rule_including_weight_and_sysdw = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_down)
+        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysdw, "goff")
+        observable.hist_ready=True
         pass
         # Calculation of systematics for composite object
     def get_up_histogram_for_ObservableTH1WeightedSum(self,observable):
-        print "Doing systematics: ", observable.name
+        print "Doing systematics(WeightSystematic:get_up_histogram_for_ObservableTH1WeightedSum): ", observable.name
         observable.fill_hist()
     def get_down_histogram_for_ObservableTH1WeightedSum(self,observable):
-        print "Doing systematics: ", observable.name
+        print "Doing systematics(WeightSystematic:get_down_histogram_for_ObservableTH1WeightedSum): ", observable.name
         observable.fill_hist()
 
 class WeightSystematicShapeOnly(WeightSystematic):
     def __init__(self, name, central, upper, lower):
         WeightSystematic.__init__(self, name, central, upper, lower)  
         self.normalization_histogram = None  
-    # def get_up_histogram(self,hist_name):
-    #     WeightSystematic.get_up_histogram(self,hist_name)
-    #     syst_hist_name = self.get_baseline_name(hist_name)+"_up"
-    #     hist = pyr.gDirectory.Get(syst_hist_name)
-    #     hist_central = pyr.gROOT.Get(hist_name)
-    #     # print "Looking for central histogram: ", hist_name
-    #     if hist_central != None:
-    #         # print hist, hist_central
-    #         # hist_central.Print()
-    #         numerator   = hist.Integral()
-    #         denominator = hist_central.Integral()
-    #         if denominator>0: hist.Scale(numerator/denominator)
-    #     else: 
-    #         raise RuntimeError('Cannot retrieve central histogram for systematics rescaling: {}'.format(hist_name))
-    #     pass
-    # def get_down_histogram(self,hist_name):
-    #     WeightSystematic.get_up_histogram(self,hist_name)
-    #     syst_hist_name = self.get_baseline_name(hist_name)+"_down"
-    #     hist = pyr.gDirectory.Get(syst_hist_name)
-    #     hist_central = pyr.gROOT.Get(hist_name)
-    #     # print "Looking for central histogram: ", hist_name
-    #     if hist_central != None:
-    #         # print hist, hist_central
-    #         # hist_central.Print()
-    #         numerator   = hist.Integral()
-    #         denominator = hist_central.Integral()
-    #         if denominator>0: hist.Scale(numerator/denominator)
-    #     else: 
-    #         raise RuntimeError('Cannot retrieve central histogram for systematics rescaling: {}'.format(hist_name))
-    #     pass
 
     def set_central_histogram_for_normalization(self, hist):
         self.normalization_histogram = hist
@@ -149,13 +186,15 @@ class WeightSystematicShapeOnly(WeightSystematic):
         syst_hist_name = observable.hist.GetName()
         print "Doing systematics: ", syst_hist_name
         #fill observable.hist by name
-        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_up, "goff")
+        rule_including_weight_and_sysup = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_up)
+        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysup, "goff")
         pass
     def get_down_histogram_for_ObservableTH1DFromTree(self,observable):
         syst_hist_name = observable.hist.GetName()
         print "Doing systematics: ", syst_hist_name
         #fill observable.hist by name
-        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, observable.rule+self.syst_mod_down, "goff")
+        rule_including_weight_and_sysdw = observable.extended_rule_including_modifier(observable.get_rule_including_weight(),self.syst_mod_down)
+        observable.tree.Draw(observable.tree_var+">>"+syst_hist_name, rule_including_weight_and_sysdw, "goff")
         pass
 
     # Calculation of systematics for composite object
@@ -190,16 +229,31 @@ class Observable:
         pass
 
 class ObservableTH1DFromTree(Observable):
-    def __init__(self,name,propNBins,propLowerBound,propHigherBound,tree=None,tree_var=None,rule=None):
+    def __init__(self,name,hist,tree=None,tree_var=None,rule=None,weight=1.):
         Observable.__init__(self,name)
-        self.hist = pyr.TH1D(name, "", propNBins, propLowerBound, propHigherBound)
+        self.hist = hist
         self.hist.SetDirectory(pyr.gROOT)
         pyr.SetOwnership(self.hist,False)
         self.hist.Sumw2()
         self.tree = tree
         self.tree_var = tree_var
         self.rule = rule
+        self.weight = weight
         self.hist_ready = False
+
+    @classmethod
+    def fromuniform(cls,name,propNBins,propLowerBound,propHigherBound,tree=None,tree_var=None,rule=None,weight=1.):
+        hist = pyr.TH1D(name, "", propNBins, propLowerBound, propHigherBound)
+        return cls(name,hist,tree,tree_var,rule,weight)
+
+    @classmethod
+    def fromhisttemplate(cls,hist_template,tree=None,tree_var=None,rule=None,weight=1.)
+        hist = hist_template.Clone(name)
+        return cls(name,hist,tree,tree_var,rule,weight)        
+
+    def fromnonuniform(cls,name,propNBins,binEdgeList,tree=None,tree_var=None,rule=None,weight=1.):
+        hist = pyr.TH1D(name, "", propNBins, binEdgeList)
+        return cls(name,hist,tree,tree_var,rule,weight)
     
     def apply_syst(self,syst,direction='up'):
         if direction=='up':
@@ -209,18 +263,23 @@ class ObservableTH1DFromTree(Observable):
         self.hist_ready = True
         pass
     
+    def extended_rule_including_modifier(self, rule, modifier):
+        return rule+modifier
+
+    def get_rule_including_weight(self):
+        return self.extended_rule_including_modifier(self.rule, "*(" + str(self.weight) + ')')
+
     def fill_hist(self):
         if not self.hist_ready:
-            self.tree.Draw(self.tree_var+">>"+self.name, self.rule, "goff")
-            # print "Filling histogram! ", self.name
+            rule_including_weight = self.get_rule_including_weight()
+            self.tree.Draw(self.tree_var+">>"+self.name, rule_including_weight, "goff")
+            print "Filling histogram! (ObservableTH1DFromTree:fill_hist) ", self.name
             # self.hist.Print()
             self.hist_ready = True
     def get_histogram(self):
         if not self.hist_ready: self.fill_hist()
         return self.hist
 
-        # hist_central = pyr.gROOT.Get(hist_name)
-        # pass
 
 class ObservableTH1WeightedSum(Observable):
     def __init__(self,name):
@@ -306,15 +365,22 @@ plotprops_list = []
 for line in plotprops_file.readlines():
     propname = line.split()[0]
     nbins = int(line.split()[1])
-    lowbound = float(line.split()[2])
-    highbound = float(line.split()[3])
-    propdesc = " ".join(line.split()[4:])
+    lowbound = 6.5
+    highbound = 10.5
+    binning_scheme = line.split()[2]
+    print binning_scheme
+    if 'uniform' in binning_scheme:
+        pattern = re.compile("\(.+\)")
+        obsrange = pattern.findall(binning_scheme)[0]
+        lowbound = float(obsrange.split(',')[0][1:])
+        highbound = float(obsrange.split(',')[1][0:-1])
+    propdesc = " ".join(line.split()[3:])
     plotprops_list.append((propname, nbins, lowbound, highbound, propdesc))
 
 print delimiter
 print "Properties to be plotted"
 print plotprops_list
-
+# sys.exit(1)
 preselection_list = []
 if args.preselection != None:
     preselection_file = open(args.preselection)
@@ -383,22 +449,26 @@ if args.systematics != None:
                 upper = columns_entries[3]
                 lower = columns_entries[4]
                 systematic_list.append(WeightSystematicShapeOnly(name, central, upper, lower))
+            elif sys_type.lower() == 'weightproccat':
+                proc_cut    = columns_entries[2]
+                central = columns_entries[3]
+                upper = columns_entries[4]
+                lower = columns_entries[5]
+                systematic_list.append(WeightProcCatSystematic(name, proc_cut, central, upper, lower))
             elif sys_type.lower() == 'samples':
                 proc    = columns_entries[2]
                 central = columns_entries[3]
                 file_tree_weight_str = columns_entries[4].split(":")
                 craneen_up = pyr.TFile.Open(file_tree_weight_str[0],"READ")
                 tree_up = getattr(craneen_up, file_tree_weight_str[1])
+                xsect_up = float(file_tree_weight_str[2])
 
                 file_tree_weight_str = columns_entries[5].split(":")
                 craneen_down = pyr.TFile.Open(file_tree_weight_str[0],"READ")
                 tree_down = getattr(craneen_down, file_tree_weight_str[1])
-                systematic_list.append(TreeSystematic(name, proc, tree_up=tree_up, tree_down=tree_down))
-    #if len(systematic_list) > 1:
-    #    all_central = "*".join([central for name, central, upper, lower in systematic_list])
-    #    all_upper = "*".join([upper for name, central, upper, lower in systematic_list])
-    #    all_lower = "*".join([lower for name, central, upper, lower in systematic_list])
-    #    systematic_list.append(("All systematic errors", all_central, all_upper, all_lower))
+                xsect_down = float(file_tree_weight_str[2])
+                systematic_list.append(TreeSystematic(name, proc, file_up=craneen_up, file_down=craneen_down, tree_up=tree_up, tree_down=tree_down, 
+                                                                xsect_up=xsect_up, xsect_down=xsect_down))
 
 print delimiter
 print "Systematic list"
@@ -437,8 +507,6 @@ if not blind:
                 #weight_histograms[weightName].GetYaxis().SetBinLabel(binNum, preselName)
                 obs_name = "hist_Data_"+propName+"_"+weightName+"_"+preselName
                 presel_histograms[preselName] = ObservableTH1WeightedSum(obs_name)
-                # presel_histograms[preselName] = Observable(obs_name,hist=pyr.TH1D("hist_Data_"+propName+"_"+weightName+"_"+preselName, "", propNBins, propLowerBound, propHigherBound))
-                # presel_histograms[preselName].get_histogram().SetDirectory(pyr.gROOT)
             weight_histograms[weightName] = presel_histograms
         collection_histograms[propName] = weight_histograms
 
@@ -463,44 +531,13 @@ if not blind:
                     rule_cache = '(' + preselRules + ')'
                     #rule_cache += "*(" + weightRule +")"
                     obs_name = "hist_"+craneen_file_name.split('/')[-1]+"_Data_"+propName+"_"+weightName+"_"+preselName
-                    obs = ObservableTH1DFromTree(obs_name, propNBins, propLowerBound, propHigherBound,
+                    obs = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
                                                    tree=tree, tree_var=propName, rule=rule_cache)
                     print "***"*10              # I have to keep this because data is 
                     obs.get_histogram().Print() # not filled when it is absent
                     print "***"*10
                     collection_histograms[propName][weightName][preselName].observables_and_weights.append((obs,1.0))
-                    # print presel_histograms[preselName].observables_and_weights
-                    # tree.Draw(propName+">>+"+"hist_Data_"+propName+"_"+weightName+"_"+preselName, rule_cache, "goff")
 
-                    #pyr.gDirectory.ls()
-                    #raw_input()
-        
-#         count = 1
-#         for event in tree:
-#             print "\rProcessing event " + str(count),
-#             count += 1
-#             for preselName, preselRules in preselection_list:
-#                 fillThis = True
-#                 for key, op, value in preselRules:
-#                     #if op == "==":    fillThis = fillThis and getattr(event, key) == value
-#                     #elif op == "!=":  fillThis = fillThis and getattr(event, key) != value
-#                     #elif op == ">":   fillThis = fillThis and getattr(event, key) > value
-#                     #elif op == "<":   fillThis = fillThis and getattr(event, key) < value
-#                     #elif op == ">=":  fillThis = fillThis and getattr(event, key) >= value
-#                     #elif op == "<=":  fillThis = fillThis and getattr(event, key) <= value
-#                     #elif op == "a==": fillThis = fillThis and abs(getattr(event, key)) == value
-#                     #elif op == "a!=": fillThis = fillThis and abs(getattr(event, key)) != value
-#                     #elif op == "a>=": fillThis = fillThis and abs(getattr(event, key)) >= value
-#                     #elif op == "a<=": fillThis = fillThis and abs(getattr(event, key)) <= value
-#                     #elif op == "a>":  fillThis = fillThis and abs(getattr(event, key)) > value
-#                     #elif op == "a<":  fillThis = fillThis and abs(getattr(event, key)) < value
-#                     fillThis = fillThis and checkOp(event, key, op, value)
-#                 if fillThis:
-#                     for prop in plotprops_list:
-#                         for weight in weighting_scheme:
-#                             propName = prop[0]
-#                             weightName = weight[0]
-#                             collection_histograms[propName][weightName].Fill(getattr(event, propName), preselName, 1.
         endTime = time.time()
         print "\rCompleted in {:.2f} seconds. ({:.2f} events/second)".format(endTime-startTime, tree.GetEntries()/(endTime-startTime))
 
@@ -514,13 +551,7 @@ if not blind:
                 hist.Print('all')
                 print hist.GetEntries()
                 hist.Write()
-#     outfile_data.cd()
-#     for presel in preselection_list:
-#         for prop in plotprops_list:
-#             for weight in weighting_scheme:
-#                 propName = prop[0]
-#                 weightName = weight[0]
-#                 collection_histograms[propName][weightName][preselName].Write()
+
     outfile_data.Close()
 
 if args.lumi != None:
@@ -571,15 +602,8 @@ for mcset in mc_collection.keys():
                 obs_name = "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
                 presel_histograms[preselName] = ObservableTH1WeightedSum(obs_name)
                 for syst in systematic_list:
-                    # syst_name = syst.name
                     presel_histograms[preselName+"_"+syst.name+"_up"] = ObservableTH1WeightedSum(obs_name+'_'+syst.name+"_up")
-                    # presel_histograms[preselName+"_"+syst.name+"_up"] = Observable(obs_name+'_'+syst.name,hist=pyr.TH1D("hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst_name+"_up", "", propNBins, propLowerBound, propHigherBound))
-                    # presel_histograms[preselName+"_"+syst.name+"_up"].get_histogram().SetDirectory(pyr.gROOT)
-                    #print presel_histograms[preselName+"_"+syst_name+"_up"]
                     presel_histograms[preselName+"_"+syst.name+"_down"] = ObservableTH1WeightedSum(obs_name+'_'+syst.name+"_down")
-                    # presel_histograms[preselName+"_"+syst.name+"_down"] = Observable(obs_name+'_'+syst.name,hist=pyr.TH1D("hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+"_"+syst_name+"_down", "", propNBins, propLowerBound, propHigherBound))
-                    # presel_histograms[preselName+"_"+syst.name+"_down"].get_histogram().SetDirectory(pyr.gROOT)
-                    #print presel_histograms[preselName+"_"+syst_name+"_down"]
             weight_histograms[weightName] = presel_histograms
         collection_histograms[propName] = weight_histograms
     #pyr.gROOT.ls()
@@ -612,21 +636,21 @@ for mcset in mc_collection.keys():
                     rule_cache = '(' + preselRules + ')'
                     if mcfilename in forced_preselection_list.keys():
                         rule_cache = rule_cache + " && (" + forced_preselection_list[mcfilename] + ')'
-                    rule_cache = '(' + rule_cache + ")*(" + weightRule + ")*(" + str(targetLumi*xsect/bookEvents) + ')'
+                    rule_cache = '(' + rule_cache + ")*(" + weightRule + ")"
+                    eqLumi = targetLumi*xsect/bookEvents
                     print "Plotting normal histograms"
 
                     obs_name = "hist_"+mcfilename.split('/')[-1]+'_'+mcset+"_"+propName+"_"+weightName+"_"+preselName
-                    obs = ObservableTH1DFromTree(obs_name, propNBins, propLowerBound, propHigherBound,
-                                                   tree=tree, tree_var=propName, rule=rule_cache)
+                    obs = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                                                   tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                     print "***"*10              # I have to keep this printout otherwise data is not filled
                     obs.get_histogram().Print() # this is not normal and has to be fixed
                     print "***"*10              # sad
                     collection_histograms[propName][weightName][preselName].observables_and_weights.append((obs,1.0))
 
-                    # tree.Draw(propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName, rule_cache, "goff")
                     print "Central histogram: ", "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
-                    #print propName+">>+"+"hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
-                    #print rule_cache
+                    print propName+">>+"+"hist_"+mcfilename.split('/')[-1]+'_'+mcset+"_"+propName+"_"+weightName+"_"+preselName
+                    print rule_cache
                     #treeweight = tree.GetW()
                     #treevalue = tree.GetV1()
                     #outtreeweight = open(save_dir+"/weights_"+mcset+"_"+propName+"_"+weightName+"_"+preselName+".txt", "w")
@@ -634,76 +658,35 @@ for mcset in mc_collection.keys():
                     #    outtreeweight.write("{}{:20.9f}{:20.9f}\n".format(i, treevalue[i], treeweight[i]))
                     #outtreeweight.close()
                     for syst in systematic_list:
-                        #resolve dependencies
-                        # if isinstance(syst,WeightSystematic):
-                            # syst.set_tree(tree)
-                        # else: pass
+                        #Up component
                         obs_name = "hist_"+mcfilename.split('/')[-1]+'_'+mcset+"_"+propName+"_"+weightName+"_"+preselName+'_'+syst.name+"_up"
-                        obs_up = ObservableTH1DFromTree(obs_name, propNBins, propLowerBound, propHigherBound,
-                                                   tree=tree, tree_var=propName, rule=rule_cache)
+                        obs_up = None
+                        if isinstance(syst,TreeSystematic):
+                            bookEventsSyst=syst.file_up.Get("bookkeeping").GetEntries()
+                            eqLumi = targetLumi*syst.xsect_up/bookEventsSyst
+                            obs_up = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                                                   tree=None, tree_var=propName, rule=rule_cache, weight=eqLumi)
+                        else:
+                            obs_up = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                                                   tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         obs_up.apply_syst(syst,direction='up')
                         obs_up.get_histogram().Print()
                         collection_histograms[propName][weightName][preselName+"_"+syst.name+"_up"].observables_and_weights.append((obs_up,1.0))
+                        #Down component
                         obs_name = "hist_"+mcfilename.split('/')[-1]+'_'+mcset+"_"+propName+"_"+weightName+"_"+preselName+'_'+syst.name+"_down"
-                        obs_down = ObservableTH1DFromTree(obs_name, propNBins, propLowerBound, propHigherBound,
-                                                   tree=tree, tree_var=propName, rule=rule_cache)
+                        obs_down = None
+                        if isinstance(syst,TreeSystematic):
+                            bookEventsSyst=syst.file_down.Get("bookkeeping").GetEntries()
+                            eqLumi = targetLumi*syst.xsect_down/bookEventsSyst
+                            obs_down = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                                                   tree=None, tree_var=propName, rule=rule_cache, weight=eqLumi)
+                        else: 
+                            obs_down = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                                                   tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         obs_down.apply_syst(syst,direction='down')
                         obs_down.get_histogram().Print()
                         collection_histograms[propName][weightName][preselName+"_"+syst.name+"_down"].observables_and_weights.append((obs_down,1.0))
-                        # syst.set_propName(propName)
-                        # syst.set_rule(rule_cache)
-                        # hist_name = "hist_"+mcset+"_"+propName+"_"+weightName+"_"+preselName
-                        # syst.get_down_histogram(hist_name)
-                        # syst.get_up_histogram(hist_name)
 
-
-#         count = 1
-#         for event in tree:
-#             print "\rProcessing event " + str(count),
-#             count += 1
-#             passForcing = True
-#             if mcfilename in forced_preselection_list.keys():
-#                 for key, op, value in forced_preselection_list[mcfilename]:
-#                     #if op == "==":    passForcing = passForcing and getattr(event, key) == value
-#                     #elif op == "!=":  passForcing = passForcing and getattr(event, key) != value
-#                     #elif op == ">":   passForcing = passForcing and getattr(event, key) > value
-#                     #elif op == "<":   passForcing = passForcing and getattr(event, key) < value
-#                     #elif op == ">=":  passForcing = passForcing and getattr(event, key) >= value
-#                     #elif op == "<=":  passForcing = passForcing and getattr(event, key) <= value
-#                     #elif op == "a==": passForcing = passForcing and abs(getattr(event, key)) == value
-#                     #elif op == "a!=": passForcing = passForcing and abs(getattr(event, key)) != value
-#                     #elif op == "a>=": passForcing = passForcing and abs(getattr(event, key)) >= value
-#                     #elif op == "a<=": passForcing = passForcing and abs(getattr(event, key)) <= value
-#                     #elif op == "a>":  passForcing = passForcing and abs(getattr(event, key)) > value
-#                     #elif op == "a<":  passForcing = passForcing and abs(getattr(event, key)) < value
-#                     passForcing = passForcing and checkOp(event, key, op, value)
-#             if passForcing:
-#                 for preselName, preselRules in preselection_list:
-#                     fillThis = True
-#                     for key, op, value in preselRules:
-#                         #if op == "==":    fillThis = fillThis and getattr(event, key) == value
-#                         #elif op == "!=":  fillThis = fillThis and getattr(event, key) != value
-#                         #elif op == ">":   fillThis = fillThis and getattr(event, key) > value
-#                         #elif op == "<":   fillThis = fillThis and getattr(event, key) < value
-#                         #elif op == ">=":  fillThis = fillThis and getattr(event, key) >= value
-#                         #elif op == "<=":  fillThis = fillThis and getattr(event, key) <= value
-#                         #elif op == "a==": fillThis = fillThis and abs(getattr(event, key)) == value
-#                         #elif op == "a!=": fillThis = fillThis and abs(getattr(event, key)) != value
-#                         #elif op == "a>=": fillThis = fillThis and abs(getattr(event, key)) >= value
-#                         #elif op == "a<=": fillThis = fillThis and abs(getattr(event, key)) <= value
-#                         #elif op == "a>":  fillThis = fillThis and abs(getattr(event, key)) > value
-#                         #elif op == "a<":  fillThis = fillThis and abs(getattr(event, key)) < value
-#                         fillThis = fillThis and checkOp(event, key, op, value)
-#                     if fillThis:
-#                         for prop in plotprops_list:
-#                             propName = prop[0]
-#                             eventweight = 1.
-#                             for weightName, weightNumerator, weightDenominator in weighting_scheme:
-#                                 for n in weightNumerator:
-#                                     eventweight *= getattr(event, n)
-#                                 for d in weightDenominator:
-#                                     if getattr(event, d) != 0: eventweight = eventweight / getattr(event, d)
-#                                 collection_histograms[propName][weightName].Fill(getattr(event, propName), preselName, eventweight * targetLumi * xsect / bookEvents)
         endTime = time.time()
         print "\rCompleted in {:.2f} seconds. ({:.2f} events/second)".format(endTime-startTime, tree.GetEntries()/(endTime-startTime))
 
@@ -717,7 +700,8 @@ for mcset in mc_collection.keys():
                 hist.Write()
                 for syst in systematic_list:
                     syst_name = syst.name
-                    if isinstance(syst,WeightSystematicShapeOnly): syst.set_central_histogram_for_normalization(collection_histograms[propName][weightName][preselName].get_histogram())
+                    if isinstance(syst,WeightSystematicShapeOnly): 
+                        syst.set_central_histogram_for_normalization(collection_histograms[propName][weightName][preselName].get_histogram())
                     obs_up = collection_histograms[propName][weightName][preselName+"_"+syst_name+"_up"]
                     obs_up.apply_syst(syst,direction='up')
                     hist = collection_histograms[propName][weightName][preselName+"_"+syst_name+"_up"].get_histogram().Clone()
@@ -727,10 +711,5 @@ for mcset in mc_collection.keys():
                     obs_down.apply_syst(syst,direction='down')
                     hist = collection_histograms[propName][weightName][preselName+"_"+syst_name+"_down"].get_histogram().Clone()
                     hist.Write()
-#     outfile_mc.cd()
-#     for prop in plotprops_list:
-#         for weight in weighting_scheme:
-#             propName = prop[0]
-#             weightName = weight[0]
-#             collection_histograms[propName][weightName][preselName].Write()
+
     outfile_mc.Close()
