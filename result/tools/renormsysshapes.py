@@ -59,11 +59,18 @@ def main(arguments):
 							  arguments.reffile+'/'+reffoldename+'/'+arguments.hist))
 		i1 = hist.Integral()
 		i2 = refhist.Integral()
-		logging.debug("Scale factor source/target: {} / {}".format(i1,i2))
-		hist.Scale(i2/i1)
-		folder.cd()
-		hist.Write(hist.GetName(),rt.TObject.kOverwrite)
-		infile.cd()
+                if i2 == 0:
+                        logging.warning("Ref hist integral is 0! Something is potentially wrong. Hist name: {}".format(arguments.reffile+'/'+reffoldename+'/'+arguments.hist))
+                        if i1 == 0:
+                                logging.warning("Target histogram has no events. Check what is going on!")
+		        folder.cd()
+		        infile.cd()
+                else:
+		        logging.debug("Scale factor source/target: {} / {}".format(i1,i2))
+		        hist.Scale(i2/i1)
+		        folder.cd()
+		        hist.Write(hist.GetName(),rt.TObject.kOverwrite)
+		        infile.cd()
 	
         return 0
 
