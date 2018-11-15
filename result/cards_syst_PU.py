@@ -31,16 +31,14 @@ def cut_PU(cut_string,search_scheme='9J3M,10J3M'):
 	("10J2M_PUDown", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
 	]
 	if search_scheme == '9J3M,10J3M':
-		cut_PU += 
-		[
+		cut_PU += [
 			("9J3M_PUUp", "Njet=9, nMtags=3", "(nJets==9 && nMtags>=3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 			("10J3M_PUUp", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 			("9J3M_PUDown", "Njet=9, nMtags=3", "(nJets==9 && nMtags>=3 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
 			("10J3M_PUDown", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}/SFPU*SFPU_down".format(cut_string,centralweight)),
 		]
 	elif search_scheme == '9J4M,10J4M':
-		cut_PU += 
-		[
+		cut_PU += [
 			("9J3M_PUUp", "Njet=9, nMtags=3", "(nJets==9 && nMtags==3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 			("9J4M_PUUp", "Njet=9, nMtags=4", "(nJets==9 && nMtags>=4 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),
 			("10J3M_PUUp", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}/SFPU*SFPU_up".format(cut_string,centralweight)),

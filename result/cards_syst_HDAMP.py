@@ -31,16 +31,14 @@ def getHDAMPCutSets(syst,cut_string,search_scheme='9J3M,10J3M'):
 
     ]
     if search_scheme == '9J3M,10J3M':
-		cut_sets += 
-		[
+    cut_sets += [
             ("9J3M_{0}Up".format(syst), "Njet=9, nMtags=3", "(nJets==9 && nMtags>=3 {0})*{1}*Max$(abs(hdampw))".format(cut_string,centralweight)),
             ("10J3M_{0}Up".format(syst), "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}*Max$(abs(hdampw))".format(cut_string,centralweight)),
             ("9J3M_{0}Down".format(syst), "Njet=9, nMtags=3",  "(nJets==9 && nMtags>=3 {0})*{1}*Min$(abs(hdampw))".format(cut_string,centralweight)),
             ("10J3M_{0}Down".format(syst), "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3 {0})*{1}*Min$(abs(hdampw))".format(cut_string,centralweight)),
 		]
     elif search_scheme == '9J4M,10J4M':
-		cut_sets += 
-		[
+    cut_sets += [
             ("9J3M_{0}Up".format(syst), "Njet=9, nMtags=3", "(nJets==9 && nMtags==3 {0})*{1}*Max$(abs(hdampw))".format(cut_string,centralweight)),
             ("9J4M_{0}Up".format(syst), "Njet=9, nMtags=4", "(nJets==9 && nMtags>=4 {0})*{1}*Max$(abs(hdampw))".format(cut_string,centralweight)),
             ("10J3M_{0}Up".format(syst), "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3 {0})*{1}*Max$(abs(hdampw))".format(cut_string,centralweight)),
