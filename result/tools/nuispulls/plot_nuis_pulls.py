@@ -32,6 +32,7 @@ def main(arguments):
 
         # Disable garbage collection for this list of objects
         rt.TCanvas.__init__._creates = False
+        rt.TPave.__init__._creates = False
         rt.TFile.__init__._creates = False
 	rt.TH1.__init__._creates = False
 	rt.TH2.__init__._creates = False
