@@ -32,6 +32,8 @@ if 'TTcc' in output_filename:
 print 'tthftype cut=',tthftype
 
 trigger_cuts = None
+
+# Selection cuts change depending on the name of input Craneen file in order to properly include gen filtered samples
 add_filter_flag = True if '_TTJets_' in inputfile else False
 if add_filter_flag: trigger_cuts = trgcuts(tree_name) + '&&(GenFilter==0)'
 else: trigger_cuts = trgcuts(tree_name)
@@ -43,6 +45,7 @@ cut_for_all_files = ""
 # All plots are made for each "cut set".
 # A "cut set" is 3 things: folder name to store hists in, string to add to hist titles, and cuts for these hists.
 # Let cut_sets = [] to make all plots.
+search_scheme = '9J4M,10J4M'
 from centralweight import centralweight
 cut_sets = [
     ("allSF", "", "({1} {0})*{2}".format(tthftype,trigger_cuts,centralweight)),
@@ -56,9 +59,7 @@ cut_sets = [
     ("8J3M", "Njet=8, nMtags=3",   "(nJets==8 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("8J4M", "Njet=8, nMtags=4",   "(nJets==8 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("9J2M", "Njet=9, nMtags=2",   "(nJets==9 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     ("10J2M", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
     #("PU", "", "SFPU"),
     #("PUup", "", "SFPU_up"),
     #("PUdown", "", "SFPU_down"),
@@ -78,9 +79,22 @@ cut_sets = [
     #("weight7", "", "(abs(weight7)*ScaleFactor*SFtrig)*GenWeight*"+trigger_cuts,centralweight), 
     ("weight8", "", "(abs(weight8)*{2} {0})*{1}".format(tthftype,trigger_cuts,centralweight)), 
     ]
+if search_scheme == '9J3M,10J3M':
+    cut_sets += [
+        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+    ]
+elif search_scheme == '9J4M,10J4M':
+    cut_sets += [
+        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("9J4M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J4M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=4  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+    ]
 
 print "Target variable: ", target
 from listofplots import lp
+#from listofplots_single_plot import lp
 #from listofplots_coarse import lp
 list_of_plots = lp(tree_name,inputfile,target)
 
