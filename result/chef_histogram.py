@@ -17,6 +17,7 @@ import ROOT as pyr
 import time
 import sys
 import re
+from array import array
 pyr.gErrorIgnoreLevel = 0
 
 class bcolors:
@@ -247,7 +248,7 @@ class ObservableTH1DFromTree(Observable):
         return cls(name,hist,tree,tree_var,rule,weight)
 
     @classmethod
-    def fromhisttemplate(cls,hist_template,tree=None,tree_var=None,rule=None,weight=1.)
+    def fromhisttemplate(cls,name,hist_template,tree=None,tree_var=None,rule=None,weight=1.):
         hist = hist_template.Clone(name)
         return cls(name,hist,tree,tree_var,rule,weight)        
 
@@ -365,17 +366,24 @@ plotprops_list = []
 for line in plotprops_file.readlines():
     propname = line.split()[0]
     nbins = int(line.split()[1])
-    lowbound = 6.5
-    highbound = 10.5
     binning_scheme = line.split()[2]
-    print binning_scheme
-    if 'uniform' in binning_scheme:
-        pattern = re.compile("\(.+\)")
-        obsrange = pattern.findall(binning_scheme)[0]
-        lowbound = float(obsrange.split(',')[0][1:])
-        highbound = float(obsrange.split(',')[1][0:-1])
     propdesc = " ".join(line.split()[3:])
-    plotprops_list.append((propname, nbins, lowbound, highbound, propdesc))
+    print binning_scheme
+    hist_template = None
+    if 'regular' in binning_scheme:
+        pattern = re.compile("\(.+\)")
+        histrange = pattern.findall(binning_scheme)[0]
+        lowbound = float(histrange.split(',')[0][1:])
+        highbound = float(histrange.split(',')[1][0:-1])
+        hist_template = pyr.TH1D(propname+'_template',"",nbins,lowbound,highbound)
+    if 'nonuniform' in binning_scheme:
+        pattern = re.compile("\(.+\)")
+        binedges = pattern.findall(binning_scheme)[0]
+        binedges = binedges.strip('(').strip(')')
+        binEdges = [float(edge) for edge in binedges.split(',')]
+        if len(binEdges) != nbins+1: raise RunTimeError('Wrong number of bin edges in {}\n {}'.format(propname,line))
+        hist_template = pyr.TH1D(propname+'_template',"",nbins,array('d',binEdges))
+    plotprops_list.append((propname, nbins, hist_template, propdesc))
 
 print delimiter
 print "Properties to be plotted"
@@ -493,14 +501,10 @@ if not blind:
     collection_histograms = {}
     for prop in plotprops_list:
         propName = prop[0]
-        propNBins = prop[1]
-        propLowerBound = prop[2]
-        propHigherBound = prop[3]
-        
+
         weight_histograms = {}
         for weight in weighting_scheme:
             weightName = weight[0]
-            #weight_histograms[weightName] = pyr.TH2D("hist_Data_"+propName+"_"+weightName, "Data "+weightName, propNBins, propLowerBound, propHigherBound, len(preselection_list), 0., float(len(preselection_list)))
             presel_histograms = {}
             for presel, binNum in zip(preselection_list,range(1, len(preselection_list)+1)):
                 preselName = presel[0]
@@ -523,15 +527,14 @@ if not blind:
             for prop in plotprops_list:
                 propName = prop[0]
                 propNBins = prop[1]
-                propLowerBound = prop[2]
-                propHigherBound = prop[3]
+                propHistTemplate = prop[2]
                 #print "plotting "+propName
                 for weightName, weightRule in weighting_scheme:
                     #print "plotting "+weightName
                     rule_cache = '(' + preselRules + ')'
                     #rule_cache += "*(" + weightRule +")"
                     obs_name = "hist_"+craneen_file_name.split('/')[-1]+"_Data_"+propName+"_"+weightName+"_"+preselName
-                    obs = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                    obs = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=tree, tree_var=propName, rule=rule_cache)
                     print "***"*10              # I have to keep this because data is 
                     obs.get_histogram().Print() # not filled when it is absent
@@ -630,8 +633,7 @@ for mcset in mc_collection.keys():
             for prop in plotprops_list:
                 propName = prop[0]
                 propNBins = prop[1]
-                propLowerBound = prop[2]
-                propHigherBound = prop[3]
+                propHistTemplate = prop[2]
                 for weightName, weightRule in weighting_scheme:
                     rule_cache = '(' + preselRules + ')'
                     if mcfilename in forced_preselection_list.keys():
@@ -641,7 +643,7 @@ for mcset in mc_collection.keys():
                     print "Plotting normal histograms"
 
                     obs_name = "hist_"+mcfilename.split('/')[-1]+'_'+mcset+"_"+propName+"_"+weightName+"_"+preselName
-                    obs = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                    obs = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                     print "***"*10              # I have to keep this printout otherwise data is not filled
                     obs.get_histogram().Print() # this is not normal and has to be fixed
@@ -664,10 +666,10 @@ for mcset in mc_collection.keys():
                         if isinstance(syst,TreeSystematic):
                             bookEventsSyst=syst.file_up.Get("bookkeeping").GetEntries()
                             eqLumi = targetLumi*syst.xsect_up/bookEventsSyst
-                            obs_up = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                            obs_up = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=None, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         else:
-                            obs_up = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                            obs_up = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         obs_up.apply_syst(syst,direction='up')
                         obs_up.get_histogram().Print()
@@ -678,10 +680,10 @@ for mcset in mc_collection.keys():
                         if isinstance(syst,TreeSystematic):
                             bookEventsSyst=syst.file_down.Get("bookkeeping").GetEntries()
                             eqLumi = targetLumi*syst.xsect_down/bookEventsSyst
-                            obs_down = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                            obs_down = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=None, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         else: 
-                            obs_down = ObservableTH1DFromTree.fromuniform(obs_name, propNBins, propLowerBound, propHigherBound,
+                            obs_down = ObservableTH1DFromTree.fromhisttemplate(obs_name, propHistTemplate,
                                                    tree=tree, tree_var=propName, rule=rule_cache, weight=eqLumi)
                         obs_down.apply_syst(syst,direction='down')
                         obs_down.get_histogram().Print()
