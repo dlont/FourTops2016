@@ -25,6 +25,7 @@ print 'Input tree name: ' + tree_name
 print 'Systematic source: ' + systematic
 print 'Target variable: ' + target
 
+# Selection cuts change depending on the name of input Craneen file in order to properly include gen filtered samples
 add_filter_flag = True if '_TTJets_' in inputfile else False
 if add_filter_flag: trigger_cuts = trgcuts(tree_name) + '&&(GenFilter==0)'
 else: trigger_cuts = trgcuts(tree_name)
@@ -113,4 +114,4 @@ bins_et     = array("f", [15.0, 20.0, 30.0, 50.0, 80.0, 120.0]) # example custom
 from listofplots_cards import targetvar
 list_of_plots = [targetvar(target)]
 
-#from custombinning import custom_binning
+from custombinning import custom_binning
