@@ -87,7 +87,7 @@ class Model(object):
         def compute_TF(self):
                 tf_dic = self._jsondic['TF']
                 files_data=tf_dic['inputfile_data']
-		t_data = self.get_tree(files_data,tf_dic['treename'])                
+		t_data = self.get_tree(files_data,tf_dic['treename'])
                 files_tt=tf_dic['inputfile_tt']
 		t_tt = self.get_tree(files_tt,tf_dic['treename'])
                 cuts_noniso=tf_dic['cuts_noniso']
@@ -104,7 +104,7 @@ class Model(object):
                 rt.SetOwnership(h_data,False)
                 self._objects["ISO_nj6_data"] = h_data
                 h_tt = None
-                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,"ISO_nj6_tt"),cuts_inclusiveiso+"*GenWeight*{}".format(str(eff_lum)))
+                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,"ISO_nj6_tt"),cuts_inclusiveiso+"*ScaleFactor*SFtrig*GenWeight*{}".format(str(eff_lum)))
                 h_tt=rt.gDirectory.FindObject("ISO_nj6_tt")
                 h_tt.SetDrawOption("hist")
                 rt.SetOwnership(h_tt,False)
@@ -118,7 +118,7 @@ class Model(object):
                 # h_data_iso.Print("all")
 
                 h_tt_iso = None
-                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,name+"_iso_tt"),cuts_iso+"*GenWeight*{}".format(str(eff_lum)))
+                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,name+"_iso_tt"),cuts_iso+"*ScaleFactor*SFtrig*GenWeight*{}".format(str(eff_lum)))
                 h_tt_iso=rt.gDirectory.FindObject(name+"_iso_tt")
                 rt.SetOwnership(h_tt_iso,False)
                 self._objects["TF_iso_tt"] = h_tt_iso
@@ -134,7 +134,7 @@ class Model(object):
                 h_data_noniso=rt.gDirectory.FindObject(name+"_noniso")
 
                 h_tt_noniso = None
-                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,name+"_noniso_tt"),cuts_noniso+"*GenWeight*{}".format(str(eff_lum*0.8)))
+                t_tt.Draw("{}>>{}(25,0,1.25)".format(varname,name+"_noniso_tt"),cuts_noniso+"*ScaleFactor*SFtrig*GenWeight*{}".format(str(eff_lum*0.8)))
                 h_tt_noniso=rt.gDirectory.FindObject(name+"_noniso_tt")
 
                 nonttdata_noniso = [h_data_noniso.Integral()-h_tt_noniso.Integral(),\
@@ -168,7 +168,9 @@ class Model(object):
                 cuts_iso=self._jsondic[name]['cuts']
 
                 h_data_iso = None
-                t_data.Draw("{}>>{}(10,-1,1.)".format(varname,name),cuts_iso)
+                # t_data.Draw("{}>>{}(10,-1,1.)".format(varname,name),cuts_iso)
+                eff_lum = self._jsondic[name]['eff_lum_tt']
+                t_data.Draw("{}>>{}(10,-1,1.)".format(varname,name),cuts_iso+"*ScaleFactor*SFtrig*GenWeight*{}".format(str(eff_lum)))
                 h_data_iso=rt.gDirectory.FindObject(name)
                 return h_data_iso
         
@@ -188,7 +190,7 @@ class Model(object):
 
                 h_tt_noniso = None
                 eff_lum = self._jsondic[name]['eff_lum_tt']
-                t_tt.Draw("{}>>{}(10,-1,1.)".format(varname,name+"_tt"),cuts_noniso+"*GenWeight*{}".format(str(eff_lum)))
+                t_tt.Draw("{}>>{}(10,-1,1.)".format(varname,name+"_tt"),cuts_noniso+"*ScaleFactor*SFtrig*GenWeight*{}".format(str(eff_lum)))
                 h_tt_noniso=rt.gDirectory.FindObject(name+"_tt")
                 # h_tt_noniso.Sumw2()
                 
