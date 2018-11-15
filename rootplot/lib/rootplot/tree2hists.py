@@ -195,7 +195,7 @@ def make_all_hists_all_files(list_of_RootTrees, list_of_Plots, cut_for_all_files
             print "YO:", histname_fix, title_fix, current_cut_set
             tmp_hist = plot.histogram.Clone("temp")    # Create temp hist
             var = plot.treeVariable
-            if custom_binning.get(var,None):
+            if custom_binning and custom_binning.get(var,None):
                 list_of_categories_for_var = custom_binning[var].keys()
                 matching_categories = [cat for cat in list_of_categories_for_var if cat in histname_fix]
                 if len(matching_categories)==1:
@@ -243,7 +243,7 @@ def tree2hists_main(config_file):
         cut_for_all_files = _temp.cut_for_all_files
         cut_sets          = _temp.cut_sets
         list_of_plots     = _temp.list_of_plots
-        custom_binning    = _temp.custom_binning
+        custom_binning    = getattr(_temp, 'custom_binning', None)
         for rootTree in list_of_files:
             if not path.isfile(rootTree.fileName):
                 print "Error:\n  %s\nnot found for input." % rootTree.fileName
