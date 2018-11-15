@@ -2,7 +2,7 @@
 
 """
 Postfit normalization tables from combine output files.
-input: fitDiagnostics.root or mlfit.root file produced with --saveNormalizations
+input: fitDiagnostics.root or mlfit.root file produced with --saveNormalizations --saveShapes
 flag
 """
 
@@ -61,7 +61,7 @@ class OthersNorm:
 	def __init__(self,root_file,other_backgrounds):
 		self.root_file = root_file                     				#root file handle
 		self.prefit_norm_name = 'norm_prefit'					#RooAbsSet prefit normalizations name
-		self.postfit_norm_name = 'norm_fit_s'					#RooAbsSet prefit normalizations name
+		self.postfit_norm_name = 'norm_fit_s'					#RooAbsSet signal fit normalizations name
 		self.others_backgrounds_names = other_backgrounds			#Names of the other background
 		self.name = 'others'
 		if self.root_file:
@@ -91,7 +91,7 @@ class OthersNorm:
 			arg = siter.next()
 
 		# save search regions names in a new list
-		# remove part to the string after '/', i.e.
+		# remove part of the string after '/', i.e.
 		# MU_mu9J3M/ttbarTTX -> MU_mu9J3M
 		temp_result = []
 		for item in result:
@@ -162,8 +162,8 @@ class OthersNorm:
 		#sum up all other backgrounds together
 		others_backgrounds = rt.RooArgSet(self.name)
 		for search_region in search_regions_list:
-			others_backgrounds_sum = 0
-			others_backgrounds_error2 = 0
+			others_backgrounds_sum = 0.0
+			others_backgrounds_error2 = 0.0
 			for bck_name in other_backgrounds_norm_dic.keys():
 				entry_name = '{}/{}'.format(search_region,bck_name)
 				others_backgrounds_sum += other_backgrounds_norm_dic[bck_name].getRealValue(entry_name)
@@ -203,12 +203,12 @@ def main(arguments):
 	#data.Print()
 
 	#create others backgrounds normalization RooFit Object
-	creator_others = OthersNorm(root_file, ['EW','TTRARE','ST_tW'])
-	# creator_others = OthersNorm(root_file, ['EW','TTRARE_plus','ST_tW','Rare1TTHZ']) # for rare split
+	# creator_others = OthersNorm(root_file, ['EW','TTRARE','ST_tW'])
+	creator_others = OthersNorm(root_file, ['EW','TTRARE_plus','ST_tW','Rare1TTHZ']) # for rare split
 	creator_others.set_name('other')
 	#create others backgrounds normalization RooFit Object
-	creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE','ST_tW'])
-	# creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE_plus','ST_tW', 'Rare1TTHZ']) #for rare split
+	# creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE','ST_tW'])
+	creator_total = OthersNorm(root_file, ['ttbarTTX','NP_overlay_ttttNLO','EW','TTRARE_plus','ST_tW', 'Rare1TTHZ']) #for rare split
 	creator_total.set_name('total')
 
 	#retrieve prefit normalizations
@@ -234,6 +234,10 @@ def main(arguments):
 	norm_postfit_total = creator_total.get_postfit()
 
 	#make latex table
+	latex_tab_header = ['SR','Obs.','S+B tot. postf.','$t\\bar{t}$ postf.', 'Other postf.', '$t\\bar{t}t\\bar{t}$ postf.', \
+						'S+B tot. pref.', '$t\\bar{t}$ pref.', 'Other pref.', '$t\\bar{t}t\\bar{t}$ pref. \\\\']
+	print ' & '.join(latex_tab_header)
+	
 	data.printLatex(rt.RooFit.Sibling(norm_postfit_total),
 			rt.RooFit.Sibling(norm_postfit_ttbar),rt.RooFit.Sibling(norm_postfit_others),rt.RooFit.Sibling(norm_postfit_tttt),
 			rt.RooFit.Sibling(norm_prefit_total),
