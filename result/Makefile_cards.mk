@@ -251,7 +251,16 @@ $(BUILDDIR)/Hists_TT_HDAMPDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTHdampdown_$
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTHDAMPDWNORM} TTJets_HDAMPALTDOWN ${TARGETVAR} ${SUPPRESSOUT}
 
-$(BUILDDIR)/Hists_TT_PAGPT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
+#inclusive + filtered samples
+$(BUILDDIR)/Hists_TT_PAGPT.root: $(BUILDDIR)/Hists_TTinclus_PAGPT.root $(BUILDDIR)/Hists_TTFilt_PAGPT.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+
+$(BUILDDIR)/Hists_TTFilt_PAGPT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} TTPAGPT ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTinclus_PAGPT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} TTPAGPT ${TARGETVAR} ${SUPPRESSOUT}
 

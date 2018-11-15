@@ -3,6 +3,7 @@ export TTCENTRAL
 #Muons
 ifeq (${TREENAME},Craneen__Mu)
 DATALUMI=35.83		#V9
+DATALABEL=Single \#mu
 ifeq (${ERA},B)
 DATALUMI=5.743725979478  #BCDEF V9
 endif
@@ -35,6 +36,7 @@ endif
 #Electrons
 ifeq (${TREENAME},Craneen__El)
 DATALUMI=35.84		# V5
+DATALABEL=Single e
 ifeq (${ERA},BCDEF)
 DATALUMI=20.194218843159 #BCDEF V4
 endif
