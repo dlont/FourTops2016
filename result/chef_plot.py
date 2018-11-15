@@ -21,6 +21,22 @@ import tdrstyle
 import numpy as np
 import math
 
+def get_graph_with_errors_from_histograms(central,up,down):
+    if central == None or up == None or down == None:
+        raise RuntimeError("Supplied histograms are Null! c:{} u:{} d:{}".format(central,up,down))
+    number_of_bins = central.GetNbinsX()
+    if up.GetNbinsX() != number_of_bins or down.GetNbinsX() != number_of_bins:
+        raise RuntimeError("Histograms have different number of bins: c:{}, u:{}, d:{}".format(number_of_bins,up.GetNBinsX(),down.GetNBinsX()))
+    gr = pyr.TGraphAsymmErrors(central)
+    for bin in range(1,up.GetNbinsX()+1):
+        gr.SetPoint(bin-1,central.GetBinCenter(bin),0.)
+        exl = -(central.GetBinCenter(bin) - central.GetBinLowEdge(bin))
+        exh = central.GetBinLowEdge(bin) - central.GetBinCenter(bin) 
+        gr.SetPointError(bin-1,exl,exh,-down.GetBinContent(bin),up.GetBinContent(bin))
+    gr.SetFillColor(1)
+    gr.SetFillStyle(3004)
+    return gr
+
 def drawOverflow(hist):
     #print(type(hist))
     if not type(hist) == pyr.TH1D:
@@ -163,6 +179,7 @@ for propline in plotprops_list:
             canvas = pyr.TCanvas(propName + '_' + cat + '_' + weight, propName + '_' + cat + '_' + weight, 750, 750)
             legend = pyr.TLegend(0.5, 0.75, 0.9, 0.9)
             legend.SetNColumns(2)
+            legend.SetHeader("Single lepton: {}".format(dataset_name))
             if not blind:
                 print "Looking for hist: ", cat+'/'+"hist_Data_"+propName+'_'+weight+'_'+cat
                 hist_data = histfile_data.Get(cat+'/'+"hist_Data_"+propName+'_'+weight+'_'+cat).Clone()
@@ -172,7 +189,8 @@ for propline in plotprops_list:
                     hist_data.Sumw2()
                 hist_data.SetMarkerStyle(20)
                 hist_data.SetMarkerColor(1)
-                legend.AddEntry(hist_data, dataset_name + " (" + "{:.1f}".format(hist_data.Integral()) + ")")
+                legend.AddEntry(hist_data, "Data " + " (" + "{:.0f}".format(hist_data.Integral()) + " entries)")
+                # legend.AddEntry(hist_data, dataset_name + " (" + "{:.1f}".format(hist_data.Integral()) + ")")
                 
             hist_mc_stack = pyr.THStack()
             hist_line = None
@@ -185,19 +203,21 @@ for propline in plotprops_list:
                 print histfile_mc
                 histfile_mc.ls(cat)
                 pyr.gROOT.cd()
+                print mcfile
                 print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat
                 hist_mc = histfile_mc.Get(cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat).Clone(cat+'/'+"hist_"+mcName+'_'+propName+'_'+weight+'_'+cat)
                 if not args.noOverflow:
                     hist_mc = drawOverflow(hist_mc)
                 if draw_syst:
                     for syst_name in syst_list:
-                        #print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_up"
+                        print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_up"
                         if syst_name not in hist_upper_unc.keys():
+                            print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_up"
                             hist_upper_unc[syst_name] = histfile_mc.Get(cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_up").Clone(propName+'_'+weight+'_'+cat+"_"+syst_name+"_up")
                             hist_upper_unc[syst_name].SetDirectory(pyr.gROOT)
                         else:
                             hist_upper_unc[syst_name].Add(histfile_mc.Get(cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_up"))
-                        #print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_down"
+                        print cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_down"
                         if syst_name not in hist_lower_unc.keys():
                             hist_lower_unc[syst_name] = histfile_mc.Get(cat+'/'+"hist_"+mcset+'_'+propName+'_'+weight+'_'+cat+"_"+syst_name+"_down").Clone(propName+'_'+weight+'_'+cat+"_"+syst_name+"_down")
                             hist_lower_unc[syst_name].SetDirectory(pyr.gROOT)
@@ -209,7 +229,8 @@ for propline in plotprops_list:
                     hist_mc.SetMarkerSize(0)
                     hist_mc.SetLineWidth(0)
                     hist_mc_stack.Add(hist_mc)
-                    legend.AddEntry(hist_mc, mcName + " (" + "{:.1f}".format(hist_mc.Integral()) + ")")
+                    legend.AddEntry(hist_mc, mcName + " (" + "{:.0f}".format(hist_mc.Integral()) + " entries)")
+                    # legend.AddEntry(hist_mc, mcName + " (" + "{:.1f}".format(hist_mc.Integral()) + ")")
                 else:
                     pyr.gROOT.cd()
                     hist_line = hist_mc.Clone()
@@ -218,7 +239,8 @@ for propline in plotprops_list:
                     hist_line.SetLineColor(1)
                     hist_line.SetMarkerStyle(0)
                     hist_line_name = mcName
-            legend.AddEntry(hist_line, hist_line_name + " (" + "{:.1f}".format(hist_line.Integral()) + ")")
+            legend.AddEntry(hist_line, hist_line_name + " (" + "{:.0f}".format(hist_line.Integral()) + ")")
+            # legend.AddEntry(hist_line, hist_line_name + " (" + "{:.1f}".format(hist_line.Integral()) + ")")
 
             canvas.cd()
             if not blind:
@@ -230,7 +252,7 @@ for propline in plotprops_list:
             if not args.noLog: pyr.gPad.SetLogy(True)
             #print "Now drawing"
             hist_mc_stack.Draw("hist")
-            hist_mc_stack.GetYaxis().SetTitle("Events")
+            hist_mc_stack.GetYaxis().SetTitle("Events/{:0.2f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2)))
             hist_mc_stack.SetTitle(cat)
             #print "hist_mc_stack.GetYaxis()"
             #hist_mc_stack.GetYaxis().SetRangeUser(max(hist_line.GetMinimum(), 0.), hist_mc_stack.GetMaximum()*10.)
@@ -289,8 +311,8 @@ for propline in plotprops_list:
                         for syst in syst_list:
                             cache_up   += (hist_upper_unc[syst].GetBinContent(i) - cache_central)**2
                             cache_down += (hist_lower_unc[syst].GetBinContent(i) - cache_central)**2
-                        cache_up = cache_central + math.sqrt(cache_up)
-                        cache_down = cache_central - math.sqrt(cache_down)
+                        cache_up = math.sqrt(cache_up)
+                        cache_down = -math.sqrt(cache_down)
                         hist_highline_unc.SetBinContent(i, cache_up)
                         hist_lowline_unc.SetBinContent(i, cache_down)
                     
@@ -300,28 +322,27 @@ for propline in plotprops_list:
 
                     hist_highline_unc.Divide(hist_mc_stack.GetStack().Last())
                     hist_lowline_unc.Divide(hist_mc_stack.GetStack().Last())
-                    
-                    hist_highline_unc.Add(hist_lowline_unc, -1)
-                    hist_highline_unc.SetFillColor(1)
-                    hist_highline_unc.SetFillStyle(3004)
-                    hist_highline_unc.SetLineWidth(0)
-                    hist_lowline_unc.SetFillColor(10)
-                    hist_lowline_unc.SetLineWidth(0)
-
-                    #hist_highline_unc.SetMinimum(0.5)
-                    #hist_highline_unc.SetMaximum(1.5)
-                    #hist_lowline_unc.SetMinimum(0.5)
-                    #hist_lowline_unc.SetMaximum(1.5)
+                    gr_errors = get_graph_with_errors_from_histograms(hist_mc_stack.GetStack().Last(),hist_highline_unc,hist_lowline_unc)
 
                     hist_unc_stack = pyr.THStack()
-                    hist_unc_stack.Add(hist_lowline_unc)
-                    hist_unc_stack.Add(hist_highline_unc)
-                    hist_unc_stack.SetMinimum(0.5)
-                    hist_unc_stack.SetMaximum(1.5)
+                    hist_unc_stack.SetMinimum(-0.999)
+                    hist_unc_stack.SetMaximum(+0.999)
 
-                    hist_unc_stack.Draw("hist")
+                    hist_ratio = hist_data.Clone("hist_ratio")
+                    hist_ratio.SetLineColor(1)
+                    hist_ratio.Add(hist_mc_stack.GetStack().Last(),-1.)
+                    hist_ratio.Divide(hist_mc_stack.GetStack().Last())
+                    hist_ratio.SetMarkerStyle(21)
+                    # hist_ratio.Draw("ep same")
+                    # hist_ratio.GetXaxis().SetTitle(propDesc)
+                    styleRatioPlot(hist_ratio)
+                    hist_unc_stack.Add(hist_ratio)
 
-                    hist_unc_stack.GetYaxis().SetTitle("data/MC ")
+                    hist_unc_stack.Draw("nostack")
+                    gr_errors.Draw("PE2")
+                    gr_errors.Print("All")
+
+                    hist_unc_stack.GetYaxis().SetTitle("(Data-MC)/MC ")
                     hist_unc_stack.GetYaxis().SetTitleSize(0.08)
                     hist_unc_stack.GetYaxis().SetTitleOffset(0.55)
                     hist_unc_stack.GetYaxis().SetLabelSize(0.08)
@@ -331,23 +352,17 @@ for propline in plotprops_list:
                     hist_unc_stack.GetXaxis().SetLabelSize(0.10)
                     hist_unc_stack.GetXaxis().SetTitleSize(0.10)
                     hist_unc_stack.GetXaxis().SetTitle(propDesc)
+                    if 'Number of' in hist_unc_stack.GetXaxis().GetTitle():
+                        hist_unc_stack.GetXaxis().SetNdivisions(500, False)
 
                     #raw_input()
 
-                hist_ratio = hist_data.Clone("hist_ratio")
-                hist_ratio.SetLineColor(1)
-                hist_ratio.Divide(hist_mc_stack.GetStack().Last())
-                hist_ratio.SetMarkerStyle(21)
-                hist_ratio.Draw("ep same")
-                hist_ratio.GetXaxis().SetTitle(propDesc)
-                styleRatioPlot(hist_ratio)
             
             if not blind:
                 pad1.cd()
             else:
                 canvas.cd()
-            
-            tdrstyle.cmsPrel(targetLumi*1000, 13., False)
+            tdrstyle.cmsPrel(targetLumi*1000, 13., False, True, sp=0, textScale=1., xoffset=0., thisIsPrelim=True)
 
             #raw_input()
             canvas.SaveAs(open_dir+"/hist_"+propName+"_"+cat+'_'+weight+".png")
