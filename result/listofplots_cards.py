@@ -23,7 +23,7 @@ def targetvar(name):
 	if name == "multitopness":
 		bdtplot = Plot("multitopness"   , TH1D("bdt"     , "; Topness;entries/bin", 105, -0.7, 0.35))
 	elif name == "HT":
-		bdtplot = Plot("HT"             , TH1D("bdt"    , ";HT (GeV);entries/bin", 25, 150., 2000.))
+		bdtplot = Plot("HT"             , TH1D("bdt"    , ";HT (GeV);entries/bin", 8, 150., 4150.))
 	elif name == "HTb":
 		bdtplot = Plot("HTb"            , TH1D("bdt"     , ";HTB (GeV);entries/bin", 25, 0., 1000.))
 	elif name == "HTH":
@@ -61,7 +61,8 @@ def targetvar(name):
 		#bdtplot = Plot("BDT9and10jetsplit.BDT9and10jetsplit"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw>0.6?-10.:BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
-		bdtplot = Plot("BDT1"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+		# bdtplot = Plot("BDT1"           , TH1D("bdt"    , ";BDT;entries/bin", 50, -1., 1.))
+		bdtplot = Plot("BDT1"           , TH1D("bdt"    , ";BDT;entries/bin", 20, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 25, -1., 1.))
 		#bdtplot = Plot("BDT9and10jetsplitNoNjw.BDT9and10jetsplitNoNjw"           , TH1D("bdt"    , ";BDT;entries/bin", 10, -1., 1.))
 	lp_cards = bdtplot
