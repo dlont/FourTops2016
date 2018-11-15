@@ -28,9 +28,9 @@ date = dd+"_"+mm+"_"+yyyy
 #channels = ["Mu2016","Syst2016Mu"]		# muon channel central and systematics files
 #channels = ["El2016","Syst2016El"]		# electron channel central and systematics files
 #channels = ["Mu2016","El2016"] 		# both electron and muon channel files
-#channels = ['Syst2016Mu','Syst2016El']		# Systematic MC electron and muon files
+channels = ['Syst2016Mu','Syst2016El']		# Systematic MC electron and muon files
 #channels = ["El2016"]				# only electron files
-channels = ["CutBasedEl2016"]			# only electron files with cutbased selection
+#channels = ["CutBasedEl2016"]			# only electron files with cutbased selection
 #channels = ["Mu2016"]				# only muon files
 
 channel_outfolder_map = {'Mu2016':'Mu2016', 'El2016':'El2016', 'CutBasedEl2016':'El2016', 'Syst2016Mu':'Mu2016', 'Syst2016El':'El2016'}
@@ -164,7 +164,7 @@ for chan in channels:
 		print >> outfileTest, './FourTops --version '
                 print >> outfileTest, commandString, '--nevents=1000 --input_files="dcap://maite.iihe.ac.be'+topTrees[0], '" ', '--fourtops_channel="{}"'.format(chan), jes, jer 
 		# copy output of the ntupler to /pnfs
-		print >> outfileTest, 'export PNFS_OUTPUT_DIR=$PNFS_OUTPUT_DIR/{}'.format(channel_outfolder_map[chan])
+		print >> outfileTest, 'export PNFS_OUTPUT_DIR=$PNFS_OUTPUT_DIR/test/{}'.format(channel_outfolder_map[chan])
 		print >> outfileTest, 'echo "$FOURTOPS_OUTFILE" -> "$PNFS_OUTPUT_DIR"'
 		print >> outfileTest, 'gfal-mkdir -p {}'.format('$PNFS_OUTPUT_DIR')
 		print >> outfileTest, 'gfal-copy $FOURTOPS_OUTFILE $PNFS_OUTPUT_DIR'
