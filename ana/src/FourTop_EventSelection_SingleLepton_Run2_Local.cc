@@ -559,6 +559,10 @@ int main (int argc, char *argv[])
 		JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","SubTotalPileUp");
                 jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
    		DLOG(INFO)<<"DEBUG:SubTotalPileUp";
+    } else if (uncSourceType.compare("SubTotalTimePtEta_up") == 0 || uncSourceType.compare("SubTotalTimePtEta_down") == 0) {
+        JetCorrectorParameters *MCUncCorPar = new JetCorrectorParameters(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","TimePtEta");
+                jecUnc = new JetCorrectionUncertainty(*MCUncCorPar);
+   		DLOG(INFO)<<"DEBUG:SubTotalTimePtEta";
 	} else if (uncSourceType.compare("SubTotalFlavor_up") == 0 || uncSourceType.compare("SubTotalFlavor_down") == 0) {
 		auto MCUncCorParG = make_shared<JetCorrectorParameters>(pathCalJEC+"/Summer16_23Sep2016V4_MC/Summer16_23Sep2016V4_MC_UncertaintySources_AK4PFchs.txt","FlavorPureGluon");
             	jecUnc_Gluon = make_shared<JetCorrectionUncertainty>(*MCUncCorParG);
@@ -1941,6 +1945,10 @@ int main (int argc, char *argv[])
 
         } //End Loop on Events
 
+
+	tupfile->cd();
+	auto btagHistDir = tupfile->mkdir("btag");
+	btagHistDir->cd();
 	for (const auto& el: histo1D_my) el.second->Write();
 	for (const auto& el: histo2D_my) el.second->Write();
 	for (const auto& el: histo2D_btwt) el.second->Write();

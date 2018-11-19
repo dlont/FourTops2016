@@ -46,7 +46,7 @@ bool isJESUp() {
 
 std::string JESSource() {
     std::string source = "Total";
-    const std::array<const std::string,17> possible_options = 
+    const std::array<const std::string,19> possible_options = 
 	{
 	"central",
 	"Total_up",		"Total_down",
@@ -54,6 +54,7 @@ std::string JESSource() {
 	"SubTotalRelative_up", 	"SubTotalRelative_down", 
 	"SubTotalPt_up", 	"SubTotalPt_down",
 	"SubTotalScale_up", 	"SubTotalScale_down",
+    "SubTotalTimePtEta_up", "SubTotalTimePtEta_down",
 	"SubTotalFlavor_up",	"SubTotalFlavor_down",
 	};
 
