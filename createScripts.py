@@ -24,11 +24,7 @@ date = dd+"_"+mm+"_"+yyyy
 
 
 # pick one of the following
-#channels = ["Mu2016","El2016","Syst2016Mu","Syst2016El"] # muon and electron channels central and systematics files
-#channels = ["Mu2016","Syst2016Mu"]		# muon channel central and systematics files
-#channels = ["El2016","Syst2016El"]		# electron channel central and systematics files
-#channels = ["Mu2016","El2016"] 		# both electron and muon channel files
-channels = ['Syst2016Mu','Syst2016El']		# Systematic MC electron and muon files
+channels = ["Mu2016","El2016"] 		# both electron and muon channel files
 #channels = ["El2016"]				# only electron files
 #channels = ["CutBasedEl2016"]			# only electron files with cutbased selection
 #channels = ["Mu2016"]				# only muon files
@@ -47,10 +43,6 @@ for chan in channels:
         tree = ET.ElementTree(file='config/FullElectronTopTrees80_v12_nomasswidth.xml')
     elif chan == "CutBasedEl2016":
         tree = ET.ElementTree(file='config/FullElectronTopTrees80_v12_nomasswidth_cutbased.xml')
-    elif chan == "Syst2016Mu":
-        tree = ET.ElementTree(file='config/SystMuonTopTrees80_v9.xml')
-    elif chan == "Syst2016El":
-        tree = ET.ElementTree(file='config/SystElectronTopTrees80_v9.xml')
     else:
         print "Channel '", chan , "' is not a correct channel name. No tree has been loaded!"
         sys.exit()
@@ -115,6 +107,10 @@ for chan in channels:
 			jes = '--fourtops_jes=SubTotalScale_up'
 		elif 'SubTotalScale_jesdown' in str(d.attrib['name']):
 			jes = '--fourtops_jes=SubTotalScale_down'
+		elif 'SubTotalTimePtEta_jesup' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalTimePtEta_up'
+		elif 'SubTotalTimePtEta_jesdown' in str(d.attrib['name']):
+			jes = '--fourtops_jes=SubTotalTimePtEta_down'
 		elif 'SubTotalFlavor_jesup' in str(d.attrib['name']):
 			jes = '--fourtops_jes=SubTotalFlavor_up'
 		elif 'SubTotalFlavor_jesdown' in str(d.attrib['name']):
