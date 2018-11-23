@@ -56,6 +56,14 @@ $(BUILDDIR)/Hists_TTTT_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTTTSUBSCALEDOWNNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTTT_SubTotalTimePtEtaJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTTTSUBTIMEUPNORM} SubTotalTimePtEtaJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTTT_SubTotalTimePtEtaJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTTTSUBTIMEDOWNNORM} SubTotalTimePtEtaJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_SubTotalRelative_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TTTT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTTTSUBRELUPNORM} SubTotalRelativeJECUP ${TARGETVAR} ${SUPPRESSOUT}
@@ -164,6 +172,7 @@ $(BUILDDIR)/Hists_TTTT_CARDS.root: $(BUILDDIR)/Hists_TTTT.root \
 	$(BUILDDIR)/Hists_TTTT_JESUP.root $(BUILDDIR)/Hists_TTTT_JESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalFlavorJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalScaleJESDOWN.root \
+	$(BUILDDIR)/Hists_TTTT_SubTotalTimePtEtaJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalTimePtEtaJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalRelativeJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalPtJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalPtJESDOWN.root \
 	$(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TTTT_SubTotalPileUpJESDOWN.root \
@@ -337,6 +346,14 @@ $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root: $(BUILDDIR)/Hists_TTinclus_SubTo
 	@echo "Merge inclusive and filtered samples"
 	@hadd -f $@ $^
 	
+$(BUILDDIR)/Hists_TT_SubTotalTimePtEtaJESUP.root: $(BUILDDIR)/Hists_TTinclus_SubTotalTimePtEtaJESUP.root $(BUILDDIR)/Hists_TTFilt_SubTotalTimePtEtaJESUP.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+	
+$(BUILDDIR)/Hists_TT_SubTotalTimePtEtaJESDOWN.root: $(BUILDDIR)/Hists_TTinclus_SubTotalTimePtEtaJESDOWN.root $(BUILDDIR)/Hists_TTFilt_SubTotalTimePtEtaJESDOWN.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+	
 $(BUILDDIR)/Hists_TT_SubTotalFlavorJESUP.root: $(BUILDDIR)/Hists_TTinclus_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TTFilt_SubTotalFlavorJESUP.root
 	@echo "Merge inclusive and filtered samples"
 	@hadd -f $@ $^
@@ -378,6 +395,14 @@ $(BUILDDIR)/Hists_TTinclus_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Cran
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTSUBSCALEDOWNNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
+$(BUILDDIR)/Hists_TTinclus_SubTotalTimePtEtaJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTSUBTIMEUPNORM} SubTotalTimePtEtaJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTinclus_SubTotalTimePtEtaJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTSUBTIMEDOWNNORM} SubTotalTimePtEtaJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	
 $(BUILDDIR)/Hists_TTinclus_SubTotalFlavorJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_SubTotalFlavor_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTSUBFLAVUPNORM} SubTotalFlavorJECUP ${TARGETVAR} ${SUPPRESSOUT}
@@ -417,6 +442,14 @@ $(BUILDDIR)/Hists_TTFilt_SubTotalScaleJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_
 $(BUILDDIR)/Hists_TTFilt_SubTotalScaleJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_SubTotalScale_jesdown_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTSUBSCALEDOWNNORM} SubTotalScaleJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTFilt_SubTotalTimePtEtaJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTSUBTIMEUPNORM} SubTotalTimePtEtaJECUP ${TARGETVAR} ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Hists_TTFilt_SubTotalTimePtEtaJESDOWN.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTSUBTIMEDOWNNORM} SubTotalTimePtEtaJECDOWN ${TARGETVAR} ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Hists_TTFilt_SubTotalFlavorJESUP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_SubTotalFlavor_jesup_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -593,6 +626,7 @@ $(BUILDDIR)/Hists_TT_CARDS.root: $(BUILDDIR)/Hists_TT.root \
 	$(BUILDDIR)/Hists_TT_JERUP.root $(BUILDDIR)/Hists_TT_JERDOWN.root \
 	$(BUILDDIR)/Hists_TT_JESUP.root $(BUILDDIR)/Hists_TT_JESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalFlavorJESUP.root $(BUILDDIR)/Hists_TT_SubTotalFlavorJESDOWN.root \
+	$(BUILDDIR)/Hists_TT_SubTotalTimePtEtaJESUP.root $(BUILDDIR)/Hists_TT_SubTotalTimePtEtaJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalScaleJESUP.root $(BUILDDIR)/Hists_TT_SubTotalScaleJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalRelativeJESUP.root $(BUILDDIR)/Hists_TT_SubTotalRelativeJESDOWN.root \
 	$(BUILDDIR)/Hists_TT_SubTotalPileUpJESUP.root $(BUILDDIR)/Hists_TT_SubTotalPileUpJESDOWN.root \

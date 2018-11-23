@@ -34,6 +34,11 @@ from cards_bin_list import binlist
 def getObservation(ch,file,observable):
     '''
     Fill per-bin datacounts list
+
+    Returns:
+        A dict() of dict() with weighted event counts in all event categories
+        Example:
+            {'mu':{'mu7J2M':4519,  'mu7J3M':882}}
     '''
     logging.debug("----getObservation:-----")
     obs = {ch:{}}
@@ -50,6 +55,12 @@ def getObservation(ch,file,observable):
 def mcRate(ch,files,observable):
     '''
     Get MC predictions for each process
+
+    Returns:
+        A dict() of dict() of dict() of processes and corresponding event rate in different event categories.
+        Example:
+            {'ST_tW':       {'mu':{'mu7J2M':152.523,'mu7J3M':22.191}...}, 
+             'TTRARE_plus': {'mu':{'mu7J2M':32.8009,...}...} }
     '''
     logging.debug("----mcRate:-----")
     rate = {}
@@ -59,7 +70,11 @@ def mcRate(ch,files,observable):
     return rate
 
 def printCardHeader(arguments):
+    '''
+    Print out command line arguments that were used to produce the combine datacard
+    '''
     print >> arguments.outfile, '#',str(datetime.now()), arguments
+    print >> arguments.outfile, '#',' '.join(sys.argv)
     print >> arguments.outfile, '-'*100
     print >> arguments.outfile, 'imax', len(binlist[arguments.channel])
     print >> arguments.outfile, 'jmax', len(proc_id)-1
@@ -67,16 +82,19 @@ def printCardHeader(arguments):
     print >> arguments.outfile, '-'*100
     
 def printShapeFilesBlock(arguments):
+    '''
+    Print out central and systematics histogram templates paths
+    '''
     print >> arguments.outfile, '-'*100
     for ibin in binlist[arguments.channel]:
-        histname = ibin.replace(arguments.channel,'')
-        histname = histname + '/' + arguments.observable
+        histname = ibin.replace(arguments.channel,'')           # e.g. mu7J2M -> 7J2M
+        histname = histname + '/' + arguments.observable        # e.g. 7J2M/bdt
         logging.debug(histname)
         print >> arguments.outfile, 'shapes', 'data_obs', ibin, arguments.data, histname
         for proc in proc_id.keys():
             filename = arguments.sources[proc]
             logging.debug(filename)
-            systname = ibin.replace(arguments.channel,'')+'_$SYSTEMATIC/'+arguments.observable
+            systname = ibin.replace(arguments.channel,'')+'_$SYSTEMATIC/'+arguments.observable # e.g. 7J2M_$SYSTEMATIC/bdt
             print >> arguments.outfile, 'shapes', proc, ibin, \
                      filename, histname,  systname
     print >> arguments.outfile, '-'*100
@@ -119,8 +137,7 @@ def main(arguments):
                             )
             #Fill systematics desctiption for this process
             #Normalization
-	    syst_norm_size_list = syst_norm_size(files,arguments.channel)
-
+            syst_norm_size_list = syst_norm_size(files,arguments.channel)
             df_update = pd.DataFrame.from_dict(syst_norm_size_list[arguments.channel][proc], orient='index')
             df_update.columns = binlist[arguments.channel]
             s.update(df_update)

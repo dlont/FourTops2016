@@ -25,6 +25,7 @@ systtypelist = {
 'PU':'shape',
 'SubTotalPileUpJES':'shape',
 'SubTotalScaleJES':'shape',
+'SubTotalTimePtEtaJES':'shape',
 'SubTotalPtJES':'shape',
 'SubTotalRelativeJES':'shape',
 'SubTotalFlavorJES':'shape',
@@ -67,6 +68,7 @@ systtypelist = {
 'PU':'shape',
 'SubTotalPileUpJES':'shape',
 'SubTotalScaleJES':'shape',
+'SubTotalTimePtEtaJES':'shape',
 'SubTotalPtJES':'shape',
 'SubTotalRelativeJES':'shape',
 'SubTotalFlavorJES':'shape',
@@ -106,10 +108,41 @@ TTJets_norm9_el_unc  = list(map(tt9jetbinunc, binlist['el']))
 TTJets_norm10_el_unc = list(map(tt10jetbinunc, binlist['el']))
 
 def syst_norm_size(rootfiles,ch):
+      '''
+      Retrive normalization systematic uncertainties for each process
 
-	sysdic = {}
-	sysdic_njnb = {}
-	for sys in ["TTISR","TTFSR","TTUE","TTJets_HDAMP"]:
+      Relative uncertainty of some sources that have large statistical component due to limited size
+      of MC samples, such as HDAMP, I/FSR, UE, is calculated separately using MC templates provided 
+      in corresponding rootfiles.
+
+      Args: 
+            rootfiles: A dict() with MC process to filename map, e.g. {'ST_tW':'./file_ST_tW.root', 'TTRARE_plus':'./file_TTRARE.root'}
+            ch: A str() with analysis channel name, e.g. "mu" or "el"
+      Returns:
+            Double nested dictionary with MC process, systematics name and list systematic variation effect in each search category
+            Example:
+            'mu':{
+	            'NP_overlay_ttttNLO' : {
+	                  'TTHZ_norm'         :[na         ]*len(binlist['mu']),
+                        'TTJets_HDAMP'      :[na         ]*len(binlist['mu']),
+                        'tttt_norm'         :['0.94/1.05']*len(binlist['mu']),
+                        'ST_tW_norm'        :[na         ]*len(binlist['mu']),
+                  },
+                  'ttbarTTX' : {
+                        'EW_norm'           :[na         ]*len(binlist['mu']),
+                        'TTRARE_plus_norm'  :[na         ]*len(binlist['mu']),
+                        'lumi'              :[lumiunc    ]*len(binlist['mu']),
+                        'TTISR'             :sysdic['TTISR'],
+                  }
+            'el':{...}
+            }
+      '''
+
+
+      sysdic = {}
+      sysdic_njnb = {}
+      # Calculate normalization effect from systematic shapes templates
+      for sys in ["TTISR","TTFSR","TTUE","TTJets_HDAMP"]:
 		syslist = []
 		for icat,cat in enumerate(binlist[ch]):
 			cat = cat.replace("mu",""); cat = cat.replace("el","");	#strip prefix
@@ -136,9 +169,10 @@ def syst_norm_size(rootfiles,ch):
 		sysdic[sys] = syslist
 
 	#for key in sysdic.keys(): print key, sysdic[key]
-	for key in sysdic_njnb.keys(): print key, sysdic_njnb[key]
+      for key in sysdic_njnb.keys(): print key, sysdic_njnb[key]
 
-	for sys in ["TTTTISR","TTTTFSR"]:
+      # Calculate normalization effect from systematic shapes templates
+      for sys in ["TTTTISR","TTTTFSR"]:
 		syslist = []
 		for cat in binlist[ch]:
 			cat = cat.replace("mu",""); cat = cat.replace("el","");	#strip prefix
@@ -157,7 +191,7 @@ def syst_norm_size(rootfiles,ch):
 			syslist.append( unc )
 		sysdic[sys] = syslist
 
-	syst_norm_size_list_dict = {
+      syst_norm_size_list_dict = {
 'mu':{
 	    mu_Rare1TTHZ_norm[0]:mu_Rare1TTHZ_norm[1],
 	    'NP_overlay_ttttNLO' : {
@@ -353,10 +387,24 @@ def syst_norm_size(rootfiles,ch):
 	#	syst_norm_size_list_dict[ch]['EW'][key] = [na]*len(binlist[ch])
 	#	syst_norm_size_list_dict[ch]['Rare1TTHZ'][key] = [na]*len(binlist[ch])
 
-	return syst_norm_size_list_dict
+      return syst_norm_size_list_dict
 
 
-
+#
+# Double nested dictionary with MC process, systematics name and list systematic variation effect in each search category
+# Example:
+# 'mu':{
+#  'NP_overlay_ttttNLO' : {
+#             'TTTTMEScale'       :[1.         ]*len(binlist['mu']),
+#             'ttMEScale'         :[na         ]*len(binlist['mu']),
+#       },
+#       'ttbarTTX' : {
+#             'TTTTMEScale'       :[na         ]*len(binlist['mu']),
+#             'SubTotalPtJES'     :[1          ]*len(binlist['mu']),
+#       }
+# 'el':{...}
+# }
+      
 syst_shape_size_list = {
 'mu':{
 	    mu_Rare1TTHZ_shape[0]:mu_Rare1TTHZ_shape[1],
@@ -370,6 +418,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPtJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['mu']),
+            'SubTotalTimePtEtaJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalFlavorJES'               :[1.         ]*len(binlist['mu']),
             'JER'               :[1.         ]*len(binlist['mu']),
@@ -393,6 +442,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPtJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['mu']),
+            'SubTotalTimePtEtaJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['mu']),
             'SubTotalFlavorJES'               :[1.         ]*len(binlist['mu']),
             'JER'               :[1.         ]*len(binlist['mu']),
@@ -416,6 +466,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
@@ -439,6 +490,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
@@ -462,6 +514,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPtJES'               :[na         ]*len(binlist['mu']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['mu']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['mu']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['mu']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['mu']),
             'JER'               :[na         ]*len(binlist['mu']),
@@ -488,6 +541,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPtJES'               :[1.         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['el']),
+            'SubTotalTimePtEtaJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['el']),
             'SubTotalFlavorJES'               :[1.         ]*len(binlist['el']),
             'JER'               :[1.         ]*len(binlist['el']),
@@ -511,6 +565,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPtJES'               :[1.         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[1.         ]*len(binlist['el']),
+            'SubTotalTimePtEtaJES'               :[1.         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[1.         ]*len(binlist['el']),
             'SubTotalFlavorJES'               :[1.         ]*len(binlist['el']),
             'JER'               :[1.         ]*len(binlist['el']),
@@ -534,6 +589,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['el']),
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),
@@ -557,6 +613,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['el']),
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),
@@ -580,6 +637,7 @@ syst_shape_size_list = {
             'SubTotalRelativeJES'               :[na         ]*len(binlist['el']),
             'SubTotalPtJES'               :[na         ]*len(binlist['el']),
             'SubTotalScaleJES'               :[na         ]*len(binlist['el']),
+            'SubTotalTimePtEtaJES'               :[na         ]*len(binlist['el']),
             'SubTotalPileUpJES'               :[na         ]*len(binlist['el']),
             'SubTotalFlavorJES'               :[na         ]*len(binlist['el']),
             'JER'               :[na         ]*len(binlist['el']),

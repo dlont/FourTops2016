@@ -11,6 +11,8 @@ def getJECCutSets(systematic, cut_string):
 	syst = 'SubTotalPtJES'
     elif 'SUBTOTALPILEJEC' in systematic.upper():
 	syst = 'SubTotalPileUpJES'
+    elif 'SUBTOTALTIMEPTETAJEC' in systematic.upper():
+	syst = 'SubTotalTimePtEtaJES'
     elif 'SUBTOTALFLAVORJEC' in systematic.upper():
 	syst = 'SubTotalFlavorJES'
     elif 'JER' in systematic.upper():

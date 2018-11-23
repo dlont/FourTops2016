@@ -17,10 +17,10 @@ binlist = {
 'mu8J4M',
 'mu9J2M',
 'mu9J3M',
-#'mu9J4M',
+'mu9J4M',
 'mu10J2M',
 'mu10J3M',
-#'mu10J4M'
+'mu10J4M'
 ],
 'el':[
 #'el6J2M',
@@ -34,9 +34,9 @@ binlist = {
 'el8J4M',
 'el9J2M',
 'el9J3M',
-#'el9J4M',
+'el9J4M',
 'el10J2M',
 'el10J3M',
-#'el10J4M'
+'el10J4M'
 ]
 }

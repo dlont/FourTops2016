@@ -111,6 +111,14 @@ $(BUILDDIR)/Craneen_ttttNLO_SubTotalScale_jesdown_Run2_TopTree_Study.root: $(wil
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
+$(BUILDDIR)/Craneen_ttttNLO_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_SubTotalTimePtEta_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_ttttNLO_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_SubTotalTimePtEta_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+
 $(BUILDDIR)/Craneen_ttttNLO_SubTotalRelative_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_ttttNLO_SubTotalRelative_jesup_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
@@ -237,6 +245,14 @@ $(BUILDDIR)/Craneen_TTJets_powheg_SubTotalScale_jesdown_Run2_TopTree_Study.root:
 $(BUILDDIR)/Craneen_TTJets_powheg_SubTotalScale_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_SubTotalScale_jesup_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_SubTotalTimePtEta_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJets_powheg_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_SubTotalTimePtEta_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
 $(BUILDDIR)/Craneen_TTJets_powheg_SubTotalRelative_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJets_powheg_SubTotalRelative_jesdown_Run2_TopTree_Study*.root)
 	@echo merging $@
@@ -313,6 +329,14 @@ $(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesdown_Run2_TopTree_Study.r
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 	
 $(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalScale_jesup_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalTimePtEta_jesdown_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalTimePtEta_jesdown_Run2_TopTree_Study*.root)
+	@echo merging $@
+	@$(HADD) $@ $^ ${SUPPRESSOUT}
+	
+$(BUILDDIR)/Craneen_TTJetsFilt_powheg_SubTotalTimePtEta_jesup_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_TTJetsFilt_powheg_SubTotalTimePtEta_jesup_Run2_TopTree_Study*.root)
 	@echo merging $@
 	@$(HADD) $@ $^ ${SUPPRESSOUT}
 
