@@ -28,6 +28,10 @@ ifeq (${ERA},GH)
 DATASUFFIX=[G-H]*
 endif
 
+ifeq (${TREENAME},Craneen__El)
+RERECOSUFFIX=-ReReco
+endif
+
 SUPPRESSOUT=&>/dev/null
 
 HADD=hadd -k
@@ -35,31 +39,31 @@ HADD_DATA=hadd
 
 
 ##################################### SINGLE LEPTON ##############################################
-$(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016B-ReReco*.root)
+$(BUILDDIR)/Craneen_DataB_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016B$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016C-ReReco*.root)
+$(BUILDDIR)/Craneen_DataC_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016C$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016D-ReReco*.root)
+$(BUILDDIR)/Craneen_DataD_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016D$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016E-ReReco*.root)
+$(BUILDDIR)/Craneen_DataE_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016E$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016F-ReReco*.root)
+$(BUILDDIR)/Craneen_DataF_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016F$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016G-ReReco*.root)
+$(BUILDDIR)/Craneen_DataG_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016G$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
-$(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016H-ReReco*.root)
+$(BUILDDIR)/Craneen_DataH_Run2_TopTree_Study.root: $(wildcard $(INPUTLOCATION)/Craneen_Data_Run2016H$(RERECOSUFFIX)_Run2_TopTree_Study*.root)
 	@echo ERA=$(ERA), DATASUFFIX=$(DATASUFFIX)
 	@echo merging $@
 	@$(HADD_DATA) $@ $^
