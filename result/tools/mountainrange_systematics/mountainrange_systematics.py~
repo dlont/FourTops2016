@@ -316,10 +316,9 @@ class View(object):
 			xbins = stitch_edge_bins; xbins.insert(0,0.); xbins = [el - 0.5 for el in xbins];			
 			xbins = array('d',xbins)                        
 			if canvas_config['central']['type']['algorithm'] == 'from_file_norm':
+				print xbins
 				hist_central=hist_central.Rebin(len(xbins)-1, hist_central.GetName(), xbins)
-			if canvas_config['central']['type']['algorithm'] == 'from_file_norm_nj':
-				hist_central=hist_central.Rebin(len(xbins)-1, hist_central.GetName(), xbins)
-				hist_central.Rebin(3)
+				print xbins
                         pad1 = c.cd(1)
                         rt.gPad.SetLogy()
 			rt.gPad.Update()
@@ -338,9 +337,6 @@ class View(object):
                                 hist,temp_nbins,temp_nonemptybin_map,stitch_edge_bins = mr.fillnonemptysingle_from_list( distrib_title, rootfile, list_hists_in_file, template)
 				if canvas_config['central']['type']['algorithm'] == 'from_file_norm':
 					hist = hist.Rebin(len(xbins)-1, hist.GetName(), xbins)
-				if canvas_config['central']['type']['algorithm'] == 'from_file_norm_nj':
-					hist = hist.Rebin(len(xbins)-1, hist.GetName(), xbins)
-					hist.Rebin(3)
                                 rt.SetOwnership(hist,False)
                                 c.cd(1)
                                 self._style.decorate_histogram(hist,canvas_config[template]['style']); hist.Draw("hist same")
