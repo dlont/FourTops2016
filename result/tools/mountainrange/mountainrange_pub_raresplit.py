@@ -42,6 +42,8 @@ def draw_legend(**kwargs):
 			legend = rt.TLegend(coords[0],coords[1],coords[2],coords[3])
 	else: legend = rt.TLegend(0.6,0.75,0.9,0.9)
 
+	signal_scale_factor = kwargs.get('signal_scale_factor',None)
+
 	datagr = None
 	if 'data' in kwargs: datagr = kwargs['data']
 
@@ -59,25 +61,32 @@ def draw_legend(**kwargs):
 		if 'hist_tt' in kwargs:
 			hist_tt = kwargs['hist_tt']
 			# if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}",'lf') 
-			if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}(stack)",'lf') # for rare split
+			if hist_tt: legend.AddEntry(hist_tt,"t#bar{t}",'lf') # for rare split
 		if 'hist_st' in kwargs:
 			hist_st = kwargs['hist_st']
                         # if hist_st: legend.AddEntry(hist_st,"tX",'lf') 
-                        if hist_st: legend.AddEntry(hist_st,"tX(stack)",'lf') # for rare split
+                        if hist_st: legend.AddEntry(hist_st,"tX",'lf') # for rare split
 		if 'hist_ew' in kwargs:
 			hist_ew = kwargs['hist_ew']
                         # if hist_ew: legend.AddEntry(hist_ew,"EW",'lf')	#for slepton
-                        if hist_ew: legend.AddEntry(hist_ew,"EW(stack)",'lf')	#for rare split; for slepton 
+                        if hist_ew: legend.AddEntry(hist_ew,"EW",'lf')	#for rare split; for slepton 
                         #if : legend.AddEntry(hist_ew,"DY",'lf')	#for dilepton
 		if 'hist_rare' in kwargs:
 			hist_rare = kwargs['hist_rare']
-                        if hist_rare: legend.AddEntry(hist_rare,"Rare:tt+H,Z,W,XY(stack)",'lf')
+                        if hist_rare: legend.AddEntry(hist_rare,"t#bar{t}+H,Z",'lf')
+		if 'hist_xy' in kwargs:
+			hist_xy = kwargs['hist_xy']
+                        if hist_xy: legend.AddEntry(hist_xy,"t#bar{t}+XY",'lf')
+		if 'hist_wxy' in kwargs:
+			hist_wxy = kwargs['hist_wxy']
+                        if hist_wxy: legend.AddEntry(hist_wxy,"t#bar{t}+W,XY",'lf')
 		if 'hist_tttt' in kwargs:
 			hist_tttt = kwargs['hist_tttt']
-			if hist_tttt: legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t} (postfit)",'lf')
+			if hist_tttt and not signal_scale_factor: legend.AddEntry(hist_tttt,"t#bar{t}t#bar{t}",'lf')
+			if hist_tttt and signal_scale_factor: legend.AddEntry(hist_tttt,"t#bar{{t}}t#bar{{t}} (#times {0})".format(signal_scale_factor),'lf')
 		if 'hist_pre' in kwargs:
 			hist_pre = kwargs['hist_pre']
-			#if hist_pre: legend.AddEntry(hist_pre,"Prefit unc.","fe")
+			if hist_pre: legend.AddEntry(hist_pre,"Prefit unc.","fe")
 		if 'hist_post' in kwargs:
 			hist_post = kwargs['hist_post']
 			if hist_post: legend.AddEntry(hist_post,"Postfit unc.","fe")
@@ -180,9 +189,9 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_templ
 
 	for item, isep in enumerate(separator_bins):
 		x = hist_template.GetBinLowEdge(isep)+hist_template.GetBinWidth(isep)
-		#ymin = hist_template.GetYaxis().GetXmin()
 		ymin = hist_template.GetMinimum()
 		ymax = hist_template.GetMaximum()
+		ymax = c.GetUymax()
 		#print x, hist_template.GetMaximum()
 		l = rt.TLine(x,ymin,x,ymax); l.SetLineColor(rt.kBlack); l.SetLineWidth(2)
 		l.Draw()
@@ -195,21 +204,21 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_templ
 			#tex.SetTextAngle(45)
 			cxmin=c.GetLeftMargin()
 			cxmax=1.-c.GetRightMargin()
-			cymin=c.GetXlowNDC()
 			xmax = hist_template.GetXaxis().GetXmax()
 			xmin = hist_template.GetXaxis().GetXmin()
                         if isinstance(labels[item],list) and len(labels[item])>1: x = labels[item][1]
 			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
 			#xndc= c.GetLeftMargin()
 			logging.debug('Separator|Label: {} | {} {} {}'.format( isep,xndc,ycoord,labels[item][0] ) )
-			#tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
-			if (item == len(separator_bins)-1):
+			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
+			# draw last label during the previous to the last iteration
+			if (item == len(separator_bins)-1):		
                             if isinstance(labels[item+1],list) and len(labels[item+1])>1:
                                 x = labels[item+1][1]
-			        xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
-                                #tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
+                                xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+                                tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
                             else: #last search region
-                                #tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
+                                tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
 				pass
         rt.gPad.RedrawAxis()
 
@@ -275,28 +284,28 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 		c.cd(1)
 		rt.gPad.SetPad(0.,0.1,1.,1.);rt.gPad.SetFillStyle(4000)
 	hist_bg_prefit_unc_noempty.SetMarkerSize(0)
-	for ibin in range(1,hist_bg_prefit_unc_noempty.GetNbinsX()+1): hist_bg_prefit_unc_noempty.SetBinError(ibin,0.)
-	hist_bg_prefit_unc_noempty.Draw('P')
-	ymin = hist_bg_prefit_unc_noempty.GetMinimum()
-	ymax = 10.*hist_bg_prefit_unc_noempty.GetMaximum()
+	#remove prefit uncertainty
+	# for ibin in range(1,hist_bg_prefit_unc_noempty.GetNbinsX()+1): hist_bg_prefit_unc_noempty.SetBinError(ibin,0.)
+	hist_bg_prefit_unc_noempty.DrawCopy('AXIS')
+	hist_template = c.GetPad(1).GetListOfPrimitives().FindObject(hist_bg_prefit_unc_noempty.GetName()+'_copy')
+	ymin = hist_template.GetMinimum()
+	ymax = 10.*hist_template.GetMaximum()
 	logymin = ymin
 	logymax = ymax
 	ytitle = ''
 	if "axes" in jsondic:
-		ymin = jsondic['axes'].get('ymin',hist_bg_prefit_unc_noempty.GetMinimum())
-		ymax = jsondic['axes'].get('ymax',10.*hist_bg_prefit_unc_noempty.GetMaximum())
+		ymin = jsondic['axes'].get('ymin',hist_template.GetMinimum())
+		ymax = jsondic['axes'].get('ymax',10.*hist_template.GetMaximum())
 		logymin = jsondic['axes'].get('logymin',ymin)
 		logymax = jsondic['axes'].get('logymax',ymax)
         ytitle = jsondic['axes'].get('ytitle','')
-	hist_bg_prefit_unc_noempty.GetYaxis().SetTitle(ytitle)
-	hist_bg_prefit_unc_noempty.SetAxisRange(ymin, ymax, "Y")
+	hist_template.GetYaxis().SetTitle(ytitle)
+	hist_template.SetAxisRange(ymin, ymax, "Y")
 
-        #Signal
-	hist_st_noempty.Draw("same")
+	hist_st_noempty.Draw("nostack same")
         #Total pre- and post-fit backgounds and background stack
 	hist_bg_prefit_unc_noempty.Draw("E2 same")
 	hist_bg_unc_noempty.Draw("E2 same")
-	hist_sig_noempty.Draw("hist same")
         #Rare backgrounds as histograms
         if hist_prefit_TTRARE_plus_noempty: hist_prefit_TTRARE_plus_noempty.Draw("hist same")
         if hist_prefit_Rare1TTH_noempty:    hist_prefit_Rare1TTH_noempty.Draw("hist same")
@@ -312,9 +321,11 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
         if hist_fits_Rare1TTW_noempty:      hist_fits_Rare1TTW_noempty.Draw("hist same")
         #Data
 	if gr_data_noempty: gr_data_noempty.Draw("same pe")
+        #Signal
+	hist_sig_noempty.Draw("hist same")
 
         #Legend
-	draw_legend(canvas=c,legend=jsondic['legend'],is_ratio=arguments.is_ratio,
+	draw_legend(canvas=c,legend=jsondic['legend'],is_ratio=arguments.is_ratio,signal_scale_factor=arguments.scale_signal,
                         data=gr_data_noempty,
                         hist_pre=hist_bg_prefit_unc_noempty,
                         hist_post=hist_bg_unc_noempty,
@@ -327,24 +338,24 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 			hist_st=hist_st_noempty.GetHists()[1],	# for ttrare split tthz
 			hist_ew=hist_st_noempty.GetHists()[2],	# for ttrare split tthz
 			hist_rare=hist_st_noempty.GetHists()[3],# for ttrare combined
+			hist_wxy=hist_st_noempty.GetHists()[4],# for ttrare combined
                         #
-                        hist_ttxy_pre = hist_prefit_TTRARE_plus_noempty,
-                        hist_tth_pre  = hist_prefit_Rare1TTH_noempty,
+                        # hist_ttxy_pre = hist_prefit_TTRARE_plus_noempty,
+                        # hist_tth_pre  = hist_prefit_Rare1TTH_noempty,
                         hist_ttz_pre  = hist_prefit_Rare1TTZ_noempty,
                         hist_ttw_pre  = hist_prefit_Rare1TTW_noempty,
                         #
-                        hist_ttxy_b   = hist_fitb_TTRARE_plus_noempty,
-                        hist_tth_b    = hist_fitb_Rare1TTH_noempty,
+                        # hist_ttxy_b   = hist_fitb_TTRARE_plus_noempty,
+                        # hist_tth_b    = hist_fitb_Rare1TTH_noempty,
                         hist_ttz_b    = hist_fitb_Rare1TTZ_noempty,
                         hist_ttw_b    = hist_fitb_Rare1TTW_noempty,
                         #
-                        hist_ttxy_s   = hist_fits_TTRARE_plus_noempty,
-                        hist_tth_s    = hist_fits_Rare1TTH_noempty,
+                        # hist_ttxy_s   = hist_fits_TTRARE_plus_noempty,
+                        # hist_tth_s    = hist_fits_Rare1TTH_noempty,
                         hist_ttz_s    = hist_fits_Rare1TTZ_noempty,
                         hist_ttw_s    = hist_fits_Rare1TTW_noempty
                         )
 
-	draw_subhist_separators(c.cd(1),stitch_edges,binmapping, jsondic['binlabels']['labels'],jsondic['binlabels'], hist_bg_prefit_unc_noempty)
 	rt.gPad.RedrawAxis()
 
 	if arguments.is_ratio and gr_data_noempty:
@@ -371,19 +382,30 @@ def make_mountainrange_plots(jsondic,arguments,stitch_edges,binmapping,**kwargs)
 	CMS_lumi.CMS_lumi(c.cd(1),4,0)
 	if arguments.outfile:
 		for ext in arguments.extension.split(','):
-			c.Print(arguments.outfile+'_lin.'+ext)
-			hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")
+			c.cd(1); rt.gPad.SetLogy(False);
+			c.SaveAs(arguments.outfile+'_lin.'+ext)
 			c.cd(1); rt.gPad.SetLogy();
-			c.Print(arguments.outfile+'_log.'+ext)
+			# hist_template.SetAxisRange(logymin, logymax, "Y")
+			c.SaveAs(arguments.outfile+'_log.'+ext)
 	else:
 		if 'filename' in jsondic:
 			if not os.path.exists(arguments.dir):
 				os.makedirs(arguments.dir)
 			for ext in arguments.extension.split(','):
-				c.Print(arguments.dir+'/'+jsondic['filename']+'_lin.'+ext)
+				c.cd(1); rt.gPad.SetLogy(False);
+				hist_template.SetAxisRange(ymin, ymax, "Y")			
+				draw_subhist_separators(c.cd(1),stitch_edges,binmapping, jsondic['binlabels']['labels'],jsondic['binlabels'], hist_template)
+				c.SaveAs(arguments.dir+'/'+jsondic['filename']+'_lin.'+ext)
+				# destroy separation bars in order to avoid overlaps 
+				for item in c.GetPad(1).GetListOfPrimitives(): 
+					if isinstance(item,rt.TLine): item.Delete()
 				c.cd(1); rt.gPad.SetLogy();
-				hist_bg_prefit_unc_noempty.SetAxisRange(logymin, logymax, "Y")			
-				c.Print(arguments.dir+'/'+jsondic['filename']+'_log.'+ext)
+				hist_template.SetAxisRange(logymin, logymax, "Y")			
+				draw_subhist_separators(c.cd(1),stitch_edges,binmapping, jsondic['binlabels']['labels'],jsondic['binlabels'], hist_template)
+				c.SaveAs(arguments.dir+'/'+jsondic['filename']+'_log.'+ext)
+				# destroy separation bars in order to avoid overlaps 
+				for item in c.GetPad(1).GetListOfPrimitives(): 
+					if isinstance(item,rt.TLine): item.Delete()
 
 def print_toys_pval(arguments):
     	if arguments.gof_data is not None and arguments.gof_toys is not None:

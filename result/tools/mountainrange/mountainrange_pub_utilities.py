@@ -58,7 +58,7 @@ def fillsingle(hist_master, rootfile, list_hists_in_file):
         """
         Fill long mountain range histogram including empty bins
         :param hist_master: empty histogram to fill
-        :param rootfile: input rootfile with original list_hists_in_file that should be stiched
+        :param rootfile: input rootfile with original list_hists_in_file that should be stitched
         :return: list of bins in hist_master corresponding to boundaries of
                     individual list_hists_in_file
         """
@@ -173,7 +173,7 @@ def fillstack(stack, hist_template, rootfile, histograms):
 		stack.Add(hist,'hist')
 	return
 
-def binmap(totalhist=None, sighist=None, datagr=None):
+def binmap(totalhist=None, sighist=None, datagr=None, tol=1.E-05):
         """
         Map all non-empty bins in long histogram to sequential bin numbers
         e.g. a histogram with three bins, whith only first and third bin filled
@@ -186,19 +186,19 @@ def binmap(totalhist=None, sighist=None, datagr=None):
 	if totalhist is not None:
 		nbins = global_nbins
 		for ibin in range(1,nbins+1):
-			if totalhist.GetBinContent(ibin) > 1.E-05: nonemptybinid.add(ibin)
+			if totalhist.GetBinContent(ibin) > tol: nonemptybinid.add(ibin)
 			#else: totalhist.Print("all"); break
 	if sighist is not None:
                 nbins = global_nbins
                 for ibin in range(1,nbins+1):
-                        if sighist.GetBinContent(ibin) > 1.E-05: nonemptybinid.add(ibin)
+                        if sighist.GetBinContent(ibin) > tol: nonemptybinid.add(ibin)
 			#else: sighist.Print("all"); break
 
 	if datagr is not None:
                 nbins = global_nbins
 		ylist = datagr.GetY()
                 for ibin in range(1,nbins+1):
-                        if ylist[ibin-1] > 1.E-05: nonemptybinid.add(ibin)
+                        if ylist[ibin-1] > tol: nonemptybinid.add(ibin)
 			#else: datagr.Print("all"); break
 
 	#create a map between old and new bin numbers
@@ -261,6 +261,111 @@ def fillnonemptysingle( arguments, rootfile, list_hists_in_file, name, nbins, no
         hist_noempty = noemptybins(hist_master, nonemptybin_map)
         return hist_noempty
 
+def fillnonemptysingle_from_list( distrib_title, rootfile, list_hists_in_file, name, tol=-100 ):
+        #check that individual histograms exist in the file
+	root_histograms = [ rootfile.Get(hname.encode('ascii')) for hname in list_hists_in_file ]
+        if not all([hist!=None for hist in root_histograms]): return None
+	nbins = get_total_nbins_from_list(root_histograms)
+        hist_master = rt.TH1F(name,distrib_title,nbins,0.5,float(nbins+0.5))
+        stitch_edge_bins = fillsingle(hist_master, rootfile, list_hists_in_file)
+        nonemptybin_map = binmap(hist_master,None,None,tol)
+        hist_noempty = noemptybins(hist_master, nonemptybin_map)
+        return hist_noempty,nbins,nonemptybin_map,stitch_edge_bins
+
+def draw_subhist_labels(c,labels,conf,hist_template):
+	c.cd()
+
+        ycoord = conf['ypos']
+
+	for item in range(0,len(labels)-1):
+		#item = labels[isep]
+		if isinstance(labels,list):
+			tex = rt.TLatex()
+                        if 'size' in conf: tex.SetTextSize(conf['size'])
+                        else: tex.SetTextSize(0.045)
+			tex.SetTextAlign(32)
+			#tex.SetTextAngle(45)
+			cxmin=c.GetLeftMargin()
+			cxmax=1.-c.GetRightMargin()
+			xmax = hist_template.GetXaxis().GetXmax()
+			xmin = hist_template.GetXaxis().GetXmin()
+                        if isinstance(labels[item],list) and len(labels[item])>1: x = labels[item][1]
+			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+			#xndc= c.GetLeftMargin()
+			logging.debug('Separator|Label: {} | {} {} {}'.format( item,xndc,ycoord,labels[item][0] ) )
+			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
+			# draw last label during the previous to the last iteration
+			if (item == len(labels)-1):		
+                            if isinstance(labels[item+1],list) and len(labels[item+1])>1:
+                                x = labels[item+1][1]
+                                xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+                                tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
+                            else: #last search region
+                                tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
+				pass
+        rt.gPad.RedrawAxis()
+
+
+def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_template):
+
+        #calculate position of separator vertical lines on mountain range plot
+        #without empty bins
+	mappedbins = binmapping.keys()
+	mappedbins.sort()
+	mapped_edge_bins = []
+	for edge in stitch_edge_bins:   #for each boundary bin in long histogram
+		mappededge = -1
+		for mb in mappedbins:   #find rightmost nonempty bin before boundary bin
+			if mb <= edge: mappededge = mb
+			else:
+				mapped_edge_bins.append(mappededge)
+				break
+
+        #boundary bins on histogram without empty bins
+	separator_bins = [binmapping[x] for x in mapped_edge_bins]
+	logging.debug( "Stitching bins:" )
+	logging.debug(pprint.pformat( stitch_edge_bins ) )
+	logging.debug( "Separator bins:" )
+	logging.debug(pprint.pformat( separator_bins ) )
+
+	c.cd()
+
+        ycoord = conf['ypos']
+
+	for item, isep in enumerate(separator_bins):
+		x = hist_template.GetBinLowEdge(isep)+hist_template.GetBinWidth(isep)
+		ymin = hist_template.GetMinimum()
+		ymax = hist_template.GetMaximum()*1.9
+		logging.debug("Line coordinates (x,ymin,ymax): ({}, {}, {})".format(x, ymin, ymax))
+		l = rt.TLine(x,ymin,x,ymax); l.SetLineColor(rt.kBlack); l.SetLineWidth(2)
+		rt.SetOwnership(l,False)
+		l.Draw()
+
+		if isinstance(labels,list):
+			tex = rt.TLatex()
+                        if 'size' in conf: tex.SetTextSize(conf['size'])
+                        else: tex.SetTextSize(0.045)
+			tex.SetTextAlign(32)
+			#tex.SetTextAngle(45)
+			cxmin=c.GetLeftMargin()
+			cxmax=1.-c.GetRightMargin()
+			xmax = hist_template.GetXaxis().GetXmax()
+			xmin = hist_template.GetXaxis().GetXmin()
+                        if isinstance(labels[item],list) and len(labels[item])>1: x = labels[item][1]
+			xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+			#xndc= c.GetLeftMargin()
+			logging.debug('Separator|Label: {} | {} {} {}'.format( isep,xndc,ycoord,labels[item][0] ) )
+			tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item][0])
+			# draw last label during the previous to the last iteration
+			if (item == len(separator_bins)-1):		
+                            if isinstance(labels[item+1],list) and len(labels[item+1])>1:
+                                x = labels[item+1][1]
+                                xndc= cxmin + (x - xmin)/(xmax - xmin) * (cxmax - cxmin)
+                                tex.DrawLatexNDC(xndc-0.05,ycoord,labels[item+1][0])
+                            else: #last search region
+                                tex.DrawLatexNDC(cxmax-0.05,ycoord,labels[item+1][0])
+				pass
+        rt.gPad.RedrawAxis()
 
 def get_total_nbins(jsondic,inputrootfile):
         """
@@ -287,7 +392,7 @@ def get_total_nbins(jsondic,inputrootfile):
 	logging.info('Mountain range plot nbins: ' + str(nbins))
         return nbins
 
-def make_gr_ratio_data(gr_data_noempty,hist_bg_unc_noempty):
+def make_gr_ratio_data(gr_data_noempty,hist_bg_unc_noempty, tol=1.E-6):
         gr_ratio_data = rt.TGraphAsymmErrors()
     	gr_ratio_data.SetMarkerStyle(20)
         ipoint = 0
@@ -299,14 +404,14 @@ def make_gr_ratio_data(gr_data_noempty,hist_bg_unc_noempty):
 		eyh   = gr_data_noempty.GetErrorYhigh(ibin)
 		eyl   = gr_data_noempty.GetErrorYlow(ibin)
 
-                if ydata[ibin] < 1.E-6: continue
+                if ydata[ibin] < tol: continue
 
                 gr_ratio_data.SetPoint(ipoint,xdata[ibin],(ydata[ibin]-ymc)/ymc)
                 gr_ratio_data.SetPointError(ipoint,0.,0.,eyl/ymc, eyh/ymc)
                 ipoint+=1
         return gr_ratio_data
 
-def get_chi2_ndf(gr_data_noempty,hist_bg_unc_noempty):
+def get_chi2_ndf(gr_data_noempty,hist_bg_unc_noempty, tol=1.E-6):
     chi2 = 0
     ndf = 0
     ydata = gr_data_noempty.GetY()
@@ -316,7 +421,7 @@ def get_chi2_ndf(gr_data_noempty,hist_bg_unc_noempty):
 	eymc  = hist_bg_unc_noempty.GetBinError(ibin+1)
 	eyh   = gr_data_noempty.GetErrorYhigh(ibin)
 	eyl   = gr_data_noempty.GetErrorYlow(ibin)
-        if ymc > 1.E-6:
+        if ymc > tol:
 		#chi2+=(ydata[ibin]-ymc)**2/(((eyh+eyl)/2.)**2.)
 		chi2+=(ydata[ibin]-ymc)**2/(((eyh+eyl)/2.)**2.+eymc**2.)
 		ndf+=1.
