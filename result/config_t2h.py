@@ -49,17 +49,17 @@ search_scheme = '9J4M,10J4M'
 from centralweight import centralweight
 cut_sets = [
     ("allSF", "", "({1} {0})*{2}".format(tthftype,trigger_cuts,centralweight)),
-    ("6J2M", "Njet=6, nMtags=2",   "(nJets==6 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("6J3M", "Njet=6, nMtags=3",   "(nJets==6 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("6J4M", "Njet=6, nMtags=4",   "(nJets==6 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("7J2M", "Njet=7, nMtags=2",   "(nJets==7 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("7J3M", "Njet=7, nMtags=3",   "(nJets==7 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("7J4M", "Njet=7, nMtags=4",   "(nJets==7 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("8J2M", "Njet=8, nMtags=2",   "(nJets==8 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("8J3M", "Njet=8, nMtags=3",   "(nJets==8 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("8J4M", "Njet=8, nMtags=4",   "(nJets==8 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("9J2M", "Njet=9, nMtags=2",   "(nJets==9 && nMtags==2 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-    ("10J2M", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+    ("6J2M", "Njet=6, nMtags=2",   "(nJets==6 && nMtags==2 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("6J3M", "Njet=6, nMtags=3",   "(nJets==6 && nMtags==3 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("6J4M", "Njet=6, nMtags=4",   "(nJets==6 && nMtags>=4 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("7J2M", "Njet=7, nMtags=2",   "(nJets==7 && nMtags==2 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("7J3M", "Njet=7, nMtags=3",   "(nJets==7 && nMtags==3 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("7J4M", "Njet=7, nMtags=4",   "(nJets==7 && nMtags>=4 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("8J2M", "Njet=8, nMtags=2",   "(nJets==8 && nMtags==2 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("8J3M", "Njet=8, nMtags=3",   "(nJets==8 && nMtags==3 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("8J4M", "Njet=8, nMtags=4",   "(nJets==8 && nMtags>=4 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("9J2M", "Njet=9, nMtags=2",   "(nJets==9 && nMtags==2 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+    ("10J2M", "Njet=9+, nMtags=2", "(nJets>9 && nMtags==2  {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
     #("PU", "", "SFPU"),
     #("PUup", "", "SFPU_up"),
     #("PUdown", "", "SFPU_down"),
@@ -81,15 +81,15 @@ cut_sets = [
     ]
 if search_scheme == '9J3M,10J3M':
     cut_sets += [
-        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=3 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=3  {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
     ]
 elif search_scheme == '9J4M,10J4M':
     cut_sets += [
-        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags==3 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-        ("9J4M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=4 {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
-        ("10J4M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=4  {0})*{2}*{1}".format(tthftype,trigger_cuts,centralweight)),
+        ("9J3M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags==3 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J3M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags==3  {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+        ("9J4M", "Njet=9, nMtags=3",   "(nJets==9 && nMtags>=4 {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
+        ("10J4M", "Njet=9+, nMtags=3", "(nJets>9 && nMtags>=4  {0} && {1})*{2}".format(tthftype,trigger_cuts,centralweight)),
     ]
 
 print "Target variable: ", target
