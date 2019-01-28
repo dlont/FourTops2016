@@ -8,6 +8,7 @@ usage: mountainrange_systematics.py [-h] [--version] [-o OUTFILE]
 
 ## Example
 ```
+mkdir build
 python mountainrange_systematics.py -c test/conf_mu_cff.py -o mytest -e pdf -b
 ```
 
