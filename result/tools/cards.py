@@ -18,8 +18,8 @@ import numpy as np
 import ROOT
 
 from cards_proc_list import proc_id
-from cards_syst_list_fsrisruenorm_jetsplit_v3 import systtypelist
-from cards_syst_list_fsrisruenorm_jetsplit_v3 import syst_norm_size, syst_shape_size_list
+from cards_syst_list_fsrisruenorm_jetsplit_v4 import systtypelist
+from cards_syst_list_fsrisruenorm_jetsplit_v4 import syst_norm_size, syst_shape_size_list
 #from cards_syst_list_fsrisruenorm_jetsplit import systtypelist
 #from cards_syst_list_fsrisruenorm_jetsplit import syst_norm_size_list, syst_shape_size_list
 #from cards_syst_list_fsrisruenorm import systtypelist

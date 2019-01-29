@@ -8,12 +8,13 @@ CONFIG:=config_t2h_cards.py
 SUPPRESSOUT=>/dev/null
 
 CARDGEN=$(CMSSW_BASE)/src/TopBrussels/FourTops2016/result/tools/cards.py
-
+PARSELIMITS=$(CMSSW_BASE)/src/TopBrussels/FourTops2016/result/tools/parseLimits.py --format tex --sigdig=1
 TARGETVAR=BDT
 
 MINIMIZER=Minuit
 AUTOMCSTAT=--automcstat
 STATONLY=
+
 
 #TTTT
 $(BUILDDIR)/Hists_TTTT_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_ttttNLO_Run2_TopTree_Study.root
@@ -653,10 +654,10 @@ $(BUILDDIR)/datacard_elmu.txt:	$(BUILDDIR_EL)/card_el.txt $(BUILDDIR_MU)/card_mu
 	@echo "Combining datacards $^"
 	@combineCards.py EL=$(BUILDDIR_EL)/card_el.txt MU=$(BUILDDIR_MU)/card_mu.txt > $@
 
-$(BUILDDIR)/datacard_elmu.res: $(BUILDDIR)/datacard_elmu.txt
-	-combine -M Asymptotic --run $(RUN) $^ --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER) $(STATONLY) >> temp.comb.1
-	-combine -M MaxLikelihoodFit $^ -t -1 --expectSignal=1 --robustFit=1 --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) --plots --out=$(BUILDDIR) >>temp.comb.2
-	-combine -M ProfileLikelihood $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic --cminDefaultMinimizerType=$(MINIMIZER)  $(STATONLY) >>temp.comb.3
+$(BUILDDIR)/datacard_elmu.res: $(BUILDDIR)/datacard_elmu.root
+	-combine -M AsymptoticLimits --run $(RUN) $^ --X-rtd MINIMIZER_analytic |$(PARSELIMITS) $(STATONLY) >> temp.comb.1
+	-combine -M FitDiagnostics $^ -t -1 --expectSignal=1 --rMin=-100 --X-rtd MINIMIZER_analytic  $(STATONLY)  --out=$(BUILDDIR) >>temp.comb.2
+	-combine -M Significance $^ -t -1 --expectSignal=1 --significance --X-rtd MINIMIZER_analytic   $(STATONLY) >>temp.comb.3
 	@cat temp.comb.* > $@
 	@rm temp.comb.*
 $(BUILDDIR_EL)/card_el.res: $(BUILDDIR_EL)/card_el.txt

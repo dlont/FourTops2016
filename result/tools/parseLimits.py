@@ -27,9 +27,9 @@ import argparse
 import json
 import sys
 
-xsec_tttt = 0.009201 # pb
+xsec_tttt = 0.0092103 # pb
 
-def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
+def get_lim(lim_str, xsec, name, format='txt', json_filename=None, rounding=3):
     """
 	Convert combine tool output to different format.
 	lim_str: raw combine output string with Observed or Expected strings only.
@@ -41,19 +41,19 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
     d = {}
     for line in lim_str.splitlines():
         if "Observed" in line: d["obs"] = float(line.split("<")[-1])
-        elif "Expected" in line: d["exp_"+line.split("%")[0].replace("Expected","").strip()] = float(line.split("<")[-1])
-        elif "Significance" in line: d["signif"] = float(line.split(":")[-1])
-        elif "Best" in line: 
-		d["bestfit"] = float(line.split(":")[-1].split()[0])
-		d["bestfit_16.0"] = float(line.split(":")[-1].split()[1].split("/")[0])
-		d["bestfit_64.0"] = float(line.split(":")[-1].split()[1].split("/")[1])
+
+        if "Expected" in line: d["exp_"+line.split("%")[0].replace("Expected","").strip()] = float(line.split("<")[-1])
+
+    # fill observation with dummy value, when output is blinded expected limit only
+    if "obs" in d: pass
+    else: d['obs'] = -999.0/xsec
 
     unit = "pb"
-    if d["exp_50.0"]*xsec < 0.9:
+    #if d["obs"]*xsec < 0.1:
+    if True:
         xsec *= 1000.0
         unit = "fb"
-    obs = -1.
-    if 'obs' in d: obs = d["obs"]*xsec
+    obs = d["obs"]*xsec
     exp = d["exp_50.0"]*xsec
     exp_sm1 = d["exp_16.0"]*xsec
     exp_sp1 = d["exp_84.0"]*xsec
@@ -62,18 +62,14 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
 
     if 'txt' in format:
 	print "Limits for %s" % name
-    	if obs > 0.: print "  Obs: %.2f %s" % (obs, unit)
-    	print "%s %.2f + %.2f - %.2f %s" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], "xSM")
-    	print "%s %.2f + %.2f - %.2f %s" % (ch, exp, exp_sp1-exp, exp-exp_sm1, unit)
+    	print "  Obs: %.3f %s" % (obs, unit)
+    	print "  Exp: %.3f + %.4f - %.4f %s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
     if 'tex' in format:
-	if ch == 'Mu': ch = '\mu'
-	if ch == 'El': ch = 'e'
-        print "Limits for %s" % name
-        if obs > 0.: print "  Obs: %.2f \%s" % (obs, unit)
-        print "$%s$ & $%.1f^{+%.1f}_{-%.1f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], exp, exp_sp1-exp, exp-exp_sm1, unit)
-        #print "$%s$ & $%.5f^{+%.5f}_{-%.5f}$ & $%.0f^{+%.0f}_{-%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["exp_50.0"], d["exp_84.0"]-d["exp_50.0"], d["exp_50.0"]-d["exp_16.0"], exp, exp_sp1-exp, exp-exp_sm1, unit)
-	if 'signif' in d and 'bestfit' in d:
-		print "$%s$ & $%.2f$ & $%.0f^{+%.1f}_{%.1f}$ & $%.1f^{+%.0f}_{%.0f}$ \%s \T\B\\\\ \n\\hline" % (ch, d["signif"], d['bestfit'], d['bestfit_64.0'], d['bestfit_16.0'], d['bestfit']*xsec, d['bestfit_64.0']*xsec, d['bestfit_16.0']*xsec, unit)
+        print "Limits for {}".format( name )
+        print "  Obs: {0:.{Ndig}f} \{1}".format(obs, unit, Ndig=rounding)
+        print "  Exp: ${0:.{Ndig}f}^{{+{1:.{Ndig}f}}}_{{-{2:.{Ndig}f}}}$ \{3}".format(exp, exp_sp1-exp, exp-exp_sm1, unit, Ndig=rounding)
+        print "  Obs: {0:.{Ndig}f}".format(obs/xsec, Ndig=rounding)
+        print "  Exp: ${0:.{Ndig}f}^{{+{1:.{Ndig}f}}}_{{-{2:.{Ndig}f}}}$".format(exp/xsec, (exp_sp1-exp)/xsec, (exp-exp_sm1)/xsec, Ndig=rounding)
     if 'json' in format:
 	if json_filename is not None:
 		with open(json_filename, 'w') as outfile:
@@ -81,9 +77,10 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None, ch=''):
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Combine limit output parser')
-	parser.add_argument('-i','--input', help='Input file name',required=True)
+	parser.add_argument('input', help='Input file name', nargs='?', type=argparse.FileType('r'), default=sys.stdin)
 	parser.add_argument('-f','--format', help='Output format', required=False)
 	parser.add_argument('-j','--jsonoutput',help='Output json file name', required=False)
+        parser.add_argument('-s','--sigdig',help='Round to N digits', default=3)
 	args = parser.parse_args()
 	return args
 
@@ -92,21 +89,16 @@ def main():
 	
 	lim_tttt = ""
 
-	with open( args.input ) as f:
-		for line in f:
-			if line.startswith('Expected') or line.startswith('Observed') or line.startswith('Best') or line.startswith('Significance'):
-				print(line.strip())
-				lim_tttt += line
+	for line in args.input:
+		if line.startswith('Expected') or line.startswith('Observed'):
+			print(line.strip())
+			lim_tttt += line
 
 	if not any(fmt in args.format for fmt in ['txt','tex','json']):
 		error_msg = 'Format ' + args.format + ' not recognised! Terminating...'
 		sys.exit(error_msg)
 
-	ch = ''
-	if 'card_mu' in args.input: ch = "Mu"
-	if 'card_el' in args.input: ch = "El"
-	if 'datacard_elmu' in args.input: ch = "SL combined"
-	get_lim(lim_tttt, xsec_tttt, "TTTT", args.format, args.jsonoutput, ch)
+	get_lim(lim_tttt, xsec_tttt, "TTTT", args.format, args.jsonoutput, rounding=args.sigdig)
 
 
 if __name__ == '__main__':
