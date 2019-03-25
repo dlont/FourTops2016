@@ -1,7 +1,7 @@
 #!/usr/bin/python -u
 
 """
-Script for job processing monitoring.
+Script for job monitoring.
 It analyses big-submission log file to extact IDs of submitted jobs and check their status.
 Job status is queried usign a clock and torque job logs in cluster log folder.
 If all jobs are successful the email is sent with notification message.
@@ -16,6 +16,7 @@ import pprint as pp
 
 from misc_parse_torque_accounting_log.launch_daughter_process import *
 from misc_parse_torque_accounting_log.parse_cluster_logs import *
+from misc_parse_torque_accounting_log.job_monitoring_state_machine import *
 
 # Program options
 parser = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter)
