@@ -13,7 +13,7 @@ parser.add_argument("--outputName", help="Name of output ROOT file containing al
 parser.add_argument("--noLog", help="Disables log plots", action="store_true")
 parser.add_argument("--noOverflow", help="Disables overflow bin", action="store_true")
 parser.add_argument("--systematics", help="File containing list of central, upper and lower limit of scale factors")
-parser.add_argument("--extension", default='png,pdf', help="Plot output format. Can use several types simultaneously e.g. --extension png,pdf,C")
+parser.add_argument("--extension", default='png,pdf,root', help="Plot output format. Can use several types simultaneously e.g. --extension png,pdf,C")
 parser.add_argument("--no-entries", default=True, help="Do not show number of entries in the legends", action='store_false')
 parser.add_argument("--batch", default=True, help="Do not show plots", action='store_true')
 parser.add_argument("--grayscale", default=False, help="Produce grayscale plots", action='store_true')
@@ -22,6 +22,7 @@ args = parser.parse_args()
 
 import ROOT as pyr
 import tdrstyle
+import CMS_lumi
 import numpy as np
 import math
 import sys
@@ -104,13 +105,13 @@ def styleRatioPlot(hist_ratio, propDesc, points = True):
         hist_ratio.SetMarkerStyle(20)
     hist_ratio.SetMinimum(-0.4999)
     hist_ratio.SetMaximum(+0.4999)
-    hist_ratio.GetYaxis().SetTitle("(Data-MC)/MC")
-    hist_ratio.GetYaxis().SetTitleSize(0.035)
-    hist_ratio.GetYaxis().SetLabelSize(0.025)
+    hist_ratio.GetYaxis().SetTitle("#frac{Data-Pred.}{Pred.}")
+    hist_ratio.GetYaxis().SetTitleSize(0.04)
+    hist_ratio.GetYaxis().SetLabelSize(0.03)
 
     hist_ratio.GetXaxis().SetLabelSize(0.03)
-    hist_ratio.GetXaxis().SetTitleSize(0.035)
-    hist_ratio.GetXaxis().SetTitleOffset(1.25)
+    hist_ratio.GetXaxis().SetTitleSize(0.05)
+    hist_ratio.GetXaxis().SetTitleOffset(0.9)
     hist_ratio.GetXaxis().SetTitle(propDesc)
     if 'Number of' in hist_ratio.GetXaxis().GetTitle():
         hist_ratio.GetXaxis().SetNdivisions(5,0,0)
@@ -215,6 +216,10 @@ if draw_syst:
     print syst_list
 
 # Business logic of the script
+
+#Apply TDR style
+tdrstyle.setTDRStyle()
+
 outcanvasfile = pyr.TFile(args.outputName,"RECREATE")
 for propline in plotprops_list:
     propName = propline[0]
@@ -223,8 +228,14 @@ for propline in plotprops_list:
     for cat in preselection_list:   # For each preselection category
         for weight in weighting_scheme:     # For each weighting scheme
             canvas = pyr.TCanvas(propName + '_' + cat + '_' + weight, propName + '_' + cat + '_' + weight, 750, 750)
-            legend = pyr.TLegend(0.35, 0.65, 0.9, 0.9)
-            legend.SetTextSize(0.04)
+	    canvas.SetTopMargin(0.08)
+	    canvas.SetBottomMargin(0.3)
+	    canvas.SetLeftMargin(0.16)
+	    canvas.SetRightMargin(0.04)
+            legend = pyr.TLegend(0.35, 0.7, 0.95, 0.9)
+	    legend.SetFillStyle(4000)
+	    legend.SetTextFont(42)
+            legend.SetTextSize(0.048)
             legend.SetNColumns(3)
             legend.SetHeader("{}".format(dataset_name))
             if not blind: # Retrieve data histogram
@@ -243,7 +254,7 @@ for propline in plotprops_list:
                 hist_data.SetMarkerSize(1.35)
                 hist_data.SetMarkerColor(1)
                 hist_data.SetLineColor(1)
-                if args.no_entries: legend.AddEntry(hist_data, "Data", 'pe')
+                if args.no_entries: legend.AddEntry(hist_data, "Data", 'p')
                 else: legend.AddEntry(hist_data, "Data " + " (" + "{:.0f}".format(hist_data.Integral()) + " entries)", 'pe')
                 # legend.AddEntry(hist_data, dataset_name + " (" + "{:.1f}".format(hist_data.Integral()) + ")")
                 
@@ -303,19 +314,25 @@ for propline in plotprops_list:
                     if args.no_entries: legend.AddEntry(hist_line, hist_line_name,'l')
                     else: legend.AddEntry(hist_line, hist_line_name + " (" + "{:.0f}".format(hist_line.Integral()) + " entries)",'l')
 
-            # canvas.cd()
-            if not blind:
-                pad1 = pyr.TPad("pad1", "pad1", 0, 0.3, 1, 1.0)
-                pad1.SetBottomMargin(0)
-                pad1.Draw()
-                pad1.cd()
+            canvas.cd()
+            #if not blind:
+            #    pad1 = pyr.TPad("pad1", "pad1", 0, 0.0, 1, 1.0)
+            #    pad1.SetTopMargin(0.08)
+            #    pad1.SetBottomMargin(0.3)
+	    #    pad1.SetFillStyle(4000)
+            #    pad1.Draw()
+            #    pad1.cd()
                 
             if not args.noLog: pyr.gPad.SetLogy(True)
             #print "Now drawing"
             hist_mc_stack.Draw("hist")
-            hist_mc_stack.GetYaxis().SetTitle("Events/{:0.1f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 1)))
+            units = ""
+            if 'GeV' in propDesc: units = ' GeV'
+            hist_mc_stack.GetYaxis().SetTitle("Events / {:0.1f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 1))+units)
             if 'topness' in propName: 
-		hist_mc_stack.GetYaxis().SetTitle("Events/{:0.2f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2)))
+		hist_mc_stack.GetYaxis().SetTitle("Events / {:0.2f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
+	    if 'nJets' in propName or 'nMtags' in propName:
+		hist_mc_stack.GetYaxis().SetTitle("Events".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
             hist_mc_stack.SetTitle(cat)
             hist_mc_stack.GetXaxis().SetLabelSize(0.0)
             #print "hist_mc_stack.GetYaxis()"
@@ -387,7 +404,7 @@ for propline in plotprops_list:
                 pad2.SetFillStyle(4000)     #Make pad transparent
                 ratio_pad_height = 0.3
                 pad2.SetTopMargin(1. - ratio_pad_height)
-                pad2.SetBottomMargin(0.1)
+                pad2.SetBottomMargin(0.13)
                 pad2.SetGridy()
                 pad2.Draw()
                 pad2.cd()
@@ -433,12 +450,12 @@ for propline in plotprops_list:
                     # hist_unc_stack.Add(hist_ratio,"PE")
 
                     # hist_unc_stack.Draw("nostack")
-                    hist_ratio.Draw("PE")
+                    hist_ratio.Draw("PE X0")
                     gr_errors.Draw("E2 same")
 
                     hist_ratio.GetYaxis().SetNdivisions(505)
                     hist_ratio.GetYaxis().SetLabelSize(0.035)
-                    hist_ratio.GetYaxis().SetTitleOffset(2.3)
+                    hist_ratio.GetYaxis().SetTitleOffset(1.8)
                     hist_ratio.GetXaxis().SetLabelSize(0.04)
                     hist_ratio.GetXaxis().SetTitleSize(0.04)
 
@@ -447,7 +464,11 @@ for propline in plotprops_list:
                 canvas.cd(1)
             else:
                 canvas.cd()
-            tdrstyle.cmsPrel(round(targetLumi,1)*1000, 13., False, True, sp=0, textScale=1., xoffset=0., thisIsPrelim=True)
+	    CMS_lumi.CMS_lumi(canvas,4,0,True)
+	    canvas.cd()
+	    canvas.Update()
+            canvas.RedrawAxis()
+            #tdrstyle.cmsPrel(round(targetLumi,1)*1000, 13., False, True, sp=0, textScale=1., xoffset=0., thisIsPrelim=False)
 
             #raw_input()
             for ext in args.extension.split(','):
