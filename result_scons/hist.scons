@@ -1,0 +1,7 @@
+Import('env')
+env['CONFIG']='config_t2h.py'
+env['SUPPRESSOUT']='>/dev/null'
+
+env['DATANORM']='10.'
+
+env.Command('Hists_data.root', [env['CONFIG'], env['BUILDDIR']+'/Craneen_Data_Run2_TopTree_Study.root'], "echo  tree to hist $TARGET $SOURCES; echo $PATH; tree2hists $SOURCES $TARGET ${TREENAME} ${DATANORM} ${SUPPRESSOUT}")

@@ -1,0 +1,43 @@
+import itertools
+
+Import('env')
+
+env['CONFIG']='config_t2h.py'
+env['SUPPRESSOUT']='>/dev/null'
+
+env['HADD']='hadd -k'
+
+list_of_procs = ['DataB', 'DataC', 'DataD', 'DataE', 'DataF', 'DataG', 'DataH',
+		 'ttttNLO', 'ttttNLO_jerup', 'ttttNLO_jerdown', 'ttttNLO_jesup', 'ttttNLO_jesdown', \
+		 'TTJets_powheg', 'TTISRScaleup_powheg', 'TTFSRScaleup_powheg', 'TTFSRScaledown_powheg', 'TTISRScaledown_powheg', \
+		 'TTUETunedown_powheg', 'TTUETuneup_powheg', 'TTJets_powheg_jerup', 'TTJets_powheg_jesup', 'TTJets_powheg_jerdown', 'TTJets_powheg_jesdown', \
+		 'T_tW', 'Tbar_tW', 'T_tch', 'Tbar_tch', 'WJets', 'DYJets', 'QCD_MuEnriched', 'QCD_EMenriched']
+
+#Craneen merging
+for process in list_of_procs:
+	env.Command('Craneen_{}_Run2_TopTree_Study.root'.format(process), [Glob(env['INPUTLOCATION']+'/Craneen_{}_Run2_TopTree_Study*.root'.format(process))], 
+		     "echo merging $TARGET; ${HADD} $TARGET $SOURCES")
+
+env['DATANORM']='10.'
+
+#Histogrms
+for process in list_of_procs:
+	env.Command('Hists_{}.root'.format(process), [env['CONFIG'], 'Craneen_{}_Run2_TopTree_Study.root'.format(process)], 
+		     "echo  tree to hist $TARGET $SOURCES; echo $PATH; tree2hists $SOURCES $TARGET ${TREENAME} ${DATANORM} ${SUPPRESSOUT}")
+
+env.Command('Hists_data.root', ['Hists_{}.root'.format(process) for process in 'BCDEFGH'],
+		     		"echo merging data histograms $SOURCES; hadd $TARGET $SOURCES")
+env.Command('Hists_SYST.root', ['Hists_{}.root'.format(process) for process in 'TTJets_powheg', 
+				'TTISRScaleup_powheg', 'TTFSRScaleup_powheg', 'TTFSRScaledown_powheg', 
+				'TTISRScaledown_powheg', 'TTUETunedown_powheg', 'TTUETuneup_powheg'],
+		     		"echo preparing TT systematics histograms $SOURCES; \
+				tools/scalehist.py -o $TARGET --nominal=${BUILDDIR}/Hists_TTJets_powheg.root \
+				--isrscaleup=${BUILDDIR}/Hists_TTISRScaleup_powheg.root --isrscaledown=${BUILDDIR}/Hists_TTISRScaledown_powheg.root")
+env.Command('Hists_T.root', ['Hists_{}.root'.format(process) for process in 'T_tW', 'Tbar_tW', 'T_tch', 'Tbar_tch'],
+		     		"echo merging single top histograms $SOURCES; hadd $TARGET $SOURCES")
+env.Command('Hists_EW.root', ['Hists_{}.root'.format(process) for process in 'DYJets', 'WJets'],
+				"echo merging single top histograms $SOURCES; hadd $TARGET $SOURCES")
+env.Command('Hists_TTTT.root', [env['CONFIG'], 'Craneen_ttttNLO_Run2_TopTree_Study.root'],
+			"echo  tree to hist $TARGET $SOURCES; echo $PATH; tree2hists $SOURCES $TARGET ${TREENAME} ${TTTTNORM} ${SUPPRESSOUT}")
+env.Command('Hists_TTTT_SCALED.root', [env['CONFIG'], 'Craneen_ttttNLO_Run2_TopTree_Study.root'],
+			"echo  tree to hist $TARGET $SOURCES; echo $PATH; tree2hists $SOURCES $TARGET ${TREENAME} ${TTTTNORMSCALED} ${SUPPRESSOUT}")

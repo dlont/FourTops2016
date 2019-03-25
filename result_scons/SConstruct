@@ -1,0 +1,32 @@
+import os
+env = Environment(ENV = {'PATH' : os.environ['PATH'], 'PYTHONPATH': os.environ['PYTHONPATH'], 'LD_LIBRARY_PATH': os.environ['LD_LIBRARY_PATH']})
+env['ROOTPLOT'] = '../rootplot/bin/rootplot'
+env['SIZE'] = '1000x1000'
+env['FORMAT'] = 'png'
+env['PLOTS']='.*'
+env['CUSTOMIZE']=''
+env['INPUTLOCATION']=ARGUMENTS.get('INPUTLOCATION','./')
+env['BUILDDIR']=ARGUMENTS.get('BUILDDIR','./')
+env['ERA']='full'
+env['DATALABEL']='Single \#mu (BCDEFGH)'
+env['TREENAME']=ARGUMENTS.get('TREENAME','Craneen__Mu')
+
+env['LEGEND']=env['DATALABEL']+",EW,ST,t\#bar{t},t\#bar{t}t\#bar{t} \#times 100"
+env['LEGENDLOC']="upper right"
+
+
+Export('env')
+
+SConscript(['merge.scons'], variant_dir=env['BUILDDIR'],  duplicate=0, exports='env')
+#SConscript(['hist.scons'], variant_dir=env['BUILDDIR'],  duplicate=0, exports='env')
+
+def generate_actions(source, target, env, for_signature):
+	env['MYVAR']="FUUU"
+	return 'foobuild %s < %s > %s' % (env['MYVAR'], source[0], target[0])
+bld = Builder(generator = generate_actions)
+env.Append(BUILDERS = {'Foo' : bld})
+env.Foo('myvartest', 'HO.targ')
+
+env.Command('HO.targ', ['YO.targ','file3'], "echo $MYVAR;echo $SOURCES > $TARGET")
+
+#Default('YO.targ')
