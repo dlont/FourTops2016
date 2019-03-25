@@ -9,4 +9,7 @@ ELSE()
 ENDIF()
 
 SET(CMAKE_CXX_FLAGS_DEBUG   "-ggdb3 -gdwarf-3 -O0 -fno-inline" CACHE STRING "Debug options." FORCE   )
+#SET(CMAKE_LD_FLAGS_DEBUG   "-lefence" CACHE STRING "Debug options." FORCE   )
+#SET(CMAKE_CXX_FLAGS_DEBUG   "-ggdb3 -gdwarf-3 -O0 -fno-inline -fsanitize=address" CACHE STRING "Debug options." FORCE   )
+#SET(CMAKE_CXX_FLAGS_DEBUG   "-ggdb3 -gdwarf-3 -O0 -fno-inline -fsanitize=leak" CACHE STRING "Debug options." FORCE   )
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
