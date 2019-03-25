@@ -1,0 +1,17 @@
+nJets    3   7.5  10.5 Number of jets
+nMtags   3   1.5  4.5  Number of b jets
+multitopness 20 -0.4 0.2 Topness
+LeptonPt     15 0. 600. Lepton p_{T} (GeV)
+LeptonEta    25 -2.5 2.5 Lepton #eta
+leptonphi    25 -3.15 3.15 Lepton #phi
+1stjetpt     15 30. 1530 1st jet p_{T} (GeV)
+csvJetcsv4   20 0.0 1.0 CSV4
+HT           15 500. 2000 H_{T} (GeV)
+met          20 50.  450. MET (GeV)
+HTb          10 0.   1000 H_{T,B} (GeV)
+HTX           15 500. 2000 H_{T} (GeV)
+SumJetMassX  35 0 3500 Sum jet M (GeV)
+jetvec[][0]  15 30. 1530 jet p_{T} (GeV)
+jetvec[][1]  25 -2.5 2.5 jet #eta
+jetvec[][2]  25 -3.15 3.15 jet #phi
+jetvec[][3]  20 0.0 1.0 jet CSV

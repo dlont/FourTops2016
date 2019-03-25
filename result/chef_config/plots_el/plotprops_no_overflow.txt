@@ -1,0 +1,8 @@
+nJets    4   6.5  10.5 Number of jets
+nMtags   3   1.5  4.5  Number of b jets
+multitopness 20 -0.4 0.2 Topness
+LeptonPt     15 0. 600. Lepton p_{T} (GeV)
+HT           15 500. 2000 H_{T} (GeV)
+HTb          10 0.   1000 H_{T,B} (GeV)
+HTX           15 500. 2000 H_{T} (GeV)
+SumJetMassX  35 0 3500 Sum jet M (GeV)

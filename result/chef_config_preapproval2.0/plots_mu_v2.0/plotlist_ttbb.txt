@@ -1,0 +1,4 @@
+### ttbar
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root 831760
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root 2453.69
+!!! Unused

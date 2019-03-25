@@ -1,0 +1,7 @@
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataB_Run2_TopTree_Study.root 5.743725979478
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataC_Run2_TopTree_Study.root 2.573399420069
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataD_Run2_TopTree_Study.root 4.248383597366
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataE_Run2_TopTree_Study.root 4.008375931882
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataF_Run2_TopTree_Study.root 3.101618412335
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataG_Run2_TopTree_Study.root 7.540487735974
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_DataH_Run2_TopTree_Study.root 8.605689861909

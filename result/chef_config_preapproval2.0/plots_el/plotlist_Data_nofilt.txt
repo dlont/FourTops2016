@@ -1,0 +1,7 @@
+plots_el_nofilt/Craneen_DataB_Run2_TopTree_Study.root 5.743725979478
+plots_el_nofilt/Craneen_DataC_Run2_TopTree_Study.root 2.573399420069
+plots_el_nofilt/Craneen_DataD_Run2_TopTree_Study.root 4.248383597366
+plots_el_nofilt/Craneen_DataE_Run2_TopTree_Study.root 4.008375931882
+plots_el_nofilt/Craneen_DataF_Run2_TopTree_Study.root 3.101618412335
+plots_el_nofilt/Craneen_DataG_Run2_TopTree_Study.root 7.540487735974
+plots_el_nofilt/Craneen_DataH_Run2_TopTree_Study.root 8.605689861909

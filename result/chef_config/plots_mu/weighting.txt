@@ -1,0 +1,2 @@
+NormalWeight SFlepton*SFPU*csvrsw[0]*ttxrew*toprew*GenWeight*SFtrig
+WithoutTopRew SFlepton*SFPU*csvrsw[0]*ttxrew*GenWeight*SFtrig

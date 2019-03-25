@@ -1,0 +1,4 @@
+all ((HLT_IsoMu24==1||HLT_IsoTkMu24==1) && nJets >= 7 && nMtags >= 2 && met > 50 && HT > 450 && fabs(LeptonEta)<2.1 &&  LeptonPt > 26) && ((ttxType%100) >= 51)
+### Forced
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root GenFilter==0
+/storage_mnt/storage/user/dlontkov/FourTops_8_0_26_patch1/src/TopBrussels/FourTops2016/result/plots_mu_filt/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root GenFilter==1

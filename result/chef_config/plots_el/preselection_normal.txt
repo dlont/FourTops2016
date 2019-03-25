@@ -1,0 +1,4 @@
+all ((HLT_Ele32_eta2p1_WPTight_Gsf==1) && nJets == 8 && nMtags>=4 && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && LeptonPt > 35)
+### Forced
+/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/20180629-cutbased/El2016/merged/Craneen_TTJets_powheg_mixture_Run2_TopTree_Study.root GenFilter==0
+/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/20180629-cutbased/El2016/merged/Craneen_TTJetsFilt_powheg_central_Run2_TopTree_Study.root GenFilter==1

@@ -1,0 +1,15 @@
+LeptonPt 10 0. 800. Lepton p_{T} (GeV)
+leptonIso 25 0. 0.15 Lepton Isolation
+jetvec[][0] 30 0. 1500. jet p_{T} (GeV)
+jetvec[][3] 100 0. 1. jet CSVv2
+nJets 4 6.5 10.5 Number of jets
+nLtags 8 -0.5 7.5 Number of loose tags
+nMtags 4 1.5 5.5 Number of medium tags
+nTtags 5 -0.5 4.5 Number of tight tags
+HT 36 400. 2200. HT (GeV)
+met 40 0. 400. MET (GeV)
+HTRat 45 0. 0.45 HTRat
+HTX 20 0. 3000. HTX
+HTb 20 0. 1000. HTB (GeV)
+SumJetMassX 70 0. 3500. Sum jet M (GeV)
+PU 55 0 55 Number of prim. v.

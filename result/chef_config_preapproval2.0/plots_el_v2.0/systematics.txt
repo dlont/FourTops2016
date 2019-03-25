@@ -1,0 +1,24 @@
+ttMEScaleSh                  weightShapeOnly     1.          Max$(abs(weight))   Min$(abs(weight))
+btagWeightCSVJES          weight              csvrsw[0]        csvrsw[1]           csvrsw[2]
+btagWeightCSVLF           weight              csvrsw[0]        csvrsw[3]           csvrsw[4]
+btagWeightCSVHF           weight              csvrsw[0]        csvrsw[5]           csvrsw[6]
+btagWeightCSVHFStats1     weight              csvrsw[0]        csvrsw[7]           csvrsw[8]
+btagWeightCSVHFStats2     weight              csvrsw[0]        csvrsw[9]           csvrsw[10]
+btagWeightCSVLFStats1     weight              csvrsw[0]        csvrsw[11]          csvrsw[12]
+btagWeightCSVLFStats2     weight              csvrsw[0]        csvrsw[13]          csvrsw[14]
+btagWeightCSVCFErr1       weight              csvrsw[0]        csvrsw[15]          csvrsw[16]
+btagWeightCSVCFErr2       weight              csvrsw[0]        csvrsw[17]          csvrsw[18]
+heavyFlav                 weight              ttxrew           Max$(abs(ttxw))     Min$(abs(ttxw))
+TTJets_PDF                weightShapeOnly              1.               Max$(abs(pdfw))     Min$(abs(pdfw))
+PU                        weight              SFPU             SFPU_up             SFPU_down
+lumi                      weight              1.               1.025               0.975
+TTJets_norm               weight              1.               1.05                0.95
+TTJets_norm10             weightProcCat       ttbar:(nJets>=10)         1.               1.1                0.90
+leptonSF                weight              1.               1.03                0.97
+TTPT                      weight              toprew           toprewunc[1]        toprewunc[2]
+TTUE                    samples             ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTUETuneup_powheg_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTUETunedown_powheg_Run2_TopTree_Study.root:Craneen__El:831760
+TTISR                     samples              ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTISRScaleup_powheg_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTISRScaledown_powheg_Run2_TopTree_Study.root:Craneen__El:831760
+TTFSR                     samples              ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTFSRScaleup_powheg_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTFSRScaledown_powheg_Run2_TopTree_Study.root:Craneen__El:831760
+TTJets_HDAMP              samples              ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTHdampup_powheg_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_v039_ttsyst/Craneen_TTHdampdown_powheg_Run2_TopTree_Study.root:Craneen__El:831760
+JER                       samples              ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt/Craneen_TTJets_powheg_jerup_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt/Craneen_TTJets_powheg_jerdown_Run2_TopTree_Study.root:Craneen__El:831760
+JES                       samples              ttbar            1.  /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt/Craneen_TTJets_powheg_jesup_Run2_TopTree_Study.root:Craneen__El:831760       /storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt/Craneen_TTJets_powheg_jesdown_Run2_TopTree_Study.root:Craneen__El:831760

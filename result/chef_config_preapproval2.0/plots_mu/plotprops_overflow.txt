@@ -1,0 +1,24 @@
+nJets    4   regular(6.5,10.5) Number of jets
+nMtags   3   regular(1.5,4.5)  Number of b jets
+multitopness 20 regular(-0.4,0.2) Topness
+LeptonPt     12 nonuniform(0.,40.,80.,120.,160.,200.,240.,280.,320.,360.,400.,440.,600.) Lepton p_{T} (GeV)
+LeptonEta    25 regular(-2.5,2.5) Lepton #eta
+leptonphi    25 regular(-3.15,3.15) Lepton #phi
+1stjetpt     12 nonuniform(30.,130.,230.,330.,430.,530.,630.,730.,830.,930.,1030.,1130.,1530) jet p_{T} (GeV)
+2ndjetpt     9  nonuniform(30.,130.,230.,330.,430.,530.,630.,730.,830.,1530.) 2nd jet p_{T} (GeV)
+5thjetpt     10 regular(30.,230) 5th jet p_{T} (GeV)
+6thjetpt     7  nonuniform(30.,50.,70.,90.,110.,130.,160.,230) 6th jet p_{T} (GeV)
+csvJetpt3    20 regular(0.0,1.0) CSV jet^{3}
+csvJetpt4    20 regular(0.0,1.0) CSV jet^{4}
+csvJetcsv3   20 regular(0.0,1.0) CSV3
+csvJetcsv4   20 regular(0.0,1.0) CSV4
+HT           15 regular(500.,2000) H_{T} (GeV)
+HTH          10 regular(0.1,1.) EventCen
+HTb          10 regular(0.,1000) H_{T,B} (GeV)
+HTX           15 regular(500.,2000) H_{T} (GeV)
+SumJetMassX  35 regular(0,3500) Sum jet M (GeV)
+jetvec[][0]  13 nonuniform(30.,130.,230.,330.,430.,530.,630.,730.,830.,930.,1030.,1130.,1230.,1530) jet p_{T} (GeV)
+jetvec[][1]  25 regular(-2.5,2.5) jet #eta
+jetvec[][2]  25 regular(-3.15,3.15) jet #phi
+jetvec[][3]  20 regular(0.0,1.0) jet CSV
+met          20 regular(50.,450.) MET (GeV)

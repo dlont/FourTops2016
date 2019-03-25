@@ -1,0 +1,5 @@
+ME    1. Max$(abs(weight)) Min$(abs(weight))
+CSVRS csvrsw[0] csvrsw[3] csvrsw[4]
+TTX   ttxrew Max$(abs(ttxw)) Min$(abs(ttxw))
+PDF   1. Max$(abs(pdfw)) Min$(abs(pdfw))
+PU    SFPU SFPU_up SFPU_down
