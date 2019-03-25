@@ -195,7 +195,7 @@ def main(arguments):
 	root_file = rt.TFile.Open(arguments.infile,"READ")				#root file handle
 	if not root_file:
 		logging.error("Cannot open file: "+arguments.infile)
-		sys.exit(1)
+		raise RuntimeError("Cannot open file: "+arguments.infil)
 
 	#create data normalization RooFit Object
 	creator_data = DataNormFromShape(root_file)
@@ -238,6 +238,7 @@ def main(arguments):
 						'S+B tot. pref.', '$t\\bar{t}$ pref.', 'Other pref.', '$t\\bar{t}t\\bar{t}$ pref. \\\\']
 	print ' & '.join(latex_tab_header)
 	
+        # rt.RooFit.Format("NEU",rt.RooFit.AutoPrecision(2),rt.RooFit.VerbatimName())
 	data.printLatex(rt.RooFit.Sibling(norm_postfit_total),
 			rt.RooFit.Sibling(norm_postfit_ttbar),rt.RooFit.Sibling(norm_postfit_others),rt.RooFit.Sibling(norm_postfit_tttt),
 			rt.RooFit.Sibling(norm_prefit_total),
