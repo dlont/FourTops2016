@@ -130,6 +130,18 @@ class Style(object):
         def decorate_graph(self,mg):
                 pass
 
+	@log_with()
+	def decorate_axes(self,hist,json,axes=[]):
+		for ax in axes:
+			axis = None
+			if ax == 'x':			
+				axis = hist.GetXaxis()
+			if ax == 'y':
+				axis = hist.GetYaxis()
+			if ax in json:
+				for key in json[ax]:
+					getattr(axis,key)(json[ax][key])
+
         @log_with()
         def decorate_histogram(self,hist,json):
                 for key in json:
@@ -314,7 +326,7 @@ class View(object):
                         list_hists_in_file_central = canvas_config['central']['type']['subhistograms']
                         hist_central,nbins,nonemptybin_map,stitch_edge_bins = mr.fillnonemptysingle_from_list( distrib_title, rootfile, list_hists_in_file_central, 'central')
 			xbins = stitch_edge_bins; xbins.insert(0,0.); xbins = [el - 0.5 for el in xbins];			
-			xbins = array('d',xbins)                        
+			xbins = array('d',xbins)
 			if canvas_config['central']['type']['algorithm'] == 'from_file_norm':
 				hist_central=hist_central.Rebin(len(xbins)-1, hist_central.GetName(), xbins)
 			if canvas_config['central']['type']['algorithm'] == 'from_file_norm_nj':
@@ -323,11 +335,16 @@ class View(object):
                         pad1 = c.cd(1)
                         rt.gPad.SetLogy()
 			rt.gPad.Update()
-                        self._style.decorate_histogram(hist_central,canvas_config['central']['style']); hist_central.Draw("hist e")
+			if 'axes' in canvas_config['central']:
+				self._style.decorate_axes(hist_central,canvas_config['central']['axes'],axes=['y'])
+                        if 'style' in canvas_config['central']:
+				self._style.decorate_histogram(hist_central,canvas_config['central']['style']); hist_central.Draw("hist e")
                         c.cd(2)
                         hist_ratio_central = make_ratio_histogram(hist_central,   hist_central)
                         hist_ratio_central.Draw("hist")
                         hist_ratio_central.SetAxisRange(canvas_config['ratios']['yrange'][0],canvas_config['ratios']['yrange'][1],"Y")
+			if 'axes' in canvas_config['central']:
+				self._style.decorate_axes(hist_ratio_central,canvas_config['central']['axes'],axes=['x'])
                         rt.SetOwnership(hist_central,False)
                         for template in canvas_config['templates']:
                                 rootfile = rt.TFile(canvas_config[template]['type']['infile'],"READ")
@@ -343,14 +360,16 @@ class View(object):
 					hist.Rebin(3)
                                 rt.SetOwnership(hist,False)
                                 c.cd(1)
-                                self._style.decorate_histogram(hist,canvas_config[template]['style']); hist.Draw("hist same")
+				if 'style' in canvas_config[template]:
+                                	self._style.decorate_histogram(hist,canvas_config[template]['style']); 
+				hist.Draw("hist same")
                                 c.cd(2)
                                 hist_ratio   = make_ratio_histogram(hist,   hist_central)
 				#mr.draw_subhist_separators(rt.gPad,stitch_edge_bins,nonemptybin_map,labels,conf,hist_ratio)
                                 self._style.decorate_histogram(hist_ratio,canvas_config[template]['style']); hist_ratio.Draw("hist same")
 	
 			c.cd(1)
-			if canvas_config['central']['type']['algorithm'] == 'from_file_norm':
+			if 'from_file_norm' in canvas_config['central']['type']['algorithm']:
 				mr.draw_subhist_labels(rt.gPad,labels,conf,hist_central)
 			elif canvas_config['central']['type']['algorithm'] == 'from_file':
 				mr.draw_subhist_separators(rt.gPad,stitch_edge_bins,nonemptybin_map,labels,conf,hist_central)
