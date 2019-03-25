@@ -86,7 +86,8 @@
 		}
     },
     "MVA_nj7_iso":{
-        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_Data*.root",
+        "eff_lum_tt":0.156311006,
+        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",
         "cuts": "(nJets==7 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
@@ -114,7 +115,8 @@
 		}
     },
     "MVA_nj8_iso":{
-        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_Data*.root",
+        "eff_lum_tt":0.156311006,
+        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",
         "cuts": "(nJets==8 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
@@ -142,10 +144,11 @@
 		}
     },
     "MVA_nj9_iso":{
-        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_Data*.root",
+        "eff_lum_tt":0.156311006,
+        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",
-        "cuts": "(nJets==9 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
+        "cuts": "(nJets==9 && nMtags>=3 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
         "linecolor":417,
         "linestyle":1,
         "title":";D_{t#bar{t}t#bar{t}};N events",
@@ -160,7 +163,7 @@
         "eff_lum_tt":0.150449343,
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",        
-        "cuts": "(nJets==9 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso>=0.15)", 
+        "cuts": "(nJets==9 && nMtags>=3 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso>=0.15)", 
         "linecolor":617,
         "linestyle":1,
         "title":";D_{t#bar{t}t#bar{t}};N events",
@@ -170,10 +173,11 @@
 		}
     },
     "MVA_nj10_iso":{
-        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_Data*.root",
+        "eff_lum_tt":0.156311006,
+        "inputfile_data": "/pnfs/iihe/cms/store/user/dlontkov/clusteroutput/Mu2016_merged_alliso/Craneen_TTJets_powheg_Run2_TopTree_Study.root",
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",
-        "cuts": "(nJets>=10 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
+        "cuts": "(nJets>=10 && nMtags>=3 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso<0.15)",
         "linecolor":417,
         "linestyle":1,
         "title":";D_{t#bar{t}t#bar{t}};N events",
@@ -188,7 +192,7 @@
         "eff_lum_tt":0.175849882,
         "treename": "Craneen__Mu", 
         "varname": "BDT9and10jetsplitNoNjw",        
-        "cuts": "(nJets>=10 && nMtags>=4 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso>=0.15)", 
+        "cuts": "(nJets>=10 && nMtags>=3 && (HLT_IsoMu24==1||HLT_IsoTkMu24==1) && met > 50 && HT > 500 && fabs(LeptonEta)<2.1 && leptonIso>=0.15)", 
         "linecolor":617,
         "linestyle":1,
         "title":";D_{t#bar{t}t#bar{t}};N events",
