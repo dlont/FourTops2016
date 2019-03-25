@@ -1,0 +1,11 @@
+plots_el/, plots_mu/ 	--- v0.0.22 Craneens. Some old stuff from ~June2017
+crap 			--- old combine outputfiles. No idea what they are
+ARCComments		--- folder containing studies requested by ARC
+final_combination	--- Combined datacards with OS,SL and SS2016 results from ~Nov2017a (final_unblinding/50bins)
+final_unblinding	--- Here potentially the best approximation of the final results can be found
+final_unblinding/filtered_samples --- This is hopefully the final version of ntuples including filtered MC
+
+# Presumably final version of ntuples including filtered samples
+final_unblinding/filtered_samples/plots_el_filt
+final_unblinding/filtered_samples/plots_mu_filt
+
