@@ -1094,3 +1094,17 @@ make spectatorpostfitshapes INPUTLOCATION=final_unblinding/rare_split_50bins BUI
 ######################################
 make -n spectatorcards INPUTLOCATION=final_unblinding/rare_tthz_ttwxy_merge_50bins BUILDDIR=final_unblinding/rare_tthz_ttwxy_merge_50bins
 make spectatorpostfitshapes INPUTLOCATION=final_unblinding/rare_tthz_ttwxy_merge_50bins BUILDDIR=final_unblinding/rare_tthz_ttwxy_merge_50bins COMBINESHAPESFILE=final_unblinding/rare_tthz_ttwxy_merge_50bins/nominal/fitDiagnostics_nominal.root
+
+
+# Tue 22 Jan 2019 05:41:46 PM CET
+Control plots used in the paper can be fount at 
+`
+/user/dlontkov/t2016/result/chef_config_preapproval2.0/plots_combined/2018-11-09-2009
+`
+Unblinding datacards, postfit plots for the paper can be found at
+`
+/user/dlontkov/t2016/result/top-17-019-combine-cards-v2
+`
+
+# Fri 25 Jan 2019 12:55:41 PM CET (Work on mountain range systematics comparison)
+/user/dlontkov/t2016/result/tools/mountainrange_systematics
