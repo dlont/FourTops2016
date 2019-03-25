@@ -2,7 +2,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
  'command': 'MVC_template.py -b -c conf_cff.py',
  'latex_main': 'latex/report.tex',
  'mode': 'plots',
- 'canvas':['canvas_btag','canvas_jec','canvas_shape_other'],
+ 'canvas':['canvas_jec'],
  'canvas_btag':{
      "name":"canvas_btag",
      "type":"3x1_ratio_leg_bottom",
@@ -239,7 +239,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "central":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus.root",
             "subhistograms":["8J2M/bdt","8J3M/bdt","8J4M/bdt","9J2M/bdt","9J3M/bdt","9J4M/bdt","10J2M/bdt","10J3M/bdt","10J4M/bdt"],
          },
          "style":{"SetLineWidth":2},
@@ -248,7 +248,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalPileUpJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalPileUpJESUP.root",
             "subhistograms":["8J2M_SubTotalPileUpJESUp/bdt","8J3M_SubTotalPileUpJESUp/bdt","8J4M_SubTotalPileUpJESUp/bdt","9J2M_SubTotalPileUpJESUp/bdt","9J3M_SubTotalPileUpJESUp/bdt","9J4M_SubTotalPileUpJESUp/bdt","10J2M_SubTotalPileUpJESUp/bdt","10J3M_SubTotalPileUpJESUp/bdt","10J4M_SubTotalPileUpJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":2,"SetLineStyle":3},
@@ -257,7 +257,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalPileUpJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalPileUpJESDOWN.root",
             "subhistograms":["8J2M_SubTotalPileUpJESDown/bdt","8J3M_SubTotalPileUpJESDown/bdt","8J4M_SubTotalPileUpJESDown/bdt","9J2M_SubTotalPileUpJESDown/bdt","9J3M_SubTotalPileUpJESDown/bdt","9J4M_SubTotalPileUpJESDown/bdt","10J2M_SubTotalPileUpJESDown/bdt","10J3M_SubTotalPileUpJESDown/bdt","10J4M_SubTotalPileUpJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":2,"SetLineStyle":2},
@@ -267,7 +267,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "SubTotalFlavorJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalFlavorJESUP.root",
             "subhistograms":["8J2M_SubTotalFlavorJESUp/bdt","8J3M_SubTotalFlavorJESUp/bdt","8J4M_SubTotalFlavorJESUp/bdt","9J2M_SubTotalFlavorJESUp/bdt","9J3M_SubTotalFlavorJESUp/bdt","9J4M_SubTotalFlavorJESUp/bdt","10J2M_SubTotalFlavorJESUp/bdt","10J3M_SubTotalFlavorJESUp/bdt","10J4M_SubTotalFlavorJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":3,"SetLineStyle":3},
@@ -276,7 +276,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalFlavorJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalFlavorJESDOWN.root",
             "subhistograms":["8J2M_SubTotalFlavorJESDown/bdt","8J3M_SubTotalFlavorJESDown/bdt","8J4M_SubTotalFlavorJESDown/bdt","9J2M_SubTotalFlavorJESDown/bdt","9J3M_SubTotalFlavorJESDown/bdt","9J4M_SubTotalFlavorJESDown/bdt","10J2M_SubTotalFlavorJESDown/bdt","10J3M_SubTotalFlavorJESDown/bdt","10J4M_SubTotalFlavorJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":3,"SetLineStyle":2},
@@ -286,7 +286,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "SubTotalPtJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalPtJESUP.root",
             "subhistograms":["8J2M_SubTotalPtJESUp/bdt","8J3M_SubTotalPtJESUp/bdt","8J4M_SubTotalPtJESUp/bdt","9J2M_SubTotalPtJESUp/bdt","9J3M_SubTotalPtJESUp/bdt","9J4M_SubTotalPtJESUp/bdt","10J2M_SubTotalPtJESUp/bdt","10J3M_SubTotalPtJESUp/bdt","10J4M_SubTotalPtJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":3},
@@ -295,7 +295,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalPtJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalPtJESDOWN.root",
             "subhistograms":["8J2M_SubTotalPtJESDown/bdt","8J3M_SubTotalPtJESDown/bdt","8J4M_SubTotalPtJESDown/bdt","9J2M_SubTotalPtJESDown/bdt","9J3M_SubTotalPtJESDown/bdt","9J4M_SubTotalPtJESDown/bdt","10J2M_SubTotalPtJESDown/bdt","10J3M_SubTotalPtJESDown/bdt","10J4M_SubTotalPtJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":2},
@@ -305,7 +305,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "SubTotalRelativeJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalRelativeJESUP.root",
             "subhistograms":["8J2M_SubTotalRelativeJESUp/bdt","8J3M_SubTotalRelativeJESUp/bdt","8J4M_SubTotalRelativeJESUp/bdt","9J2M_SubTotalRelativeJESUp/bdt","9J3M_SubTotalRelativeJESUp/bdt","9J4M_SubTotalRelativeJESUp/bdt","10J2M_SubTotalRelativeJESUp/bdt","10J3M_SubTotalRelativeJESUp/bdt","10J4M_SubTotalRelativeJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":5,"SetLineStyle":3},
@@ -314,7 +314,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalRelativeJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalRelativeJESDOWN.root",
             "subhistograms":["8J2M_SubTotalRelativeJESDown/bdt","8J3M_SubTotalRelativeJESDown/bdt","8J4M_SubTotalRelativeJESDown/bdt","9J2M_SubTotalRelativeJESDown/bdt","9J3M_SubTotalRelativeJESDown/bdt","9J4M_SubTotalRelativeJESDown/bdt","10J2M_SubTotalRelativeJESDown/bdt","10J3M_SubTotalRelativeJESDown/bdt","10J4M_SubTotalRelativeJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":5,"SetLineStyle":2},
@@ -324,7 +324,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "SubTotalScaleJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalScaleJESUP.root",
             "subhistograms":["8J2M_SubTotalScaleJESUp/bdt","8J3M_SubTotalScaleJESUp/bdt","8J4M_SubTotalScaleJESUp/bdt","9J2M_SubTotalScaleJESUp/bdt","9J3M_SubTotalScaleJESUp/bdt","9J4M_SubTotalScaleJESUp/bdt","10J2M_SubTotalScaleJESUp/bdt","10J3M_SubTotalScaleJESUp/bdt","10J4M_SubTotalScaleJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":6,"SetLineStyle":3},
@@ -333,7 +333,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalScaleJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalScaleJESDOWN.root",
             "subhistograms":["8J2M_SubTotalScaleJESDown/bdt","8J3M_SubTotalScaleJESDown/bdt","8J4M_SubTotalScaleJESDown/bdt","9J2M_SubTotalScaleJESDown/bdt","9J3M_SubTotalScaleJESDown/bdt","9J4M_SubTotalScaleJESDown/bdt","10J2M_SubTotalScaleJESDown/bdt","10J3M_SubTotalScaleJESDown/bdt","10J4M_SubTotalScaleJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":6,"SetLineStyle":2},
@@ -343,7 +343,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "SubTotalTimePtEtaJESUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalTimePtEtaJESUP.root",
             "subhistograms":["8J2M_SubTotalTimePtEtaJESUp/bdt","8J3M_SubTotalTimePtEtaJESUp/bdt","8J4M_SubTotalTimePtEtaJESUp/bdt","9J2M_SubTotalTimePtEtaJESUp/bdt","9J3M_SubTotalTimePtEtaJESUp/bdt","9J4M_SubTotalTimePtEtaJESUp/bdt","10J2M_SubTotalTimePtEtaJESUp/bdt","10J3M_SubTotalTimePtEtaJESUp/bdt","10J4M_SubTotalTimePtEtaJESUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":7,"SetLineStyle":3},
@@ -352,7 +352,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "SubTotalTimePtEtaJESDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_SubTotalTimePtEtaJESDOWN.root",
             "subhistograms":["8J2M_SubTotalTimePtEtaJESDown/bdt","8J3M_SubTotalTimePtEtaJESDown/bdt","8J4M_SubTotalTimePtEtaJESDown/bdt","9J2M_SubTotalTimePtEtaJESDown/bdt","9J3M_SubTotalTimePtEtaJESDown/bdt","9J4M_SubTotalTimePtEtaJESDown/bdt","10J2M_SubTotalTimePtEtaJESDown/bdt","10J3M_SubTotalTimePtEtaJESDown/bdt","10J4M_SubTotalTimePtEtaJESDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":7,"SetLineStyle":2},
@@ -362,7 +362,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
     "JERUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_JERUP.root",
             "subhistograms":["8J2M_JERUp/bdt","8J3M_JERUp/bdt","8J4M_JERUp/bdt","9J2M_JERUp/bdt","9J3M_JERUp/bdt","9J4M_JERUp/bdt","10J2M_JERUp/bdt","10J3M_JERUp/bdt","10J4M_JERUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":435,"SetLineStyle":3},
@@ -371,7 +371,7 @@ config={'annotation': 'tt Electron channel. Comparison of MC templates with diff
      "JERDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/final_unblinding/filtered_samples/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TT_CARDS.root",
+            "infile":"/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/result/prepapproval2.1/plots_el_filt_custombinning_10J4M_JERSummer16_v0.0.41/Hists_TTinclus_JERDOWN.root",
             "subhistograms":["8J2M_JERDown/bdt","8J3M_JERDown/bdt","8J4M_JERDown/bdt","9J2M_JERDown/bdt","9J3M_JERDown/bdt","9J4M_JERDown/bdt","10J2M_JERDown/bdt","10J3M_JERDown/bdt","10J4M_JERDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":435,"SetLineStyle":2},
