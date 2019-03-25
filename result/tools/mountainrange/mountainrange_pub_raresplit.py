@@ -50,10 +50,13 @@ def draw_legend(**kwargs):
 	if 'header' in kwargs['legend']:
 		#legend.SetHeader(kwargs['legend']['header'])
 		header = rt.TLatex()
+		header.SetTextFont(42)
 		header.DrawLatexNDC(0.2,0.85,kwargs['legend']['header'])
 
 	if canvas is not None:
 		legend.SetNColumns(4)
+		legend.SetFillStyle(4000)
+		legend.SetTextFont(42)
 		legend.SetBorderSize(0)
 		#legend.SetFillStyle(0)
 
@@ -141,6 +144,7 @@ def draw_bin_labels(c,masterhist,labels,ycoord,edges=None):
 	'''
 	tex = rt.TLatex()
 	tex.SetTextSize(0.025)
+	tex.SetTextFont(42)
 	tex.SetTextAlign(31)
 	c.cd()
 
@@ -201,6 +205,7 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_templ
                         if 'size' in conf: tex.SetTextSize(conf['size'])
                         else: tex.SetTextSize(0.045)
 			tex.SetTextAlign(32)
+			tex.SetTextFont(42)
 			#tex.SetTextAngle(45)
 			cxmin=c.GetLeftMargin()
 			cxmax=1.-c.GetRightMargin()

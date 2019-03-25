@@ -72,5 +72,5 @@ def style_hist_ratio_unity(hist,hist_mother,arguments):
 	if arguments.distrib_title_ratio is not None: hist.SetTitle(arguments.distrib_title_ratio)
 	else:
 		motherhistxtitle = hist_mother.GetXaxis().GetTitle()
-		motherhistxtitle = ';Bin id (%s);Data/Pred.-1' % re.sub(r' \(.*\)', '', motherhistxtitle)
+		motherhistxtitle = ';Bin id (%s);(Data/Pred.)-1' % re.sub(r' \(.*\)', '', motherhistxtitle)
 		hist.SetTitle(motherhistxtitle)

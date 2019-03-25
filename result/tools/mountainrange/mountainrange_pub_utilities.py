@@ -133,6 +133,7 @@ def guess_process_by_hist_name(hist_name):
     if 'TTZ' in hist_name: return 'TTZ'
     if 'TTW' in hist_name: return 'TTW'
     if 'TTRARE_plus' in hist_name: return 'TTXY'
+    if 'total' in hist_name: return 'TTBAR'
     if 'TTRARE' in hist_name[-6:len(hist_name)]: return 'TTRARE'
 
 def fillstack(stack, hist_template, rootfile, histograms):
@@ -334,7 +335,7 @@ def draw_subhist_separators(c,stitch_edge_bins,binmapping,labels,conf,hist_templ
 
 	for item, isep in enumerate(separator_bins):
 		x = hist_template.GetBinLowEdge(isep)+hist_template.GetBinWidth(isep)
-		ymin = hist_template.GetMinimum()
+		ymin = hist_template.GetMinimum()*0.5
 		ymax = hist_template.GetMaximum()*1.9
 		logging.debug("Line coordinates (x,ymin,ymax): ({}, {}, {})".format(x, ymin, ymax))
 		l = rt.TLine(x,ymin,x,ymax); l.SetLineColor(rt.kBlack); l.SetLineWidth(2)
