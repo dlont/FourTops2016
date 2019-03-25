@@ -23,6 +23,8 @@ import autobinning as ab
 
 
 import functools, logging
+logging.addLevelName( logging.WARNING, "\033[1;31m%s\033[1;0m" % logging.getLevelName(logging.WARNING))
+logging.addLevelName( logging.ERROR, "\033[1;41m%s\033[1;0m" % logging.getLevelName(logging.ERROR))
 
 class bcolors:
     HEADER = '\033[95m'
@@ -97,8 +99,10 @@ class Model(object):
                 """
                 if name in self._objects:
                         return self._objects[name]
-                elif '_longhist' in name:
-                        self._objects[name] = self.build_mr_hist(name)
+                elif self._jsondic[name]['type']=='from_craneen':
+                        self._objects[name] = self.build_craneen_mr_hist(name)
+                elif self._jsondic[name]['type']=='from_hist':
+                        self._objects[name] = self.build_regular_mr_hist(name)
                 else:
                         self._objects[name] = self.build_hist(name)
                 return self._objects[name]
@@ -114,7 +118,22 @@ class Model(object):
                 return chain
 
         @log_with()
-        def build_mr_hist(self,objname):
+        def build_regular_mr_hist(self,objname):
+            root_file = rt.TFile.Open(self._jsondic[objname]['inputfile'])
+            rt.SetOwnership(root_file,False)
+            logging.debug("input file with target histograms: {0}".format(root_file))
+            list_of_short_histograms_names = self._jsondic[objname]['varname']
+            logging.debug("list of target histograms names: {}".format(pp.pformat(list_of_short_histograms_names)))
+            list_of_short_histograms = [root_file.Get(str(histname)) for histname in list_of_short_histograms_names]
+            map(lambda hist: rt.SetOwnership(hist,False),list_of_short_histograms)
+            logging.debug("list of short histograms: {}".format(pp.pformat(list_of_short_histograms)))
+            nbins = mr.get_total_nbins_from_list(list_of_short_histograms)
+            hist_master = rt.TH1F(objname,"",nbins,0.5,float(nbins+0.5))
+            mr.fillsingle(hist_master, root_file, list_of_short_histograms_names)
+            return hist_master
+
+        @log_with()
+        def build_craneen_mr_hist(self,objname):
             filename = str(self._jsondic[objname]['inputfile'])
             treename = str(self._jsondic[objname]['treename'])
             tree = self.get_tree(filename, treename)
@@ -150,7 +169,7 @@ class Model(object):
                 else:
                         print self._binning
                         print cut.split('&&')
-                        h = self._binning['&&'.join(cut.split('&&')[-2:])]['hist'].Clone(objname)
+                        h = self._binning['&&'.join(cut.split('&&')[-1:])]['hist'].Clone(objname)
                         histexpression = objname
                         logging.debug("Tree draw command: {}".format(histexpression))
                         logging.debug("Tree cut: {}".format(cut))
@@ -215,9 +234,10 @@ class Style(object):
         @log_with()
         def decorate(self,obj):
                 """
-                Decorate obeject of the model.
+                Decorate object of the model.
                 Assumes Drawable object from ROOT
                 """
+                logging.debug("Decorating {0}".format(obj))
                 name = obj.GetName()
                 obj.SetLineWidth(2)
                 if name in self._json:
@@ -234,6 +254,8 @@ class Style(object):
                 stack.SetTitle(title)
                 stack.GetXaxis().SetTitle(xtitle)
                 stack.GetYaxis().SetTitle(ytitle)
+                if "ymin" in kwargs: stack.SetMinimum(kwargs["ymin"])
+                if "ymax" in kwargs: stack.SetMaximum(kwargs["ymax"])
 
 
         @log_with()
@@ -276,6 +298,7 @@ class Style(object):
 
         @log_with()
         def decorate_pad(self, pad, islog):
+                print "Pad: {0}".format(pad)
                 pad.SetBottomMargin(0.2)
                 pad.SetLeftMargin(0.2)
                 pad.SetRightMargin(0.05)
@@ -326,7 +349,12 @@ class View(object):
                                   self._model._annotation.encode('ascii')+
                                   bcolors.ENDC, 120))
                         if os.path.exists(self._outputfolder):
-                                shutil.copy2(config,self._outputfolder)
+                                # Writing JSON data
+				with open(self._outputfolder+'/'+os.path.basename(config), 'w') as f:
+					json.dump(self._model._jsondic, f, indent=4, sort_keys=True)
+                        else: logging.warning(textwrap.wrap(bcolors.WARNING+
+                                  "Output folder does not exist: {0}".format(self._outputfolder)+
+                                  bcolors.ENDC, 120))
                 elif type == "tex":
                         logging.warning("Annotation format: {}. Not implemented yet!".format(type))
                 elif type == "md":
@@ -353,13 +381,12 @@ class View(object):
                 islog=pad.get('islog',False)
                 if self._style: 
                         last_histogram_name = hs.GetHists().First().GetName()
-                        self._style.decorate_ratio_stack(hs,ytitle='ratio')
+                        self._style.decorate_ratio_stack(hs,ytitle='ratio',ymin=pad.get('ymin',0.0),ymax=pad.get('ymax',2.0))
                         self._style.decorate_pad(c.GetPad(ipad+1),islog)
 
         @log_with()
-        def build_normal_pad(self, c, ipad, pad):
+        def build_normal_pad_from_craneen(self, c, ipad, pad):
                 c.cd(ipad+1) #root pad numeration starts from 1
-
                 #find optimal binning for objects on the pad
                 for cut in self._model._jsondic[pad['objects'][0]]['mrcuts']:
                         self._model._binning[cut]={'nbins':-1,'hist':None}
@@ -395,7 +422,41 @@ class View(object):
                         KSprob = self._model.get(pad['objects'][0]).KolmogorovTest(self._model.get(pad['objects'][1]))
                         # ADprob = self._model.get(pad['objects'][0]).AndersonDarlingTest(self._model.get(pad['objects'][1]))
                         # self._style.add_legend_entry(leg,"KS prob: {}".format(KSprob),"")
-                        # self._style.add_legend_entry(leg,"AD prob: {}".format(ADprob),"")
+                        # self._style.add_legend_entry(leg,"AD prob: {}".format(ADprob),"")                
+        
+        @log_with()
+        def build_normal_pad_from_hist(self, c, ipad, pad):
+                print c, ipad
+                c.cd(ipad+1) #root pad numeration starts from 1
+                hs = rt.THStack("hsPad{}".format(ipad),"")
+                for objname in pad['objects']:
+                        logging.debug("Add to histogram stack: {0}".format(objname))
+                        hs.Add(self.decorate(self._model.get(objname)),"h")
+                hs.Draw("nostack")
+                islog=pad.get('islog',False)
+                if self._style: 
+                        last_histogram_name = hs.GetHists().First().GetName()
+                        self._style.decorate_stack(hs,title=self._model._jsondic[last_histogram_name]['title'])
+                        self._style.decorate_pad(c.GetPad(ipad+1),islog)
+                        leg = self._style.make_legend(c.GetPad(ipad+1),pad['objects'],pos=(0.1,0.05,0.3,0.25))
+                        KSprob = self._model.get(pad['objects'][0]).KolmogorovTest(self._model.get(pad['objects'][1]))
+
+        @log_with()
+        def build_normal_pad(self, c, ipad, pad):
+                print c, ipad
+                histogram_source_types = set( [ self._model._jsondic[objname]['type'] for objname in pad['objects'] ] )
+                if len(histogram_source_types) != 1: 
+                        logging.error(
+                                  "Mixing different types of objects on a single pad is " \
+                                  "is not supported! Aborting.")
+                        sys.exit(1)
+                else:
+                        if list(histogram_source_types)[0] == 'from_hist':
+                                logging.info("Using "+bcolors.BOLD+"from_hist "+bcolors.ENDC+" type")
+                                self.build_normal_pad_from_hist(c, ipad, pad)
+                        if list(histogram_source_types)[0] == 'from_craneen':
+                                logging.info("Using "+bcolors.BOLD+"from_craneen "+bcolors.ENDC+" type")
+                                self.build_normal_pad_from_craneen(c, ipad, pad)
         @log_with()
         def draw(self):
 
@@ -405,6 +466,7 @@ class View(object):
                         nx,ny = canv.get('nx',1),canv.get('ny',1)
                         c = rt.TCanvas(name,'cms',5,45,800,800)
                         c.Divide(nx,ny)
+                        print c
                         for ipad, pad in enumerate(canv['pads']):
                                 if 'ratio_to' not in canv['pads'][ipad]:
                                         self.build_normal_pad(c,ipad,pad)
@@ -421,7 +483,11 @@ def main(arguments):
         rt.TCanvas.__init__._creates = False
         rt.TFile.__init__._creates = False
 	rt.TH1.__init__._creates = False
+	rt.TH1F.__init__._creates = False
+	rt.TH1D.__init__._creates = False
 	rt.TH2.__init__._creates = False
+	rt.TH2F.__init__._creates = False
+	rt.TH2D.__init__._creates = False
         rt.THStack.__init__._creates = False
         rt.TGraph.__init__._creates = False
         rt.TMultiGraph.__init__._creates = False
@@ -435,6 +501,8 @@ def main(arguments):
                 jsondic = json.load(json_data)
                 logging.debug(pp.pformat(jsondic))
 
+        jsondic['command']=' '.join(sys.argv)
+
         model = Model(jsondic)
 
         style = Style(jsondic,model)
@@ -446,6 +514,7 @@ def main(arguments):
         view.set_outfilename(arguments.outfile)
         view.set_extension(arguments.extension)
         view.draw()
+
         if arguments.annotation_format:
                 view.annotate(arguments.annotation_format,arguments.config_json)
 

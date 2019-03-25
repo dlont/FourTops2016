@@ -312,7 +312,8 @@ class View(object):
                         os.makedirs(folder)
         @log_with()
         def get_outfile_name(self,substring=''):
-                return '{}/{}{}.{}'.format(self._outputfolder,self._outfilename,substring,self._outfileextension)
+                for ext in self._outfileextension.split(","):
+                        yield '{}/{}{}.{}'.format(self._outputfolder,self._outfilename,substring,ext)
 
         @log_with()
         def annotate(self,type,config):
@@ -321,7 +322,12 @@ class View(object):
                                   self._model._annotation.encode('ascii')+
                                   bcolors.ENDC, 120))
                         if os.path.exists(self._outputfolder):
-                                shutil.copy2(config,self._outputfolder)
+                                # Writing JSON data
+				with open(self._outputfolder+'/'+os.path.basename(config), 'w') as f:
+					json.dump(self._model._jsondic, f, indent=4, sort_keys=True)
+                        else: logging.warning(textwrap.wrap(bcolors.WARNING+
+                                  "Output folder does not exist: {0}".format(self._outputfolder)+
+                                  bcolors.ENDC, 120))
                 elif type == "tex":
                         logging.warning("Annotation format: {}. Not implemented yet!".format(type))
                 elif type == "md":
@@ -407,7 +413,8 @@ class View(object):
                                         ratio_hist_name = canv['pads'][ipad]['ratio_to']
                                         self.build_ratio_pad(c,ipad,pad,ratio_hist_name)
                         if self._style: self._style.decorate_canvas(c)
-                        c.SaveAs(self.get_outfile_name('_{}'.format(name)))
+                        for outfilename in self.get_outfile_name('_{}'.format(name)):
+                                c.SaveAs(outfilename)
 			
 def main(arguments):
 
@@ -429,6 +436,8 @@ def main(arguments):
                 jsondic = json.load(json_data)
                 logging.debug(pp.pformat(jsondic))
 
+        jsondic['command']=' '.join(sys.argv)
+        
         model = Model(jsondic)
 
         style = Style(jsondic,model)
