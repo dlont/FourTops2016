@@ -1,0 +1,76 @@
+{
+    "canvas":
+    [   
+        {"name":"c_BDT",
+            "nx":1,
+            "ny":2,
+            "pads":[
+                {"objects":["BDTHIST_longhistnominal","BDTHIST_longhistmeup","BDTHIST_longhistmedown","BDTHIST_longhistpdfup","BDTHIST_longhistpdfdown"],"islog":true},
+                {"objects":["BDTHIST_longhistnominal","BDTHIST_longhistmeup","BDTHIST_longhistmedown","BDTHIST_longhistpdfup","BDTHIST_longhistpdfdown"],"islog":false,
+                    "ratio_to":"BDTHIST_longhistnominal","ymin":0.0,"ymax":2.0}
+            ]
+        }
+    ],
+
+    "BDTHIST_longhistnominal":{
+        "type":"from_hist",
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Hists_TT_CARDS.root",
+		"varname":["7J2M/bdt","7J3M/bdt","7J4M/bdt","8J2M/bdt","8J3M/bdt","8J4M/bdt","9J2M/bdt","9J3M/bdt","10J2M/bdt","10J3M/bdt"],
+        "linecolor":634,
+        "linestyle":1,
+        "title":"nominal;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"nominal",
+			"style":"l"
+		}
+    },
+    "BDTHIST_longhistmeup":{
+        "type":"from_hist",
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Hists_TT_CARDS.root",
+		"varname":["7J2M_ttMEScaleUp/bdt","7J3M_ttMEScaleUp/bdt","7J4M_ttMEScaleUp/bdt","8J2M_ttMEScaleUp/bdt","8J3M_ttMEScaleUp/bdt","8J4M_ttMEScaleUp/bdt","9J2M_ttMEScaleUp/bdt","9J3M_ttMEScaleUp/bdt","10J2M_ttMEScaleUp/bdt","10J3M_ttMEScaleUp/bdt"],
+        "linecolor":417,
+        "linestyle":2,
+        "title":"me up;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"me up",
+			"style":"l"
+		}
+    },
+    "BDTHIST_longhistmedown":{
+        "type":"from_hist",
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Hists_TT_CARDS.root",
+		"varname":["7J2M_ttMEScaleDown/bdt","7J3M_ttMEScaleDown/bdt","7J4M_ttMEScaleDown/bdt","8J2M_ttMEScaleDown/bdt","8J3M_ttMEScaleDown/bdt","8J4M_ttMEScaleDown/bdt","9J2M_ttMEScaleDown/bdt","9J3M_ttMEScaleDown/bdt","10J2M_ttMEScaleDown/bdt","10J3M_ttMEScaleDown/bdt"],
+        "linecolor":417,
+        "linestyle":3,
+        "title":"me down;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"me down",
+			"style":"l"
+		}
+    },
+    "BDTHIST_longhistpdfup":{
+        "type":"from_hist",
+        "inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Hists_TT_CARDS.root",
+		"varname":["7J2M_ttMEScaleUp/bdt","7J3M_ttMEScaleUp/bdt","7J4M_ttMEScaleUp/bdt","8J2M_ttMEScaleUp/bdt","8J3M_ttMEScaleUp/bdt","8J4M_ttMEScaleUp/bdt","9J2M_ttMEScaleUp/bdt","9J3M_ttMEScaleUp/bdt","10J2M_ttMEScaleUp/bdt","10J3M_ttMEScaleUp/bdt"],
+        "linecolor":601,
+        "linestyle":2,
+        "title":"pdf up;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"pdf up",
+			"style":"l"
+		}
+    },
+    "BDTHIST_longhistpdfdown":{
+        "type":"from_hist",
+		"inputfile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt/Hists_TT_CARDS.root",
+		"varname":["7J2M_ttMEScaleDown/bdt","7J3M_ttMEScaleDown/bdt","7J4M_ttMEScaleDown/bdt","8J2M_ttMEScaleDown/bdt","8J3M_ttMEScaleDown/bdt","8J4M_ttMEScaleDown/bdt","9J2M_ttMEScaleDown/bdt","9J3M_ttMEScaleDown/bdt","10J2M_ttMEScaleDown/bdt","10J3M_ttMEScaleDown/bdt"],
+        "linecolor":601,
+        "linestyle":3,
+        "title":"pdf down;D_{t#bar{t}t#bar{t}};",
+		"legend":{
+			"name":"pdf down",
+			"style":"l"
+		}
+    },
+    "annotation":"Comparison of MVA in different shower variations."
+}
