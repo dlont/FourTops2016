@@ -1,0 +1,8 @@
+{
+	"output_filename" : "output",
+	"output_format" : "png",
+	"canvastitle" : "CMS",
+	"islogy" : true,
+	"yaxistitle" : "p-value",
+	"xaxistitle" : "Integrated luminosity (fb^{-1})"
+}
