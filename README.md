@@ -5,11 +5,10 @@
 Let's call the root folder where the codes will be installed, i.e. 
 
 0. about 1Gb space
-1. autotools (present at T2_BE_IIHE but not available at lxplus)
+1. autotools (present at T2_BE_IIHE and lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
-3. There should exist  ~/lib folder for files from different packages (```mkdir ~/lib```)
-
- 3.1. ~/lib should be added to `$LD_LIBRARY_PATH` (```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib```)
+3. There should exist  `~/lib` folder for files from different packages (```mkdir ~/lib```)
+  * **NOTE:** `~/lib` should be added to `$LD_LIBRARY_PATH` (```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib```)
 4. CMSSW environment has to be 
 
 ## Installation outline
@@ -35,7 +34,7 @@ cd -
 
 cp -a -f ~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels/TopTreeAnalysisBase
 # if intalling on lxplus
-# rsync -r dlontkov@mshort.iihe.ac.be:~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels
+# rsync -r username@mshort.iihe.ac.be:~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels
 cd TopBrussels/TopTreeAnalysisBase
 make -j
 cd -
@@ -76,6 +75,8 @@ cd -
 ## Testing
 ```
 mkdir output
+# if at lxplus
+# rsync --progress username@mshort.iihe.ac.be:/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v12/TTP-CMSSW_80X_v12--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/TTToSemiLepton_HT500Njet9_TuneCUETP8M2T4_13TeV-powheg-pythia8/crab_P8M2T413TeVpowhegpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab292/180403_190034/0000/TOPTREE_100.root .
 
 ./FourTops --dataset_name="TTJetsFilt_powheg_central" --dataset_title="t\bar{t}+jets_powheg" --dataset_color=633 --dataset_linestyle=0 --dataset_linewidth=2 --dataset_norm_factor=1 --dataset_eq_lumi=1. --dataset_cross_section=831.76 --dataset_preselection_eff=1.0 --nevents=10000 --input_files="dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/fblekman/TopTree/CMSSW_80X_v12/TTP-CMSSW_80X_v12--GT-80X_mcRun2_asymptotic_2016_TrancheIV_v8/TTToSemiLepton_HT500Njet9_TuneCUETP8M2T4_13TeV-powheg-pythia8/crab_P8M2T413TeVpowhegpythia8RunIISummer16MiniAODv2PUMoriond1780XmcRun2asymptotic2016TrancheIVv6v1crab292/180403_190034/0000/TOPTREE_100.root "  --fourtops_channel="Mu2016" -is_local_output
 ```
