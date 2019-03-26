@@ -8,6 +8,7 @@ Let's call the root folder where the codes will be installed, i.e.
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
 3. There should exist  ~/lib folder for files from different packages (```mkdir ~/lib```)
+
  3.1. ~/lib should be added to `$LD_LIBRARY_PATH` (```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib```)
 4. CMSSW environment has to be 
 
@@ -33,7 +34,8 @@ make
 cd -
 
 cp -a -f ~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels/TopTreeAnalysisBase
-#git clone http://github.com/TopBrussels/TopTreeAnalysisBase --branch CMSSW_80X --single-branch TopBrussels/TopTreeAnalysisBase
+# if intalling on lxplus
+# rsync -r dlontkov@mshort.iihe.ac.be:~dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase  TopBrussels
 cd TopBrussels/TopTreeAnalysisBase
 make -j
 cd -
