@@ -4,6 +4,7 @@
 
 Let's call the root folder where the codes will be installed, i.e. 
 
+0. about 1Gb space
 1. autotools (present at T2_BE_IIHE but not available at lxplus)
 2. Higgs combine (https://cms-hcomb.gitbooks.io/combine/content/)
 3. There should exist  ~/lib folder for files from different packages (```mkdir ~/lib```)
