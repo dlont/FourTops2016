@@ -252,10 +252,10 @@ int main (int argc, char *argv[])
     //////////////////////////////////////////////////
     //            PyMVA initialization              //
     //////////////////////////////////////////////////
-    std::string path7="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets7_40_2.p";
-    std::string path8="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets8_400_2.p";
-    std::string path9="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets9_400_2.p";
-    std::string path10="/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/FourTops2016/MVA/Freyas/noNjetsW/BDTAdaBoost_njets10_400_2.p";
+    std::string path7="MVA/Freyas/noNjetsW/BDTAdaBoost_njets7_40_2.p";
+    std::string path8="MVA/Freyas/noNjetsW/BDTAdaBoost_njets8_400_2.p";
+    std::string path9="MVA/Freyas/noNjetsW/BDTAdaBoost_njets9_400_2.p";
+    std::string path10="MVA/Freyas/noNjetsW/BDTAdaBoost_njets10_400_2.p";
     PyAdaBoost pyada7(path7);
     PyAdaBoost pyada8(path8);
     PyAdaBoost pyada9(path9);
@@ -472,7 +472,7 @@ int main (int argc, char *argv[])
     // Run 1 values were used
     ///////////////////////////////////////////////
     vector<JetCorrectorParameters> vCorrParam;
-    string pathCalJEC = "/storage_mnt/storage/user/dlontkov/TTP_CMSSW_8_0_26_patch1/src/TopBrussels/TopTreeAnalysisBase/Calibrations/JECFiles/";
+    string pathCalJEC = "../TopTreeAnalysisBase/Calibrations/JECFiles/";
 
     JetCorrectionUncertainty *jecUnc = nullptr;
 
