@@ -366,7 +366,10 @@ class View(object):
                                 c.cd(2)
                                 hist_ratio   = make_ratio_histogram(hist,   hist_central)
 				#mr.draw_subhist_separators(rt.gPad,stitch_edge_bins,nonemptybin_map,labels,conf,hist_ratio)
-                                self._style.decorate_histogram(hist_ratio,canvas_config[template]['style']); hist_ratio.Draw("hist same")
+				if 'style_ratio' in canvas_config[template]:
+                                	self._style.decorate_histogram(hist_ratio,canvas_config[template]['style_ratio']); hist_ratio.Draw("hist same")
+				else:
+                                	self._style.decorate_histogram(hist_ratio,canvas_config[template]['style']); hist_ratio.Draw("hist same")
 	
 			c.cd(1)
 			if 'from_file_norm' in canvas_config['central']['type']['algorithm']:
