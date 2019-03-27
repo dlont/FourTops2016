@@ -106,6 +106,7 @@ struct Event {
     double csvrsw[20];      // CSVRS systematic weights
     double hdampw[2];       // POWHEG hdamp weight variation 
     double pdfw[2];         // POWHEG CT10,MMH14 weight variation 
+    double pdf_nnpdf[101];  // POWHEG NNPDF replicas weights
     double ttxw[2];         // POWHEG heavy-flavour fraction variation 
     double toprew;          // TOP pT reweighting factor
     double toprewunc[3];          // TOP pT reweighting factors
@@ -204,6 +205,7 @@ void Event::clear() {
       std::fill_n( this->csvrsw, 20, 0.);
       std::fill_n( this->hdampw, 2, 1.);
       std::fill_n( this->pdfw, 2, 1.);
+      std::fill_n( this->pdf_nnpdf, 101, 1.);
       std::fill_n( this->ttxw, 2, 1.);
       std::fill_n( this->toprewunc, 3, 1.);
       this->toprew = 0.;

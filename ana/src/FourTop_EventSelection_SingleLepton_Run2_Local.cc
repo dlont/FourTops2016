@@ -1114,6 +1114,7 @@ int main (int argc, char *argv[])
             double weight_1 = 1, weight_2 = 1, weight_3 = 1, weight_4 = 1, weight_5 = 1, weight_6 = 1, weight_7 = 1, weight_8 = 1;
             double weight_hdamp_up = 1., weight_hdamp_dw = 1.;
 	    double weight_ct10 = 1., weight_mmht14 = 1.;
+            double weight_nnpdf[101]; std::fill_n( weight_nnpdf, 101, -99.);
             auto ttXtype =  -1; // ttbb, ttcc, ttx event type
 	    auto ttXrew  = 1., ttXrew_up = 1., ttXrew_down = 1.;  // heavy-flavour reweighting factor
 
@@ -1187,7 +1188,31 @@ int main (int argc, char *argv[])
                 dataSetName.find("TTCR")!=string::npos || 
                 dataSetName.find("TTHdamp")!=string::npos || 
                 dataSetName.find("TTScale")!=string::npos){
-				weight_ct10 = event->getWeight(3001)/fabs(event->originalXWGTUP());
+				auto min_weight_nnpdf30=99999.;
+				auto max_weight_nnpdf30=-99999.;
+				int index = 0;
+				for (unsigned int weight_id=2001; weight_id<=2100; weight_id++) {
+					auto temp = event->getWeight(weight_id)/fabs(event->originalXWGTUP());
+					weight_nnpdf[index++]=temp;
+					cout << index << ": " << weight_nnpdf[index]
+				}
+				for (index=0;index<=100;index++) cout << index << ":" << weight_nnpdf[index] << " ";
+				cout << endl;
+				//auto min_weight_ct10=99999.;
+				//auto max_weight_ct10=-99999.;
+				//for (unsigned int weight_id=3001; weight_id<=3057; weight_id++) {
+				//	auto temp = event->getWeight(weight_id)/fabs(event->originalXWGTUP());
+				//	if (temp < min_weight_ct10) min_weight_ct10 = temp;
+				//	if (temp > max_weight_ct10) max_weight_ct10 = temp;
+				//}
+				//auto min_weight_mmht14=99999.;
+				//auto max_weight_mmht14=-99999.;
+				//for (unsigned int weight_id=4001; weight_id<=4051; weight_id++) {
+				//	auto temp = event->getWeight(weight_id)/fabs(event->originalXWGTUP());
+				//	if (temp < min_weight_mmht14) min_weight_mmht14 = temp;
+				//	if (temp > max_weight_mmht14) max_weight_mmht14 = temp;
+				//}
+				weight_ct10   = event->getWeight(3001)/fabs(event->originalXWGTUP());
 				weight_mmht14 = event->getWeight(4001)/fabs(event->originalXWGTUP());
 				DLOG(INFO) << "w(ct10)= " << weight_ct10 << "\t" << "w(mmht14)= " << weight_mmht14;
 			}
