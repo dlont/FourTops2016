@@ -32,6 +32,11 @@ UnBinned = {
         'Type' : 'INT',
         'Size' : 1
         },
+        {
+        'Name' : TreeName+':GenWeight',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
         #Group 2: Craneen
         {
         'Name' : TreeName+':BDT',
@@ -39,9 +44,51 @@ UnBinned = {
         'Size' : 1
         },
         {
+        'Name' : TreeName+':BDT1',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':NOrigJets',
+        'Type' : 'INT',
+        'Size' : 1
+        },
+        {
         'Name' : TreeName+':nJets',
         'Type' : 'INT',
         'Size' : 1
+        },
+        {
+        'Name' : TreeName+':1stjetpt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':2ndjetpt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':5thjetpt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':6thjetpt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':Electronparam',
+        'Type' : 'DOUBLE',
+        'Size' : 20,
+	'Element' : 0,
+        },
+        {
+        'Name' : TreeName+':Muonparam',
+        'Type' : 'DOUBLE',
+        'Size' : 20,
+	'Element' : 0,
         },
         {
         'Name' : TreeName+':nLtags',
@@ -60,6 +107,21 @@ UnBinned = {
         },
         {
         'Name' : TreeName+':LeptonPt',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':LeptonEta',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':leptonIso',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':leptonphi',
         'Type' : 'DOUBLE',
         'Size' : 1
         },
@@ -84,9 +146,81 @@ UnBinned = {
         'Size' : 1
         },
         {
+        'Name' : TreeName+':HTH',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':HTRat',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
         'Name' : TreeName+':HTb',
         'Type' : 'DOUBLE',
         'Size' : 1
+        },
+        {
+        'Name' : TreeName+':met',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+
+	
+        {
+        'Name' : TreeName+':SFlepton',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':SFPU',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':cswrsw',
+        'Type' : 'DOUBLE',
+        'Size' : 19,
+	'Element' : 0
+        },
+        {
+        'Name' : TreeName+':toprew',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':ttxrew',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':GenWeight',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':pdfw',
+        'Type' : 'DOUBLE',
+        'Size' : 2,
+	#'Element' : 0
+        },
+        {
+        'Name' : TreeName+':pdfw',
+        'Type' : 'DOUBLE',
+        'Size' : 1,
+	#'Element' : 0
+        },
+        {
+        'Name' : TreeName+':weight',
+        'Type' : 'DOUBLE',
+        'Size' : 9,
+	'Element' : 0
+        },
+        {
+        'Name' : TreeName+':toprewunc',
+        'Type' : 'DOUBLE',
+        'Size' : 3,
+	'Element' : 0
         },
 
 
@@ -113,6 +247,11 @@ UnBinned = {
         },
         {
         'Name' : TreeName+':weight5',
+        'Type' : 'DOUBLE',
+        'Size' : 1
+        },
+        {
+        'Name' : TreeName+':weight7',
         'Type' : 'DOUBLE',
         'Size' : 1
         },
