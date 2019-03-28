@@ -1194,10 +1194,10 @@ int main (int argc, char *argv[])
 				for (unsigned int weight_id=2001; weight_id<=2100; weight_id++) {
 					auto temp = event->getWeight(weight_id)/fabs(event->originalXWGTUP());
 					weight_nnpdf[index++]=temp;
-					cout << index << ": " << weight_nnpdf[index]
 				}
-				for (index=0;index<=100;index++) cout << index << ":" << weight_nnpdf[index] << " ";
-				cout << endl;
+				std::stringstream debug_nnpdf_weights;
+				for (index=0;index<=100;index++) debug_nnpdf_weights << index << ":" << weight_nnpdf[index] << " ";
+				DLOG(INFO) << "w(nnpdf)= " << debug_nnpdf_weights.str();
 				//auto min_weight_ct10=99999.;
 				//auto max_weight_ct10=-99999.;
 				//for (unsigned int weight_id=3001; weight_id<=3057; weight_id++) {
@@ -1878,7 +1878,7 @@ int main (int argc, char *argv[])
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
             myEvent.fill_electronVFID(electronVFIDflag);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,ttxrew,topptrew,
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,weight_nnpdf,ttxrew,topptrew,
                          trj1st, trj2nd, trj3rd);
         // if (nJets < 10)
             // std::cout << trj3rd[0][4] << " " << trj3rd[1][4] << " " << trj3rd[2][4] << std::endl;

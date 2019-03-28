@@ -22,7 +22,8 @@ struct Event {
     void clear();
     void makeBranches(TTree* tree);
     void fill_electronVFID(bool);
-    void fill(double [], double [][5], double [], double[], int , double [], double [], double [], double [], double [], double [], 
+    void fill(double [], double [][5], double [], double[], int , double [], double [], 
+	      double [], double [], double [], double [], double [], 
               double [][6], double [][6], double [][6]);
     
     double BDT; // baseline tmva from top-16-016
@@ -302,6 +303,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("weight8",              &this->weight8,             "weight8/D"); 
       tree -> Branch("hdampw",                this->hdampw,              "hdamp[2]/D");
       tree -> Branch("pdfw",                  this->pdfw,                "pdfw[2]/D");
+      tree -> Branch("pdf_nnpdf",             this->pdf_nnpdf,           "pdf_nnpdf[101]/D");
       tree -> Branch("ttxw",                  this->ttxw,                "ttxw[2]/D");
       tree -> Branch("toprewunc",             this->toprewunc,           "toprewunc[3]/D");
       //
@@ -339,7 +341,7 @@ void Event::fill_electronVFID(bool flag) {
  * @param trj3rd trijet combination with 3rd highest topness score
  */
 void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, 
-                 double w[], double csvrs[], double hdamp[], double pdf[], double ttx[], 
+                 double w[], double csvrs[], double hdamp[], double pdf[], double nnpdf[], double ttx[], 
                  double topptreww[], double trj1st[][6], double trj2nd[][6], double trj3rd[][6]) {
 
     this->BDT = vals[0];
@@ -434,6 +436,7 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     std::copy ( csvrs, csvrs+19, this->csvrsw);
     std::copy ( hdamp, hdamp+2, this->hdampw );
     std::copy ( pdf, pdf+2, this->pdfw );
+    std::copy ( nnpdf, nnpdf+101, this->pdf_nnpdf );
     std::copy ( ttx, ttx+2, this->ttxw );
     std::copy ( topptreww, topptreww+3, this->toprewunc );
     //for (auto par = 0; par < 8; ++par) weight[par]=w[par];
