@@ -57,22 +57,22 @@ config={'annotation': 'Muon channel. Comparison of MC templates with HF and PDF 
     "TTJets_PDFUp":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt_custombinning_10J4M_JERSummer16_v0.0.41_weightbugfix_v2//Hists_TT_CARDS.root",
+            "infile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt_custombinning_10J4M_JERSummer16_v0.0.42_weightbugfix_v3//Hists_TT_PDF.root",
             "subhistograms":["7J2M_TTJets_PDFUp/bdt","7J3M_TTJets_PDFUp/bdt","7J4M_TTJets_PDFUp/bdt","8J2M_TTJets_PDFUp/bdt","8J3M_TTJets_PDFUp/bdt","8J4M_TTJets_PDFUp/bdt","9J2M_TTJets_PDFUp/bdt","9J3M_TTJets_PDFUp/bdt","9J4M_TTJets_PDFUp/bdt","10J2M_TTJets_PDFUp/bdt","10J3M_TTJets_PDFUp/bdt","10J4M_TTJets_PDFUp/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":3},
-         "style_ratio":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":3,"Scale":10.},
-         "legend_entry":{"name":"+#delta_{PDF} (#times 10 in ratio plot)","option":"l"}
+         "style_ratio":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":3,"Scale":1.},
+         "legend_entry":{"name":"+#delta_{PDF} (shape+norm)","option":"l"}
      },
      "TTJets_PDFDown":{
          "type":{         
             "algorithm":"from_file",
-            "infile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt_custombinning_10J4M_JERSummer16_v0.0.41_weightbugfix_v2//Hists_TT_CARDS.root",
+            "infile":"/user/dlontkov/t2016/result/final_unblinding/filtered_samples/plots_mu_filt_custombinning_10J4M_JERSummer16_v0.0.42_weightbugfix_v3//Hists_TT_PDF.root",
             "subhistograms":["7J2M_TTJets_PDFDown/bdt","7J3M_TTJets_PDFDown/bdt","7J4M_TTJets_PDFDown/bdt","8J2M_TTJets_PDFDown/bdt","8J3M_TTJets_PDFDown/bdt","8J4M_TTJets_PDFDown/bdt","9J2M_TTJets_PDFDown/bdt","9J3M_TTJets_PDFDown/bdt","9J4M_TTJets_PDFDown/bdt","10J2M_TTJets_PDFDown/bdt","10J3M_TTJets_PDFDown/bdt","10J4M_TTJets_PDFDown/bdt"],
          },
          "style":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":2},
-         "style_ratio":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":2,"Scale":10.},
-         "legend_entry":{"name":"-#delta_{PDF} (#times 10 in ratio plot)","option":"l"}
+         "style_ratio":{"SetLineWidth":2,"SetLineColor":4,"SetLineStyle":2,"Scale":1.},
+         "legend_entry":{"name":"-#delta_{PDF} (shape+norm)","option":"l"}
      },
  },
  # ----------------------------------------
