@@ -195,6 +195,10 @@ $(BUILDDIR)/Hists_TT_PDF.root: $(BUILDDIR)/Hists_TTinclus_PDF.root $(BUILDDIR)/H
 	@echo "Merge inclusive and filtered samples"
 	@hadd -f $@ $^
 
+$(BUILDDIR)/Hists_TT_PDF_nnpdf.root: $(BUILDDIR)/Hists_TTinclus_PDF_nnpdf.root $(BUILDDIR)/Hists_TTFilt_PDF_nnpdf.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+
 $(BUILDDIR)/Hists_TT_PU.root: $(BUILDDIR)/Hists_TTinclus_PU.root $(BUILDDIR)/Hists_TTFilt_PU.root
 	@echo "Merge inclusive and filtered samples"
 	@hadd -f $@ $^
@@ -216,6 +220,10 @@ $(BUILDDIR)/Hists_TTinclus_PDF.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCE
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} TTJets_PDF ${TARGETVAR} ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTinclus_PDF_nnpdf.root: ${CONFIG} ${BUILDDIR}/Craneen_TTJets_$(TTCENTRAL)_central_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${NNPDFUNC} $^ $@ ${TREENAME}  ${TTNORM} TTJets_PDF ${TARGETVAR} ${SUPPRESSOUT}
+
 $(BUILDDIR)/Hists_TTinclus_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} PU ${TARGETVAR} ${SUPPRESSOUT}
@@ -236,6 +244,10 @@ $(BUILDDIR)/Hists_TTFilt_MEScale.root: ${CONFIG} ${BUILDDIR}/Craneen_TTJetsFilt_
 $(BUILDDIR)/Hists_TTFilt_PDF.root: ${CONFIG} ${BUILDDIR}/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} TTJets_PDF ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTFilt_PDF_nnpdf.root: ${CONFIG} ${BUILDDIR}/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${NNPDFUNC} $^ $@ ${TREENAME}  ${TTFILTNORM} TTJets_PDF ${TARGETVAR} ${SUPPRESSOUT}
 
 $(BUILDDIR)/Hists_TTFilt_PU.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 

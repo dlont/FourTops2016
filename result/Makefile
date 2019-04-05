@@ -9,7 +9,7 @@ DATALABEL:=Single \#mu (BCDEFGH)
 #DATALABEL:=Single \#mu (BCDEF)
 #DATALABEL:=Single \#mu (GH)
 
-TARGETVAR=BDT
+TARGETVAR=BDT1
 TREENAME:=Craneen__Mu
 TTCENTRAL:=powheg
 
@@ -17,6 +17,7 @@ VPATH:=$(shell readlink -f ${INPUTLOCATION})
 
 ROOTPLOT=../rootplot/bin/rootplot
 TREE2HIST=../rootplot/bin/tree2hists
+NNPDFUNC=./tools/pdfunc/nnpdfunc.py
 
 SIZE="1000x1000"
 
