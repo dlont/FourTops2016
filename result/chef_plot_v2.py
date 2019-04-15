@@ -99,19 +99,24 @@ def drawOverflow(hist):
 
     return cacheHist
 
+def myAddEntry(legend,tup,noEntries=True):
+    if noEntries: legend.AddEntry(tup[0], tup[1], tup[2])
+    else: legend.AddEntry(tup[0], tup[1] + " (" + "{:.0f}".format(tup[0].Integral()) + " entries)",tup[2])
+
 def styleRatioPlot(hist_ratio, propDesc, points = True):
     if points:
         hist_ratio.SetLineColor(1)
         hist_ratio.SetMarkerStyle(20)
-    hist_ratio.SetMinimum(-0.4999)
-    hist_ratio.SetMaximum(+0.4999)
-    hist_ratio.GetYaxis().SetTitle("#frac{Data-Pred.}{Pred.}")
+    hist_ratio.SetMinimum(-1.0)
+    hist_ratio.SetMaximum(+1.0)
+    hist_ratio.GetYaxis().SetTitle("#frac{Data#minusPred.}{Pred.}")
+    hist_ratio.GetYaxis().SetTitleOffset(1.8)
     hist_ratio.GetYaxis().SetTitleSize(0.04)
-    hist_ratio.GetYaxis().SetLabelSize(0.03)
+    hist_ratio.GetYaxis().SetLabelSize(0.04)
 
-    hist_ratio.GetXaxis().SetLabelSize(0.03)
+    hist_ratio.GetXaxis().SetLabelSize(0.045)
     hist_ratio.GetXaxis().SetTitleSize(0.05)
-    hist_ratio.GetXaxis().SetTitleOffset(0.9)
+    hist_ratio.GetXaxis().SetTitleOffset(0.99)
     hist_ratio.GetXaxis().SetTitle(propDesc)
     if 'Number of' in hist_ratio.GetXaxis().GetTitle():
         hist_ratio.GetXaxis().SetNdivisions(5,0,0)
@@ -231,8 +236,9 @@ for propline in plotprops_list:
 	    canvas.SetTopMargin(0.08)
 	    canvas.SetBottomMargin(0.3)
 	    canvas.SetLeftMargin(0.16)
-	    canvas.SetRightMargin(0.04)
-            legend = pyr.TLegend(0.35, 0.7, 0.95, 0.9)
+	    canvas.SetRightMargin(0.05)
+	    legend_entries = {}
+            legend = pyr.TLegend(0.3, 0.665, 0.9, 0.885)
 	    legend.SetFillStyle(4000)
 	    legend.SetTextFont(42)
             legend.SetTextSize(0.048)
@@ -254,8 +260,9 @@ for propline in plotprops_list:
                 hist_data.SetMarkerSize(1.35)
                 hist_data.SetMarkerColor(1)
                 hist_data.SetLineColor(1)
-                if args.no_entries: legend.AddEntry(hist_data, "Data", 'p')
-                else: legend.AddEntry(hist_data, "Data " + " (" + "{:.0f}".format(hist_data.Integral()) + " entries)", 'pe')
+		legend_entries["Data"]=(hist_data,'Data','p')
+                #if args.no_entries: legend.AddEntry(hist_data, "Data", 'p')
+                #else: legend.AddEntry(hist_data, "Data " + " (" + "{:.0f}".format(hist_data.Integral()) + " entries)", 'pe')
                 # legend.AddEntry(hist_data, dataset_name + " (" + "{:.1f}".format(hist_data.Integral()) + ")")
                 
             hist_mc_stack = pyr.THStack()
@@ -299,8 +306,9 @@ for propline in plotprops_list:
                     hist_mc.SetLineWidth(0)
                     hist_mc_stack.Add(hist_mc)
                     hist_central.Add(hist_mc)
-                    if args.no_entries: legend.AddEntry(hist_mc, mcName,'lf')
-                    else: legend.AddEntry(hist_mc, mcName + " (" + "{:.0f}".format(hist_mc.Integral()) + " entries)",'lf')
+		    legend_entries[mcName]=(hist_mc,mcName,'lf')
+                    #if args.no_entries: legend.AddEntry(hist_mc, mcName,'lf')
+                    #else: legend.AddEntry(hist_mc, mcName + " (" + "{:.0f}".format(hist_mc.Integral()) + " entries)",'lf')
                     # legend.AddEntry(hist_mc, mcName + " (" + "{:.1f}".format(hist_mc.Integral()) + ")")
                 else:               # tttt signal handling
                     pyr.gROOT.cd()
@@ -311,8 +319,9 @@ for propline in plotprops_list:
                     hist_line.SetMarkerStyle(0)
                     hist_line.Scale()
                     hist_line_name = mcName
-                    if args.no_entries: legend.AddEntry(hist_line, hist_line_name,'l')
-                    else: legend.AddEntry(hist_line, hist_line_name + " (" + "{:.0f}".format(hist_line.Integral()) + " entries)",'l')
+		    legend_entries[mcName]=(hist_line,mcName,'l')
+                    #if args.no_entries: legend.AddEntry(hist_line, hist_line_name,'l')
+                    #else: legend.AddEntry(hist_line, hist_line_name + " (" + "{:.0f}".format(hist_line.Integral()) + " entries)",'l')
 
             canvas.cd()
             #if not blind:
@@ -329,6 +338,12 @@ for propline in plotprops_list:
             units = ""
             if 'GeV' in propDesc: units = ' GeV'
             hist_mc_stack.GetYaxis().SetTitle("Events / {:0.1f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 1))+units)
+	    if 'HT' in propName:
+		hist_mc_stack.GetYaxis().SetTitle("Events / {:0.0f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
+	    if 'SumJetMassX' in propName:
+		hist_mc_stack.GetYaxis().SetTitle("Events / {:0.0f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
+	    if 'LeptonPt' in propName:
+		hist_mc_stack.GetYaxis().SetTitle("Events / {:0.0f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
             if 'topness' in propName: 
 		hist_mc_stack.GetYaxis().SetTitle("Events / {:0.2f}".format(round(hist_mc_stack.GetStack().Last().GetBinWidth(1), 2))+units)
 	    if 'nJets' in propName or 'nMtags' in propName:
@@ -338,8 +353,12 @@ for propline in plotprops_list:
             #print "hist_mc_stack.GetYaxis()"
             #hist_mc_stack.GetYaxis().SetRangeUser(max(hist_line.GetMinimum(), 0.), hist_mc_stack.GetMaximum()*10.)
             hist_mc_stack.SetMinimum(0.1)
-            hist_mc_stack.SetMaximum(hist_mc_stack.GetMaximum()*2000.)
+            hist_mc_stack.SetMaximum(hist_mc_stack.GetMaximum()*50000.)
             if blind: hist_mc_stack.GetXaxis().SetTitle(propDesc)
+	    if 'nJets' in propName:
+		hist_mc_stack.GetXaxis().SetNdivisions(505)
+	    if 'nMtags' in propName:
+		hist_mc_stack.GetXaxis().SetNdivisions(505)
             hist_line.Draw("hist same")
             #print "hist_line.GetYaxis()"
             #hist_line.GetYaxis().SetRangeUser(max(hist_line.GetMinimum(), 0.), hist_mc_stack.GetMaximum()*10.)
@@ -378,6 +397,16 @@ for propline in plotprops_list:
                 #graph_data.Draw("PE1 X0 same")
                 hist_data.SetMarkerStyle(20)
 		hist_data.Draw("PE0 X0 same")
+                
+	    myAddEntry(legend,legend_entries['Data'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+ll'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+c#bar{c}'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+b#bar{b}'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['ST'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['EW'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+H,Z'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+W,XY'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}t#bar{t}'],args.no_entries)    
             legend.Draw()
 
             if blind:
@@ -405,6 +434,7 @@ for propline in plotprops_list:
                 ratio_pad_height = 0.3
                 pad2.SetTopMargin(1. - ratio_pad_height)
                 pad2.SetBottomMargin(0.13)
+	    	pad2.SetRightMargin(canvas.GetRightMargin())
                 pad2.SetGridy()
                 pad2.Draw()
                 pad2.cd()
@@ -436,8 +466,6 @@ for propline in plotprops_list:
                     gr_errors = get_graph_with_errors_from_histograms(hist_central,hist_highline_unc,hist_lowline_unc)
 
                     hist_unc_stack = pyr.THStack()
-                    hist_unc_stack.SetMinimum(-0.999)
-                    hist_unc_stack.SetMaximum(+0.999)
 
                     hist_ratio = hist_data.Clone("hist_ratio")
                     hist_ratio.SetLineColor(1)
@@ -451,20 +479,27 @@ for propline in plotprops_list:
 
                     # hist_unc_stack.Draw("nostack")
                     hist_ratio.Draw("PE X0")
+		    print "Range: ", hist_ratio.GetXaxis().GetXmin(),hist_ratio.GetXaxis().GetXmax()
+		    zero_line = pyr.TLine()
+		    zero_line.SetLineColor(pyr.kBlack)
+		    zero_line.SetLineWidth(2)
+		    zero_line.DrawLine(hist_ratio.GetXaxis().GetXmin(),0.,hist_ratio.GetXaxis().GetXmax(),0.)
+                    hist_ratio.Draw("PE X0 same")
                     gr_errors.Draw("E2 same")
+		    myAddEntry(legend,(gr_errors,"Prefit unc.","f"),True)
 
                     hist_ratio.GetYaxis().SetNdivisions(505)
-                    hist_ratio.GetYaxis().SetLabelSize(0.035)
-                    hist_ratio.GetYaxis().SetTitleOffset(1.8)
-                    hist_ratio.GetXaxis().SetLabelSize(0.04)
-                    hist_ratio.GetXaxis().SetTitleSize(0.04)
+                    if 'nJets' in propName: 
+			hist_ratio.GetXaxis().SetNdivisions(505)
+		    if 'nMtags' in propName:
+			hist_ratio.GetXaxis().SetNdivisions(505)
 
             
             if not blind:
                 canvas.cd(1)
             else:
                 canvas.cd()
-	    CMS_lumi.CMS_lumi(canvas,4,0,True)
+	    CMS_lumi.CMS_lumi(canvas,4,0,False)
 	    canvas.cd()
 	    canvas.Update()
             canvas.RedrawAxis()

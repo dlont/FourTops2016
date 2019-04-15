@@ -3,7 +3,8 @@ set -o xtrace
 #source automate_mu.sh
 #source automate_el.sh
 ##
-dir_name=plots_combined_paperV25/2019-03-06-2057/preliminary
+dir_name=plots_combined_paperV25/2019-04-05-1328
+#dir_name=plots_combined_paperV25/2019-04-05-1328/preliminary
 mkdir $dir_name
 
 #merge muons and electrons

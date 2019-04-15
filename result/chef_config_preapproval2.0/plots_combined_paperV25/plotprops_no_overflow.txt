@@ -13,7 +13,7 @@ csvJetpt4    20 regular(0.0,1.0) CSV jet^{4}
 csvJetcsv3   20 regular(0.0,1.0) CSV3
 csvJetcsv4   20 regular(0.0,1.0) CSV4
 HT           15 regular(500.,2000) H_{T} (GeV)
-HTH          10 regular(0.1,1.) EventCen
+HTH          10 regular(0.1,1.) C
 HTb          10 regular(0.,1000) H_{T}^{b} (GeV)
 HTX           15 regular(500.,2000) H_{T}^{X} (GeV)
 SumJetMassX  35 regular(0,3500) M_{red}^{h} (GeV)
