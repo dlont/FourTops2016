@@ -104,8 +104,8 @@ void CutsTable::FillTable(unsigned int d, bool isGoodPV, bool trigged, float sca
                                             }
                                         }
                                     }		
-                        		}
-                        	}
+				}
+			    }
                         }
                     }
                 }
@@ -126,33 +126,33 @@ void CutsTable::FillTable(unsigned int d, bool isGoodPV, bool trigged, float sca
                 	selecTable->Fill(d,3,scaleFactor);
                 	if(nLooseEl==1)
                 	{
-                        selecTable->Fill(d,4,scaleFactor);
-                        if(nMu==0)
-                        {
-                            selecTable->Fill(d,5,scaleFactor);
-                            if(nJets>=4)
-                            {
-                                selecTable->Fill(d,6,scaleFactor);
-                                if(nJets>=5)
-                                {
-                                    selecTable->Fill(d,7,scaleFactor);
-                                    if(nJets>=6)
-                                    {       
-                                        selecTable->Fill(d,8,scaleFactor);
-                                        if(nMtags>=1)
-                                        {
-                                            selecTable->Fill(d,9,scaleFactor);
-                                            if(nMtags>=2)
-                                            {
-                                                selecTable->Fill(d,10,scaleFactor);
-                                            }
-                                        }
-                                    }       
-                                }
-                            }
-                        }
-                	}
-            	}
+				selecTable->Fill(d,4,scaleFactor);
+				if(nMu==0)
+				{
+					selecTable->Fill(d,5,scaleFactor);
+					if(nJets>=4)
+					{
+						selecTable->Fill(d,6,scaleFactor);
+						if(nJets>=5)
+						{
+							selecTable->Fill(d,7,scaleFactor);
+							if(nJets>=6)
+							{       
+								selecTable->Fill(d,8,scaleFactor);
+								if(nMtags>=1)
+								{
+									selecTable->Fill(d,9,scaleFactor);
+									if(nMtags>=2)
+									{
+										selecTable->Fill(d,10,scaleFactor);
+									}
+								}
+							}       
+						}
+					}
+				}
+			}
+		}
             }
         }         
     }
