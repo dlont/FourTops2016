@@ -840,9 +840,12 @@ int main (int argc, char *argv[])
             lumBlkId = event->lumiBlockId();
             nPV      = event->nTruePU();
             if(!isData){
+            genweight=1.0;
 		    if (event->getWeight(1)!= -9999) { genweight = (event->getWeight(1))/(abs(event->originalXWGTUP())); } 
 		    if (event->getWeight(1001)!= -9999) { genweight = (event->getWeight(1001))/(abs(event->originalXWGTUP())); }
-	    }
+	    } else {
+            genweight = 1.0;
+        }
 	    histo_cutflow["cutflow"]->Fill(cut2binID.at("Total"),genweight);
 
         // genttxtype = event->getgenTTX_id();
@@ -979,7 +982,7 @@ int main (int argc, char *argv[])
             }
             else if(Muon){
                 LOG(INFO) <<"Get Tight Muons";
-		selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.4, 100., "Tight", "Summer16");
+		selectedMuons                                       = r2selection.GetSelectedMuons(35, 2.4, 100., "Tight", "Summer16");
                 //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 1000.0, "Tight", "Summer16"); 
                 //LOG(INFO) <<"Get Medium Muons";
                 //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
@@ -1258,7 +1261,7 @@ int main (int argc, char *argv[])
 		for( auto j: init_uncor_jets ) delete j;
 		continue; // Check that there is a good Primary Vertex
 	    }
-	    histo_cutflow["cutflow"]->Fill(cut2binID.at("Good PV"),genweight);
+	    histo_cutflow["cutflow"]->Fill(cut2binID.at("Good PV"),genweight*scaleFactor);
             /////////////////////////////////
             //        Trigger              //
             /////////////////////////////////            
@@ -1273,7 +1276,7 @@ int main (int argc, char *argv[])
 		 for( auto j: init_uncor_jets ) delete j;
 	         continue;  //If an HLT condition is not present, skip this event in the loop.       
 	    }
-	    histo_cutflow["cutflow"]->Fill(cut2binID.at("SL triggers"),genweight);
+	    histo_cutflow["cutflow"]->Fill(cut2binID.at("SL triggers"),genweight*scaleFactor);
 	    triggers_container.fill(0);
 	    for(int iter_trig=0; iter_trig< ((isData?trigger->triggerListData.size():trigger->triggerListMC.size())) && iter_trig<200; iter_trig++){
 		    if (isData) triggers_container[iter_trig] = trigger->triggermapData.find(trigger->triggerListData[iter_trig])->second.second;
@@ -1470,42 +1473,42 @@ int main (int argc, char *argv[])
 		continue;
 	    }
 
-	    histo_cutflow["cutflow"]->Fill(cut2binID.at("Event cleaning"),genweight);
+	    histo_cutflow["cutflow"]->Fill(cut2binID.at("Event cleaning"),genweight*trigSFTot*scaleFactor);
 
             if (Muon)
             {   
-                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && !bCrackVeto) ) {
+                if  (  !( nMu == 1 && nEl == 0 && nLooseMu == 1 && !bCrackVeto && fabs(selectedMuons[0]->Eta())<2.1 ) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Muon Channel Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("One lepton"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("One lepton"),genweight*trigSFTot*scaleFactor);
 		if  (  !( nJets>=7 ) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Muon Channel jet multiplicity Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("Jet multiplicity"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("Jet multiplicity"),genweight*trigSFTot*scaleFactor);
 		if  (  !( nMtags >=2 ) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Muon Channel b tag multiplicity Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("N_{tags}^{m}>2"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("N_{tags}^{m}>2"),genweight*trigSFTot*scaleFactor);
             }
             else if(Electron){
-                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1) ) {
+                if  (  !( nMu == 0 && nEl == 1 && nLooseEl == 1 && fabs(selectedElectrons[0]->Eta())<2.1) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Electron Channel Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("One lepton"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("One lepton"),genweight*trigSFTot*scaleFactor);
                 if  (  !( nJets>=8 ) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Electron Channel Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("Jet multiplicity"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("Jet multiplicity"),genweight*trigSFTot*scaleFactor);
                 if  (  !( nMtags >=2 ) ) {
 			for( auto j: init_uncor_jets ) delete j;
 			continue; // Electron Channel Selection
 		}
-		histo_cutflow["cutflow"]->Fill(cut2binID.at("N_{tags}^{m}>2"),genweight);
+		histo_cutflow["cutflow"]->Fill(cut2binID.at("N_{tags}^{m}>2"),genweight*trigSFTot*scaleFactor);
             }
             else{
                 cerr<<"Correct Channel not selected."<<std::endl;
@@ -1810,19 +1813,19 @@ int main (int argc, char *argv[])
             float met = mets[0]->Et();
 
 	    if  ( Muon && leptonIso < 0.15 ) { 
-		    histo_cutflow["cutflow"]->Fill(cut2binID.at("Lepton iso."),genweight);
+		    histo_cutflow["cutflow"]->Fill(cut2binID.at("Lepton iso."),genweight*trigSFTot*scaleFactor);
 		    if  ( HT>500 ) {
-			    histo_cutflow["cutflow"]->Fill(cut2binID.at("HT>500"),genweight);
+			    histo_cutflow["cutflow"]->Fill(cut2binID.at("HT>500"),genweight*trigSFTot*scaleFactor);
 			    if  ( met>50 ) {
-				    histo_cutflow["cutflow"]->Fill(cut2binID.at("MET>50"),genweight);
+				    histo_cutflow["cutflow"]->Fill(cut2binID.at("MET>50"),genweight*trigSFTot*scaleFactor);
 			    }
 		    }
 	    } else if ( Electron ) {
-		    histo_cutflow["cutflow"]->Fill(cut2binID.at("Lepton iso."),genweight);
+		    histo_cutflow["cutflow"]->Fill(cut2binID.at("Lepton iso."),genweight*trigSFTot*scaleFactor);
 		    if  ( HT>500 ) {
-			    histo_cutflow["cutflow"]->Fill(cut2binID.at("HT>500"),genweight);
+			    histo_cutflow["cutflow"]->Fill(cut2binID.at("HT>500"),genweight*trigSFTot*scaleFactor);
 			    if  ( met>50 ) {
-				    histo_cutflow["cutflow"]->Fill(cut2binID.at("MET>50"),genweight);
+				    histo_cutflow["cutflow"]->Fill(cut2binID.at("MET>50"),genweight*trigSFTot*scaleFactor);
 			    }
 		    }
 	    }
