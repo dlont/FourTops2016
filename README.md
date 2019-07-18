@@ -119,6 +119,8 @@ text2workspace.py --channel-masks datacard_elmu.txt
 ### All the details on how to get the results from combine datacards are documented HERE
 https://gitlab.cern.ch/dlontkov/top-17-019-combine-cards-v2/blob/master/RESULTS.md
 
+
+### Quick snapshot of frequently used commands
 ### Fits and limits
 ```
 combine -M FitDiagnostics datacard_elmu.root --saveShapes --saveWithUncertainties --saveNormalizations --X-rtd MINIMIZER_analytic # this command produces fitDiagnostics.root file with pre-(post-)fit templates, etc. This file is used as input for pulls, correlations, plots
