@@ -982,8 +982,8 @@ int main (int argc, char *argv[])
             }
             else if(Muon){
                 LOG(INFO) <<"Get Tight Muons";
-		selectedMuons                                       = r2selection.GetSelectedMuons(35, 2.4, 100., "Tight", "Summer16");
-                //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 1000.0, "Tight", "Summer16"); 
+		//selectedMuons                                       = r2selection.GetSelectedMuons(35, 2.4, 100., "Tight", "Summer16");
+                selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 1000.0, "Tight", "Summer16"); 
                 //LOG(INFO) <<"Get Medium Muons";
                 //selectedMuons                                       = r2selection.GetSelectedMuons(26, 2.1, 0.15, "Medium", "Summer16"); 
                 nMu = selectedMuons.size(); //Number of Muons in Event
