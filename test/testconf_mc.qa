@@ -62,7 +62,61 @@ Binned = {
             # IMPORTANT NOTE 2:
             #   In ROOT a TDirectory name starts with '/', while a histogram written
             #   in the ROOT of a TFile does not have the '/' character
-            'Name' : '/allSF/.*',
+            'Name' : '/10J4M.*/bdt',
+        },
+
+
+        #Group 2
+        {
+            #In this example we show the use of regular-expressions. All histograms contained in
+            #a TFile TDirectory will be checked using defaults.
+            # Note that we use the python re module. See: http://docs.python.org/library/re.html
+            # for re syntax. For example ".*" means everyhing
+            # IMPORTANT NOTE 1:
+            #   It is important to note that there is no check of validity of re between groups.
+            #   For example if a group uses: 'Name' : '.*' will include ALL histograms in ALL
+            #   directories in the file. This means that other groups are not needed, if specified
+            #   the behaviour of the code is in general not correct
+            # IMPORTANT NOTE 2:
+            #   In ROOT a TDirectory name starts with '/', while a histogram written
+            #   in the ROOT of a TFile does not have the '/' character
+            'Name' : '/10J3M.*/bdt',
+        },
+
+
+        #Group 3
+        {
+            #In this example we show the use of regular-expressions. All histograms contained in
+            #a TFile TDirectory will be checked using defaults.
+            # Note that we use the python re module. See: http://docs.python.org/library/re.html
+            # for re syntax. For example ".*" means everyhing
+            # IMPORTANT NOTE 1:
+            #   It is important to note that there is no check of validity of re between groups.
+            #   For example if a group uses: 'Name' : '.*' will include ALL histograms in ALL
+            #   directories in the file. This means that other groups are not needed, if specified
+            #   the behaviour of the code is in general not correct
+            # IMPORTANT NOTE 2:
+            #   In ROOT a TDirectory name starts with '/', while a histogram written
+            #   in the ROOT of a TFile does not have the '/' character
+            'Name' : '/9J4M.*/bdt',
+        },
+
+
+        #Group 4
+        {
+            #In this example we show the use of regular-expressions. All histograms contained in
+            #a TFile TDirectory will be checked using defaults.
+            # Note that we use the python re module. See: http://docs.python.org/library/re.html
+            # for re syntax. For example ".*" means everyhing
+            # IMPORTANT NOTE 1:
+            #   It is important to note that there is no check of validity of re between groups.
+            #   For example if a group uses: 'Name' : '.*' will include ALL histograms in ALL
+            #   directories in the file. This means that other groups are not needed, if specified
+            #   the behaviour of the code is in general not correct
+            # IMPORTANT NOTE 2:
+            #   In ROOT a TDirectory name starts with '/', while a histogram written
+            #   in the ROOT of a TFile does not have the '/' character
+            'Name' : '/9J3M.*/bdt',
         }
             
         ] #End of Histos defintion

@@ -19,6 +19,10 @@ report_TTJets.pdf: ${CONFIGMC} ${TARGET}/Hists_TT.root ${REFERENCE}/Hists_TT.roo
 	@echo "Test TT MC"
 	${STATTEST} -g $@ $^
 
+report_TT_CARDS.pdf: ${CONFIGMC} ${TARGET}/Hists_TT_CARDS.root ${REFERENCE}/Hists_TT_CARDS.root
+	@echo "Test TT CARDS MC"
+	${STATTEST} -g $@ $^
+
 report_TTTT.pdf: ${CONFIGMC} ${TARGET}/Hists_TTTT_SCALED.root ${REFERENCE}/Hists_TTTT_SCALED.root
 	@echo "Test TTTT MC"
 	${STATTEST} -g $@ $^
