@@ -1,7 +1,7 @@
 nJets    4   regular(6.5,10.5) N_{j}
 nMtags   3   regular(1.5,4.5)  N_{tags}^{m}
 multitopness 20 regular(-0.4,0.2) T_{trijet2}
-LeptonPt     12 nonuniform(0.,40.,80.,120.,160.,200.,240.,280.,320.,360.,400.,440.,600.) p_{T}^{l1} (GeV)
+LeptonPt     12 nonuniform(0.,40.,80.,120.,160.,200.,240.,280.,320.,360.,400.,440.,600.) \mathrm{p}_\mathrm{T}^{\ell 1} \mathrm{(GeV)}
 LeptonEta    25 regular(-2.5,2.5) Lepton #eta
 leptonphi    25 regular(-3.15,3.15) Lepton #phi
 1stjetpt     12 nonuniform(30.,130.,230.,330.,430.,530.,630.,730.,830.,930.,1030.,1130.,1530) jet p_{T} (GeV)
@@ -15,7 +15,7 @@ csvJetcsv4   20 regular(0.0,1.0) CSV4
 HT           15 regular(500.,2000) H_{T} (GeV)
 HTH          10 regular(0.1,1.) C
 HTb          10 regular(0.,1000) H_{T}^{b} (GeV)
-HTX           15 regular(500.,2000) H_{T}^{X} (GeV)
+HTX           15 regular(500.,2000) H_{T}^{x} (GeV)
 SumJetMassX  35 regular(0,3500) M_{red}^{h} (GeV)
 jetvec[][0]  13 nonuniform(30.,130.,230.,330.,430.,530.,630.,730.,830.,930.,1030.,1130.,1230.,1530) jet p_{T} (GeV)
 jetvec[][1]  25 regular(-2.5,2.5) jet #eta

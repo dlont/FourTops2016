@@ -13,7 +13,7 @@ parser.add_argument("--outputName", help="Name of output ROOT file containing al
 parser.add_argument("--noLog", help="Disables log plots", action="store_true")
 parser.add_argument("--noOverflow", help="Disables overflow bin", action="store_true")
 parser.add_argument("--systematics", help="File containing list of central, upper and lower limit of scale factors")
-parser.add_argument("--extension", default='png,pdf,root', help="Plot output format. Can use several types simultaneously e.g. --extension png,pdf,C")
+parser.add_argument("--extension", default='png,pdf,eps,root', help="Plot output format. Can use several types simultaneously e.g. --extension png,pdf,C")
 parser.add_argument("--no-entries", default=True, help="Do not show number of entries in the legends", action='store_false')
 parser.add_argument("--batch", default=True, help="Do not show plots", action='store_true')
 parser.add_argument("--grayscale", default=False, help="Produce grayscale plots", action='store_true')
@@ -50,7 +50,7 @@ def get_graph_with_errors_from_histograms(central,up,down):
         exh = central.GetBinLowEdge(bin) - central.GetBinCenter(bin) 
         gr.SetPointError(bin-1,exl,exh,-down.GetBinContent(bin),up.GetBinContent(bin))
     gr.SetFillColor(1)
-    gr.SetFillStyle(3004)
+    gr.SetFillStyle(3345)
     return gr
 
 def get_graph_uncertainty_band(hist_centralline_unc,hist_highline_unc,hist_lowline_unc):
@@ -68,7 +68,7 @@ def get_graph_uncertainty_band(hist_centralline_unc,hist_highline_unc,hist_lowli
         gr.SetPointError(bin-1,exl,exh,(hist_centralline_unc.GetBinContent(bin)-hist_lowline_unc.GetBinContent(bin)),
                                        (hist_highline_unc.GetBinContent(bin)-hist_centralline_unc.GetBinContent(bin)))
     gr.SetFillColor(1)
-    gr.SetFillStyle(3004)
+    gr.SetFillStyle(3345)
     return gr
 
 def drawOverflow(hist):
@@ -238,7 +238,7 @@ for propline in plotprops_list:
 	    canvas.SetLeftMargin(0.16)
 	    canvas.SetRightMargin(0.05)
 	    legend_entries = {}
-            legend = pyr.TLegend(0.3, 0.665, 0.9, 0.885)
+            legend = pyr.TLegend(0.3, 0.645, 0.9, 0.885)
 	    legend.SetFillStyle(4000)
 	    legend.SetTextFont(42)
             legend.SetTextSize(0.048)
@@ -399,7 +399,7 @@ for propline in plotprops_list:
 		hist_data.Draw("PE0 X0 same")
                 
 	    myAddEntry(legend,legend_entries['Data'],args.no_entries)    
-	    myAddEntry(legend,legend_entries['t#bar{t}+ll'],args.no_entries)    
+	    myAddEntry(legend,legend_entries['t#bar{t}+jj'],args.no_entries)    
 	    myAddEntry(legend,legend_entries['t#bar{t}+c#bar{c}'],args.no_entries)    
 	    myAddEntry(legend,legend_entries['t#bar{t}+b#bar{b}'],args.no_entries)    
 	    myAddEntry(legend,legend_entries['ST'],args.no_entries)    
@@ -486,7 +486,7 @@ for propline in plotprops_list:
 		    zero_line.DrawLine(hist_ratio.GetXaxis().GetXmin(),0.,hist_ratio.GetXaxis().GetXmax(),0.)
                     hist_ratio.Draw("PE X0 same")
                     gr_errors.Draw("E2 same")
-		    myAddEntry(legend,(gr_errors,"Prefit unc.","f"),True)
+		    myAddEntry(legend,(gr_errors,"Pre-fit unc.","f"),True)
 
                     hist_ratio.GetYaxis().SetNdivisions(505)
                     if 'nJets' in propName: 
@@ -499,7 +499,8 @@ for propline in plotprops_list:
                 canvas.cd(1)
             else:
                 canvas.cd()
-	    CMS_lumi.CMS_lumi(canvas,4,0,False)
+	    CMS_lumi.CMS_lumi(canvas,4,0,False) #not Preliminary
+	    #CMS_lumi.CMS_lumi(canvas,4,0,True) #Preliminary
 	    canvas.cd()
 	    canvas.Update()
             canvas.RedrawAxis()
