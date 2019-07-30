@@ -14,6 +14,16 @@ from pprint import pprint, pformat
 
 import ROOT as rt
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def progress(current, total, status=''):
         fullBarLength = 80
         doneBarLength = int(round(fullBarLength * current / float(total)))
@@ -67,7 +77,12 @@ def main(arguments):
 		        infile.cd()
                 else:
 		        logging.debug("Scale factor source/target: {} / {}".format(i1,i2))
-		        hist.Scale(i2/i1)
+			try:
+		        	hist.Scale(i2/i1)
+			except ZeroDivisionError as error:
+				print error
+				logging.error(bcolors.FAIL+"Problematic histogram name: {}/{}".format(folder.GetName(),hist.GetName())+bcolors.ENDC)
+				raise RuntimeError("FATAL ERROR: Terminating...")
 		        folder.cd()
 		        hist.Write(hist.GetName(),rt.TObject.kOverwrite)
 		        infile.cd()
