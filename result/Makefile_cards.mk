@@ -211,6 +211,10 @@ $(BUILDDIR)/Hists_TT_TTX.root: $(BUILDDIR)/Hists_TTinclus_TTX.root $(BUILDDIR)/H
 	@echo "Merge inclusive and filtered samples"
 	@hadd -f $@ $^
 
+$(BUILDDIR)/Hists_TT_TTCC.root: $(BUILDDIR)/Hists_TTinclus_TTCC.root $(BUILDDIR)/Hists_TTFilt_TTCC.root
+	@echo "Merge inclusive and filtered samples"
+	@hadd -f $@ $^
+
 #inclusive samples
 $(BUILDDIR)/Hists_TTinclus_MEScale.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -236,6 +240,10 @@ $(BUILDDIR)/Hists_TTinclus_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCE
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} heavyFlav ${TARGETVAR} ${SUPPRESSOUT}
 
+$(BUILDDIR)/Hists_TTinclus_TTCC.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTNORM} heavyFlavCC ${TARGETVAR} ${SUPPRESSOUT}
+
 #filtered samples
 $(BUILDDIR)/Hists_TTFilt_MEScale.root: ${CONFIG} ${BUILDDIR}/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
@@ -260,6 +268,10 @@ $(BUILDDIR)/Hists_TTFilt_PT.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTC
 $(BUILDDIR)/Hists_TTFilt_TTX.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root 
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
 	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} heavyFlav ${TARGETVAR} ${SUPPRESSOUT}
+
+$(BUILDDIR)/Hists_TTFilt_TTCC.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJetsFilt_$(TTCENTRAL)_central_Run2_TopTree_Study.root 
+	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 
+	@${TREE2HIST} $^ $@ ${TREENAME}  ${TTFILTNORM} heavyFlavCC ${TARGETVAR} ${SUPPRESSOUT}
 ########################################################################
 $(BUILDDIR)/Hists_TT_HDAMP.root: ${CONFIG} $(BUILDDIR)/Craneen_TTJets_$(TTCENTRAL)_Run2_TopTree_Study.root
 	@echo "Preparing TT SYSTEMATICS histograms $@ ($^)" 

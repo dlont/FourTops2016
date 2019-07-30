@@ -103,6 +103,9 @@ elif 'UE' in systematic:
 elif 'heavyFlav' in systematic:
     from cards_syst_TTX import getTTXCutSets
     cut_sets = getTTXCutSets(systematic, '&&'+trigger_cuts,binning_option)
+elif 'heavyFlavCC' in systematic:
+    from cards_syst_TTCC import getTTCCCutSets
+    cut_sets = getTTCCCutSets(systematic, '&&'+trigger_cuts,binning_option)
 #    (weight7"barrel15to20", "(|#eta|<1.45weight7, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)<1.45"),
 #    ("barrel20to30", "(|#eta|<1.45, 20<E_{T}<30)", "et>20&&et<30&&abs(eta)<1.45"),
 #    ("endcap15to20", "(1.7<|#eta|<2.5, 15<E_{T}<20)", "et>15&&et<20&&abs(eta)>1.7&&abs(eta)<2.5"),
