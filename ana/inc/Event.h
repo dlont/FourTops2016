@@ -108,7 +108,8 @@ struct Event {
     double hdampw[2];       // POWHEG hdamp weight variation 
     double pdfw[2];         // POWHEG CT10,MMH14 weight variation 
     double pdf_nnpdf[101];  // POWHEG NNPDF replicas weights
-    double ttxw[2];         // POWHEG heavy-flavour fraction variation 
+    double ttxw[2];         // POWHEG ttbb fraction variation 
+    double ttccw[2];         // POWHEG ttcc fraction variation 
     double toprew;          // TOP pT reweighting factor
     double toprewunc[3];          // TOP pT reweighting factors
     int    ttxType;         // TTX event type (ttbb, ttcc, etc.)
@@ -208,6 +209,7 @@ void Event::clear() {
       std::fill_n( this->pdfw, 2, 1.);
       std::fill_n( this->pdf_nnpdf, 101, 1.);
       std::fill_n( this->ttxw, 2, 1.);
+      std::fill_n( this->ttccw, 2, 1.);
       std::fill_n( this->toprewunc, 3, 1.);
       this->toprew = 0.;
       this->ttxType = -1.;
@@ -305,6 +307,7 @@ void Event::makeBranches(TTree* tree) {
       tree -> Branch("pdfw",                  this->pdfw,                "pdfw[2]/D");
       tree -> Branch("pdf_nnpdf",             this->pdf_nnpdf,           "pdf_nnpdf[101]/D");
       tree -> Branch("ttxw",                  this->ttxw,                "ttxw[2]/D");
+      tree -> Branch("ttccw",                 this->ttccw,               "ttccw[2]/D");
       tree -> Branch("toprewunc",             this->toprewunc,           "toprewunc[3]/D");
       //
       tree -> Branch("LeadingBJetPt",        &this->LeadingBJetPt,       "LeadingBJetPt/D"); 
@@ -341,7 +344,7 @@ void Event::fill_electronVFID(bool flag) {
  * @param trj3rd trijet combination with 3rd highest topness score
  */
 void Event::fill(double vals[], double jets[][5], double electron[], double muon[], int njet, 
-                 double w[], double csvrs[], double hdamp[], double pdf[], double nnpdf[], double ttx[], 
+                 double w[], double csvrs[], double hdamp[], double pdf[], double nnpdf[], double ttx[], double ttcc[],
                  double topptreww[], double trj1st[][6], double trj2nd[][6], double trj3rd[][6]) {
 
     this->BDT = vals[0];
@@ -438,6 +441,7 @@ void Event::fill(double vals[], double jets[][5], double electron[], double muon
     std::copy ( pdf, pdf+2, this->pdfw );
     std::copy ( nnpdf, nnpdf+101, this->pdf_nnpdf );
     std::copy ( ttx, ttx+2, this->ttxw );
+    std::copy ( ttcc, ttcc+2, this->ttccw );
     std::copy ( topptreww, topptreww+3, this->toprewunc );
     //for (auto par = 0; par < 8; ++par) weight[par]=w[par];
     //for (auto par = 0; par < 19; ++par) csvrsw[par]=csvrs[par];

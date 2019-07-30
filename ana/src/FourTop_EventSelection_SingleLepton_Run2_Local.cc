@@ -1136,6 +1136,7 @@ int main (int argc, char *argv[])
             double weight_nnpdf[101]; std::fill_n( weight_nnpdf, 101, -99.);
             auto ttXtype =  -1; // ttbb, ttcc, ttx event type
 	    auto ttXrew  = 1., ttXrew_up = 1., ttXrew_down = 1.;  // heavy-flavour reweighting factor
+	    auto ttCCrew  = 1., ttCCrew_up = 1., ttCCrew_down = 1.;  // heavy-flavour reweighting factor
 
             if(!isData){
                 ttXtype = event->getgenTTX_id();
@@ -1155,6 +1156,11 @@ int main (int argc, char *argv[])
                         	//ttXrew_down = (4.0 - 0.6 - 1.3) / (3.2 + 0.4);
 
 			}
+                        if ((ttXtype % 100 >= 41) && (ttXtype % 100 < 50)) {    //all ttcc components
+                                ttCCrew  = 1.;
+                                ttCCrew_up = 1.35;
+                                ttCCrew_down = 0.65;
+                        }
 			if (ttXtype % 100 == 0) {	//see https://twiki.cern.ch/twiki/bin/view/CMSPublic/GenHFHadronMatcher#Event_categorization_example_2
 				//ttXrew  = 184./257.;				//0.716
 				//ttXrew_up = (184. + 6. + 33.) / (257. - 26.);	//0.965
@@ -1927,6 +1933,7 @@ int main (int argc, char *argv[])
             double hdampw[] = {weight_hdamp_dw, weight_hdamp_up};
             double pdfw[]   = {weight_ct10, weight_mmht14};
             double ttxrew[]   = {ttXrew_up, ttXrew_down};
+            double ttccrew[]   = {ttCCrew_up, ttCCrew_down};
             double topptrew[]   = {fTopPtReWeightsf,fTopPtReWeightsfUp,fTopPtReWeightsfDown};
             double jetvec[30][5];
             for (auto jet=0; jet<nJets; ++jet){
@@ -1941,7 +1948,7 @@ int main (int argc, char *argv[])
 	    if(Muon) FillMuonParams(selectedMuons[0],muon);
 	    if(Electron) FillElectronParams(selectedElectrons[0],electron);
             myEvent.fill_electronVFID(electronVFIDflag);
-            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,weight_nnpdf,ttxrew,topptrew,
+            myEvent.fill(vals,jetvec,electron,muon,nJets,w,csvrs,hdampw,pdfw,weight_nnpdf,ttxrew,ttccrew,topptrew,
                          trj1st, trj2nd, trj3rd);
         // if (nJets < 10)
             // std::cout << trj3rd[0][4] << " " << trj3rd[1][4] << " " << trj3rd[2][4] << std::endl;
