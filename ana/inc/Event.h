@@ -23,7 +23,7 @@ struct Event {
     void makeBranches(TTree* tree);
     void fill_electronVFID(bool);
     void fill(double [], double [][5], double [], double[], int , double [], double [], 
-	      double [], double [], double [], double [], double [], 
+	      double [], double [], double [], double [], double [], double [],
               double [][6], double [][6], double [][6]);
     
     double BDT; // baseline tmva from top-16-016
