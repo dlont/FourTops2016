@@ -100,7 +100,7 @@ elif 'FSR' in systematic:
 elif 'UE' in systematic:
     from cards_syst_IFSRUE import getIFSRUECutSets
     cut_sets = getIFSRUECutSets(systematic, '&&'+trigger_cuts,binning_option)
-elif 'heavyFlav' in systematic:
+elif 'heavyFlav' == systematic:
     from cards_syst_TTX import getTTXCutSets
     cut_sets = getTTXCutSets(systematic, '&&'+trigger_cuts,binning_option)
 elif 'heavyFlavCC' in systematic:
